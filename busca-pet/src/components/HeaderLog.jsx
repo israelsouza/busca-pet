@@ -1,5 +1,5 @@
    import Logo_Cachorro from "./../imgs/Logo_Cachorro.png"
-   import Icone from "./..imgs/Icone.png"
+   import Icone from "./../imgs/Icone.png"
    
    function HeaderLog(){
         return <div>
