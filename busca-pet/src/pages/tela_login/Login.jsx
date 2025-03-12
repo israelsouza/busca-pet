@@ -25,7 +25,7 @@ return <>
 
             <p>Ainda não tem cadastro? <a href="">Cadastre-se!</a></p>
             <p>Esqueceu a senha? <a href="">Recupere-a!</a></p>
-        </div>
+            </div>
 
         
 

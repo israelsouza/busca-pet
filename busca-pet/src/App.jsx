@@ -1,5 +1,5 @@
 import "./App.css";
-import Login from "./pages/tela_login/login";
+import Login from "./pages/tela_login/Login";
 
 
 function App() {
