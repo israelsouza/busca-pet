@@ -35,11 +35,11 @@ function Cadastro() {
   ];
 
   return (
-    <div>
-      <div className="form-cad">
+    <div className="cad">
+      <div className="cad-header">
         <HeaderForm />
 
-        <div className="form-cad__body">
+        <div className="cad__body">
           <h2>
             Cadastre-se e ajude a construir finais felizes para pets perdidos!
           </h2>
@@ -74,9 +74,7 @@ function Cadastro() {
         </div>
       </div>
 
-      <div className="form-cad__image">
-        
-      </div>
+      <div className="cad__image"></div>
     </div>
   );
 }
