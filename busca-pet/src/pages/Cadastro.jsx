@@ -37,44 +37,55 @@ function Cadastro() {
   return (
     <div className="cad">
       <div className="cad-header">
-        <HeaderForm />
+        <div className="form-cad">
+          <div className="form-cad__header">
+            <HeaderForm />
 
-        <div className="cad__body">
-          <h2 className="cad__title">
-            Cadastre-se e ajude a construir finais felizes para pets perdidos!
-          </h2>
+            <div className="cad__body">
+              <h2 className="cad__title">
+                Cadastre-se e ajude a construir finais felizes para pets
+                perdidos!
+              </h2>
 
-          <form>
-            <InputTxt name="Nome" place="Digite o seu nome" />
-            <InputTxt name="E-mail" place="Digite o seu e-mail" />
-            <InputTxt name="Senha" place="Digite a sua senha" />
-            <InputTxt name="Telefone" place="Digite o seu telefone" />
-            <InputTxt name="Rua" place="Digite o nome da sua rua" />
-            <InputTxt name="Bairro" place="Digite o nome do seu bairro" />
-            <InputTxt name="CEP" place="Digite o seu CEP" />
-            <InputTxt name="Cidade" place="Digite a sua cidade" />
+              <form>
+                <InputTxt name="Nome" place="Digite o seu nome" />
+                <InputTxt name="E-mail" place="Digite o seu e-mail" />
+                <InputTxt name="Senha" place="Digite a sua senha" />
+                <InputTxt name="Telefone" place="Digite o seu telefone" />
+                <InputTxt name="Rua" place="Digite o nome da sua rua" />
+                <InputTxt name="Bairro" place="Digite o nome do seu bairro" />
+                <InputTxt name="CEP" place="Digite o seu CEP" />
+                <InputTxt name="Cidade" place="Digite a sua cidade" />
 
-            <div>
-              <label> Estado </label>
+                <div>
+                  <label> Estado </label>
 
-              <div>
-                <select name="" id="">
-                  {UF.map((currValue, index) => (
-                    <Option value={currValue} disable="disable" key={index} />
-                  ))}
-                </select>
-              </div>
+                  <div>
+                    <select name="estadosUF" id="estadosUF">
+                      {UF.map((currValue, index) => (
+                        <Option
+                          value={currValue}
+                          disable="disable"
+                          key={index}
+                        />
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </form>
+
+              <button>Cadastrar</button>
+              <p>
+                Já tem cadastro? <a href="">Faça o login</a>
+              </p>
             </div>
-          </form>
+          </div>
 
-          <button>Cadastrar</button>
-          <p>
-            Já tem cadastro? <a href="">Faça o login</a>
-          </p>
+          <div className="cad__image"></div>
+
+          <div className="form-cad__image"></div>
         </div>
       </div>
-
-      <div className="cad__image"></div>
     </div>
   );
 }

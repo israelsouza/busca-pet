@@ -66,7 +66,7 @@
 
 .imput__name {
   padding-left: 18%;
-  color: var(--label)
+  color: var(--label);
 }
 
 .imput__box {
@@ -82,4 +82,34 @@
   background-color: var(--inputs);
   border: none;
   box-shadow: 0px 3px 3px 0px hsla(0, 0%, 0%, 0.483);
+  /* COMPONENTE HEADER */
+}
+
+.header-form {
+  background-color: aqua;
+  width: 100%;
+}
+
+/* PAGINA DE CADASTRO */
+
+.form-cad {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-cad__header {
+  min-height: 100svh;
+  background-color: green;
+}
+
+.form-cad__image {
+  display: block;
+  background-color: red;
+  background-image: url("./assets/imgs/coelho.png");
+  width: 65%;
+  min-height: 100svh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 10%;
 }
