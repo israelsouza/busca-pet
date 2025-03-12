@@ -4,11 +4,27 @@
     box-sizing: border-box;
 }
 
-.header-form{
+.cad{
+    display: flex;
+    align-items: center;
+}
+
+.cad-header{
     background-color: aqua;
     width: 50%;
 }
 
-.form-cad__image{
+.cad__body{
+
+}
+
+.cad__image{
     background-image: url(./assets/imgs/coelho.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 1%;
+    
+    min-height: 100svh;
+    width: 50%;
+    
 }
