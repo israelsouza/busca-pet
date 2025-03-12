@@ -1,30 +1,85 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.cad{
-    display: flex;
-    align-items: center;
+:root {
+  --titulo: #000;
+  --header: #efa355;
+  --fundo_form: #ffeacc;
+  --inputs: #f2d9b6;
+  --label: #684233;
+  --botao: #f2b680;
 }
 
-.cad-header{
-    background-color: aqua;
-    width: 50%;
+.txt-center {
+  text-align: center;
 }
 
-.cad__body{
-
+.cad {
+  background-color: #ccc;
+  display: flex;
 }
 
-.cad__image{
-    background-image: url(./assets/imgs/coelho.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 1%;
-    
-    min-height: 100svh;
-    width: 50%;
-    
+.cad-header {
+  width: 50%;
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.cad__body {
+  padding: 5px 0;
+  background-color: var(--fundo_form);
+  width: 100%;
+  height: 100%;
+}
+
+.cad__title {
+  margin: 30px auto;
+  text-align: center;
+  color: var(--titulo);
+}
+
+.cad__image {
+  background-image: url(./assets/imgs/coelho.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 1%;
+
+  min-height: 100svh;
+  width: 50%;
+}
+
+.header-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--header);
+}
+
+.imput {
+  margin: 10px 0;
+}
+
+.imput__name {
+  padding-left: 18%;
+  color: var(--label)
+}
+
+.imput__box {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.imput__element {
+  width: 525px;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: var(--inputs);
+  border: none;
+  box-shadow: 0px 3px 3px 0px hsla(0, 0%, 0%, 0.483);
 }

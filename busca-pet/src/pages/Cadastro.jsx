@@ -40,7 +40,7 @@ function Cadastro() {
         <HeaderForm />
 
         <div className="cad__body">
-          <h2>
+          <h2 className="cad__title">
             Cadastre-se e ajude a construir finais felizes para pets perdidos!
           </h2>
 
