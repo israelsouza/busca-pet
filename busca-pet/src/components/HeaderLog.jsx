@@ -3,13 +3,18 @@
 
    function HeaderLog(){
         return <div>
+
             <header>
-            <img className="logodog" src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="500px"/>
-            <img className="icon" src={Icone} alt="Icone de usuário sem foto" width="70px" height="70px" />
-            <button>Todos</button>
-            <button>Achados</button>
-            <button>Perdidos</button>
-            <button>Pesquisar</button>
+
+           <img className="logodog" src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="100px"/>
+        <nav>
+                <a href="">Todos</a>
+                <a href="">Achados</a>
+                <a href="">Perdidos</a>
+                <a href="">Pesquisar</a>
+        </nav>
+           <img className="icon" src={Icone} alt="Icone de usuário sem foto" width="55px" height="55px" />
+
             </header>
 
         </div>

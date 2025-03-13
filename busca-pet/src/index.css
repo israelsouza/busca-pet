@@ -1,12 +1,15 @@
-:root {
-  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400; */
+/* Estás configurações estão sendo usadas no HeaderLog */
 
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap');
+
+:root {
   --header:#EFA355;
   --cor02:#F2B680;
+  --cor03:#DAA570; /* Não está em uso no header */
+  --cor05:#7A3E19;
   --cor07:#00000;
-
+  --fundo1:#FFEACC;
 }
 
 *{
@@ -15,51 +18,39 @@
 }
 
 header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: var(--header);
-  justify-items: auto;
   width:100%;
-  padding: 10px;
-  max-height: 150px;
+  height: 100px;
 }
 
+nav {
+  display: flex;
+  gap: 40%;
+}
 
+a {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1.2em;
+  text-decoration: none;  
+  color: var(--fundo1);
+}
+
+a:hover{
+  color: var(--cor05);
+}
 
 .logodog{
+  padding-left: 50px;
 }
 
 .icon{
-
+  padding-right: 50px;
 }
-
-/*   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424; */
-
- /*  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
-/* a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-} */
+ 
 
 button {
   border-radius: 8px;
@@ -75,15 +66,3 @@ button:hover {
   
 }
 
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: var(--header);
-  }
-} */
