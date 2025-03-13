@@ -1,9 +1,9 @@
-import Cadastro from "./pages/Cadastro";
+import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 
 function App() {
   return (
     <>
-      <Cadastro />
+      <RecuperacaoSenha />
     </>
   );
 }
