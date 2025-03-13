@@ -78,7 +78,7 @@ function Cadastro() {
                 </div>
               </form>
               <div className="cad__box-submit">
-                <input type="submit" value="Cadastrar" className="cad__btn" />
+                <ButtonForm placeholder="Cadastrar" />
 
                 <p className="cad__link">
                   Já tem cadastro? <a href="" className="cad__link--login">Faça o login</a>
