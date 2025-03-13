@@ -4,7 +4,7 @@ import Option from "../components/Option";
 
 function Cadastro() {
   const UF = [
-    "Selecione",
+    "Selecione o seu estado",
     "AC",
     "AL",
     "AP",
@@ -57,11 +57,15 @@ function Cadastro() {
                 <InputTxt name="CEP" place="Digite o seu CEP" />
                 <InputTxt name="Cidade" place="Digite a sua cidade" />
 
-                <div>
-                  <label> Estado </label>
+                <div className="imput">
+                  <label className="imput__name"> Estado </label>
 
                   <div>
-                    <select name="estadosUF" id="estadosUF">
+                    <select
+                      name="estadosUF"
+                      id="estadosUF"
+                      className="imput__element imput__element--select"
+                    >
                       {UF.map((currValue, index) => (
                         <Option
                           value={currValue}
@@ -73,19 +77,19 @@ function Cadastro() {
                   </div>
                 </div>
               </form>
+              <div className="cad__box-submit">
+                <input type="submit" value="Cadastrar" className="cad__btn" />
 
-              <button>Cadastrar</button>
-              <p>
-                Já tem cadastro? <a href="">Faça o login</a>
-              </p>
+                <p className="cad__link">
+                  Já tem cadastro? <a href="" className="cad__link--login">Faça o login</a>
+                </p>
+              </div>
             </div>
           </div>
-
-          <div className="cad__image"></div>
-
-          <div className="form-cad__image"></div>
         </div>
       </div>
+
+      <div className="cad__image"></div>
     </div>
   );
 }
