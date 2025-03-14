@@ -1,7 +1,11 @@
-import "./App.css";
+import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <RecuperacaoSenha />
+    </>
+  );
 }
 
 export default App;

@@ -1,5 +1,166 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --titulo: #000;
+  --header: #efa355;
+  --fundo_form: #ffeacc;
+  --inputs: #f2d9b6;
+  --label: #684233;
+  --botao: #f2b680;
+  --color-100: #dec4ba;
+  --color-600: #342019;
+  --color-other-orange: #ff600b;
+}
+
+/* INICIO CADASTRO */
+
+.cad {
+  display: flex;
+}
+
+.cad-header {
+  width: 50%;
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.cad__body {
+  padding: 5px 0;
+  background-color: var(--fundo_form);
+  width: 100%;
+  height: 100%;
+}
+
+.cad__title {
+  margin: 30px auto;
+  text-align: center;
+  color: var(--titulo);
+}
+
+.cad__select {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.cad__box-submit {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.btn-form {
+  width: 300px;
+  height: 45px;
+  border-radius: 20px;
+  background-color: #f2b680;
+  border: none;
+  color: #4b2b1e;
+  margin: 30px 0 25px 0;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.btn-form:hover {
+  transition: 0.4s ease;
+  background-color: var(--color-600);
+  color: var(--color-100);
+}
+
+.cad__link {
+  color: var(--color-600);
+}
+
+.cad__link--login {
+  color: var(--color-other-orange);
+}
+
+.cad__image {
+  background-image: url(./assets/imgs/coelho.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  min-height: 100svh;
+  width: 50%;
+}
+
+/* COMPONENTES CADASTRO */
+
+.header-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--header);
+}
+
+.imput {
+  margin: 20px auto;
+  max-width: 525px;
+}
+
+.imput__name {
+  color: var(--label);
+}
+
+.imput__box {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.imput__element {
+  width: 525px;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: var(--inputs);
+  border: none;
+  box-shadow: 0px 3px 3px 0px hsla(0, 0%, 0%, 0.483);
+}
+
+.imput__element:focus{
+  outline: none;
+}
+
+.imput__element--select:hover {
+  cursor: pointer;
+}
+
+/* RECUPERAÇÃO DE SENHA */
+
+.rec-senha {
+  display: flex;
+}
+
+.rec-senha__form {
+  width: 50%;
+}
+
+.rec-senha__body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.rec-senha__title {
+  text-align: center;
+}
+
+.rec-senha__box-btn {
+  text-align: center;
+}
+
+.rec-senha__image {
+  background-image: url(./assets/imgs/dogInWater.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  min-height: 100svh;
+  width: 50%;
 }
