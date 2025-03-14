@@ -1,3 +1,4 @@
+import "./../assets/CSS/research.css"
 import listagem from "./../imgs/listagem.png"
 import lupa_pesquisa from "./../imgs/lupa_pesquisa.png"
 import icon_cachorro from "./../imgs/icon_cachorro.png"
@@ -20,8 +21,10 @@ function PageResearch(){
             <div className="search_history">
 
             <button className="search_location">
+               <div className="group_icons">
                 <img src={icon_location} alt="Ícone de localização" height="70px" />
                 <img src={lupa_pesquisa} alt="Ícone de lupa de pesquisa" className="lupa" width="80px"/>
+               </div>
                 Bairro das Cobras
                 <img src={icon_excluir} alt="Ícone de excluir do histórico" width="50px" />
             </button>
@@ -30,8 +33,10 @@ function PageResearch(){
 
             <div className="search_history">
             <button className="search_dog">
+                <div className="group_icons">
                 <img src={icon_cachorro} alt="Ícone de cachorro"/>
                 <img src={lupa_pesquisa} alt="Ícone de lupa de pesquisa" className="lupa" width="80px" />
+                </div>
                 Cachorro Laranja
                 <img src={icon_excluir} alt="Ícone de excluir do histórico" width="50px"/>
             </button>

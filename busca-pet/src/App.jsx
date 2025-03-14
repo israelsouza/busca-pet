@@ -4,6 +4,7 @@ import PageResearch from "./components/PageResearch";
 
 function App() {
   return <>
+  <HeaderLog/>
   <PageResearch/>
   
   </>;

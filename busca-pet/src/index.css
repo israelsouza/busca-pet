@@ -1,13 +1,13 @@
-/* Estás configurações estão sendo usadas no HeaderLog */
+/* Estás configurações estão sendo usadas no HeaderLog
 
 
-/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap');
 
 :root {
   --header:#EFA355;
   --cor02:#F2B680;
-  --cor03:#DAA570; */ /* Não está em uso no header */
-/*   --cor05:#7A3E19;
+  --cor03:#DAA570; Não está em uso no header
+  --cor05:#7A3E19;
   --cor07:#00000;
   --fundo1:#FFEACC;
 }
