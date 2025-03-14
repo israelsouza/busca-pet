@@ -1,3 +1,4 @@
+
 import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
       <RecuperacaoSenha />
     </>
   );
+
 }
 
 export default App;

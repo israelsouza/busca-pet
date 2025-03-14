@@ -1,0 +1,19 @@
+.group_icons{
+    display: flex;
+  }
+  
+  .search_location{
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    width: 65%;
+    border: none;
+    background-color: var(--fundo2);
+    border: none;
+    cursor: pointer;
+    justify-content: space-around;
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
+    box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+  }
