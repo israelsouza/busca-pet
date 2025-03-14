@@ -1,10 +1,8 @@
-import "./App.css";
-import HeaderLog from "./components/HeaderLog";
-import PageResearch from "./components/PageResearch";
+import PageResearch from "./pages/PageResearch";
 
 function App() {
   return <>
-  <HeaderLog/>
+
   <PageResearch/>
   
   </>;

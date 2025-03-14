@@ -73,7 +73,7 @@ button:hover {
 .main {
   width: 100%;
   height: 100vh;
-  background-image: url(../src/imgs/mapa_alt.png);
+  background-image: url(../imgs/mapa_alt.png);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -83,6 +83,7 @@ button:hover {
   display: flex;
   justify-content: center;
   padding: 3.5em;
+  margin-bottom: 3em;
 }
 .search_input {
   width: 100%;
@@ -117,41 +118,5 @@ button:hover {
   display: flex;
   justify-content: center;
   padding: 3em;
-    /* background-color:  darkblue; */
-}
-
-.group_icons{
-  display: flex;
-}
-
-.search_location {
-  display: flex;
-  align-items: center;
-  margin-top: 3em;
-  border-radius: 10px;
-  width: 65%;
-  border: none;
-  background-color: var(--fundo2);
-  border: none;
-  cursor: pointer;
-  justify-content: space-around;
-  font-family: "Inter", sans-serif;
-  font-size: 1.2em;
-  font-weight: 600;
-  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
-}
-
-.search_dog {
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  width: 65%;
-  border: none;
-  background-color: var(--fundo2);
-  cursor: pointer;
-  justify-content: space-around;
-  font-family: "Inter", sans-serif;
-  font-size: 1.2em;
-  font-weight: 600;
-  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+  /* background-color:  darkblue; */
 }
