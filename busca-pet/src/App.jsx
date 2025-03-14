@@ -1,11 +1,13 @@
-import PageResearch from "./pages/PageResearch";
+
+import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 
 function App() {
-  return <>
+  return (
+    <>
+      <RecuperacaoSenha />
+    </>
+  );
 
-  <PageResearch/>
-  
-  </>;
 }
 
 export default App;
