@@ -1,13 +1,13 @@
-
-import RecuperacaoSenha from "./pages/RecuperacaoSenha";
+import Login from "./pages/tela_login/Login";
 
 function App() {
   return (
     <>
-      <RecuperacaoSenha />
+      <Login />
     </>
-  );
-
+  )
+  
+  ;
 }
 
 export default App;
