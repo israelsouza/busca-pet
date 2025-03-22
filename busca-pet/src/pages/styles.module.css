@@ -1,4 +1,19 @@
+.bg_tela_post{
+    min-height: 100svh;
+    background-image: url('./../assets/imgs/caolupa.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.post__body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .container {
+    margin-top: 150px;
     background-color: rgba(239, 163, 85, 0.5);
     padding: 40px;
     border-radius: 15px;
