@@ -13,7 +13,7 @@
                 <a href="">Perdidos</a>
                 <a href="">Pesquisar</a>
         </nav>
-           <img className="icon" src={Icone} alt="Icone de usuário sem foto" width="55px" height="55px" />
+           <img className="icon" src={Icone} alt="Icone de usuário sem foto"  />
 
             </header>
 

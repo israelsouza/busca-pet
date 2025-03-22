@@ -1,13 +1,12 @@
-import Login from "./pages/tela_login/Login";
+import React from "react";
+import Home from "./pages/TelaPost";
 
 function App() {
   return (
-    <>
-      <Login />
-    </>
-  )
-  
-  ;
+    <div className="App">
+      <Home />
+    </div>
+  );
 }
 
 export default App;
