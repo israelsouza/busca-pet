@@ -1,10 +1,5 @@
-import Login from "./pages/tela_login/Login";
-
-
-import React from 'react';
-import Home from './pages/style'; './pages/TelaPost';
-
-
+import React from "react";
+import Home from "./pages/TelaPost";
 
 function App() {
   return (
