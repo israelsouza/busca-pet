@@ -17,6 +17,7 @@ O busca pet é um sistema em React.JS para publicação de post de pets que fora
 
 2. Acesse o a pasta clonada e entre na pasta interna 'busca-pet'
    ```bash
+   cd frontend
    cd busca-pet
 
 3. Instale as dependências do projeto
