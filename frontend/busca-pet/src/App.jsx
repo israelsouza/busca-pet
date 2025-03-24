@@ -1,10 +1,10 @@
 import React from "react";
-import Home from "./pages/TelaPost";
+import PetPerdido from "./pages/PetPerdido";
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      < PetPerdido />
     </div>
   );
 }
