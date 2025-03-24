@@ -25,6 +25,20 @@ function PetPerdido() {
     //       }
     //     };
     
+    function validarDados() {
+        let nome = document.getElementById(nome);
+        let rga = document.getElementById(rga);
+        let descricao = document.getElementById(descricao);
+        let data = document.getElementById(data);
+    
+        if (nome == "" || descricao == "" || data == "") {
+            alert("Preencha os campos obrigatórios");
+            return false;
+        }
+    
+        const informacaoPetPerdido = [nome, rga, descricao, data]
+    }
+
     return (
         <div className={styles.pet_perdido}>
     
@@ -36,12 +50,12 @@ function PetPerdido() {
                     <div className={styles.pet_perdido__input50}>
                         <div>
                             <label htmlFor="">Nome do Pet</label>
-                            <input className={styles.pet_perdido__input} type="text" />
+                            <input id="nome" className={styles.pet_perdido__input} type="text" />
                         </div>
 
                         <div>
                             <label htmlFor="">RGA do Pet (opcional)</label>
-                            <input className={styles.pet_perdido__input} type="text" />
+                            <input id="rga" className={styles.pet_perdido__input} type="text" />
                         </div>
                     </div>
 
@@ -54,14 +68,14 @@ function PetPerdido() {
 
                     <div className={styles.pet_perdido__input100}>
                         <label htmlFor="">Breve descrição do Pet</label>
-                        <input className={styles.pet_perdido__input} type="text" />
+                        <input id="descricao" className={styles.pet_perdido__input} type="text" />
                     </div>
 
                     Local onde o Pet foi encontrado - API Google Maps
                     
                     <div className={styles.pet_perdido__input100}>
                         <label htmlFor="">Data</label>
-                        <input className={styles.pet_perdido__input} type="date" />
+                        <input id="data" className={styles.pet_perdido__input} type="date" />
                     </div>
 
                     Botão para enviar arquivo de imagem, mó rolê
@@ -83,7 +97,7 @@ function PetPerdido() {
                     </div> */}
                 </form>
 
-              <a className={`${styles.botao} ${styles.perdeu}`}>Cadastrar Pet Perdido</a>
+              <a className={`${styles.botao} ${styles.perdeu}`} onClick={validarDados}>Cadastrar Pet Perdido</a>
             </div>
           </div>
         </div>
