@@ -35,6 +35,11 @@
     margin-top: 3px;
 }
 
+.pet_perdido__textarea {
+    resize: none;
+    height: 75px;
+}
+
 label {
     color: var(--inputs);
 }
@@ -53,24 +58,39 @@ label {
     padding: 5px 0;
 }
 
-.file-upload-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+.pet_perdido__imagem_texto {
+    color: var(--inputs);
+    display: flex;
+    text-align: left;
+    gap: 5px;
+    padding: 5px 0;
+}
+
+.pet_perdido__imagem {
+    background-color: var(--inputs);
+    color: var(--label);
     border: none;
+    outline: none;
+    width: 100%;
     border-radius: 5px;
+    padding: 7px;
     cursor: pointer;
-  }
-  
-  .file-upload-input {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    font-size: 100px;
-  }
+    display: inline-block;
+}
+
+.pet_perdido__imagem label { 
+    display: inline-block;
+    width: 100%;
+    color: var(--label);
+    text-align: center;
+}
+
+.pet_perdido__imagem input {
+    display: none;
+}
 
 .botao {
+    text-align: center;
     display: block;
     width: 95%;
     padding: 15px;

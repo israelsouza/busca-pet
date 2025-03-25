@@ -1,29 +1,8 @@
 import styles from "./styles/PetPerdido.module.css";
 import HeaderLog from "./../components/HeaderLog";
 import "./../assets/CSS/research.css";
-// import { useRef } from "react";
 
 function PetPerdido() {
-    // function FileUpload() {
-    //     const fileInputRef = useRef(null);
-    //     const fileNameDisplayRef = useRef(null);
-      
-    //     const handleFileChange = () => {
-    //       const fileInputNode = fileInputRef.current;
-    //       const fileNameDisplayNode = fileNameDisplayRef.current;
-      
-    //       if (fileInputNode && fileInputNode.files.length > 0) {
-    //         fileNameDisplayNode.textContent = fileInputNode.files[0].name;
-    //       } else if (fileNameDisplayNode) {
-    //         fileNameDisplayNode.textContent = 'Nenhum arquivo escolhido';
-    //       }
-    //     };
-      
-    //     const handleClickButton = () => {
-    //       if (fileInputRef.current) {
-    //         fileInputRef.current.click();
-    //       }
-    //     };
     
     function validarDados() {
         let nome = document.getElementById(nome);
@@ -68,7 +47,7 @@ function PetPerdido() {
 
                     <div className={styles.pet_perdido__input100}>
                         <label htmlFor="">Breve descrição do Pet</label>
-                        <input id="descricao" className={styles.pet_perdido__input} type="text" />
+                        <textarea id="descricao" className={`${styles.pet_perdido__input} ${styles.pet_perdido__textarea}`} ></textarea>
                     </div>
 
                     Local onde o Pet foi encontrado - API Google Maps
@@ -78,26 +57,18 @@ function PetPerdido() {
                         <input id="data" className={styles.pet_perdido__input} type="date" />
                     </div>
 
-                    Botão para enviar arquivo de imagem, mó rolê
+                    Acrescentar uma forma do input mudar quando um arquivo for selecionado
 
-                    {/* <div className={styles.pet_perdido__input100}>
-                        <button className="file-upload-button" onClick={handleClickButton}>
-                            Selecionar Arquivo
-                        </button>
-                        <input
-                            type="file"
-                            className="file-upload-input"
-                            id="fileInput"
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                        />
-                        <span className="file-upload-text" id="fileName" ref={fileNameDisplayRef}>
-                            Nenhum arquivo escolhido
-                        </span>
-                    </div> */}
+                    <p className={styles.pet_perdido__imagem_texto}>Selecione a imagem do Pet perdido</p>
+                    <div className={styles.pet_perdido__imagem}>
+                        <label htmlFor="imagem">Selecionar arquivo</label>
+                        <input id="imagem" type="file"/>
+                    </div>
                 </form>
 
-              <a className={`${styles.botao} ${styles.perdeu}`} onClick={validarDados}>Cadastrar Pet Perdido</a>
+                Botão ta descentralizado
+
+                <button className={`${styles.botao} ${styles.perdeu}`} onClick={validarDados}>Cadastrar Pet Perdido</button>
             </div>
           </div>
         </div>
