@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -15,43 +14,5 @@
   --color-100: #dec4ba;
   --color-600: #342019;
   --color-other-orange: #ff600b;
-  --links:#FF600B;
+  --links: #ff600b;
 }
-
-/* INICIO CADASTRO */
-
-
-/* RECUPERAÇÃO DE SENHA */
-/* 
-.rec-senha {
-  display: flex;
-}
-
-.rec-senha__form {
-  width: 50%;
-}
-
-.rec-senha__body {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.rec-senha__title {
-  text-align: center;
-}
-
-.rec-senha__box-btn {
-  text-align: center;
-}
-
-.rec-senha__image {
-  background-image: url(./assets/imgs/dogInWater.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  min-height: 100svh;
-  width: 50%;
-}
- */
