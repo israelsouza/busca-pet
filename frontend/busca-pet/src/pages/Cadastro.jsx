@@ -59,14 +59,14 @@ function Cadastro() {
                 <InputTxt name="CEP" place="Digite o seu CEP" />
                 <InputTxt name="Cidade" place="Digite a sua cidade" />
 
-                <div className={style.imput}>
-                  <label className={style.imput__name}> Estado </label>
+                
 
-                  <div>
+                  <div className={style.select__box}>
+                  <label className={style.imput__name}> Estado </label>
                     <select
                       name="estadosUF"
                       id="estadosUF"
-                      className={`${style.imput__element} ${style["imput__element--select"]}`}
+                      className={`${style.cad__select} ${style["cad__select"]}`}
                     >
                       {UF.map((currValue, index) => (
                         <Option
@@ -76,7 +76,7 @@ function Cadastro() {
                         />
                       ))}
                     </select>
-                  </div>
+               
                 </div>
               </form>
               <div className={style["cad__box-submit"]}>

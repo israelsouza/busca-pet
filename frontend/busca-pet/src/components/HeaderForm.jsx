@@ -3,7 +3,7 @@ import style from './styles/headerform.module.css'
 
 function HeaderForm() {
   return (
-    <div className="header-form">
+    <div className={style['header-form']}>
       <img src={logo} alt="Imagem de um cachorro com uma lupa" />
       <h1>BuscaPet</h1>
     </div>

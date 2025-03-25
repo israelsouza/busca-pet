@@ -1,44 +1,50 @@
-import Logo from "../assets/imgs/Logo_Cachorro.png";
-
+import { Link } from "react-router-dom";
 import styles from "./styles/login.module.css";
+import HeaderForm from "../components/HeaderForm";
 
 function login() {
   return (
     <>
-      <div className={styles.main}>
-        <header>
-          <img src={Logo} alt="cachorro olhando por tras de uma lupa" />
-          <h1>BuscaPet</h1>
-        </header>
-        <div className={styles.conjuntoEsquerdo}>
-          <h2>
-            Bem-vindo de volta!<br></br>Vamos encontrar mais pets juntos?
-          </h2>
+      <div className={styles.fundo_login}>
+        
+        
+            
+            <div className={styles.conjuntoEsquerdo}>
+              <HeaderForm />
 
-          <form action="">
+              <h2 className={styles.sub_title_login}>
+                Bem-vindo de volta!<br></br>Vamos encontrar mais pets juntos?
+              </h2>
 
-            <div className={styles.campos}>
-              <label htmlFor="email">Email</label>
-              <input type="text" placeholder="Digite a sua senha"></input>
+              <form className={styles.form_login}>
+
+                <div className={styles.campos}>
+                  <label htmlFor="email">Email</label>
+                  <input type="text" placeholder="Digite a sua senha"></input>
+                </div>
+                <div className={styles.campos}>
+                  <label htmlFor="senha">Senha</label>
+                  <input type="text" placeholder="Digite a sua senha"></input>
+                </div>
+                <button className={styles.btn_login}>Login</button>
+
+                
+              </form>
+              <div className={styles.redirect}>
+                <p>
+                  Ainda não tem cadastro? <Link className={styles.links} to={'/form/cadastro-usuario'}>Cadastre-se!</Link>
+                </p>
+                <p>
+                  Esqueceu a senha? <Link className={styles.links} to={'/form/recuperacao-senha'}>Recupere-a!</Link>
+                </p>
+              </div>
+              
             </div>
-            <div className={styles.campos}>
-              <label htmlFor="senha">Senha</label>
-              <input type="text" placeholder="Digite a sua senha"></input>
-            </div>
-            <button>Login</button>
-          </form>
+         
 
-          <div className={styles.redirect}>
-            <p>
-              Ainda não tem cadastro? <a href="">Cadastre-se!</a>
-            </p>
-            <p>
-              Esqueceu a senha? <a href="">Recupere-a!</a>
-            </p>
-          </div>
-        </div>
+        <div className={styles.lado_img}></div>
+
       </div>
-
 
     </>
   );
