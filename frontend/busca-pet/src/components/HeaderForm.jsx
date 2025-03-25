@@ -1,4 +1,5 @@
-import logo from "../assets/imgs/Logo.png";
+import logo from "../assets/imgs/Logo_Cachorro.png";
+import style from './styles/headerform.module.css'
 
 function HeaderForm() {
   return (

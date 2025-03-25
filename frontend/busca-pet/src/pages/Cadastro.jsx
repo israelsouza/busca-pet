@@ -1,6 +1,8 @@
+import style from "./styles/cadastroUsuario.module.css";
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
+import ButtonForm from "../components/ButtonForm";
 
 function Cadastro() {
   const UF = [
@@ -35,14 +37,14 @@ function Cadastro() {
   ];
 
   return (
-    <div className="cad">
-      <div className="cad-header">
-        <div className="form-cad">
-          <div className="form-cad__header">
+    <div className={style.cad}>
+      <div className={style["cad-header"]}>
+        <div className={style["form-cad"]}>
+          <div className={style["form-cad__header"]}>
             <HeaderForm />
 
-            <div className="cad__body">
-              <h2 className="cad__title">
+            <div className={style.cad__body}>
+              <h2 className={style.cad__title}>
                 Cadastre-se e ajude a construir finais felizes para pets
                 perdidos!
               </h2>
@@ -57,14 +59,14 @@ function Cadastro() {
                 <InputTxt name="CEP" place="Digite o seu CEP" />
                 <InputTxt name="Cidade" place="Digite a sua cidade" />
 
-                <div className="imput">
-                  <label className="imput__name"> Estado </label>
+                <div className={style.imput}>
+                  <label className={style.imput__name}> Estado </label>
 
                   <div>
                     <select
                       name="estadosUF"
                       id="estadosUF"
-                      className="imput__element imput__element--select"
+                      className={`${style.imput__element} ${style["imput__element--select"]}`}
                     >
                       {UF.map((currValue, index) => (
                         <Option
@@ -77,11 +79,14 @@ function Cadastro() {
                   </div>
                 </div>
               </form>
-              <div className="cad__box-submit">
+              <div className={style["cad__box-submit"]}>
                 <ButtonForm placeholder="Cadastrar" />
 
-                <p className="cad__link">
-                  Já tem cadastro? <a href="" className="cad__link--login">Faça o login</a>
+                <p className={style.cad__link}>
+                  Já tem cadastro?
+                  <a href="" className={style["cad__link--login"]}>
+                    Faça o login
+                  </a>
                 </p>
               </div>
             </div>
@@ -89,7 +94,7 @@ function Cadastro() {
         </div>
       </div>
 
-      <div className="cad__image"></div>
+      <div className={style.cad__image}></div>
     </div>
   );
 }
