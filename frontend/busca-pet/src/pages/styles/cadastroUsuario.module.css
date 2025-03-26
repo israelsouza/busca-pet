@@ -1,0 +1,82 @@
+.cad {
+  display: flex;
+}
+
+.cad-header {
+  width: 50%;
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.cad__body {
+  padding: 5px 0;
+  background-color: var(--fundo_form);
+  width: 100%;
+  height: 100%;
+}
+
+.cad__title {
+  margin: 30px auto;
+  text-align: center;
+  color: var(--titulo);
+}
+
+.cad__select {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.cad__box-submit {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.cad__link {
+  color: var(--color-600);
+}
+
+.cad__link--login {
+  color: var(--color-other-orange);
+}
+
+.cad__image {
+  background-image: url(../../assets/imgs/coelho.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  min-height: 100svh;
+  width: 50%;
+}
+
+
+
+.cad__select {
+  width: 525px;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: var(--inputs);
+  border: none;
+  box-shadow: 0px 3px 3px 0px hsla(0, 0%, 0%, 0.483);
+}
+
+.cad__select:focus {
+  outline: none;
+}
+
+.cad__select:hover {
+  cursor: pointer;
+}
+
+.imput__name {
+  color: var(--label);
+}
+
+
+.select__box{
+  margin: 20px auto;
+  max-width: 525px;
+}

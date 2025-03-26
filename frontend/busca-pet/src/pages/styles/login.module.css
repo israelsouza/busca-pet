@@ -1,63 +1,39 @@
 /* Variaveis de cores */
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jua&display=swap&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-
-:root {
-    --titulo: #000;
-    --header: #EFA355;
-    --fundo_form: #FFEACC;
-    --inputs:#F2D9B6;
-    --label:#684233;
-    --botao:#F2B680;
-    --links:#FF600B;
-}
-
-/* Alterações na tela toda */
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-html {
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    background: url("./imgs/Fundo.png") no-repeat center;
-    background-size: 100%;
-    width: 100%;
-    height: 100%;
-}
-
-/* Header e componentes*/
-
-
-header {
-    background-color: var(--header);
+.fundo_login{
     display: flex;
-    width: 50vw;
-    height: 10vh;
-    align-items: center;
-    justify-content: center;
-    font-family: 'jua';
 }
 
-h1 {
-    color: #000;
+/*  */
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.lado_form{
+    max-width: 100svh;
 }
 
 .conjuntoEsquerdo {
     display: flex;
     flex-direction: column;
     background-color: var(--fundo_form);
-    align-items: center;
-    width: 50vw;
-    height: 90vh;
+    width: 80%; 
+    min-height: 100vh;
 }
 
-h2 {
+.lado_img{
+    background: url("../../assets/imgs/Gato.png") no-repeat center;
+    background-size: cover;
+    width: 100%;
+    
+}
+
+/* Header e componentes*/
+/* esta consumindo o header componente, com estilos de escopo fechado no proprio componente */
+
+.sub_title_login {
     text-align: center;
     font-family: 'Inria Sans';
     font-weight: 400;
@@ -65,7 +41,7 @@ h2 {
     margin-top: 60px;
 }
 
-form {
+.form_login {
     display: flex;
     flex-direction: column;
     gap: 70px;
@@ -75,7 +51,7 @@ form {
     
 
 
-    & button {
+    & .btn_login {
         background-color: var(--botao);
         border: none;
         box-shadow: 0px 3px 3px 0px #00000049;
@@ -114,17 +90,13 @@ form {
     justify-content: space-around;
     height: 70px;
    
-    & a {
+    & .links {
         color: var(--links);
     }
 
     
-    .main {
-        display: inline-flex;
-    }
 
     .gato {
-    
         height: 200px;
     }
 

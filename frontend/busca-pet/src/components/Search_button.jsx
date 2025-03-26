@@ -1,12 +1,12 @@
-import "./../assets/CSS/button_location.css"
+import styles from "./styles/button_location.module.css"
 
 function Search_button({image_excluir, image_location, image, text_search}){
-    return   <button className="search_location">
+    return   <button className={styles.search_location}>
 
-                   <div className="group_icons">
+                   <div className={styles.group_icons}>
 
-                    <img src={image_location} alt="Ícone de localização" height="70px" />
-                    <img src={image} alt="Ícone de lupa de pesquisa" className="lupa" width="80px"/>
+                        <img src={image_location} alt="Ícone de localização" height="70px" />
+                        <img src={image} alt="Ícone de lupa de pesquisa" width="80px"/>
 
                    </div>
                     {text_search}
