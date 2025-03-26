@@ -1,10 +1,14 @@
 import logo from "../assets/imgs/Logo_Cachorro.png";
 import style from './styles/headerform.module.css'
+import { Link } from "react-router-dom";
 
 function HeaderForm() {
   return (
     <div className={style['header-form']}>
-      <img src={logo} alt="Imagem de um cachorro com uma lupa" />
+      <Link to={'/'}>
+        <img src={logo} alt="Imagem de um cachorro com uma lupa" />
+      </Link>
+      
       <h1>BuscaPet</h1>
     </div>
   );

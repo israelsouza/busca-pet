@@ -3,6 +3,7 @@ import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
+import { Link } from "react-router-dom";
 
 function Cadastro() {
   const UF = [
@@ -84,9 +85,9 @@ function Cadastro() {
 
                 <p className={style.cad__link}>
                   Já tem cadastro?
-                  <a href="" className={style["cad__link--login"]}>
+                  <Link to={'/form/login'} className={style["cad__link--login"]}>
                     Faça o login
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
