@@ -1,22 +1,24 @@
    import Logo_Cachorro from "./../assets/imgs/Logo_Cachorro.png"
    import Icone from "./../assets/imgs/Icone.png"
+   import style from './styles/header_log.module.css'
 
    function HeaderLog(){
-        return <div>
+        return( 
+        <div>
+            <header className={style.header_logado}>
 
-            <header>
-
-           <img className="logodog" src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="100px"/>
-        <nav>
-                <a href="">Todos</a>
-                <a href="">Achados</a>
-                <a href="">Perdidos</a>
-                <a href="">Pesquisar</a>
-        </nav>
-           <img className="icon" src={Icone} alt="Icone de usuário sem foto"  />
+                <img className={style.logodog} src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="150px"/>
+                <nav className={style.navegation}>
+                    <a className={style.links_header}>Todos</a>
+                    <a className={style.links_header}>Achados</a>
+                    <a className={style.links_header}>Perdidos</a>
+                    <a className={style.links_header}>Pesquisar</a>
+                </nav>
+                
+                <img className={style.icon} src={Icone} alt="Icone de usuário sem foto"  />
 
             </header>
-
         </div>
+        )
     }
     export default HeaderLog

@@ -32,7 +32,7 @@ function login() {
               </form>
               <div className={styles.redirect}>
                 <p>
-                  Ainda não tem cadastro? <Link className={styles.links} to={'/form/cadastro-usuario'}>Cadastre-se!</Link>
+                  Ainda não tem cadastro? <Link className={styles.links} to={'/form/cadastro'}>Cadastre-se!</Link>
                 </p>
                 <p>
                   Esqueceu a senha? <Link className={styles.links} to={'/form/recuperacao-senha'}>Recupere-a!</Link>
