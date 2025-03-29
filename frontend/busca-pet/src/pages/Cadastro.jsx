@@ -8,22 +8,6 @@ import { Link } from "react-router-dom";
 
 function verificarCamposVazios() {
   let hasError = false;
-
-  if (!nomeRef.current.value.trim()) {
-    setErroNome("Por favor, insira seu nome."); // para inserir alert, por aqui dentro
-    nomeRef.current.focus();
-    hasError = true;
-  } else {
-    setErroNome("");
-  }
-
-  if (!emailRef.current.value.trim()) {
-    setErroEmail("Por favor, insira seu e-mail."); // para inserir alert, por aqui dentro
-    emailRef.current.focus();
-    hasError = true;
-  } else {
-    setErroEmail("");
-  }
 }
 
 function Cadastro() {
@@ -36,6 +20,7 @@ function Cadastro() {
   const bairroRef = useRef(null);
   const cepRef = useRef(null);
   const cidadeRef = useRef(null);
+  const estadoRef = useRef(null);
 
   // ESTADOS
   const [erroNome, setErroNome] = useState("");
@@ -46,15 +31,44 @@ function Cadastro() {
   const [erroBairro, setErroBairro] = useState("");
   const [erroCEP, setErroCEP] = useState("");
   const [erroCidade, setErroCidade] = useState("");
+  const [erroEstado, setErroEstado] = useState("");
+
+  function verificarCampoVazio(campoRef, setErro, mensagemErro) {
+    if (!campoRef.current.value.trim()) {
+      setErro(mensagemErro);
+      campoRef.current.focus();
+      return true; // Indica que houve um erro
+    } else {
+      setErro("");
+      return false; // Indica que não houve erro
+    }
+  }
 
   function capturarValores(e) {
     e.preventDefault();
 
-    verificarCamposVazios();
+    let hasError = false;
+
+    hasError = verificarCampoVazio(nomeRef, setErroNome, "Por favor, insira seu nome.") || hasError;
+    hasError = verificarCampoVazio(emailRef, setErroEmail, "Por favor, insira seu e-mail.") || hasError;
+    hasError = verificarCampoVazio(senhaRef, setErroSenha, "Por favor, insira sua senha.") || hasError;
+    hasError = verificarCampoVazio(phoneRef, setErroPhone, "Por favor, insira seu telefone.") || hasError;
+    hasError = verificarCampoVazio(ruaRef, setErroRua, "Por favor, insira o nome da sua rua.") || hasError;
+    hasError = verificarCampoVazio(bairroRef, setErroBairro, "Por favor, insira o nome do seu bairro.") || hasError;
+    hasError = verificarCampoVazio(cepRef, setErroCEP, "Por favor, insira seu CEP.") || hasError;
+    hasError = verificarCampoVazio(cidadeRef, setErroCidade, "Por favor, insira o nome da sua cidade.") || hasError;
+
+    if (estadoRef.current.value.length > 2) {
+      console.log("entrei");
+      setErroEstado("Por favor, selecione algum estado válido.");
+      estadoRef.current.focus();
+      hasError = true;
+    } else {
+      setErroEstado("");
+    }
   }
 
   const UF = [
-    "Selecione o seu estado",
     "AC",
     "AL",
     "AP",
@@ -100,7 +114,7 @@ function Cadastro() {
               <form>
                 <InputTxt
                   refProp={nomeRef}
-                  name="nome"
+                  name="Nome"
                   place="Digite o seu nome"
                   required={true}
                 />
@@ -113,53 +127,94 @@ function Cadastro() {
 
                 <InputTxt
                   refProp={emailRef}
-                  name="email"
+                  name="E-mail"
                   place="Digite o seu e-mail"
                   required
                 />
 
-                {erroNome && (
+                {erroEmail && (
                   <span id="email-error" className={style.cad__error}>
-                    {erroNome}
+                    {erroEmail}
                   </span>
                 )}
 
                 <InputTxt
                   required
                   refProp={senhaRef}
-                  name="senha"
+                  name="Senha"
                   place="Digite a sua senha"
                 />
+
+                {erroSenha && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroSenha}
+                  </span>
+                )}
+
                 <InputTxt
                   required
                   refProp={phoneRef}
-                  name="phone"
+                  name="Telefone (celular)"
                   place="Digite o seu telefone"
                 />
+
+                {erroPhone && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroPhone}
+                  </span>
+                )}
+
                 <InputTxt
                   required
                   refProp={ruaRef}
-                  name="rua"
+                  name="Rua"
                   place="Digite o nome da sua rua"
                 />
+
+                {erroRua && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroRua}
+                  </span>
+                )}
+
                 <InputTxt
                   required
                   refProp={bairroRef}
                   name="Bairro"
                   place="Digite o nome do seu bairro"
                 />
+
+                {erroBairro && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroBairro}
+                  </span>
+                )}
+
                 <InputTxt
                   required
                   refProp={cepRef}
-                  name="cep"
+                  name="CEP"
                   place="Digite o seu CEP"
                 />
+
+                {erroCEP && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroCEP}
+                  </span>
+                )}
+
                 <InputTxt
                   required
                   refProp={cidadeRef}
-                  name="cidade"
+                  name="Cidade"
                   place="Digite a sua cidade"
                 />
+
+                {erroCidade && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroCidade}
+                  </span>
+                )}
 
                 <div className={style.select__box}>
                   <label className={style.imput__name}> Estado </label>
@@ -167,11 +222,21 @@ function Cadastro() {
                     name="estado"
                     id="estado"
                     className={`${style.cad__select} ${style["cad__select"]}`}
+                    defaultValue="Selecione o seu estado"
+                    ref={estadoRef}
                   >
+                    <option value="Selecione o seu estado">
+                      Selecione o seu estado
+                    </option>
+
                     {UF.map((currValue, index) => (
-                      <Option value={currValue} disable="disable" key={index} />
+                      <Option value={currValue} key={index} />
                     ))}
                   </select>
+
+                  {erroEstado && (
+                    <span className={style.cad__error}>{erroEstado}</span>
+                  )}
                 </div>
               </form>
               <div className={style["cad__box-submit"]}>
