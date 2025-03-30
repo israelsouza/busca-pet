@@ -29,10 +29,10 @@ function Cadastro() {
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
 
-  function verificarCampoVazio(campoRef, setErro, mensagemErro) {
-    if (!campoRef.current.value.trim()) {
+  function verificarCampoVazio(input, setErro, mensagemErro) {
+    if (!input.value.trim()) {
       setErro(mensagemErro);
-      campoRef.current.focus();
+      input.focus();
       return true; // Indica que houve um erro
     } else {
       setErro("");
@@ -45,6 +45,16 @@ function Cadastro() {
 
     let hasError = false;
 
+    const name = nomeRef.current;
+    const email = emailRef.current;
+    const senha = senhaRef.current;
+    const phone = phoneRef.current;
+    const rua = ruaRef.current;
+    const bairro = bairroRef.current;
+    const cep = cepRef.current;
+    const cidade = cidadeRef.current;
+    const estado = estadoRef.current;
+
     hasError = verificarCampoVazio(nomeRef, setErroNome, "Por favor, insira seu nome.") || hasError;
     hasError = verificarCampoVazio(emailRef, setErroEmail, "Por favor, insira seu e-mail.") || hasError;
     hasError = verificarCampoVazio(senhaRef, setErroSenha, "Por favor, insira sua senha.") || hasError;
@@ -55,7 +65,6 @@ function Cadastro() {
     hasError = verificarCampoVazio(cidadeRef, setErroCidade, "Por favor, insira o nome da sua cidade.") || hasError;
 
     if (estadoRef.current.value.length > 2) {
-      console.log("entrei");
       setErroEstado("Por favor, selecione algum estado válido.");
       estadoRef.current.focus();
       hasError = true;
