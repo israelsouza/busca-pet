@@ -1,24 +1,3 @@
-validação tamanho
- - não pode ser menor que 4 caracteres ou maior que 70
-
-validação numero em campo de texto
- - nao pode ter numero ou caracter especial em alguns campos
-
-validação texto em campo de numero
- - celular nao tem caracteres
-
-criação objeto com os dados
-criação arquivo .js com essa função ???
-envio para o back-end
-
-====
-
-codigo para relacionamentos entre tabelas
-inserir dados do front no banco
-
-
-
-
 # Busca pet
 Projeto Interdisciplinar do 2º semestre do Curso Superior de Tecnologia em Desenvolvimento de Software Multiplataforma da Fatec Zona Leste.
 
