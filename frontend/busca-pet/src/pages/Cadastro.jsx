@@ -155,7 +155,7 @@ function Cadastro() {
                   refProp={phoneRef}
                   name="Telefone (celular)"
                   type="tel"
-                  place="Digite o seu telefone"
+                  place="Digite o seu telefone (apenas números)"
                 />
 
                 {erroPhone && (
@@ -197,7 +197,7 @@ function Cadastro() {
                   refProp={cepRef}
                   name="CEP"
                   type="tel"
-                  place="Digite o seu CEP"
+                  place="Digite o seu CEP (apenas números)"
                 />
 
                 {erroCEP && (
