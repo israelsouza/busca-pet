@@ -55,18 +55,18 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
-    hasError = verificarCampoVazio(nomeRef, setErroNome, "Por favor, insira seu nome.") || hasError;
-    hasError = verificarCampoVazio(emailRef, setErroEmail, "Por favor, insira seu e-mail.") || hasError;
-    hasError = verificarCampoVazio(senhaRef, setErroSenha, "Por favor, insira sua senha.") || hasError;
-    hasError = verificarCampoVazio(phoneRef, setErroPhone, "Por favor, insira seu telefone.") || hasError;
-    hasError = verificarCampoVazio(ruaRef, setErroRua, "Por favor, insira o nome da sua rua.") || hasError;
-    hasError = verificarCampoVazio(bairroRef, setErroBairro, "Por favor, insira o nome do seu bairro.") || hasError;
-    hasError = verificarCampoVazio(cepRef, setErroCEP, "Por favor, insira seu CEP.") || hasError;
-    hasError = verificarCampoVazio(cidadeRef, setErroCidade, "Por favor, insira o nome da sua cidade.") || hasError;
+    hasError = verificarCampoVazio(name, setErroNome, "Por favor, insira seu nome.") || hasError;
+    hasError = verificarCampoVazio(email, setErroEmail, "Por favor, insira seu e-mail.") || hasError;
+    hasError = verificarCampoVazio(senha, setErroSenha, "Por favor, insira sua senha.") || hasError;
+    hasError = verificarCampoVazio(phone, setErroPhone, "Por favor, insira seu telefone.") || hasError;
+    hasError = verificarCampoVazio(rua, setErroRua, "Por favor, insira o nome da sua rua.") || hasError;
+    hasError = verificarCampoVazio(bairro, setErroBairro, "Por favor, insira o nome do seu bairro.") || hasError;
+    hasError = verificarCampoVazio(cep, setErroCEP, "Por favor, insira seu CEP.") || hasError;
+    hasError = verificarCampoVazio(cidade, setErroCidade, "Por favor, insira o nome da sua cidade.") || hasError;
 
-    if (estadoRef.current.value.length > 2) {
+    if (estado.value.length > 2) {
       setErroEstado("Por favor, selecione algum estado válido.");
-      estadoRef.current.focus();
+      estado.focus();
       hasError = true;
     } else {
       setErroEstado("");
