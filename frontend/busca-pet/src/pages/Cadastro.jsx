@@ -112,6 +112,7 @@ function Cadastro() {
                   refProp={nomeRef}
                   name="Nome"
                   place="Digite o seu nome"
+                  type="text"
                   required={true}
                 />
 
@@ -125,6 +126,7 @@ function Cadastro() {
                   refProp={emailRef}
                   name="E-mail"
                   place="Digite o seu e-mail"
+                  type="email"
                   required
                 />
 
@@ -139,6 +141,7 @@ function Cadastro() {
                   refProp={senhaRef}
                   name="Senha"
                   place="Digite a sua senha"
+                  type="password"
                 />
 
                 {erroSenha && (
@@ -151,6 +154,7 @@ function Cadastro() {
                   required
                   refProp={phoneRef}
                   name="Telefone (celular)"
+                  type="tel"
                   place="Digite o seu telefone"
                 />
 
@@ -164,6 +168,7 @@ function Cadastro() {
                   required
                   refProp={ruaRef}
                   name="Rua"
+                  type="text"
                   place="Digite o nome da sua rua"
                 />
 
@@ -177,6 +182,7 @@ function Cadastro() {
                   required
                   refProp={bairroRef}
                   name="Bairro"
+                  type="text"
                   place="Digite o nome do seu bairro"
                 />
 
@@ -190,6 +196,7 @@ function Cadastro() {
                   required
                   refProp={cepRef}
                   name="CEP"
+                  type="tel"
                   place="Digite o seu CEP"
                 />
 
@@ -203,6 +210,7 @@ function Cadastro() {
                   required
                   refProp={cidadeRef}
                   name="Cidade"
+                  type="text"
                   place="Digite a sua cidade"
                 />
 
