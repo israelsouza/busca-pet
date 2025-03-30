@@ -6,10 +6,6 @@ import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link } from "react-router-dom";
 
-function verificarCamposVazios() {
-  let hasError = false;
-}
-
 function Cadastro() {
   // REFERENCIAS
   const nomeRef = useRef(null);
