@@ -1,11 +1,24 @@
 export function verificarCampoVazio(lista, hasError) {
-  lista.forEach((currentElement, index) => {
+  lista.forEach((currentElement) => {
     if (!currentElement.ref.value.trim()) {
       currentElement.setErro(currentElement.mensagem);
       currentElement.ref.focus();
       hasError = true || hasError;
     } else {
       currentElement.setErro("");
+      hasError = false || hasError;
+    }
+  });
+}
+
+export function verificarTamanhoMaximo(array, hasError) {
+  array.forEach((itemList) => {
+    if (itemList.ref.value.length > itemList.limite) {
+      itemList.setErro(itemList.mensagem);
+      itemList.ref.focus();
+      hasError = true || hasError;
+    } else {
+      itemList.setErro("");
       hasError = false || hasError;
     }
   });

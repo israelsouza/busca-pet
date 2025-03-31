@@ -5,7 +5,7 @@ import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link } from "react-router-dom";
-import {verificarCampoVazio} from "../assets/utils/formValidacoes";
+import {verificarCampoVazio, verificarTamanhoMaximo} from "../assets/utils/formValidacoes";
 
 function Cadastro() {
   // REFERENCIAS
@@ -64,6 +64,21 @@ function Cadastro() {
       hasError = true;
     } else {
       setErroEstado("");
+    }
+
+    if (hasError == false) {
+
+      const camposTamanhoMaximo = [
+        {ref: name,  limite: 70, setErro: setErroNome, mensagem: "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor"},
+        { ref: email,  limite: 70, setErro: setErroEmail, mensagem: "O e-mail deve ter no máximo 70 caracteres. Por favor, insira um email menor"},
+        { ref: senha,  limite: 30, setErro: setErroSenha, mensagem: "A senha deve ter no máximo 30 caracteres. Por favor, insira uma senha menor"},
+        { ref: rua,  limite: 120, setErro: setErroRua, mensagem: "A rua deve ter no máximo 120 caracteres. Por favor, verifique se o nome da rua está correto."},
+        { ref: bairro,  limite: 120, setErro: setErroBairro, mensagem: "O bairro deve ter no máximo 120 caracteres. Por favor, verifique se o nome do bairro está correto."},
+        { ref: cidade,  limite: 35, setErro: setErroCidade, mensagem: "A cidade deve ter no máximo 35 caracteres. Por favor, verifique se o nome da cidade está correto."},
+      ]
+
+      verificarTamanhoMaximo(camposTamanhoMaximo, hasError)
+    
     }
   }
 
