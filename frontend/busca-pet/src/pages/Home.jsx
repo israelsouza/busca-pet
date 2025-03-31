@@ -9,18 +9,19 @@ function Home(){
     return (
             <>
             <div className={style.header}>
-                <img src={Logo_Cachorro} alt="Logo de um cachorro com uma lupa" />
+                <img src={Logo_Cachorro} alt="Logo de um cachorro com uma lupa" width="150px"/>
+            <div className={style.container_header}>
                 <nav>
-                    <ul>
-                        <Link>Inicio</Link>
-                        <Link>Rencontros</Link>
-                        <Link>Como Funciona</Link>
-                        <Link>Colabore</Link>
+                    <ul className={style.ul}>
+                        <Link className={style.linkhome}>Inicio</Link>
+                        <Link  className={style.linkhome}>Rencontros</Link>
+                        <Link  className={style.linkhome}>Como Funciona</Link>
+                        <Link  className={style.linkhome}>Colabore</Link>
 
                     </ul>
                 </nav>
                 <ButtonHome text_home="Cadastrar" path="/form/cadastro"/> 
-                <ButtonHome text_home="Login" path="/form/login"/> 
+                <ButtonHome text_home="Login" path="/form/login"/> </div>
             </div>
             </>
 
