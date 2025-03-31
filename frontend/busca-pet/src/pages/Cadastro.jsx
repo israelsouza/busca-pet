@@ -14,6 +14,7 @@ import {
   verificarSeTemNumeros,
   verificarSeEEmail
 } from "../assets/utils/formValidacoes";
+import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
   // REFERENCIAS
@@ -38,7 +39,7 @@ function Cadastro() {
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
 
-  function validarFormulario(e) {
+  async function cadastrarUsuario(e) {
     e.preventDefault();
 
     const name = nomeRef.current;
@@ -142,6 +143,24 @@ function Cadastro() {
     // tem @ ?
     if (verificarSeEEmail(email, setErroEmail, "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail")) return true
     
+    const dados = {
+      nome: nomeRef.current.value,
+      email: emailRef.current.value,
+      senha: senhaRef.current.value,
+      telefone: phoneRef.current.value,
+      rua: ruaRef.current.value,
+      bairro: bairroRef.current.value,
+      cep: cepRef.current.value,
+      cidade: cidadeRef.current.value,
+      estado: estadoRef.current.value,
+    };
+
+    try {
+      await enviarDados(dados, "/form/cadastro-usuario");
+      console.log("dados enviados com sucesso")
+    } catch (error) {
+      console.log("erro ao enviar dados:", error)
+    }
 
   }
 
@@ -327,7 +346,7 @@ function Cadastro() {
               <div className={style["cad__box-submit"]}>
                 <ButtonForm
                   placeholder="Cadastrar"
-                  algumaFuncao={validarFormulario}
+                  algumaFuncao={cadastrarUsuario}
                 />
 
                 <p className={style.cad__link}>
