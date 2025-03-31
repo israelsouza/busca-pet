@@ -61,8 +61,8 @@ function Cadastro() {
       {  ref: cidade,  setErro: setErroCidade,  mensagem: "Por favor, insira o nome da sua cidade." }
     ]
 
+    // campos vazios
     verificarCampoVazio(camposObrigatorios)
-
     if (estado.value.length > 2) {
       setErroEstado("Por favor, selecione algum estado válido.");
       estado.focus();
@@ -72,6 +72,7 @@ function Cadastro() {
     }
     if (hasError) return true
 
+    // tamanho limite
     const camposTamanhoMaximo = [
       {ref: name,  limite: 70, setErro: setErroNome, mensagem: "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor"},
       { ref: email,  limite: 70, setErro: setErroEmail, mensagem: "O e-mail deve ter no máximo 70 caracteres. Por favor, insira um email menor"},
@@ -80,11 +81,10 @@ function Cadastro() {
       { ref: bairro,  limite: 120, setErro: setErroBairro, mensagem: "O bairro deve ter no máximo 120 caracteres. Por favor, verifique se o nome do bairro está correto."},
       { ref: cidade,  limite: 35, setErro: setErroCidade, mensagem: "A cidade deve ter no máximo 35 caracteres. Por favor, verifique se o nome da cidade está correto."},
     ]
-
     verificarTamanhoMaximo(camposTamanhoMaximo)
-
     if (hasError) return true
     
+    // tamanho fixo
     const camposTamanhoFixo = [
       {
         ref:phone,
@@ -99,17 +99,20 @@ function Cadastro() {
         mensagem: "O cep tem que ter exatamente 8 digitos, verifique se inseriu corretamente"
       }
     ]
-    
     verificarTamanhoFixo(camposTamanhoFixo)
-    
     if (hasError) return true
-    
+
+    // tamanho minimo
     verificarTamanhoMinimo(
       senha,
       6,
       setErroSenha,
       "A senha tem que conter no mínimo 6 caracteres."
     )
+    if (hasError) return true
+
+    
+
   
   }
 
