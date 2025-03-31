@@ -23,3 +23,16 @@ export function verificarTamanhoMaximo(array, hasError) {
     }
   });
 }
+
+export function verificarTamanhoFixo(array, hasError) {
+  array.forEach((itemList) => {
+    if (itemList.ref.value.length != itemList.quantidade) {
+      itemList.setErro(itemList.mensagem);
+      itemList.ref.focus();
+      hasError = true || hasError;
+    } else {
+      itemList.setErro("");
+      hasError = false || hasError;
+    }
+  });
+}

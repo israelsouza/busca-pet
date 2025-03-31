@@ -5,7 +5,7 @@ import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link } from "react-router-dom";
-import {verificarCampoVazio, verificarTamanhoMaximo} from "../assets/utils/formValidacoes";
+import {verificarCampoVazio, verificarTamanhoMaximo, verificarTamanhoFixo} from "../assets/utils/formValidacoes";
 
 function Cadastro() {
   // REFERENCIAS
@@ -78,6 +78,29 @@ function Cadastro() {
       ]
 
       verificarTamanhoMaximo(camposTamanhoMaximo, hasError)
+
+      if (hasError == false) {
+
+        const camposTamanhoFixo = [
+          {
+            ref:phone,
+            quantidade: 11,
+            setErro: setErroPhone,
+            mensagem: "O telefone tem que ter exatamente 11 caracteres, verifique o número digitado"
+          },
+          {
+            ref: cep,
+            quantidade: 8,
+            setErro: setErroCEP,
+            mensagem: "O cep tem que ter exatamente 8 digitos, verifique se inseriu corretamente"
+          }
+        ]
+  
+        verificarTamanhoFixo(camposTamanhoFixo, hasError)
+
+      }
+
+      
     
     }
   }
