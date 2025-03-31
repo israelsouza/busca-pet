@@ -10,7 +10,8 @@ import {
   verificarTamanhoMaximo, 
   verificarTamanhoFixo,
   verificarTamanhoMinimo,
-  verificarSeTemLetras
+  verificarSeTemLetras,
+  verificarSeTemNumeros  
 } from "../assets/utils/formValidacoes";
 
 function Cadastro() {
@@ -128,6 +129,30 @@ function Cadastro() {
     ]
     verificarSeTemLetras(camposNaoPodemTerLetras)
     if (hasError) return true
+
+    const camposNaoPodemTerNumeros = [
+      {
+        ref: name,
+        setErro: setErroNome,
+        mensagem: "O campo de nome não pode conter números."
+      },
+      {
+        ref: bairro,
+        setErro: setErroBairro,
+        mensagem: "O campo de bairro não pode conter números."
+      },
+      {
+        ref: cidade,
+        setErro: setErroCidade,
+        mensagem: "O campo de cidade não pode conter números."
+      }
+    ]
+    verificarSeTemNumeros(camposNaoPodemTerNumeros)
+    if (hasError) return true
+
+
+
+    
     
     
   }

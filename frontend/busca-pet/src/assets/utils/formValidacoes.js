@@ -72,3 +72,17 @@ export function verificarSeTemLetras(array) {
 
   return hasError;
 }
+
+export function verificarSeTemNumeros(array) {
+  let hasError = false;
+  array.forEach((itemList) => {
+    if (/\d/.test(itemList.ref.value)) {
+      itemList.setErro(itemList.mensagem);
+      itemList.ref.focus();
+      hasError = true;
+    } else {
+      itemList.setErro("");
+    }
+  });
+  return hasError;
+}
