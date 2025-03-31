@@ -4,9 +4,11 @@ import express from "express";
 // metodo para que o express possua o poder de gerenciar as requisoes HTTP
 const router = express.Router();
 
-router.post("/form/cadastro-usuario", (request, response) => {
+router.post("/", (request, response) => {
   // importar função que armazena os valores do formulario
+  const dados = request.body;
   // verificar valores
+  console.log("recebido")
   // chamar metodo que vai inserir valores no banco de dados
 });
 
