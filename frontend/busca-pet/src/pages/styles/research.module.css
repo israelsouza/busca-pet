@@ -2,20 +2,6 @@
 
 /* Estás configurações estão sendo usadas no HeaderLog */
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap");
-
-:root {
-  --header: #efa355;
-  --cor01: #f2d9b6;
-  --cor02: #f2b680;
-  --cor03: #daa570; /* Não está em uso no header */
-  --cor05: #7a3e19;
-  --cor07: #00000;
-  --cor600: #342019;
-  --fundo1: #ffeacc;
-  --fundo2: #ecebea;
-}
-
 /*  Configurações da Página de Pesquisa*/
 
 .main {

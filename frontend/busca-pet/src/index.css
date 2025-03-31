@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap");
+/*    font-family: "inter", sans-serif; */
 * {
   margin: 0;
   padding: 0;
@@ -15,4 +17,5 @@
   --color-600: #342019;
   --color-other-orange: #ff600b;
   --links: #ff600b;
+  --botaohome: #4B2B1E;
 }
