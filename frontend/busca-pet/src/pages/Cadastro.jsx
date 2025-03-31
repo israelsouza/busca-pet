@@ -29,14 +29,26 @@ function Cadastro() {
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
 
-  function verificarCampoVazio(input, setErro, mensagemErro) {
-    if (!input.value.trim()) {
-      setErro(mensagemErro);
-      input.focus();
-      return true; // Indica que houve um erro
+  function verificarCampoVazio(lista, hasError) {
+    lista.forEach((currentElement, index) => {
+
+      if (!currentElement.ref.value.trim()) {
+        currentElement.setErro(currentElement.mensagem);
+        currentElement.ref.focus();
+        hasError = true || hasError;
+      } else {
+        currentElement.setErro("")
+        hasError = false || hasError;
+      }
+      
+    });
+
+    if (estado.value.length > 2) {
+      setErroEstado("Por favor, selecione algum estado válido.");
+      estado.focus();
+      hasError = true;
     } else {
-      setErro("");
-      return false; // Indica que não houve erro
+      setErroEstado("");
     }
   }
 
@@ -55,22 +67,18 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
-    hasError = verificarCampoVazio(name, setErroNome, "Por favor, insira seu nome.") || hasError;
-    hasError = verificarCampoVazio(email, setErroEmail, "Por favor, insira seu e-mail.") || hasError;
-    hasError = verificarCampoVazio(senha, setErroSenha, "Por favor, insira sua senha.") || hasError;
-    hasError = verificarCampoVazio(phone, setErroPhone, "Por favor, insira seu telefone.") || hasError;
-    hasError = verificarCampoVazio(rua, setErroRua, "Por favor, insira o nome da sua rua.") || hasError;
-    hasError = verificarCampoVazio(bairro, setErroBairro, "Por favor, insira o nome do seu bairro.") || hasError;
-    hasError = verificarCampoVazio(cep, setErroCEP, "Por favor, insira seu CEP.") || hasError;
-    hasError = verificarCampoVazio(cidade, setErroCidade, "Por favor, insira o nome da sua cidade.") || hasError;
+    const camposObrigatorios = [
+      {  ref: name,  setErro: setErroNome,  mensagem: "Por favor, insira seu nome." },
+      {  ref: email,  setErro: setErroEmail,  mensagem: "Por favor, insira seu e-mail." },
+      {  ref: senha,  setErro: setErroSenha,  mensagem: "Por favor, insira sua senha." },
+      {  ref: phone,  setErro: setErroPhone,  mensagem: "Por favor, insira seu telefone." },
+      {  ref: rua,  setErro: setErroRua,  mensagem: "Por favor, insira o nome da sua rua." },
+      {  ref: bairro,  setErro: setErroBairro,  mensagem: "Por favor, insira o nome do seu bairro." },
+      {  ref: cep,  setErro: setErroCEP,  mensagem: "Por favor, insira seu CEP." },
+      {  ref: cidade,  setErro: setErroCidade,  mensagem: "Por favor, insira o nome da sua cidade." }
+    ]
 
-    if (estado.value.length > 2) {
-      setErroEstado("Por favor, selecione algum estado válido.");
-      estado.focus();
-      hasError = true;
-    } else {
-      setErroEstado("");
-    }
+    verificarCampoVazio(camposObrigatorios, hasError)
   }
 
   const UF = [
