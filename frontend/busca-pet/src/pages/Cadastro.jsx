@@ -5,6 +5,7 @@ import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link } from "react-router-dom";
+import {verificarCampoVazio} from "../assets/utils/formValidacoes";
 
 function Cadastro() {
   // REFERENCIAS
@@ -28,29 +29,6 @@ function Cadastro() {
   const [erroCEP, setErroCEP] = useState("");
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
-
-  function verificarCampoVazio(lista, hasError) {
-    lista.forEach((currentElement, index) => {
-
-      if (!currentElement.ref.value.trim()) {
-        currentElement.setErro(currentElement.mensagem);
-        currentElement.ref.focus();
-        hasError = true || hasError;
-      } else {
-        currentElement.setErro("")
-        hasError = false || hasError;
-      }
-      
-    });
-
-    if (estado.value.length > 2) {
-      setErroEstado("Por favor, selecione algum estado válido.");
-      estado.focus();
-      hasError = true;
-    } else {
-      setErroEstado("");
-    }
-  }
 
   function capturarValores(e) {
     e.preventDefault();
@@ -79,6 +57,14 @@ function Cadastro() {
     ]
 
     verificarCampoVazio(camposObrigatorios, hasError)
+
+    if (estado.value.length > 2) {
+      setErroEstado("Por favor, selecione algum estado válido.");
+      estado.focus();
+      hasError = true;
+    } else {
+      setErroEstado("");
+    }
   }
 
   const UF = [
