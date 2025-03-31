@@ -1,4 +1,4 @@
-export function verificarCampoVazio(lista) {
+export function verificarCampoVazio(lista, select) {
   let hasError = false;
   lista.forEach((currentElement) => {
     if (!currentElement.ref.value.trim()) {
@@ -9,6 +9,17 @@ export function verificarCampoVazio(lista) {
       currentElement.setErro("");
     }
   });
+
+  select.forEach((currentElement) => {
+    if (currentElement.ref.value.length > 2) {
+      currentElement.setErro(currentElement.mensagem);
+      currentElement.ref.focus();
+      hasError = true;
+    } else {
+      currentElement.setErro("");
+    }
+  });
+
   return hasError;
 }
 

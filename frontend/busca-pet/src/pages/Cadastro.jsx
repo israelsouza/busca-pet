@@ -41,8 +41,6 @@ function Cadastro() {
   function validarFormulario(e) {
     e.preventDefault();
 
-    let hasError = false;
-
     const name = nomeRef.current;
     const email = emailRef.current;
     const senha = senhaRef.current;
@@ -53,28 +51,27 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
+    
+    // campos vazios
     const camposObrigatorios = [
       {  ref: name,  setErro: setErroNome,  mensagem: "Por favor, insira seu nome." },
       {  ref: email,  setErro: setErroEmail,  mensagem: "Por favor, insira seu e-mail." },
-      {  ref: senha,  setErro: setErroSenha,  mensagem: "Por favor, insira sua senha." },
+      {  ref: senha,  setErro: setErroSenha,  mensagem: "Por favor, crie a sua senha." },
       {  ref: phone,  setErro: setErroPhone,  mensagem: "Por favor, insira seu telefone." },
       {  ref: rua,  setErro: setErroRua,  mensagem: "Por favor, insira o nome da sua rua." },
       {  ref: bairro,  setErro: setErroBairro,  mensagem: "Por favor, insira o nome do seu bairro." },
       {  ref: cep,  setErro: setErroCEP,  mensagem: "Por favor, insira seu CEP." },
       {  ref: cidade,  setErro: setErroCidade,  mensagem: "Por favor, insira o nome da sua cidade." }
     ]
-
-    // campos vazios
-    verificarCampoVazio(camposObrigatorios)
-    if (estado.value.length > 2) {
-      setErroEstado("Por favor, selecione algum estado válido.");
-      estado.focus();
-      hasError = true;
-    } else {
-      setErroEstado("");
-    }
-    if (hasError) return true
-
+    const select = [
+      {
+        ref: estado,
+        setErro: setErroEstado,
+        mensagem: "Por favor, selecione algum estado válido."
+      }
+    ]
+    if (verificarCampoVazio(camposObrigatorios, select)) return true
+     
     // tamanho limite
     const camposTamanhoMaximo = [
       {ref: name,  limite: 70, setErro: setErroNome, mensagem: "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor"},
@@ -84,8 +81,7 @@ function Cadastro() {
       { ref: bairro,  limite: 120, setErro: setErroBairro, mensagem: "O bairro deve ter no máximo 120 caracteres. Por favor, verifique se o nome do bairro está correto."},
       { ref: cidade,  limite: 35, setErro: setErroCidade, mensagem: "A cidade deve ter no máximo 35 caracteres. Por favor, verifique se o nome da cidade está correto."},
     ]
-    verificarTamanhoMaximo(camposTamanhoMaximo)
-    if (hasError) return true
+    if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true
     
     // tamanho fixo
     const camposTamanhoFixo = [
@@ -102,17 +98,11 @@ function Cadastro() {
         mensagem: "O cep tem que ter exatamente 8 digitos, verifique se inseriu corretamente"
       }
     ]
-    verificarTamanhoFixo(camposTamanhoFixo)
-    if (hasError) return true
+    if (verificarTamanhoFixo(camposTamanhoFixo)) return true
 
     // tamanho minimo
-    verificarTamanhoMinimo(
-      senha,
-      6,
-      setErroSenha,
-      "A senha tem que conter no mínimo 6 caracteres."
-    )
-    if (hasError) return true
+    if (verificarTamanhoMinimo( senha, 6, setErroSenha, "A senha tem que conter no mínimo 6 caracteres."
+    )) return true
 
     // tem letras?
     const camposNaoPodemTerLetras = [
@@ -127,8 +117,7 @@ function Cadastro() {
         mensagem: "O campo de cep só pode ter números."
       },
     ]
-    verificarSeTemLetras(camposNaoPodemTerLetras)
-    if (hasError) return true
+    if (verificarSeTemLetras(camposNaoPodemTerLetras)) return true
 
     // tem numeros?
     const camposNaoPodemTerNumeros = [
@@ -148,14 +137,11 @@ function Cadastro() {
         mensagem: "O campo de cidade não pode conter números."
       }
     ]
-    verificarSeTemNumeros(camposNaoPodemTerNumeros)
-    if (hasError) return true
+    if (verificarSeTemNumeros(camposNaoPodemTerNumeros)) return true
     
     // tem @ ?
-    verificarSeEEmail(email, setErroEmail, "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail")
-    if (hasError) return true
+    if (verificarSeEEmail(email, setErroEmail, "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail")) return true
     
-
 
   }
 
