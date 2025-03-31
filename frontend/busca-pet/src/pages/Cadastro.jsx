@@ -9,7 +9,8 @@ import {
   verificarCampoVazio, 
   verificarTamanhoMaximo, 
   verificarTamanhoFixo,
-  verificarTamanhoMinimo
+  verificarTamanhoMinimo,
+  verificarSeTemLetras
 } from "../assets/utils/formValidacoes";
 
 function Cadastro() {
@@ -111,9 +112,24 @@ function Cadastro() {
     )
     if (hasError) return true
 
-    
+    // tem letras?
 
-  
+    const camposNaoPodemTerLetras = [
+      {
+        ref: phone,
+        setErro: setErroPhone,
+        mensagem: "O campo de telefone só pode ter números."
+      },
+      {
+        ref: cep,
+        setErro: setErroCEP,
+        mensagem: "O campo de cep só pode ter números."
+      },
+    ]
+    verificarSeTemLetras(camposNaoPodemTerLetras)
+    if (hasError) return true
+    
+    
   }
 
   const UF = [

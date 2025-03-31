@@ -9,7 +9,7 @@ export function verificarCampoVazio(lista) {
       currentElement.setErro("");
     }
   });
-  return hasError
+  return hasError;
 }
 
 export function verificarTamanhoMaximo(array) {
@@ -23,7 +23,7 @@ export function verificarTamanhoMaximo(array) {
       itemList.setErro("");
     }
   });
-  return hasError
+  return hasError;
 }
 
 export function verificarTamanhoFixo(array) {
@@ -54,5 +54,21 @@ export function verificarTamanhoMinimo(
   } else {
     setErro("");
   }
-  return hasError
+  return hasError;
+}
+
+export function verificarSeTemLetras(array) {
+  let hasError = false;
+
+  array.forEach((itemList) => {
+    if (!/\d/.test(itemList.ref.value)) {
+      itemList.setErro(itemList.mensagem);
+      itemList.ref.focus();
+      hasError = true;
+    } else {
+      itemList.setErro("");
+    }
+  });
+
+  return hasError;
 }
