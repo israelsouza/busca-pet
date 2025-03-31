@@ -1,49 +1,58 @@
-export function verificarCampoVazio(lista, hasError) {
+export function verificarCampoVazio(lista) {
+  let hasError = false;
   lista.forEach((currentElement) => {
     if (!currentElement.ref.value.trim()) {
       currentElement.setErro(currentElement.mensagem);
       currentElement.ref.focus();
-      hasError = true || hasError;
+      hasError = true;
     } else {
       currentElement.setErro("");
-      hasError = false || hasError;
     }
   });
+  return hasError
 }
 
-export function verificarTamanhoMaximo(array, hasError) {
+export function verificarTamanhoMaximo(array) {
+  let hasError = false;
   array.forEach((itemList) => {
     if (itemList.ref.value.length > itemList.limite) {
       itemList.setErro(itemList.mensagem);
       itemList.ref.focus();
-      hasError = true || hasError;
+      hasError = true;
     } else {
       itemList.setErro("");
-      hasError = false || hasError;
     }
   });
+  return hasError
 }
 
-export function verificarTamanhoFixo(array, hasError) {
+export function verificarTamanhoFixo(array) {
+  let hasError = false;
   array.forEach((itemList) => {
     if (itemList.ref.value.length != itemList.quantidade) {
       itemList.setErro(itemList.mensagem);
       itemList.ref.focus();
-      hasError = true || hasError;
+      hasError = true;
     } else {
       itemList.setErro("");
-      hasError = false || hasError;
     }
   });
+  return hasError;
 }
 
-export function verificarTamanhoMinimo(  input,  qtddCaracteres,  setErro,  mensagemErro) {
+export function verificarTamanhoMinimo(
+  input,
+  qtddCaracteres,
+  setErro,
+  mensagemErro
+) {
+  let hasError = false;
   if (input.value.length < qtddCaracteres) {
     setErro(mensagemErro);
     input.focus();
-    return true;
+    hasError = true;
   } else {
     setErro("");
-    return false;
   }
+  return hasError
 }

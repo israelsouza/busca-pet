@@ -61,7 +61,7 @@ function Cadastro() {
       {  ref: cidade,  setErro: setErroCidade,  mensagem: "Por favor, insira o nome da sua cidade." }
     ]
 
-    verificarCampoVazio(camposObrigatorios, hasError)
+    verificarCampoVazio(camposObrigatorios)
 
     if (estado.value.length > 2) {
       setErroEstado("Por favor, selecione algum estado válido.");
@@ -70,54 +70,47 @@ function Cadastro() {
     } else {
       setErroEstado("");
     }
+    if (hasError) return true
 
-    if (hasError == false) {
+    const camposTamanhoMaximo = [
+      {ref: name,  limite: 70, setErro: setErroNome, mensagem: "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor"},
+      { ref: email,  limite: 70, setErro: setErroEmail, mensagem: "O e-mail deve ter no máximo 70 caracteres. Por favor, insira um email menor"},
+      { ref: senha,  limite: 30, setErro: setErroSenha, mensagem: "A senha deve ter no máximo 30 caracteres. Por favor, insira uma senha menor"},
+      { ref: rua,  limite: 120, setErro: setErroRua, mensagem: "A rua deve ter no máximo 120 caracteres. Por favor, verifique se o nome da rua está correto."},
+      { ref: bairro,  limite: 120, setErro: setErroBairro, mensagem: "O bairro deve ter no máximo 120 caracteres. Por favor, verifique se o nome do bairro está correto."},
+      { ref: cidade,  limite: 35, setErro: setErroCidade, mensagem: "A cidade deve ter no máximo 35 caracteres. Por favor, verifique se o nome da cidade está correto."},
+    ]
 
-      const camposTamanhoMaximo = [
-        {ref: name,  limite: 70, setErro: setErroNome, mensagem: "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor"},
-        { ref: email,  limite: 70, setErro: setErroEmail, mensagem: "O e-mail deve ter no máximo 70 caracteres. Por favor, insira um email menor"},
-        { ref: senha,  limite: 30, setErro: setErroSenha, mensagem: "A senha deve ter no máximo 30 caracteres. Por favor, insira uma senha menor"},
-        { ref: rua,  limite: 120, setErro: setErroRua, mensagem: "A rua deve ter no máximo 120 caracteres. Por favor, verifique se o nome da rua está correto."},
-        { ref: bairro,  limite: 120, setErro: setErroBairro, mensagem: "O bairro deve ter no máximo 120 caracteres. Por favor, verifique se o nome do bairro está correto."},
-        { ref: cidade,  limite: 35, setErro: setErroCidade, mensagem: "A cidade deve ter no máximo 35 caracteres. Por favor, verifique se o nome da cidade está correto."},
-      ]
+    verificarTamanhoMaximo(camposTamanhoMaximo)
 
-      verificarTamanhoMaximo(camposTamanhoMaximo, hasError)
-
-      if (hasError == false) {
-
-        const camposTamanhoFixo = [
-          {
-            ref:phone,
-            quantidade: 11,
-            setErro: setErroPhone,
-            mensagem: "O telefone tem que ter exatamente 11 caracteres, verifique o número digitado"
-          },
-          {
-            ref: cep,
-            quantidade: 8,
-            setErro: setErroCEP,
-            mensagem: "O cep tem que ter exatamente 8 digitos, verifique se inseriu corretamente"
-          }
-        ]
-  
-        verificarTamanhoFixo(camposTamanhoFixo, hasError)
-
-
-        if(hasError == false) {
-              verificarTamanhoMinimo(
-                senha,
-                6,
-                setErroSenha,
-                "A senha tem que conter no mínimo 6 caracteres."
-              )
-          }
-
-      }
-
-      
+    if (hasError) return true
     
-    }
+    const camposTamanhoFixo = [
+      {
+        ref:phone,
+        quantidade: 11,
+        setErro: setErroPhone,
+        mensagem: "O telefone tem que ter exatamente 11 caracteres, verifique o número digitado"
+      },
+      {
+        ref: cep,
+        quantidade: 8,
+        setErro: setErroCEP,
+        mensagem: "O cep tem que ter exatamente 8 digitos, verifique se inseriu corretamente"
+      }
+    ]
+    
+    verificarTamanhoFixo(camposTamanhoFixo)
+    
+    if (hasError) return true
+    
+    verificarTamanhoMinimo(
+      senha,
+      6,
+      setErroSenha,
+      "A senha tem que conter no mínimo 6 caracteres."
+    )
+  
   }
 
   const UF = [
