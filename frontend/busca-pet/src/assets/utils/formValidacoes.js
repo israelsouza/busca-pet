@@ -86,3 +86,15 @@ export function verificarSeTemNumeros(array) {
   });
   return hasError;
 }
+
+export function verificarSeEEmail(input, setErro, mensagemErro) {
+  let hasError = false;
+  if (!/@/.test(input.value)) {
+    setErro(mensagemErro);
+    input.focus();
+    hasError = true;
+  } else {
+    setErro("");
+  }
+  return hasError;
+}

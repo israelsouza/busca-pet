@@ -11,7 +11,8 @@ import {
   verificarTamanhoFixo,
   verificarTamanhoMinimo,
   verificarSeTemLetras,
-  verificarSeTemNumeros  
+  verificarSeTemNumeros,
+  verificarSeEEmail
 } from "../assets/utils/formValidacoes";
 
 function Cadastro() {
@@ -114,7 +115,6 @@ function Cadastro() {
     if (hasError) return true
 
     // tem letras?
-
     const camposNaoPodemTerLetras = [
       {
         ref: phone,
@@ -130,6 +130,7 @@ function Cadastro() {
     verificarSeTemLetras(camposNaoPodemTerLetras)
     if (hasError) return true
 
+    // tem numeros?
     const camposNaoPodemTerNumeros = [
       {
         ref: name,
@@ -149,12 +150,13 @@ function Cadastro() {
     ]
     verificarSeTemNumeros(camposNaoPodemTerNumeros)
     if (hasError) return true
+    
+    // tem @ ?
+    verificarSeEEmail(email, setErroEmail, "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail")
+    if (hasError) return true
+    
 
 
-
-    
-    
-    
   }
 
   const UF = [
