@@ -5,7 +5,12 @@ import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link } from "react-router-dom";
-import {verificarCampoVazio, verificarTamanhoMaximo, verificarTamanhoFixo} from "../assets/utils/formValidacoes";
+import {
+  verificarCampoVazio, 
+  verificarTamanhoMaximo, 
+  verificarTamanhoFixo,
+  verificarTamanhoMinimo
+} from "../assets/utils/formValidacoes";
 
 function Cadastro() {
   // REFERENCIAS
@@ -30,7 +35,7 @@ function Cadastro() {
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
 
-  function capturarValores(e) {
+  function validarFormulario(e) {
     e.preventDefault();
 
     let hasError = false;
@@ -97,6 +102,16 @@ function Cadastro() {
         ]
   
         verificarTamanhoFixo(camposTamanhoFixo, hasError)
+
+
+        if(hasError == false) {
+              verificarTamanhoMinimo(
+                senha,
+                6,
+                setErroSenha,
+                "A senha tem que conter no mínimo 6 caracteres."
+              )
+          }
 
       }
 
@@ -287,7 +302,7 @@ function Cadastro() {
               <div className={style["cad__box-submit"]}>
                 <ButtonForm
                   placeholder="Cadastrar"
-                  algumaFuncao={capturarValores}
+                  algumaFuncao={validarFormulario}
                 />
 
                 <p className={style.cad__link}>

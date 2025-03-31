@@ -36,3 +36,14 @@ export function verificarTamanhoFixo(array, hasError) {
     }
   });
 }
+
+export function verificarTamanhoMinimo(  input,  qtddCaracteres,  setErro,  mensagemErro) {
+  if (input.value.length < qtddCaracteres) {
+    setErro(mensagemErro);
+    input.focus();
+    return true;
+  } else {
+    setErro("");
+    return false;
+  }
+}
