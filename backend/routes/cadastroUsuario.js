@@ -5,10 +5,12 @@ import express from "express";
 const router = express.Router();
 
 router.post("/", (request, response) => {
-  // importar função que armazena os valores do formulario
-  const dados = request.body;
+  
+  const dados = request.body; // armazena os valores do formulario
+  response.status(200).json({ message: "Mensagem vinda do Backend: Dados enviados com sucesso" }); // responde que valores chegaram com sucesso [TODO NO FRONT]
+
   // verificar valores
-  console.log("recebido")
+  console.log("Dados recebidos no backend ---> ", dados);
   // chamar metodo que vai inserir valores no banco de dados
 });
 
