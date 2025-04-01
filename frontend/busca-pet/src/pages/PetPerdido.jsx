@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import styles from "./styles/PetPerdido.module.css";
 import HeaderLog from "./../components/HeaderLog";
 
