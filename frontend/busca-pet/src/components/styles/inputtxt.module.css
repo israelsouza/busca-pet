@@ -1,0 +1,31 @@
+.imput {
+  margin: 20px auto;
+  max-width: 525px;
+}
+
+.imput__name {
+  color: var(--label);
+}
+
+.imput__box {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.imput__element {
+  width: 525px;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: var(--inputs);
+  border: none;
+  box-shadow: 0px 3px 3px 0px hsla(0, 0%, 0%, 0.483);
+}
+
+.imput__element:focus {
+  outline: none;
+}
+
+.imput__element--select:hover {
+  cursor: pointer;
+}

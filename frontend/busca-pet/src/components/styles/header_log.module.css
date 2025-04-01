@@ -1,0 +1,33 @@
+.header_logado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--header);
+  width: 100%;
+  height: 100px;
+}
+
+.logodog {
+  padding-left: 50px;
+}
+
+.navegation {
+  display: flex;
+  gap: 40%;
+}
+
+.links_header {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1.2em;
+  text-decoration: none;
+  color: var(--fundo1);
+}
+
+.links_header:hover {
+  color: var(--cor05);
+}
+
+.icon {
+  padding-right: 50px;
+}

@@ -1,3 +1,17 @@
+# ROTAS A SEREM USADAS
+
+// app.use("/form/login", cadastroUsuario);
+// app.use("/form/recuperacao-senha", cadastroUsuario);
+// app.use("/form/cadastro-pet/perdido", cadastroUsuario);
+// app.use("/form/cadastro-pet/encontrado", cadastroUsuario);
+
+// app.use("/publicacao/todos", cadastroUsuario);
+// app.use("/publicacao/perdido", cadastroUsuario);
+// app.use("/publicacao/encontrado", cadastroUsuario);
+// app.use("/publicacao/que-eu-fiz", cadastroUsuario);
+
+---------------
+
 # Busca pet
 Projeto Interdisciplinar do 2º semestre do Curso Superior de Tecnologia em Desenvolvimento de Software Multiplataforma da Fatec Zona Leste.
 

@@ -1,9 +1,17 @@
-function InputTxt({ name, place }) {
+import style from "./styles/inputtxt.module.css";
+
+function InputTxt({ name, place, refProp, required, type }) {
   return (
-    <div className="imput">
-      <label className="imput__name" >{name}</label>
-      <div className="imput__box">
-        <input className="imput__element" type="text" placeholder={place} />
+    <div className={style.imput}>
+      <label className={style.imput__name}>{name}</label>
+      <div className={style.imput__box}>
+        <input
+          className={style.imput__element}
+          placeholder={place}
+          ref={refProp}
+          required={required}
+          type={type}
+        />
       </div>
     </div>
   );

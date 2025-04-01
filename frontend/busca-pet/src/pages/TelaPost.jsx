@@ -1,8 +1,8 @@
-import styles from "./styles.module.css";
+import styles from "./styles/tela_post.module.css";
 import HeaderLog from "./../components/HeaderLog";
-import "./../assets/CSS/research.css";
 
-const Home = () => {
+
+const TelaPost = () => {
   return (
     <div className={styles.bg_tela_post}>
 
@@ -21,4 +21,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default TelaPost;
