@@ -1,6 +1,6 @@
 import styles from "./styles/PetPerdido.module.css";
 import HeaderLog from "./../components/HeaderLog";
-import "./../assets/CSS/research.css";
+
 
 function PetPerdido() {
     
