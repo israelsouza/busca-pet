@@ -41,7 +41,12 @@ function PetPerdido() {
                     <div className={styles.pet_perdido__input100}>
                         <label htmlFor="">Selecione o tipo do seu Pet</label>
                         <select className={styles.pet_perdido__input} name="" id="" >
-                            <option value="">Gato</option>
+                            <option value="" disabled>Selecione o tipo do pet</option>
+                            <option value="gato">Gato</option>
+                            <option value="cachorro">Cachorro</option>
+                            <option value="coelho">Coelho</option>
+                            <option value="ave">Ave</option>
+                            <option value="outros">Outros</option>
                         </select>
                     </div>
 
