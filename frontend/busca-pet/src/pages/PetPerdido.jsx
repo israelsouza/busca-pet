@@ -3,6 +3,13 @@ import HeaderLog from "./../components/HeaderLog";
 
 
 function PetPerdido() {
+
+    // declarar useRef como null
+    // amarrar useRef nos campos
+    // declarar useState
+    // fazer as condições de erro
+    // montar o objeto
+    // enviar requisição ao backend
     
     function validarDados() {
         let nome = document.getElementById(nome);
