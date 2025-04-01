@@ -17,7 +17,6 @@
     background-color: rgba(239, 163, 85, 0.5);
     padding: 40px;
     border-radius: 15px;
-    text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     max-width: 500px;
     width: 90%;
@@ -105,6 +104,10 @@ label {
     background-color: rgb(239, 163, 85);
 }
 
+.botao_center {
+    text-align: center;
+}
+
 .botao:hover {
     transform: scale(1.05);
     opacity: 0.9;
@@ -119,4 +122,8 @@ label {
         padding: 12px;
         font-size: 16px;
     }
+}
+
+.error {
+    color: red
 }
