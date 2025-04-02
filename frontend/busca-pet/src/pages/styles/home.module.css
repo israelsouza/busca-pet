@@ -80,3 +80,31 @@
     font-size: 1.5em;
     font-weight:300;
 }
+
+.containerAvaliacoes{
+    display: flex; 
+    justify-content: space-evenly;
+    text-align: justify;
+    align-items: center; 
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 50px; 
+
+}
+
+.h2{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    text-align: center;
+    padding: 10vh;
+}
+
+.h3{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 15vh;
+    padding: 10vh;
+}

@@ -1,10 +1,11 @@
-import { Link, Links } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo_Cachorro from "../assets/imgs/Logo_Cachorro.png";
 import style from "./styles/home.module.css";
 import ButtonHome from "../components/ButtonHome";
 import home from "../assets/imgs/home.png";
-import Ellipse_home from "../assets/imgs/Ellipse_home";
-import AvaliacaoHome from "../components/AvaliacaoHome";
+import Ellipse_home from "../assets/imgs/Ellipse_home.png";
+import AvaliacaoHome from "../components/AvaliacaoHome.jsx";
+import ComoFunciona from "../components/instrucoesHome.jsx";
 
 function Home(){
     return (
@@ -25,18 +26,31 @@ function Home(){
                 <ButtonHome text_home="Login" path="/form/login"/> </div>
             </div>
 
+        <div>
+            <img src={home} alt="Mulher segurando cachorro no alto" className={style.home_principal}/>
+            <div className={style.text_img}>
+            <h1 className={style.h1}>Juntos por eles!</h1>
+            <p className={style.p}>Encontre seu pet perdido ou ajude a reunir famílias.</p>
+            <p className={style.p}>Cadastre, busque e traga esperança para quem precisa!</p>
+        </div>
+        <div>
+            <h2 className={style.h2}>Reencontros de sucesso</h2>
+            <div className={style.containerAvaliacoes}>
+            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
+            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
+            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
+            </div>
+        </div>
+
+        <div>
+            <h3 className={style.h3}>Como Funciona</h3>
             <div>
-                <img src={home} alt="Mulher segurando cachorro no alto" className={style.home_principal}/>
-                <div className={style.text_img}>
-                    <h1 className={style.h1}>Juntos por eles!</h1>
-                    <p className={style.p}>Encontre seu pet perdido ou ajude a reunir famílias.</p>
-                    <p className={style.p}>Cadastre, busque e traga esperança para quem precisa!</p>
-                </div>
-                <div>
-                    <h2>Reencontros de sucesso</h2>
- {/*               <AvaliacaoHome> </AvaliacaoHome>  */}
-                </div>
-            </div>            
+            <ComoFunciona  text_instrucao="1 - Cadastre-se" text_explicacao="Crie uma conta em poucos passos e tenha acesso à nossa plataforma. Com seu cadastro, você poderá registrar pets perdidos ou encontrados e se conectar com outras pessoas que possam ajudar."/>
+            <ComoFunciona  text_instrucao="2 - Faça uma publicação" text_explicacao="Insira as informações do pet, como nome, raça, cor e local onde foi perdido ou encontrado. Adicione fotos para facilitar a identificação e aumente as chances de um reencontro rápido."/>
+            <ComoFunciona  text_instrucao="3 - Fique de olho em seu e-mail" text_explicacao="Quando alguém encontrar um pet semelhante ao que você cadastrou ou quiser entrar em contato sobre um animal encontrado, você receberá uma notificação por e-mail. Fique atento para não perder nenhuma atualização!"/>
+            </div>
+        </div>
+    </div>            
             </>
 
     )
