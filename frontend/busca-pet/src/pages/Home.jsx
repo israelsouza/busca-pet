@@ -6,7 +6,8 @@ import home from "../assets/imgs/home.png";
 import Ellipse_home from "../assets/imgs/Ellipse_home.png";
 import AvaliacaoHome from "../components/AvaliacaoHome.jsx";
 import ComoFunciona from "../components/instrucoesHome.jsx";
-
+import abraco_dogHome from "../assets/imgs/abraco_dogHome.png";
+import footer_home from "../assets/imgs/footer_home.png";
 function Home(){
     return (
             <>
@@ -48,6 +49,20 @@ function Home(){
             <ComoFunciona  text_instrucao="1 - Cadastre-se" text_explicacao="Crie uma conta em poucos passos e tenha acesso à nossa plataforma. Com seu cadastro, você poderá registrar pets perdidos ou encontrados e se conectar com outras pessoas que possam ajudar."/>
             <ComoFunciona  text_instrucao="2 - Faça uma publicação" text_explicacao="Insira as informações do pet, como nome, raça, cor e local onde foi perdido ou encontrado. Adicione fotos para facilitar a identificação e aumente as chances de um reencontro rápido."/>
             <ComoFunciona  text_instrucao="3 - Fique de olho em seu e-mail" text_explicacao="Quando alguém encontrar um pet semelhante ao que você cadastrou ou quiser entrar em contato sobre um animal encontrado, você receberá uma notificação por e-mail. Fique atento para não perder nenhuma atualização!"/>
+            </div>
+        </div>
+        <div>
+            <article className={style.article}>
+                <h4 className={style.h4}>Ajude Mais Pets!</h4>
+                <div className={style.article_text}>
+                    <p className={style.p1}>Seu engajamento faz a diferença! Compartilhe nosso site com amigos, vizinhos e grupos locais. Quanto mais pessoas participarem, maior a chance de reencontros felizes.</p>
+                    <img src={abraco_dogHome} alt="Mulher agachada abraçando carinhosamente um cachorro" className={style.abraco_dogHome}/>
+                </div>
+            </article>
+            <div className={style.container_footer}>
+                <div className={style.overlay}></div>
+                <p className={style.p_footer}>Todos os Direitos Reservados</p>
+                <img src={footer_home} alt="Imagem de Rodapé com patas de animais" className={style.footer_home}/>
             </div>
         </div>
     </div>            
