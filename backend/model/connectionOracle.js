@@ -14,7 +14,7 @@ const dbConfig = {
 async function getConnection() {
   try {
     return await OracleDB.getConnection(dbConfig);
-  } catch (error) {
+  } catch (err) {
     console.error("Erro ao conectar ao banco de dados:", err);
     throw err;
   }
