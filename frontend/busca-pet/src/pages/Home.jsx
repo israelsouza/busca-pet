@@ -16,10 +16,10 @@ function Home(){
             <div className={style.container_header}>
                 <nav>
                     <ul className={style.ul}>
-                        <Link className={style.linkhome}>Inicio</Link>
-                        <Link  className={style.linkhome}>Rencontros</Link>
-                        <Link  className={style.linkhome}>Como Funciona</Link>
-                        <Link  className={style.linkhome}>Colabore</Link>
+                        <Link className={style.linkhome} to={''}>Início</Link>
+                        <Link  className={style.linkhome} to={''}>Reencontros</Link>
+                        <Link  className={style.linkhome} to={''}>Como Funciona</Link>
+                        <Link  className={style.linkhome} to={''}>Colabore</Link>
 
                     </ul>
                 </nav>
