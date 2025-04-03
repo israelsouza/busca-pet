@@ -1,128 +1,113 @@
-import getConnection  from "./connectionOracle";
-
-/**
- * LOGICA
- * 
- *  Buscar o ID do Estado:
-    Use a sigla do estado enviada pelo frontend para buscar o EST_ID correspondente na tabela ESTADO.
-    
-    Inserir na Tabela CIDADE:
-    Insira a cidade, vinculando ao EST_ID obtido no passo anterior.
-
-    Inserir na Tabela ENDERECO:
-    Insira o endereço, vinculando ao CID_ID da cidade inserida.
-
-    Inserir na Tabela PESSOA:
-    Insira os dados da pessoa, vinculando ao END_ID do endereço inserido.
-
-    Inserir na Tabela USUARIO:
-    Insira o e-mail e a senha, vinculando ao PES_ID da pessoa inserida.
- * 
-
-    CRIAÇÃO DE TABELAS E INSERTS PRO ESTADO
- */
+import OracleDB from "oracledb";
+import getConnection from "./connectionOracle.js";
 
 export default async function inserirUsuario(dados) {
   let connection;
 
   try {
-    connection = await getConnection()
+    connection = await getConnection();
+    console.log("Iniciando a conexão...\n \n");
 
-    await connection.execute("BEGIN")
+     /**
+      * ESTADO  (id)
+      * CIDADE  (insert com relação)
+      */
 
-    // validação de chave unica
+     // pega ID estado
+     const selectEstado = `
+      SELECT EST_ID 
+      FROM ESTADO 
+      WHERE EST_SIGLA = :sigla
+     `
+     const resultadoSelectEstado = await connection.execute(selectEstado, {sigla: dados.estado})
+     const idEstado = resultadoSelectEstado.rows[0][0];
 
-    // 1. Verificar se o e-mail já existe
-    const emailQuery = `SELECT USU_ID FROM USUARIO WHERE USU_EMAIL = :email`;
-    const emailResult = await connection.execute(emailQuery, { email: dados.email });
-
-    if (emailResult.rows.length > 0) {
-      throw new Error("O e-mail já está cadastrado.");
-    }
-
-    // 2. Verificar se o telefone já existe
-    const phoneQuery = `SELECT PES_ID FROM PESSOA WHERE PES_PHONE = :phone`;
-    const phoneResult = await connection.execute(phoneQuery, { phone: dados.phone });
-
-    if (phoneResult.rows.length > 0) {
-      throw new Error("O telefone já está cadastrado.");
-    }
-
-    // inserção dos dados
-
-    // 1. Buscar o ID do estado
-    const estadoQuery = `SELECT EST_ID FROM ESTADO WHERE EST_SIGLA = :estado`;
-    const estadoResult = await connection.execute(estadoQuery, { estado: dados.estado });
-    const estadoId = estadoResult.rows[0][0];
-
-    // 2. Inserir na tabela CIDADE
-    const cidadeQuery = `
-      INSERT INTO CIDADE (CID_DESCRICAO, EST_ID)
-      VALUES (:cidade, :estadoId)
-      RETURNING CID_ID INTO :cidadeId
-    `;
-    const cidadeResult = await connection.execute(cidadeQuery, {
+     // insert cidade
+     const insertCidade = ` 
+      INSERT INTO CIDADE (CID_DESCRICAO, EST_ID) 
+      VALUES (:cidade, :idEstado) 
+      RETURNING CID_ID INTO :id 
+     ` 
+     const resultadoInsertCidade = await connection.execute(insertCidade, {
       cidade: dados.cidade,
-      estadoId,
-    });
-    const cidadeId = cidadeResult.outBinds.cidadeId[0];
+      idEstado: idEstado,
+      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT} // extraindo id Cidade
+     }, {autoCommit: true})
 
-    // 3. Inserir na tabela ENDERECO
-    const enderecoQuery = `
-      INSERT INTO ENDERECO (END_RUA, END_BAIRRO, END_CEP, CID_ID)
-      VALUES (:rua, :bairro, :cep, :cidadeId)
-      RETURNING END_ID INTO :enderecoId
-    `;
-    const enderecoResult = await connection.execute(enderecoQuery, {
+     // guardando ID cidade
+     const idCidade = resultadoInsertCidade.outBinds.id[0]
+
+     /**
+      * ENDERECO (atribuir ID CIDADE)
+      */
+
+     // insert endereco
+     const insertEndereco = `
+      INSERT INTO ENDERECO (END_RUA, END_BAIRRO, END_CEP, CID_ID) 
+      VALUES (:rua, :bairro, :cep, :idCidade) 
+      RETURNING END_ID INTO :id
+     `
+     const resultadoInsertEndereco = await connection.execute(insertEndereco, {
       rua: dados.rua,
       bairro: dados.bairro,
       cep: dados.cep,
-      cidadeId,
-    });
-    const enderecoId = enderecoResult.outBinds.enderecoId[0];
+      idCidade: idCidade,
+      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT}
+     }, {autoCommit: true} )
 
-    // 4. Inserir na tabela PESSOA
-    const pessoaQuery = `
+     const idEndereco = resultadoInsertEndereco.outBinds.id[0]
+
+     /**
+      * PESSOA (pegar id endereco)
+      */
+
+     // insert
+    const insertPessoa = `
       INSERT INTO PESSOA (PES_NOME, PES_PHONE, END_ID)
-      VALUES (:nome, :phone, :enderecoId)
-      RETURNING PES_ID INTO :pessoaId
+      VALUES (:nome, :telefone, :idEndereco)
+      RETURNING PES_ID INTO :id
     `;
-    const pessoaResult = await connection.execute(pessoaQuery, {
+    const resultadoInsertPessoa = await connection.execute(insertPessoa, {
       nome: dados.nome,
-      phone: dados.phone,
-      enderecoId,
-    });
-    const pessoaId = pessoaResult.outBinds.pessoaId[0];
+      telefone: dados.telefone,
+      idEndereco: idEndereco,
+      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT}
+    }, {autoCommit: true});
+    
+    const idPessoa = resultadoInsertPessoa.outBinds.id[0]
 
-    // 5. Inserir na tabela USUARIO
-    const usuarioQuery = `
-      INSERT INTO USUARIO (USU_EMAIL, USU_SENHA, PES_ID)
-      VALUES (:email, :senha, :pessoaId)
-    `;
-    await connection.execute(usuarioQuery, {
+
+    /**
+     * USUARIO (pegar id pessoa)
+     * 
+     */
+
+    const inserttUsuario = `
+      INSERT INTO USUARIO (USU_EMAIL, USU_SENHA, PES_ID) 
+      VALUES (:email, :senha, :idPessoa)
+    `
+    const resultadoInsertUsuario = await connection.execute(inserttUsuario, {
       email: dados.email,
       senha: dados.senha,
-      pessoaId,
-    });
+      idPessoa: idPessoa
+    }, { autoCommit: true});
 
-    // Confirma a transação
-    await connection.execute("COMMIT");
+    const queryFinal = `
+      SELECT  P.PES_NOME, U.USU_EMAIL, U.USU_SENHA, P.PES_PHONE, E.END_RUA, E.END_BAIRRO, E.END_CEP, C.CID_DESCRICAO, ES.EST_SIGLA
+      FROM    PESSOA P, USUARIO U, ENDERECO E, CIDADE C, ESTADO ES
+      WHERE   
+        ES.EST_ID = C.EST_ID      AND
+        C.CID_ID  = E.CID_ID      AND
+        E.END_ID  = P.END_ID      AND
+        P.PES_ID  = U.PES_ID
+    `
+    const resultadoQueryFinal = await connection.execute(queryFinal, [])
+    console.log(resultadoQueryFinal.rows)
 
-    console.log("Usuário inserido com sucesso!");
-    
-
+    console.log("Fechando a conexão...");
+    await connection.close();
   } catch (error) {
-    // Reverte a transação em caso de erro
-    if (connection) {
-        await connection.execute("ROLLBACK");
-      }
-      console.error("Erro ao inserir usuário:", err);
-      throw err;
-  } finally {
-    // Fecha a conexão
-    if (connection) {
-      await connection.close();
-    }
+    console.error("Erro ao inserir usuário:", error);
+    throw error;
   }
-
 }
