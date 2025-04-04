@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 import TelaPost from "./pages/TelaPost";
 import PageResearch from "./pages/PageResearch";
+import Home from "./pages/Home";
 
 
 function App() {
@@ -18,10 +19,11 @@ function App() {
 
       <BrowserRouter>
         <Routes>
+
+          <Route path="/" element={<Home />} />
           <Route path="/form/cadastro-usuario" element={<Cadastro />} />
           <Route path="/form/login" element={<Login />} />
           <Route path="/form/recuperacao-senha" element={<RecuperacaoSenha />} />
-
           <Route path="/posts/criar-post" element={<TelaPost />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
         </Routes>

@@ -12,10 +12,10 @@
                 <img className={style.logodog} src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="150px"/>
             </Link>
                 <nav className={style.navegation}>
-                    <a className={style.links_header}>Todos</a>
-                    <a className={style.links_header}>Achados</a>
-                    <a className={style.links_header}>Perdidos</a>
-                    <a className={style.links_header}>Pesquisar</a>
+                    <Link className={style.links_header}> Todos</Link>
+                    <Link className={style.links_header}>Achados</Link>
+                    <Link className={style.links_header}>Perdidos</Link>
+                    <Link className={style.links_header}>Pesquisar</Link>
                 </nav>
                 
                 <img className={style.icon} src={Icone} alt="Icone de usuário sem foto"  />

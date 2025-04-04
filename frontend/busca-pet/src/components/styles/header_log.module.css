@@ -8,12 +8,13 @@
 }
 
 .logodog {
-  padding-left: 50px;
+  padding-left: 40px;
 }
 
 .navegation {
   display: flex;
   gap: 40%;
+  justify-content: center;
 }
 
 .links_header {
@@ -21,11 +22,12 @@
   font-weight: 500;
   font-size: 1.2em;
   text-decoration: none;
-  color: var(--fundo1);
+  color: var(--fundo_form);
 }
 
 .links_header:hover {
-  color: var(--cor05);
+  color: var(--botaohome);
+  transition: 0.5s;
 }
 
 .icon {

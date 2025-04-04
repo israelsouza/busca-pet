@@ -1,0 +1,198 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--header);
+    width: 100%;
+    height: 15vh;
+    padding: 4.5em;
+}
+
+.container_header{
+    display: flex;
+    align-items: center;
+    gap: 2.5em;
+}
+
+.ul{
+    display: flex;
+    margin-right: 12vw;
+    gap: 60px;
+}
+
+.linkhome{  
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+    color: #ffff;
+    text-decoration: none;
+    
+}
+
+.linkhome:hover{
+    transition: 0.5s;
+    color: var(--botaohome);
+    cursor: pointer;
+}
+
+.home_principal{
+    width: 100%;
+    height: 650px;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+}
+.text_img{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    width: 280px;
+    color: white;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+.text_img::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.h1{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+}
+
+.p{
+    font-family: "Inter", sans-serif;
+    margin-top: 15px;
+    font-size: 1.5em;
+    font-weight:300;
+}
+
+.containerAvaliacoes{
+    display: flex; 
+    justify-content: space-evenly;
+    text-align: justify;
+    align-items: center; 
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 50px; 
+    
+}
+
+.h2{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    text-align: center;
+    padding: 10vh;
+}
+
+.h3{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 15vh;
+    padding: 10vh;
+}
+
+.article{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 60%;
+    margin: 10vh auto;
+    margin-top: 20vh;
+    text-align: left;
+}
+
+.h4{
+    font-family: "Inter", sans-serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 7vw;
+    margin-bottom: -10vh;
+}
+
+.article_text{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.p1{
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+    font-weight: 300;
+    text-align: left;
+    max-width: 50%;
+    padding-left: 7vw;
+}
+
+.abraco_dogHome{
+    margin-right: 6vw;
+    width: 45%;
+    max-width: 300px;
+    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+}
+
+.container_footer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffffff;
+    height: 20vh;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.192);
+}
+
+.p_footer {
+    position: absolute;
+    top: 60%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    z-index: 2;
+}
+
+.footer_home {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 180px;
+    z-index: 1;
+}
