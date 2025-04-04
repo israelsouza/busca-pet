@@ -21,7 +21,7 @@
   font-weight: 500;
   font-size: 1.2em;
   text-decoration: none;
-  color: var(--fundo1);
+  color: var(--inputs);
 }
 
 .links_header:hover {

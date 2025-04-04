@@ -5,9 +5,9 @@ dotenv.config();
 
 // informações que vão ficar no .env para só os devs terem acesso ao banco
 const dbConfig = {
-  user: dotenv.DB_USER,
-  password: dotenv.DB_PASSWORD,
-  connectString: dotenv.DB_STRING_CONNECT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  connectString: process.env.DB_CONNECTION_STRING
 };
 
 // uma função que vai retornar a conexão com o banco quando for chamada em outro arquivo
@@ -15,8 +15,8 @@ async function getConnection() {
   try {
     return await OracleDB.getConnection(dbConfig);
   } catch (error) {
-    console.error("Erro ao conectar ao banco de dados:", err);
-    throw err;
+    console.error("Erro ao conectar ao banco de dados:", error);
+    throw error;
   }
 }
 
