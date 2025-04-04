@@ -6,7 +6,7 @@
 
 .main {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-image: url(../../assets/imgs/mapa_alt.png);
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -23,24 +23,21 @@
 .search_button {
   display: flex;
   align-items: center;
-  background: var(--cor01);
-  border: 2px solid var(--cor01);
-  border-radius: 28px;
+  border: 2px solid var(--inputs);
+  border-radius: 56px;
   cursor: pointer;
   width: 60%;
   justify-content: space-between;
   box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
-
-  border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  background-color: var(--header);
-  transition: border-color 0.25s;
+  background-color: var(--inputs);
+  transition: 0.25s;
 }
 
 .btn_search:hover {
-  border-color: var(--cor07);
+  border-color: var(--inputs);
   cursor: pointer;
 }
 
@@ -50,13 +47,14 @@
   border: none;
   outline: none;
   padding: 0.5em;
-  background-color: var(--header);
+  background-color: var(--inputs);
 }
 
 .search_input::placeholder {
   color: var(--cor600);
   font-family: "Inter", sans-serif;
   font-size: 1.2em;
+  font-weight: 500;
 }
 
 .search_history {
