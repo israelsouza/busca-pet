@@ -147,10 +147,24 @@ export default async function inserirUsuario(dados) {
     const resultadoQueryFinal = await connection.execute(queryFinal, []);
     console.log(resultadoQueryFinal.rows);
 
+    // Confirma a transação
+    await connection.commit();
+
     console.log("Fechando a conexão...");
     await connection.close();
   } catch (error) {
     console.error("Erro ao inserir usuário:", error);
+
+    // Realiza o rollback em caso de erro
+    if (connection) {
+      try {
+        await connection.rollback();
+        console.log("Rollback realizado com sucesso.");
+      } catch (rollbackError) {
+        console.error("Erro ao realizar rollback:", rollbackError);
+      }
+    }
+
     throw error;
   }
 }

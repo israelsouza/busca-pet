@@ -15,7 +15,14 @@ router.post("/", async (request, response) => {
 
   } catch (error) {
     // console.error("Erro ao cadastrar usuário:", error);
-    response.status(400).json({ message: error.message });
+
+    if (error.message.includes("ORA-")) {
+      response.status(400).json({ message: "Erro ao realizar o cadastro. Verifique os dados e tente novamente." });
+    } else {
+      // Retorna a mensagem original para erros tratados
+      response.status(400).json({ message: error.message });
+    }
+    
   }
 });
 
