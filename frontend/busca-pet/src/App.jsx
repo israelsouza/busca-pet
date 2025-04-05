@@ -24,7 +24,6 @@ function App() {
           />
           <Route path="/posts/criar-post/pet-perdido" element={<PetPerdido />} />
           <Route path="/posts/criar-post" element={<TelaPost />} />
-          <Route path="/form/post/pet-perdido" element={<PetPerdido />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
           <Route path="/posts/all" element={<PostsAll />} />
         </Routes>
