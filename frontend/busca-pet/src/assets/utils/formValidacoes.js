@@ -10,15 +10,15 @@ export function verificarCampoVazio(lista, select) {
     }
   });
 
-  select.forEach((currentElement) => {
-    if (currentElement.ref.value.length > 2) {
-      currentElement.setErro(currentElement.mensagem);
-      currentElement.ref.focus();
-      hasError = true;
-    } else {
-      currentElement.setErro("");
-    }
-  });
+  // select.forEach((currentElement) => {
+  //   if (currentElement.ref.value.length > 2) {
+  //     currentElement.setErro(currentElement.mensagem);
+  //     currentElement.ref.focus();
+  //     hasError = true;
+  //   } else {
+  //     currentElement.setErro("");
+  //   }
+  // });
 
   return hasError;
 }

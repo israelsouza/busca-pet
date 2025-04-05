@@ -6,6 +6,7 @@ import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 import TelaPost from "./pages/TelaPost";
+import PetPerdido from "./pages/PetPerdido";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
 import PostsAll from "./pages/PostsAll";
@@ -24,6 +25,7 @@ function App() {
           />
           <Route path="/posts/criar-post/pet-perdido" element={<PetPerdido />} />
           <Route path="/posts/criar-post" element={<TelaPost />} />
+          <Route path="/form/post/pet-perdido" element={<PetPerdido />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
           <Route path="/posts/all" element={<PostsAll />} />
         </Routes>
