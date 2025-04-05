@@ -9,6 +9,7 @@ import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 import TelaPost from "./pages/TelaPost";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
+import TodosPets from "./pages/postsAll";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/form/recuperacao-senha" element={<RecuperacaoSenha />} />
           <Route path="/posts/criar-post" element={<TelaPost />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
+          <Route path="/posts/all"  element={<TodosPets />}/>
         </Routes>
       </BrowserRouter>
     </div>

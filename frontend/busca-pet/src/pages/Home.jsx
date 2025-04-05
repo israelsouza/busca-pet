@@ -12,10 +12,6 @@ import { useEffect, useRef } from "react";
 
 
 
-    
-
-
-
 function Home(){
         const navigate = useNavigate();
         const sessaoColaborar = useRef(null);

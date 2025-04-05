@@ -83,6 +83,7 @@ function login() {
   return (
     <>
       <div className={styles.fundo_login}>
+
         <div className={styles.conjuntoEsquerdo}>
           <HeaderForm />
 
@@ -106,6 +107,7 @@ function login() {
                   {erroEmail}
                 </span>
               )}
+
             </div>
             <div className={styles.campos}>
               <label className={styles.login__label} htmlFor="senha">
