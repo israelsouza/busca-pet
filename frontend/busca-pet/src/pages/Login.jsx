@@ -27,7 +27,7 @@ function login() {
       "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail"
     ) 
 
-     verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  
+     if ( verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  )return true  
 
     const emailLowerCase = email.value.toLowerCase();
 
@@ -65,6 +65,7 @@ function login() {
     validarDadosDeLogin(data)
     .then((resultado) => {
       // Login bem-sucedido
+      setErroLogin("")
       console.log("Login realizado com sucesso:", resultado);
       // Redirecionar ou realizar outra ação
       setTimeout(() => navigate("/posts/all"), 2000); 
