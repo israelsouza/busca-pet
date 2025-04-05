@@ -1,4 +1,5 @@
-{/* 
+{
+  /* 
 
 // TODO: Implementar exibição de mensagens de sucesso/erro na interface
 // EXEMPLO DE COMO USAR O RETORNO PARA EXIBIR NA TELA
@@ -28,7 +29,8 @@
 }
       
       
-*/}
+*/
+}
 
 import { useRef, useState } from "react";
 import style from "./styles/cadastroUsuario.module.css";
@@ -70,6 +72,8 @@ function Cadastro() {
   const [erroCEP, setErroCEP] = useState("");
   const [erroCidade, setErroCidade] = useState("");
   const [erroEstado, setErroEstado] = useState("");
+
+  const [mensagem, setMensagem] = useState("");
 
   async function cadastrarUsuario(e) {
     e.preventDefault();
@@ -271,9 +275,20 @@ function Cadastro() {
         dados,
         "http://localhost:3000/form/cadastro-usuario"
       );
-      console.log("resposta do backend: ", dadosAoBack);
+
+      if (dadosAoBack.message) {
+        setMensagem(dadosAoBack.message);
+      } else {
+        setMensagem("Erro inesperado. Tente novamente.");
+      }
     } catch (error) {
-      console.log("erro ao enviar dados:", error);
+      
+      if (error.message) {
+        setMensagem(error.message);
+      } else {
+        // Exibe uma mensagem genérica para outros erros
+        setMensagem("Erro ao realizar o cadastro. Tente novamente.");
+      }
     }
   }
 
@@ -457,6 +472,7 @@ function Cadastro() {
                 </div>
               </form>
               <div className={style["cad__box-submit"]}>
+                {mensagem && <p className={style.cad__error}>{mensagem}</p>}
                 <ButtonForm
                   placeholder="Cadastrar"
                   algumaFuncao={cadastrarUsuario}
