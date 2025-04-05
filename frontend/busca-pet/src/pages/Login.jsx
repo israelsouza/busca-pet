@@ -20,7 +20,7 @@ function login() {
 
                 <div className={styles.campos}>
                   <label htmlFor="email">Email</label>
-                  <input type="text" placeholder="Digite a sua senha"></input>
+                  <input type="text" placeholder="Digite o seu email"></input>
                 </div>
                 <div className={styles.campos}>
                   <label htmlFor="senha">Senha</label>
