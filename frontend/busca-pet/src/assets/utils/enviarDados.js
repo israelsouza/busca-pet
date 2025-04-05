@@ -14,7 +14,9 @@ export default async function enviarDados(dados, URL) {
 
     const resultado = await response.json();
     console.log("Dados enviados com sucesso:", resultado);
+    return resultado
   } catch (error) {
     console.error("Erro ao enviar os dados:", error);
+    throw error
   }
 }
