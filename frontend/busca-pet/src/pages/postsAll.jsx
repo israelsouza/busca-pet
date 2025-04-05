@@ -1,13 +1,13 @@
 import dog_post from "../assets/imgs/dog_post.png";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png";
-import Buttonposts from "../components/button_posts.module";
+import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
 import dog_footerPosts from "../assets/imgs/dog_footerPosts.png";
 import style from "./styles/postsAll.module.css";
 
 function TodosPets() {
     return (
-        <div>
+        <div className={style.container}>
             <HeaderLog />
             <div className={style.opcaoContainer}>
                 <div className={style.headopcoes}>
@@ -21,10 +21,6 @@ function TodosPets() {
                     <Buttonposts />
                     <Buttonposts />
                 </div>
-            </div>
-
-            <div className={style.footercontainer}>
-                <img src={dog_footerPosts} alt="Topo da cabeça de um cachorro apresentando seu focinho, olhos e orelhas" height="200px" />
             </div>
         </div>
     );
