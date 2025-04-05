@@ -90,10 +90,6 @@
   justify-content: center;
 }
 
-.cad__error--cadastro{
-  text-align: center;
-}
-
 @media (max-width: 1200px) {
   .cad__error{
     margin-left: 50px;
