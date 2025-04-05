@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import PetPerdido from "./pages/PetPerdido";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import RecuperacaoSenha from "./pages/RecuperacaoSenha";

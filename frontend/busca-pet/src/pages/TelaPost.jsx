@@ -15,7 +15,7 @@ const TelaPost = () => {
           <Link to={''} className={`${styles.botao} ${styles.encontrou}`}>
             Encontrou um Pet
           </Link>
-          <Link to={''} className={`${styles.botao} ${styles.perdeu}`}>Perdeu um Pet</Link>
+          <Link to={'/posts/criar-post/pet-perdido'} className={`${styles.botao} ${styles.perdeu}`}>Perdeu um Pet</Link>
         </div>
       </div>
     </div>
