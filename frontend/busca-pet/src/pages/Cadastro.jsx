@@ -38,7 +38,7 @@ import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   verificarCampoVazio,
   verificarTamanhoMaximo,
@@ -51,6 +51,8 @@ import {
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
+  const navigate = useNavigate();
+
   // REFERENCIAS
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
@@ -278,9 +280,15 @@ function Cadastro() {
 
       if (dadosAoBack.message) {
         setMensagem(dadosAoBack.message);
+
+        if (dadosAoBack.message === "Cadastro realizado com sucesso") {
+          setTimeout(() => navigate("/form/login"), 2000); 
+        }
       } else {
         setMensagem("Erro inesperado. Tente novamente.");
       }
+
+
     } catch (error) {
       
       if (error.message) {
