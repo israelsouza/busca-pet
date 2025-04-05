@@ -13,7 +13,6 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/"  element={<TodosPets />}/>
           <Route path="/" element={<Home />} />
           <Route path="/form/cadastro" element={<Cadastro />} />
           <Route path="/form/login" element={<Login />} />
@@ -21,6 +20,7 @@ function App() {
 
           <Route path="/posts/criar-post" element={<TelaPost />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
+          <Route path="/posts/all"  element={<TodosPets />}/>
         </Routes>
       </BrowserRouter>
     </div>
