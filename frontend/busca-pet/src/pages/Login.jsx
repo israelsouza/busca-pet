@@ -13,11 +13,13 @@ import {
 import { useRef, useState } from "react";
 
 function login() {
+  const navigate = useNavigate();
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
 
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
+  const [erroLogin, setErroLogin] = useState("");
 
   function realizarLogin(e) {
     e.preventDefault();
@@ -31,6 +33,54 @@ function login() {
     ) 
 
      verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  
+
+    const emailLowerCase = email.value.toLowerCase();
+
+     const data = {
+      email: emailLowerCase,
+      password: senhaRef.current.value
+     }
+
+      async function validarDadosDeLogin(dados) {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/form/login"
+            , {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dados),
+          });
+
+          if (!response.ok) {
+            // Se o status não for 200, lança um erro com a mensagem apropriada
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erro ao realizar login.");
+          }
+      
+          const resultado = await response.json();
+      
+          return resultado
+        } catch (error) {
+          throw error
+        }
+     }
+
+    validarDadosDeLogin(data)
+    .then((resultado) => {
+      // Login bem-sucedido
+      console.log("Login realizado com sucesso:", resultado);
+      // Redirecionar ou realizar outra ação
+      setTimeout(() => navigate("/posts/all"), 2000); 
+    })
+    .catch((error) => {
+      // Exibe a mensagem de erro na tela
+      setErroEmail("");
+      setErroSenha("");
+      setErroLogin(error.message); // Exibe o erro 
+    });
+
 
   }
 
@@ -77,7 +127,12 @@ function login() {
                 </span>
               )}
             </div>
-            <button onClick={realizarLogin} className={styles.btn_login}>
+            {erroLogin && (
+                <span id="email-error" className='cad__eror'>
+                  {erroLogin}
+                </span>
+              )}
+            <button onClick={realizarLogin} className={styles.btn_login}> 
               Login
             </button>
           </form>
