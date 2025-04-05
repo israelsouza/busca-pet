@@ -67,7 +67,7 @@ function Home(){
                         <Link  className={style.linkhome} onClick={irParaColabore}>Colabore</Link>
                     </ul>
                 </nav>
-                <ButtonHome text_home="Cadastrar" path="/form/cadastro"/> 
+                <ButtonHome text_home="Cadastrar" path="/form/cadastro-usuario"/> 
                 <ButtonHome text_home="Login" path="/form/login"/> </div>
             </div>
 

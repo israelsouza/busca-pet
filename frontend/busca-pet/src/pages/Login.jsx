@@ -135,7 +135,7 @@ function login() {
           <div className={styles.redirect}>
             <p>
               Ainda não tem cadastro?{" "}
-              <Link className={styles.links} to={"/form/cadastro"}>
+              <Link className={styles.links} to={"/form/cadastro-usuario"}>
                 Cadastre-se!
               </Link>
             </p>
