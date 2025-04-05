@@ -19,11 +19,11 @@ function login() {
               <form className={styles.form_login}>
 
                 <div className={styles.campos}>
-                  <label htmlFor="email">Email</label>
-                  <input type="text" placeholder="Digite a sua senha"></input>
+                  <label className={styles.login__label} htmlFor="email">Email</label>
+                  <input type="text" placeholder="Digite o seu e-mail"></input>
                 </div>
                 <div className={styles.campos}>
-                  <label htmlFor="senha">Senha</label>
+                  <label className={styles.login__label} htmlFor="senha">Senha</label>
                   <input type="text" placeholder="Digite a sua senha"></input>
                 </div>
                 <button className={styles.btn_login}>Login</button>

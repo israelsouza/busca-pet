@@ -101,3 +101,7 @@
     }
 
 }
+
+.login__label{
+    color: var(--label)
+}
