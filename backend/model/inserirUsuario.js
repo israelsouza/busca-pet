@@ -8,89 +8,106 @@ export default async function inserirUsuario(dados) {
     connection = await getConnection();
     console.log("Iniciando a conexão...\n \n");
 
-     /**
-      * ESTADO  (id)
-      * CIDADE  (insert com relação)
-      */
+    /**
+     * ESTADO  (id)
+     * CIDADE  (insert com relação)
+     */
 
-     // pega ID estado
-     const selectEstado = `
+    // pega ID estado
+    const selectEstado = `
       SELECT EST_ID 
       FROM ESTADO 
       WHERE EST_SIGLA = :sigla
-     `
-     const resultadoSelectEstado = await connection.execute(selectEstado, {sigla: dados.estado})
-     const idEstado = resultadoSelectEstado.rows[0][0];
+     `;
+    const resultadoSelectEstado = await connection.execute(selectEstado, {
+      sigla: dados.estado,
+    });
+    const idEstado = resultadoSelectEstado.rows[0][0];
 
-     // insert cidade
-     const insertCidade = ` 
+    // insert cidade
+    const insertCidade = ` 
       INSERT INTO CIDADE (CID_DESCRICAO, EST_ID) 
       VALUES (:cidade, :idEstado) 
       RETURNING CID_ID INTO :id 
-     ` 
-     const resultadoInsertCidade = await connection.execute(insertCidade, {
-      cidade: dados.cidade,
-      idEstado: idEstado,
-      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT} // extraindo id Cidade
-     }, {autoCommit: true})
+     `;
+    const resultadoInsertCidade = await connection.execute(
+      insertCidade,
+      {
+        cidade: dados.cidade,
+        idEstado: idEstado,
+        id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT }, // extraindo id Cidade
+      },
+      { autoCommit: true }
+    );
 
-     // guardando ID cidade
-     const idCidade = resultadoInsertCidade.outBinds.id[0]
+    // guardando ID cidade
+    const idCidade = resultadoInsertCidade.outBinds.id[0];
 
-     /**
-      * ENDERECO (atribuir ID CIDADE)
-      */
+    /**
+     * ENDERECO (atribuir ID CIDADE)
+     */
 
-     // insert endereco
-     const insertEndereco = `
+    // insert endereco
+    const insertEndereco = `
       INSERT INTO ENDERECO (END_RUA, END_BAIRRO, END_CEP, CID_ID) 
       VALUES (:rua, :bairro, :cep, :idCidade) 
       RETURNING END_ID INTO :id
-     `
-     const resultadoInsertEndereco = await connection.execute(insertEndereco, {
-      rua: dados.rua,
-      bairro: dados.bairro,
-      cep: dados.cep,
-      idCidade: idCidade,
-      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT}
-     }, {autoCommit: true} )
+     `;
+    const resultadoInsertEndereco = await connection.execute(
+      insertEndereco,
+      {
+        rua: dados.rua,
+        bairro: dados.bairro,
+        cep: dados.cep,
+        idCidade: idCidade,
+        id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT },
+      },
+      { autoCommit: true }
+    );
 
-     const idEndereco = resultadoInsertEndereco.outBinds.id[0]
+    const idEndereco = resultadoInsertEndereco.outBinds.id[0];
 
-     /**
-      * PESSOA (pegar id endereco)
-      */
+    /**
+     * PESSOA (pegar id endereco)
+     */
 
-     // insert
+    // insert
     const insertPessoa = `
       INSERT INTO PESSOA (PES_NOME, PES_PHONE, END_ID)
       VALUES (:nome, :telefone, :idEndereco)
       RETURNING PES_ID INTO :id
     `;
-    const resultadoInsertPessoa = await connection.execute(insertPessoa, {
-      nome: dados.nome,
-      telefone: dados.telefone,
-      idEndereco: idEndereco,
-      id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT}
-    }, {autoCommit: true});
-    
-    const idPessoa = resultadoInsertPessoa.outBinds.id[0]
+    const resultadoInsertPessoa = await connection.execute(
+      insertPessoa,
+      {
+        nome: dados.nome,
+        telefone: dados.telefone,
+        idEndereco: idEndereco,
+        id: { type: OracleDB.NUMBER, dir: OracleDB.BIND_OUT },
+      },
+      { autoCommit: true }
+    );
 
+    const idPessoa = resultadoInsertPessoa.outBinds.id[0];
 
     /**
      * USUARIO (pegar id pessoa)
-     * 
+     *
      */
 
     const inserttUsuario = `
       INSERT INTO USUARIO (USU_EMAIL, USU_SENHA, PES_ID) 
       VALUES (:email, :senha, :idPessoa)
-    `
-    const resultadoInsertUsuario = await connection.execute(inserttUsuario, {
-      email: dados.email,
-      senha: dados.senha,
-      idPessoa: idPessoa
-    }, { autoCommit: true});
+    `;
+    const resultadoInsertUsuario = await connection.execute(
+      inserttUsuario,
+      {
+        email: dados.email,
+        senha: dados.senha,
+        idPessoa: idPessoa,
+      },
+      { autoCommit: true }
+    );
 
     const queryFinal = `
       SELECT  P.PES_NOME, U.USU_EMAIL, U.USU_SENHA, P.PES_PHONE, E.END_RUA, E.END_BAIRRO, E.END_CEP, C.CID_DESCRICAO, ES.EST_SIGLA
@@ -100,9 +117,9 @@ export default async function inserirUsuario(dados) {
         C.CID_ID  = E.CID_ID      AND
         E.END_ID  = P.END_ID      AND
         P.PES_ID  = U.PES_ID
-    `
-    const resultadoQueryFinal = await connection.execute(queryFinal, [])
-    console.log(resultadoQueryFinal.rows)
+    `;
+    const resultadoQueryFinal = await connection.execute(queryFinal, []);
+    console.log(resultadoQueryFinal.rows);
 
     console.log("Fechando a conexão...");
     await connection.close();
