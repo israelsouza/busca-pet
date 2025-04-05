@@ -8,6 +8,32 @@ export default async function inserirUsuario(dados) {
     connection = await getConnection();
     console.log("Iniciando a conexão...\n \n");
 
+    const verificaEmail = `
+      SELECT COUNT(*) AS TOTAL
+      FROM USUARIO
+      WHERE USU_EMAIL = :email
+    `;
+    const resultadoEmail = await connection.execute(verificaEmail, {
+      email: dados.email,
+    });
+
+    const verificaTelefone = `
+      SELECT COUNT(*) AS TOTAL
+      FROM PESSOA
+      WHERE PES_PHONE = :telefone
+    `;
+    const resultadoTelefone = await connection.execute(verificaTelefone, {
+      telefone: dados.telefone,
+    });
+
+    if (resultadoEmail.rows[0][0] > 0 && resultadoTelefone.rows[0][0] > 0) {
+      throw new Error("O e-mail e o telefone já estão cadastrados.");
+    } else if(resultadoEmail.rows[0][0] > 0) {
+      throw new Error("O e-mail já está cadastrado.");
+    } else if (resultadoTelefone.rows[0][0] > 0) {
+      throw new Error("O telefone já está cadastrado.");
+    }
+
     /**
      * ESTADO  (id)
      * CIDADE  (insert com relação)
