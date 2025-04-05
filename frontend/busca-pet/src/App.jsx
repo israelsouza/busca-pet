@@ -6,12 +6,14 @@ import RecuperacaoSenha from "./pages/RecuperacaoSenha";
 import TelaPost from "./pages/TelaPost";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
+import TodosPets from "./pages/postsAll";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/"  element={<TodosPets />}/>
           <Route path="/" element={<Home />} />
           <Route path="/form/cadastro" element={<Cadastro />} />
           <Route path="/form/login" element={<Login />} />

@@ -9,9 +9,6 @@ function PageResearch(){
     <div className={styles.main}>
 
         <HeaderLog/>
-            
-        {/* Configurações para o input de pesquisa */}
-
             <div className={styles.search_container}>
                 <div className={styles.search_box}>
                     <img src={listagem} alt="Ícone de listagem" className={styles.icon_left} />
