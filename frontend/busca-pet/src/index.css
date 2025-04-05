@@ -21,3 +21,21 @@
   --botaopesquisa: #ECEBEA;
   --hoverpesquisa: #7A3E19;
 }
+
+.cad__error{
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  color: red;
+  display: flex;
+  justify-content: center;
+}
+
+#email-error{
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  color: red;
+  display: flex;
+  justify-content: center;
+}
