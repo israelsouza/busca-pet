@@ -82,8 +82,16 @@
 }
 
 .cad__error{
-  margin-left: 100px;
-  color: red
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  color: red;
+  display: flex;
+  justify-content: center;
+}
+
+.cad__error--cadastro{
+  text-align: center;
 }
 
 @media (max-width: 1200px) {
