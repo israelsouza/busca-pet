@@ -4,8 +4,9 @@ import Buttonposts from "../components/button_posts.module";
 import HeaderLog from "../components/HeaderLog";
 import dog_footerPosts from "../assets/imgs/dog_footerPosts.png";
 import style from "./styles/postsAll.module.css";
+import { Link } from "react-router-dom";
 
-function TodosPets() {
+function PostsAll() {
     return (
         <div>
             <HeaderLog />
@@ -13,13 +14,15 @@ function TodosPets() {
                 <div className={style.headopcoes}>
                     <h1 className={style.h1}>Todos os Pets</h1>
                         <div className={style.buttoncontainer}>
-                            <button className={style.button}>Adicionar Pet encontrado/perdido</button>
+                            <Link to={'/posts/criar-post'} >
+                                <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
+                            </Link>
                             <button className={style.button}>Verificar Pet que eu publiquei</button>
                         </div>
                 </div>
                 <div className={style.posts}>
-                    <Buttonposts />
-                    <Buttonposts />
+                    <Buttonposts  />
+                    <Buttonposts  />
                 </div>
             </div>
 
@@ -30,4 +33,4 @@ function TodosPets() {
     );
 }
 
-export default TodosPets;
+export default PostsAll;
