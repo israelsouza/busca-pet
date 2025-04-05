@@ -80,3 +80,9 @@
   margin: 20px auto;
   max-width: 525px;
 }
+
+@media (max-width: 1200px) {
+  .cad__error{
+    margin-left: 50px;
+  }
+}

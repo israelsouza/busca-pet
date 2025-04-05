@@ -6,7 +6,6 @@ const TelaPost = () => {
   return (
     <div className={styles.bg_tela_post}>
 
-      
       <HeaderLog />
 
       <div className={styles.post__body}>
