@@ -4,10 +4,6 @@ import styles from "./styles/PetPerdido.module.css";
 
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
-import {
-    verificarCampoVazio,
-    verificarTamanhoMaximo,
-} from "../assets/utils/formValidacoes";
 
 function PetPerdido() {
     // Referências para os campos do formulário

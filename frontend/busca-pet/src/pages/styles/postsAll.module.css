@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.headopcoes{
+    margin: 10px;
+}
+
+.buttoncontainer{
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    justify-content: space-around;
+}
+
+.button{
+    padding: 20px;
+    border-radius: 100px;
+    background-color: var(--inputs);
+    border: none;
+    font-family: "Inter", sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    gap:10px;
+    color: var(--color-600);
+    box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+}
+
+.opcaoContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+.h1{
+    font-family: "Inter", sans-serif;
+    font-size: 2em;
+    font-weight: 400;
+}
+
+.posts {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    font-size: 16px;
+    height: 650px;
+}
+
+.footercontainer {
+    text-align: center;
+}

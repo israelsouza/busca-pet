@@ -1,5 +1,5 @@
 import express from "express";
-import inserirUsuarioBD from "../model/inserirUsuario.js";
+import verificarUsuarioDB from "../model/verificarUsuarioDB.js";
 
 const router = express.Router();
 
@@ -7,17 +7,17 @@ router.post("/", async (request, response) => {
   const dados = request.body;
   try {
 
-    await inserirUsuarioBD(dados);
+    await verificarUsuarioDB(dados);
 
     response
     .status(200)
-    .json({ message: "Cadastro realizado com sucesso" });
+    .json({ message: "Login realizado com sucesso" });
 
   } catch (error) {
-    // console.error("Erro ao cadastrar usuário:", error);
+    console.error("Erro ao logar com o usuário: -> ", error);
 
     if (error.message.includes("ORA-")) {
-      response.status(400).json({ message: "Erro ao realizar o cadastro. Verifique os dados e tente novamente." });
+      response.status(400).json({ message: "Erro ao tentar logar. Verifique os dados e tente novamente." });
     } else {
       // Retorna a mensagem original para erros tratados
       response.status(400).json({ message: error.message });

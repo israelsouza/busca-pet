@@ -2,25 +2,11 @@
 
 /* Estás configurações estão sendo usadas no HeaderLog */
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat+Brush&family=Indie+Flower&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jaro:opsz@6..72&family=Patrick+Hand&family=Young+Serif&display=swap");
-
-:root {
-  --header: #efa355;
-  --cor01: #f2d9b6;
-  --cor02: #f2b680;
-  --cor03: #daa570; /* Não está em uso no header */
-  --cor05: #7a3e19;
-  --cor07: #00000;
-  --cor600: #342019;
-  --fundo1: #ffeacc;
-  --fundo2: #ecebea;
-}
-
 /*  Configurações da Página de Pesquisa*/
 
 .main {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-image: url(../../assets/imgs/mapa_alt.png);
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -34,28 +20,47 @@
   margin-bottom: 3em;
 }
 
+.search_box {
+  display: flex;
+  align-items: center;
+  justify-items: auto;
+  background-color: var(--inputs);
+  padding: 15px;
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.5s ease;
+  width: 60%;
+}
+
+.search_box:hover{
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  border-color: var(--color-600);
+  cursor: pointer;
+}
+
 .search_button {
   display: flex;
   align-items: center;
-  background: var(--cor01);
-  border: 2px solid var(--cor01);
-  border-radius: 28px;
+
+  border: 2px solid var(--inputs);
+
+  border-radius: 56px;
   cursor: pointer;
   width: 60%;
   justify-content: space-between;
   box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
-
-  border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  background-color: var(--header);
-  transition: border-color 0.25s;
+
+  background-color: var(--inputs);
+  transition: 0.25s;
 }
 
 .btn_search:hover {
-  border-color: var(--cor07);
+  border-color: var(--inputs);
   cursor: pointer;
+
 }
 
 .search_input {
@@ -64,13 +69,14 @@
   border: none;
   outline: none;
   padding: 0.5em;
-  background-color: var(--header);
+  background-color: var(--inputs);
 }
 
 .search_input::placeholder {
   color: var(--cor600);
   font-family: "Inter", sans-serif;
   font-size: 1.2em;
+  font-weight: 500;
 }
 
 .search_history {
