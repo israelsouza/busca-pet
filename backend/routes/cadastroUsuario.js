@@ -3,13 +3,27 @@ import inserirUsuarioBD from "../model/inserirUsuario.js";
 
 const router = express.Router();
 
-router.post("/", (request, response) => {
+router.post("/", async (request, response) => {
   const dados = request.body;
-  response
-    .status(200)
-    .json({ message: "Mensagem vinda do Backend: Dados enviados com sucesso" });
+  try {
 
-  inserirUsuarioBD(dados);
+    await inserirUsuarioBD(dados);
+
+    response
+    .status(200)
+    .json({ message: "Cadastro realizado com sucesso" });
+
+  } catch (error) {
+    // console.error("Erro ao cadastrar usuário:", error);
+
+    if (error.message.includes("ORA-")) {
+      response.status(400).json({ message: "Erro ao realizar o cadastro. Verifique os dados e tente novamente." });
+    } else {
+      // Retorna a mensagem original para erros tratados
+      response.status(400).json({ message: error.message });
+    }
+    
+  }
 });
 
 export default router;
