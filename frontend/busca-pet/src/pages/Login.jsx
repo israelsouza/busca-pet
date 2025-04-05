@@ -1,13 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles/login.module.css";
 import HeaderForm from "../components/HeaderForm";
 import {
-  verificarCampoVazio,
-  verificarTamanhoMaximo,
-  verificarTamanhoFixo,
   verificarTamanhoMinimo,
-  verificarSeTemLetras,
-  verificarSeTemNumeros,
   verificarSeEEmail,
 } from "../assets/utils/formValidacoes";
 import { useRef, useState } from "react";
