@@ -68,6 +68,10 @@ function login() {
       // Login bem-sucedido
       setErroLogin("")
       setMensagemSucesso("Login realizado com sucesso!");
+
+      // Armazena o token no localStorage
+      localStorage.setItem("authToken", resultado.token);
+
       // Redirecionar ou realizar outra ação
       setTimeout(() => navigate("/posts/all"), 1000); 
     })
