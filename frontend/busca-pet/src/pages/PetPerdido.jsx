@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import styles from "./styles/PetPerdido.module.css";
 
-// Importa o cabeçalho e funções de validação
+// Importa o cabeçalho
 import HeaderLog from "./../components/HeaderLog";
 
 function PetPerdido() {
@@ -13,6 +13,7 @@ function PetPerdido() {
     const descricaoRef = useRef(null);
     const dataRef = useRef(null);
     const imagemRef = useRef(null);
+    const cepRef = useRef(null);
 
     // Estados para armazenar mensagens de erro e informações do formulário
     const [nomeImagem, setNomeImagem] = useState(""); // Nome do arquivo de imagem selecionado
@@ -22,116 +23,144 @@ function PetPerdido() {
     const [erroDescricao, setErroDescricao] = useState(""); // Mensagem de erro para o campo "Descrição"
     const [erroData, setErroData] = useState(""); // Mensagem de erro para o campo "Data"
     const [erroImagem, setErroImagem] = useState(""); // Mensagem de erro para o campo "Imagem"
+    const [erroCep, setErroCep] = useState(""); // Mensagem de erro para o campo "CEP"
 
     // Função para tratar a seleção de uma imagem
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0]; // Obtém o arquivo selecionado
+
         if (arquivo) {
-            setNomeImagem(arquivo.name); // Atualiza o estado com o nome do arquivo
+            const tiposPermitidos = ["image/jpeg", "image/png", "image/jpg"]; // Tipos de imagem permitidos
+
+            if (tiposPermitidos.includes(arquivo.type)) {
+                setNomeImagem(arquivo.name); // Atualiza o estado com o nome do arquivo
+                setErroImagem(""); // Remove a mensagem de erro
+            } else {
+                setNomeImagem(""); // Reseta o estado do nome da imagem
+                setErroImagem("Por favor, selecione um arquivo de imagem válido (JPEG ou PNG)."); // Define a mensagem de erro
+            }
         } else {
             setNomeImagem(""); // Reseta o estado caso nenhum arquivo seja selecionado
+            setErroImagem("Por favor, selecione uma imagem."); // Define a mensagem de erro
         }
     }
 
-    // Função para validar o campo "RGA" (aceita apenas números)
+    // Função para validar o campo "RGA" (aceita apenas números e tem limite de caracteres)
     function handleRgaAlterado(e) {
         const valor = e.target.value;
         if (/^\d*$/.test(valor)) {
-            rgaRef.current.value = valor; // Atualiza o valor do campo
-            setErroRga(""); // Remove a mensagem de erro
+            if (valor.length > 15) {
+                setErroRga("O RGA pode conter no máximo 15 caracteres."); // Define a mensagem de erro
+            } else {
+                rgaRef.current.value = valor; // Atualiza o valor do campo
+                setErroRga(""); // Remove a mensagem de erro
+            }
         } else {
             setErroRga("O RGA deve conter apenas números."); // Define a mensagem de erro
         }
     }
 
-    // Função para validar o campo "Nome" (aceita apenas letras e espaços)
+    // Função para validar o campo "CEP"
+    function handleCepAlterado(e) {
+        const valor = e.target.value;
+        if (/^\d{5}-?\d{3}$/.test(valor)) { // Valida o formato do CEP (ex: 12345-678 ou 12345678)
+            cepRef.current.value = valor; // Atualiza o valor do campo
+            setErroCep(""); // Remove a mensagem de erro
+        } else {
+            setErroCep("O CEP deve estar no formato 12345-678."); // Define a mensagem de erro
+        }
+    }
+
+    // Função para validar o campo "Nome" (aceita apenas letras e espaços e tem limite de caracteres)
     function handleNomeAlterado(e) {
         const valor = e.target.value;
         if (/^[a-zA-ZÀ-ÿ\s]*$/.test(valor)) {
-            nomeRef.current.value = valor; // Atualiza o valor do campo
-            setErroNome(""); // Remove a mensagem de erro
+            if (valor.length > 70) {
+                setErroNome("O nome pode conter no máximo 70 caracteres."); // Define a mensagem de erro
+            } else {
+                nomeRef.current.value = valor; // Atualiza o valor do campo
+                setErroNome(""); // Remove a mensagem de erro
+            }
         } else {
             setErroNome("O nome deve conter apenas letras."); // Define a mensagem de erro
         }
+    }
+
+    // Função para verificar se os campos obrigatórios estão vazios
+    function verificarCampoVazio(campos) {
+        let algumCampoVazio = false;
+
+        campos.forEach(({ ref, setErro, mensagem, tipo }) => {
+            if (!ref.current.value.trim()) {
+                setErro(mensagem); // Define a mensagem de erro
+                algumCampoVazio = true;
+            } else if (tipo === "imagem") {
+                // Validação específica para o campo de imagem
+                const arquivo = ref.current.files[0];
+                const tiposPermitidos = ["image/jpeg", "image/png", "image/jpg"];
+                if (!arquivo || !tiposPermitidos.includes(arquivo.type)) {
+                    setErro("Por favor, selecione um arquivo de imagem válido (JPEG ou PNG).");
+                    algumCampoVazio = true;
+                } else {
+                    setErro(""); // Remove a mensagem de erro
+                }
+            } else {
+                setErro(""); // Remove a mensagem de erro
+            }
+        });
+
+        return algumCampoVazio;
     }
 
     // Função para validar os dados do formulário ao clicar no botão
     function validarFormulario(e) {
         e.preventDefault(); // Evita o comportamento padrão do formulário (recarregar a página)
 
-        // Obtém os valores dos campos do formulário
-        const nome = nomeRef.current;
-        const rga = rgaRef.current;
-        const tipoPet = tipoPetRef.current;
-        const descricao = descricaoRef.current;
-        const data = dataRef.current;
-        const imagem = imagemRef.current;
-
         // Lista de campos obrigatórios e suas mensagens de erro
         const camposObrigatorios = [
             {
-                ref: nome,
+                ref: nomeRef,
                 setErro: setErroNome,
                 mensagem: "Por favor, insira o nome do seu pet.",
             },
             {
-                ref: descricao,
+                ref: descricaoRef,
                 setErro: setErroDescricao,
                 mensagem: "Por favor, insira a descrição do seu pet.",
             },
             {
-                ref: tipoPet,
+                ref: tipoPetRef,
                 setErro: setErroTipoPet,
                 mensagem: "Por favor, selecione o tipo do seu pet.",
             },
             {
-                ref: data,
+                ref: dataRef,
                 setErro: setErroData,
                 mensagem: "Por favor, insira a data em que perdeu o seu pet.",
             },
             {
-                ref: imagem,
+                ref: imagemRef,
                 setErro: setErroImagem,
                 mensagem: "Por favor, insira a imagem do seu pet.",
+                tipo: "imagem", // Indica que este campo é do tipo imagem
+            },
+            {
+                ref: cepRef,
+                setErro: setErroCep,
+                mensagem: "Por favor, insira o CEP onde encontrou o pet.",
             },
         ];
 
-        // Verifica se algum campo obrigatório está vazio
-        if (verificarCampoVazio(camposObrigatorios)) return true;
+        // Verifica se algum campo obrigatório está vazio ou inválido
+        if (verificarCampoVazio(camposObrigatorios)) return;
 
         // Validação específica para o campo "Tipo do Pet"
-        if (tipoPet.value === "Selecione o tipo do pet") {
+        if (tipoPetRef.current.value === "Selecione o tipo do pet") {
             setErroTipoPet("Por favor, selecione o tipo do seu pet.");
-            return true;
+            return;
         } else {
             setErroTipoPet(""); // Remove a mensagem de erro se o valor for válido
         }
-
-        // Validações de tamanho máximo para os campos
-        const camposTamanhoMaximo = [
-            {
-                ref: nome,
-                limite: 70,
-                setErro: setErroNome,
-                mensagem:
-                    "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor",
-            },
-            {
-                ref: rga,
-                limite: 15,
-                setErro: setErroRga,
-                mensagem: "O RGA pode conter no máximo 15 caracteres.",
-            },
-            {
-                ref: descricao,
-                limite: 150,
-                setErro: setErroDescricao,
-                mensagem:
-                    "Você atingiu o limite máximo de 150 caracteres. Por favor, digite uma descrição menor",
-            },
-        ];
-
-        if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
         // Se todas as validações passarem, o formulário é considerado válido
         console.log("Formulário válido!");
@@ -220,6 +249,22 @@ function PetPerdido() {
                             )}
                         </div>
 
+                        {/* Campo CEP */}
+                        <div className={styles.pet_perdido__input100}>
+                            <label htmlFor="cep">Informe o CEP que achou o Pet (temporário)</label>
+                            <input
+                                id="cep"
+                                ref={cepRef}
+                                className={`${styles.pet_perdido__input} ${styles.pet_perdido__cep}`}
+                                onChange={handleCepAlterado} // Validação do CEP
+                            />
+                            {erroCep && (
+                                <span id="cep-error" className={styles.error}>
+                                    {erroCep}
+                                </span>
+                            )}
+                        </div>
+
                         {/* Campo Data */}
                         <div className={styles.pet_perdido__input100}>
                             <label htmlFor="data">Data</label>
@@ -268,7 +313,7 @@ function PetPerdido() {
                             className={`${styles.botao} ${styles.perdeu}`}
                             onClick={validarFormulario} // Validação do formulário
                         >
-                            Cadastrar Pet Perdido
+                            Avançar
                         </button>
                     </div>
                 </div>
