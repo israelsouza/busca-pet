@@ -9,6 +9,7 @@ import PetPerdido from "./pages/PetPerdido";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
 import PostsAll from "./pages/PostsAll";
+import VisualizePerfil from "./pages/PerfilVisualizar";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/posts/criar-post" element={<TelaPost />} />
           <Route path="/posts/pesquisa" element={<PageResearch />} />
           <Route path="/posts/all" element={<PostsAll />} />
+          <Route path="/Perfil" element={<VisualizePerfil />}/>
         </Routes>
       </BrowserRouter>
     </div>
