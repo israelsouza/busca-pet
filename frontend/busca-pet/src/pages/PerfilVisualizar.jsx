@@ -1,4 +1,4 @@
-import HeaderLog from "../components/HeaderLog";
+import HeaderEdicao from "../components/HeaderEdicao";
 import icon_conta from "../assets/imgs/icon_conta.png";
 import icon_notificacoes from "../assets/imgs/icon_notificacoes.png";
 import BotaoSection from "../components/ButtonSection";
@@ -9,7 +9,7 @@ import Style from "../pages/styles/PerfilVisualizar.module.css";
 import fundo_pato from "../assets/imgs/fundo_pato.png";
 function VisualizePerfil(){    
         return <div>
-            <HeaderLog />
+            <HeaderEdicao />
             <div className={Style.container}>
             <div className={Style.FotoDivisao}></div>
                 <section className={Style.perfilSection}>   
