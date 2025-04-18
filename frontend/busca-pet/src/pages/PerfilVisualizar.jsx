@@ -5,6 +5,7 @@ import BotaoSection from "../components/ButtonSection";
 import icon_publicacoes from "../assets/imgs/icon_publicacoes.png";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png";
 import ButtonSection from "../components/ButtonSection";
+import Style from "../pages/styles/PerfilVisualizar.module.css";
 function VisualizePerfil(){    
         return <div>
             <HeaderLog />
@@ -12,10 +13,14 @@ function VisualizePerfil(){
 
                 </div>
                 <section>
-                    <article>
+                    <article className={Style.cabecalho}>
                     <img src={avatar_usuario} alt="icone de foto de usuário" />
-                    <h1>User 1</h1>
-                    <h2>Nome Exemplo do Usuário</h2>
+                    <div className={Style.namecontainer}>
+                    <h1 className={Style.h1}>User 1</h1>
+                    <h2 className={Style.h2}>Nome Exemplo do Usuário</h2>
+                    </div>
+                    </article>
+                    <article>
                     <BotaoSection img_icone={icon_conta} nome_section="Conta" alt="Icone de perfil" text_section="Informações de contato e endereço." acesso="" />
                     </article>
                         <BotaoSection img_icone={icon_notificacoes} nome_section="Notificações" alt="Icone de notificações" text_section="Informações Veja quem interagiu com sua publicação." acesso=""/>
