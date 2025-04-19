@@ -1,21 +1,27 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
+.container{
+  display: flex;
+  height: 100vh;
+}
+
 
 .EditContato{
     justify-items: center;
     width: 50vw;
-    background-color: blue;
+    /* background-color: blue; */
     padding: 20px;
-    box-sizing: border-box;
-    display: flex;
     flex-direction: column;
-}
-
-.EditEndereco {
+  }
+  
+  .EditEndereco {
     justify-items: center;
     width: 50vw;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     padding: 20px;
-    box-sizing: border-box;
-    display: flex;
     flex-direction: column;
   }
   
@@ -36,7 +42,6 @@
     padding: 20px;
 }
 
-
  label {
     width: 150px;
     display: flex;
@@ -46,7 +51,7 @@
     font-size: 1em;
     text-align: center;
     color: #000000;
-    background-color: palevioletred;
+    /* background-color: palevioletred; */
 }
 
 input:active, input:focus {
@@ -60,8 +65,10 @@ input:active, input:focus {
     padding: 12px;
     width: 150px;
     margin-right: 5px;
-    border: solid rgba(82, 81, 81, 0.5) 0.1em;
+    background-color: var(--botaopesquisa);
+    border: solid rgb(0, 0, 0) 0.1em;
     border-radius: 8px;
+    
   }
 
 
@@ -73,13 +80,14 @@ input:active, input:focus {
     border: solid rgba(82, 81, 81, 0.5) 0.1em;
     border-radius: 8px;
     margin-right: 5px;
+    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
   }
 
   input, select::after{
     border: none;
   }
 
-button{
+  button{
     font-family: "Inter", sans-serif;
     display: flex;
     align-items: center;
@@ -89,22 +97,48 @@ button{
     padding: 10px;  
     border-radius: 8px;
     cursor: pointer;
+    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
   }
   
-  button:hover {
+button:hover {
     transition: 0.5s;
     transform: scale(1.05);
-    background-color: #e5943c;
+    background-color: var(--botao);
   }
-  
+
+.picture_input{
+  display: none;
+} 
+
+.campo2{
+  width: 35vw;
+  display: flex;
+  justify-content: center;
+}
+
+.editFoto{
+  background-color: var(--botao);
+  align-items: center;justify-content: space-evenly;
+  width: 20vw;
+  padding: 12px;
+  background-image: url(../../assets/imgs/Upload.png);
+  background-position: left;
+  background-repeat: no-repeat;
+  background-position: 20px;
+  border-radius: 28px;
+  font-weight: normal;
+  box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+}
+
+.editFoto:hover{
+  transition: 0.5s;
+  transform: scale(1.05); 
+}
+
   .containerfoto {
     background-image: url(../../assets/imgs/fundo_passaro.png);
     background-repeat: no-repeat;
-    background-size: cover; 
-    height: 100vh;
+    height: 116.7vh;
     width: 50vw;
-    display: flex;
-    align-self: flex-end;
-    justify-content: flex-end;
-    align-items: center;
+    justify-self: right;
 }

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Style from "../pages/styles/EditPerfil.module.css";
 import fundo_passaro from "../assets/imgs/fundo_passaro.png";
+import avatar_usuario from "../assets/imgs/avatar_usuario.png";
+import Upload from "../assets/imgs/Upload.png";
+import HeaderEdicao from "../components/HeaderEdicao"
 function EdicaoPerfil() {
   const [formData, setFormData] = useState({
     nome_usuario: "User01",
@@ -29,8 +32,10 @@ function EdicaoPerfil() {
   };
 
   return (
+    <div>
+    <HeaderEdicao />
     <div className={Style.container}>
-
+    <div className={Style.colunaForm}>
       <div className={Style.EditContato}>
         <h2 className={Style.h2}>Informações de Contato</h2>
 
@@ -71,8 +76,16 @@ function EdicaoPerfil() {
             value={formData.email}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("email")}>Editar</button>
+          <button onClick={() => atualizarCampo("email")} className={Style.button}>Editar</button>
         </div>
+        
+     
+        <div className={Style.campo2}>
+          <label className={Style.editFoto}>
+          <img src={Style.Upload} />Editar Foto de Perfil <input type="file" accept="image/*" className={Style.picture_input}/>
+          </label>
+         </div>
+
       </div>
 
       <div className={Style.EditEndereco}>
@@ -118,11 +131,37 @@ function EdicaoPerfil() {
             <option value="SP">SP</option>
             <option value="RJ">RJ</option>
             <option value="MG">MG</option>
+            <option value="AC">AC</option>  
+            <option value="AL">AL</option>
+            <option value="AM">AM</option>
+            <option value="AP">AP</option>
+            <option value="BA">BA</option>
+            <option value="CE">CE</option>
+            <option value="DF">DF</option>
+            <option value="ES">ES</option>
+            <option value="GO">GO</option>
+            <option value="MA">MA</option>
+            <option value="MT">MT</option>
+            <option value="MS">MS</option>
+            <option value="PA">PA</option>
+            <option value="PB">PB</option>
+            <option value="PE">PE</option>
+            <option value="PI">PI</option>
+            <option value="PR">PR</option>
+            <option value="RN">RN</option>
+            <option value="RO">RO</option>
+            <option value="RR">RR</option>
+            <option value="RS">RS</option>
+            <option value="SC">SC</option>
+            <option value="SE">SE</option>
+            <option value="TO">TO</option>
           </select>
           <button onClick={() => atualizarCampo("estado")}>Editar</button>
         </div>
       </div>
-      <div className={Style.containerfoto}></div> 
+    </div>
+      <div className={Style.containerfoto}></div>   
+    </div>
     </div>
   );
 }
