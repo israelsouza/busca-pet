@@ -17,15 +17,15 @@
   --color-600: #342019;
   --color-other-orange: #ff600b;
   --links: #ff600b;
-  --botaohome: #4B2B1E;
-  --botaopesquisa: #ECEBEA;
-  --hoverpesquisa: #7A3E19;
-  --color03: #DDB893;
-  --color04: #BF815E;
-  --post: #EBEAEA;
+  --botaohome: #4b2b1e;
+  --botaopesquisa: #ecebea;
+  --hoverpesquisa: #7a3e19;
+  --color03: #ddb893;
+  --color04: #bf815e;
+  --post: #ebeaea;
 }
 
-.cad__error{
+.cad__error {
   text-align: center;
   margin: 0 auto;
   width: 100%;
@@ -34,7 +34,16 @@
   justify-content: center;
 }
 
-#email-error{
+.sucess_form {
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  color: green;
+  display: flex;
+  justify-content: center;
+}
+
+#email-error {
   text-align: center;
   margin: 0 auto;
   width: 100%;
@@ -43,6 +52,6 @@
   justify-content: center;
 }
 
-#link-btn:hover{
+#link-btn:hover {
   cursor: pointer;
 }
