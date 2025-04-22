@@ -248,7 +248,7 @@ function Cadastro() {
         setMensagem(dadosAoBack.message);
 
         if (dadosAoBack.message === "Cadastro realizado com sucesso") {
-          setTimeout(() => navigate("/form/login"), 2000); 
+          setTimeout(() => navigate("/form/login"), 1200); 
         }
       } else {
         setMensagem("Erro inesperado. Tente novamente.");
@@ -319,7 +319,7 @@ function Cadastro() {
                 />
 
                 {erroNome && (
-                  <span id="nome-error" className={style.cad__error}>
+                  <span id="email-error" className={style.cad__error}>
                     {erroNome}
                   </span>
                 )}
@@ -441,7 +441,7 @@ function Cadastro() {
                   </select>
 
                   {erroEstado && (
-                    <span className={style.cad__error}>{erroEstado}</span>
+                    <span id="email-error" className={style.cad__error}>{erroEstado}</span>
                   )}
                 </div>
               </form>
