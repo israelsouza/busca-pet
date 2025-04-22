@@ -5,6 +5,8 @@ import styles from "./styles/PetPerdido.module.css";
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
 
+import enviarDados from "../assets/utils/enviarDados";
+
 function PetPerdido() {
     // Referências para os campos do formulário
     const nomeRef = useRef(null);
@@ -109,7 +111,10 @@ function PetPerdido() {
             imagem: imagemRef.current.value
         }
 
-        console.log(dados)
+       enviarDados(dados, "http://localhost:3000/criar-post/pet-perdido");
+
+
+
 
     }
 
