@@ -99,6 +99,18 @@ function PetPerdido() {
 
         // Se todas as validações passarem, o formulário é considerado válido
         console.log("Formulário válido!");
+
+        const dados = {
+            nome: nomeRef.current.value,
+            rga: rgaRef.current.value,
+            tipoPet: tipoPetRef.current.value,
+            descricao: descricaoRef.current.value,
+            data: dataRef.current.value,
+            imagem: imagemRef.current.value
+        }
+
+        console.log(dados)
+
     }
 
     return (
