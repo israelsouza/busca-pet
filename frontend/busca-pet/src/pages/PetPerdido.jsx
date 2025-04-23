@@ -30,6 +30,8 @@ function PetPerdido() {
     const [erroData, setErroData] = useState(""); // Mensagem de erro para o campo "Data"
     const [erroImagem, setErroImagem] = useState(""); // Mensagem de erro para o campo "Imagem"
 
+  const [mensagem, setMensagem] = useState("");
+
     // Função para tratar a seleção de uma imagem
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0]; // Obtém o arquivo selecionado
@@ -248,6 +250,12 @@ function PetPerdido() {
                             </span>
                         )}
                     </form>
+
+          {mensagem && (
+            <span id="imagem-error" className={styles.error}>
+              {mensagem}
+            </span>
+          )}
 
                     {/* Botão de Enviar */}
                     <div className={styles.botao_center}>
