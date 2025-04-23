@@ -1,5 +1,7 @@
 // Importa os hooks do React e os estilos do componente
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { checkAuthentication } from "../assets/utils/checkAuthentication.js";
 import styles from "./styles/PetPerdido.module.css";
 
 // Importa o cabeçalho e funções de validação
@@ -8,6 +10,9 @@ import HeaderLog from "./../components/HeaderLog";
 import enviarDados from "../assets/utils/enviarDados";
 
 function PetPerdido() {
+    const navigate = useNavigate();
+
+    useEffect(() => checkAuthentication(navigate), [navigate]);
     // Referências para os campos do formulário
     const nomeRef = useRef(null);
     const rgaRef = useRef(null);
