@@ -1,6 +1,6 @@
 import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
-import React, { useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 import style from "./styles/postsAll.module.css";
 import { Link } from "react-router-dom";
 import { validateToken } from "../assets/utils/validateToken";
