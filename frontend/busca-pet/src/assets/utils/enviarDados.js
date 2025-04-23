@@ -1,6 +1,6 @@
-export default async function enviarDados(dados, URL) {
+export default async function enviarDados(dados, endpointBackend) {
   try {
-    const response = await fetch(URL, {
+    const response = await fetch(`http://localhost:3000/${endpointBackend}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

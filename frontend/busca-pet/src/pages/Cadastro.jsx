@@ -241,7 +241,7 @@ function Cadastro() {
     try {
       const dadosAoBack = await enviarDados(
         dados,
-        "http://localhost:3000/form/cadastro-usuario"
+        "form/cadastro-usuario"
       );
 
       if (dadosAoBack.message) {

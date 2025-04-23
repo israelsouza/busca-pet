@@ -121,7 +121,8 @@ function PetPerdido() {
 
 
 
-    }
+    enviarDados(dadosDeCadastro, "criar-post/pet-perdido");
+  }
 
     return (
         <div className={styles.pet_perdido}>
