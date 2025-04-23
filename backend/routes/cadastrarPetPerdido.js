@@ -1,11 +1,16 @@
 import express from "express";
 import getUserIdByEmail  from "../model/getUserId.js";
 import getConnection from "../model/connectionOracle.js";
+import inserirPet from "../model/inserirPet.js";
+import upload from "../middleware/multerConfig.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-    const dados = req.body;
+
+
+router.post("/", upload.single("imagem"), async (req, res) => {
+    const { nome, rga, tipoPet, descricao, data } = req.body;
+    const imagem = req.file; // Arquivo enviado
     console.log("============ Cadastrar PET PERDIDO ================")
 
     let connection;
@@ -28,7 +33,23 @@ router.post("/", async (req, res) => {
         connection = await getConnection();
         console.log("Iniciando transação de Cadastro")
 
+        const dados = {
+            nome,
+            rga,
+            tipo: tipoPet,
+            descricao,
+            data,
+            imagem: imagem.path, // Caminho do arquivo salvo
+            idUser,
+        };        
 
+        console.table(dados)
+
+        const idPet = await inserirPet(connection, dados);
+
+        console.log(idPet)
+
+        console.log("sucesso ao cadastrar o pet")
     } catch (error) {
         if (connection) {
         await connection.rollback();
