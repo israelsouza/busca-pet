@@ -1,7 +1,7 @@
 // Importa os hooks do React e os estilos do componente
-import { useRef, useState } from "react";
+import validateToken from "../assets/utils/validateToken.js";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkAuthentication } from "../assets/utils/checkAuthentication.js";
 import styles from "./styles/PetPerdido.module.css";
 
 // Importa o cabeçalho e funções de validação
@@ -12,7 +12,20 @@ import enviarDados from "../assets/utils/enviarDados";
 function PetPerdido() {
     const navigate = useNavigate();
 
-    useEffect(() => checkAuthentication(navigate), [navigate]);
+    useEffect(() => {
+          const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); // Exibe a mensagem de erro para o usuário
+              localStorage.removeItem("authToken"); // Remove o token inválido
+              navigate("/form/login"); // Redireciona para o login
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
     // Referências para os campos do formulário
     const nomeRef = useRef(null);
     const rgaRef = useRef(null);

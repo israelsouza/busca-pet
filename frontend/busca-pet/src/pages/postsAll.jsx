@@ -3,13 +3,25 @@ import HeaderLog from "../components/HeaderLog";
 import React, { useEffect } from "react";
 import style from "./styles/postsAll.module.css";
 import { Link } from "react-router-dom";
-import { checkAuthentication } from "../assets/utils/checkAuthentication.js";
 import { useNavigate } from "react-router-dom";
+import validateToken from '../assets/utils/validateToken.js'
 
 function PostsAll() {
     const navigate = useNavigate();
 
-    useEffect(() => checkAuthentication(navigate), [navigate]);
+    useEffect(() => {
+      const checkAuthentication = async () => {
+        try {
+          await validateToken();
+        } catch (error) {
+          console.error("Erro capturado:", error.message);
+          alert(error.message); // Exibe a mensagem de erro para o usuário
+          localStorage.removeItem("authToken"); // Remove o token inválido
+          navigate("/form/login"); // Redireciona para o login
+        }
+      };
+      checkAuthentication();
+    }, [navigate]);
 
     return (
         <div className={style.container}>
