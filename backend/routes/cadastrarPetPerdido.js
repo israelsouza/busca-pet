@@ -1,12 +1,14 @@
 import express from "express";
 import getUserIdByEmail  from "../model/getUserId.js";
+import getConnection from "../model/connectionOracle.js";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     const dados = req.body;
-    console.log(dados)
     console.log("============ Cadastrar PET PERDIDO ================")
+
+    let connection;
 
     try {
         const email = req.user.email;
@@ -23,9 +25,18 @@ router.post("/", async (req, res) => {
 
         console.log("ID do usuário:", idUser);
 
+        connection = await getConnection();
+        console.log("Iniciando transação de Cadastro")
+
 
     } catch (error) {
-        console.error("Erro ao obter o email do usuário:", error);
+        if (connection) {
+        await connection.rollback();
+        console.log("Rollback realizado com sucesso.");
+        }
+    } finally {
+        if (connection) await connection.close()
+        console.log("Conexão com o banco de dados encerrada.");
     }
     
 })
