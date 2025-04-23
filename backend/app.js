@@ -23,6 +23,6 @@ app.use("/validate-token", validateToken);
 
 // rotas privadas (protegidas)
 // app.use("/posts/all", autenticarToken, getTodosPosts);
-app.use("/criar-post/pet-perdido", cadastrarPetPerdido)
+app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido)
 
 export default app;
