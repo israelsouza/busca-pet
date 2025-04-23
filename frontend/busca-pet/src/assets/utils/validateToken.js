@@ -1,4 +1,4 @@
-export async function validateToken() {
+async function validateToken() {
   const token = localStorage.getItem("authToken");
 
   if (!token) {    
@@ -30,3 +30,5 @@ export async function validateToken() {
 
   return true;
 }
+
+export default validateToken;
