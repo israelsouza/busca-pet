@@ -1,11 +1,15 @@
 // Importa os hooks do React e os estilos do componente
-import validateToken from "../assets/utils/validateToken.js";
 import { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import validateToken from '../assets/utils/validateToken.js'
 import styles from "./styles/PetPerdido.module.css";
+import {
+  verificarCampoVazioPet,
+  verificarTamanhoMaximo
+} from "../assets/utils/formValidacoes";
 
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
+import { useNavigate } from "react-router-dom";
 
 import enviarDados from "../assets/utils/enviarDados";
 
@@ -118,6 +122,42 @@ function PetPerdido() {
             },
         ];
 
+        // Verifica se algum campo obrigatório está vazio
+        if (verificarCampoVazioPet(camposObrigatorios)) return true;
+
+        // Validação específica para o campo "Tipo do Pet"
+        if (tipoPet.value === "Selecione o tipo do pet") {
+            setErroTipoPet("Por favor, selecione o tipo do seu pet.");
+            return true;
+        } else {
+            setErroTipoPet(""); // Remove a mensagem de erro se o valor for válido
+        }
+
+        // Validações de tamanho máximo para os campos
+        const camposTamanhoMaximo = [
+            {
+                ref: nome,
+                limite: 70,
+                setErro: setErroNome,
+                mensagem:
+                    "O nome deve ter no máximo 70 caracteres. Por favor, insira um nome menor",
+            },
+            {
+                ref: rga,
+                limite: 15,
+                setErro: setErroRga,
+                mensagem: "O RGA pode conter no máximo 15 caracteres.",
+            },
+            {
+                ref: descricao,
+                limite: 150,
+                setErro: setErroDescricao,
+                mensagem:
+                    "Você atingiu o limite máximo de 150 caracteres. Por favor, digite uma descrição menor",
+            },
+        ];
+
+        if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
         // Se todas as validações passarem, o formulário é considerado válido
         console.log("Formulário válido!");
@@ -131,13 +171,9 @@ function PetPerdido() {
             imagem: imagemRef.current.value
         }
 
-       enviarDados(dados, "http://localhost:3000/criar-post/pet-perdido");
+       enviarDados(dados, "criar-post/pet-perdido");
 
-
-
-
-    enviarDados(dadosDeCadastro, "criar-post/pet-perdido");
-  }
+    }
 
     return (
         <div className={styles.pet_perdido}>

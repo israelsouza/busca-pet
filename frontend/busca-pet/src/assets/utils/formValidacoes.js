@@ -23,6 +23,21 @@ export function verificarCampoVazio(lista, select) {
   return hasError;
 }
 
+export function verificarCampoVazioPet(lista) {
+  let hasError = false;
+  lista.forEach((currentElement) => {
+    if (!currentElement.ref.value.trim()) {
+      currentElement.setErro(currentElement.mensagem);
+      currentElement.ref.focus();
+      hasError = true;
+    } else {
+      currentElement.setErro("");
+    }
+  });
+
+  return hasError;
+}
+
 export function verificarTamanhoMaximo(array) {
   let hasError = false;
   array.forEach((itemList) => {
