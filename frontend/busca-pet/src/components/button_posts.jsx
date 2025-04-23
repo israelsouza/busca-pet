@@ -3,23 +3,23 @@ import avatar_usuario from "../assets/imgs/avatar_usuario.png"
 import dog_post from "../assets/imgs/dog_post.png"
 
 
-function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao}) {
+function Buttonposts() {
     return (
         <div className={style.postcontainer}>
             <div className={style.postbody}>
                 <div className={style.user}>
-                <img src={imagemUsuario} alt="Imagem de perfil sem foto" width="50px" className={style.userAvatar} />
-                <h2>{usuario}</h2>
+                <img src={avatar_usuario} alt="Imagem de perfil sem foto" width="50px" className={style.userAvatar} />
+                    <h2>User 01</h2>
                 </div>
 
-                <img src={imagemPet} alt="Foto do Pet" width="250px" />
-
+                <img src={dog_post} alt="Cachorro encontrado" width="250px" />
+                
                 <div className={style.infospost}>
-                    <h3>{nomePet}</h3>
+                       <h3>Nome do Pet</h3>
                     <ul>
-                        <li>{Caracteristicas}</li>
-                        <li>{dataSumico}</li>
-                        <li>{regiao}</li>
+                        <li>Caracteristicas</li>
+                        <li>data Sumico</li>
+                        <li>regiao</li>
                     </ul>
                 </div>
                     <div className={style.buttoninteragir}>
