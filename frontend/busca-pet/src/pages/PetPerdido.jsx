@@ -6,6 +6,7 @@ import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
+import criarFormData from "../assets/utils/criarFormData.js";
 
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
@@ -46,6 +47,7 @@ function PetPerdido() {
     const [erroDescricao, setErroDescricao] = useState(""); // Mensagem de erro para o campo "Descrição"
     const [erroData, setErroData] = useState(""); // Mensagem de erro para o campo "Data"
     const [erroImagem, setErroImagem] = useState(""); // Mensagem de erro para o campo "Imagem"
+    const [arquivoImagem, setArquivoImagem] = useState(null);
 
   const [mensagem, setMensagem] = useState("");
 
@@ -53,7 +55,13 @@ function PetPerdido() {
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0]; // Obtém o arquivo selecionado
         if (arquivo) {
+            if (arquivo.size > 10 * 1024 * 1024) { // Limite de 2MB
+                setErroImagem("O arquivo deve ter no máximo 2MB.");
+                return;
+            }
+            setErroImagem("");
             setNomeImagem(arquivo.name); // Atualiza o estado com o nome do arquivo
+            setArquivoImagem(arquivo); 
         } else {
             setNomeImagem(""); // Reseta o estado caso nenhum arquivo seja selecionado
         }
@@ -82,7 +90,7 @@ function PetPerdido() {
     }
 
     // Função para validar os dados do formulário ao clicar no botão
-    function validarFormulario(e) {
+    async function validarFormulario(e) {
         e.preventDefault(); // Evita o comportamento padrão do formulário (recarregar a página)
 
         // Obtém os valores dos campos do formulário
@@ -160,7 +168,12 @@ function PetPerdido() {
         if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
         // Se todas as validações passarem, o formulário é considerado válido
+        
+       
+        
         console.log("Formulário válido!");
+
+        
 
         const dados = {
             nome: nomeRef.current.value,
@@ -171,7 +184,20 @@ function PetPerdido() {
             imagem: imagemRef.current.value
         }
 
-       enviarDados(dados, "criar-post/pet-perdido");
+         if (!arquivoImagem) {
+            setErroImagem("Por favor, selecione uma imagem válida.");
+            return;
+        }
+
+        const formData = criarFormData(dados, arquivoImagem);
+        
+        // exibir dados do formData
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}:`, value);
+        }
+
+        const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+        console.log(resultado);
 
     }
 
