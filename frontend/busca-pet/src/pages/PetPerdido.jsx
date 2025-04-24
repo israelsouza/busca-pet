@@ -50,6 +50,7 @@ function PetPerdido() {
     const [arquivoImagem, setArquivoImagem] = useState(null);
 
   const [mensagem, setMensagem] = useState("");
+  const [retornoBackend, setRetornoBackend] = useState("");
 
     // Função para tratar a seleção de uma imagem
     function handleImagemSelecionada(e) {
@@ -192,12 +193,20 @@ function PetPerdido() {
         const formData = criarFormData(dados, arquivoImagem);
         
         // exibir dados do formData
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}:`, value);
-        }
+        
+        try {
+            const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+            console.log(resultado);
 
-        const resultado = await enviarDados(formData, "criar-post/pet-perdido");
-        console.log(resultado);
+            if (resultado && resultado.message) {
+                setRetornoBackend(resultado.message); // Atualiza a mensagem de sucesso
+                setTimeout(() => navigate("/posts/all"), 1000); 
+            } else {
+                setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+        }} catch (error) {
+            console.error("Erro ao enviar os dados:", error);
+            setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
+        }
 
     }
 
@@ -331,6 +340,16 @@ function PetPerdido() {
               {mensagem}
             </span>
           )}
+
+          {retornoBackend && (
+           <span
+                className={`${styles.retornoBackend} ${
+                    retornoBackend.includes("sucesso") ? styles.sucesso : styles.erro
+                }`}
+            >
+                {retornoBackend}
+            </span>
+            )}
 
                     {/* Botão de Enviar */}
                     <div className={styles.botao_center}>
