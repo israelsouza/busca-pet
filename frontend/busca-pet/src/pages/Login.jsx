@@ -15,6 +15,7 @@ function login() {
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
   const [erroLogin, setErroLogin] = useState("");
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
 
   function realizarLogin(e) {
     e.preventDefault();
@@ -66,9 +67,13 @@ function login() {
     .then((resultado) => {
       // Login bem-sucedido
       setErroLogin("")
-      console.log("Login realizado com sucesso:", resultado);
+      setMensagemSucesso("Login realizado com sucesso!");
+
+      // Armazena o token no localStorage
+      localStorage.setItem("authToken", resultado.token);
+
       // Redirecionar ou realizar outra ação
-      setTimeout(() => navigate("/posts/all"), 2000); 
+      setTimeout(() => navigate("/posts/all"), 1000); 
     })
     .catch((error) => {
       // Exibe a mensagem de erro na tela
@@ -128,6 +133,11 @@ function login() {
             {erroLogin && (
                 <span id="email-error" className='cad__eror'>
                   {erroLogin}
+                </span>
+              )}
+              {mensagemSucesso && (
+                <span className='sucess_form'>
+                  {mensagemSucesso}
                 </span>
               )}
             <button onClick={realizarLogin} className={styles.btn_login}> 

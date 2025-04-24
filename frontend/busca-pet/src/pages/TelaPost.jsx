@@ -1,5 +1,6 @@
 import styles from "./styles/tela_post.module.css";
 import HeaderLog from "./../components/HeaderLog";
+import { Link } from "react-router-dom";
 
 
 const TelaPost = () => {
@@ -11,10 +12,10 @@ const TelaPost = () => {
       <div className={styles.post__body}>
         <div className={styles.container}>
           <h1>Você...</h1>
-          <a className={`${styles.botao} ${styles.encontrou}`}>
+          <Link to={''} className={`${styles.botao} ${styles.encontrou}`}>
             Encontrou um Pet
-          </a>
-          <a className={`${styles.botao} ${styles.perdeu}`}>Perdeu um Pet</a>
+          </Link>
+          <Link to={'/posts/criar-post/pet-perdido'} className={`${styles.botao} ${styles.perdeu}`}>Perdeu um Pet</Link>
         </div>
       </div>
     </div>
