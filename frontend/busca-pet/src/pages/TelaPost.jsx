@@ -1,9 +1,28 @@
 import styles from "./styles/tela_post.module.css";
+import validateToken from "../assets/utils/validateToken.js";
 import HeaderLog from "./../components/HeaderLog";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 const TelaPost = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            await validateToken();
+          } catch (error) {
+            console.error("Erro capturado:", error.message);
+            alert(error.message); // Exibe a mensagem de erro para o usuário
+            localStorage.removeItem("authToken"); // Remove o token inválido
+            navigate("/form/login"); // Redireciona para o login
+          }
+        };
+        checkAuthentication();
+  }, [navigate]);
+
   return (
     <div className={styles.bg_tela_post}>
 

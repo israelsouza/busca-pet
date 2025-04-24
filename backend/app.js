@@ -5,6 +5,7 @@ import logarUsuario from "./routes/logarUsuario.js";
 import getTodosPosts from "./routes/getTodosPosts.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
+import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ app.use("/form/login", logarUsuario);
 app.use("/validate-token", validateToken);
 
 // rotas privadas (protegidas)
-app.use("/posts/all", autenticarToken, getTodosPosts);
+// app.use("/posts/all", autenticarToken, getTodosPosts);
+app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido)
 
 export default app;

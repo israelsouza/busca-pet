@@ -32,7 +32,6 @@ function Home(){
         // bloco 02
         const sessaoFuncionamento = useRef(null);
         useEffect(() => {
-            console.log('entrei aqui')
            if(window.location.hash === "#funcionamento"){
               sessaoFuncionamento.current?.scrollIntoView({ behavior: "smooth" })
           }
