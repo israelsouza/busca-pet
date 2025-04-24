@@ -7,7 +7,20 @@ import avatar_usuario from "../assets/imgs/avatar_usuario.png";
 import ButtonSection from "../components/ButtonSection";
 import Style from "../pages/styles/PerfilVisualizar.module.css";
 import fundo_pato from "../assets/imgs/fundo_pato.png";
-function VisualizePerfil(){    
+import React, { useState, useEffect } from "react";
+
+function VisualizePerfil({userId}){ 
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        async function fetchUserInfo() {
+            const response = await fetch(`/api/user-info/${userId}`);
+            const data = await response.json();
+            setUserInfo(data);
+        }
+        fetchUserInfo();
+    }, [userId]);
+       
         return <div>
             <HeaderEdicao />
             <div className={Style.container}>
@@ -16,8 +29,8 @@ function VisualizePerfil(){
                     <article className={Style.cabecalho}>
                     <img src={avatar_usuario} alt="icone de foto de usuário" />
                     <div className={Style.namecontainer}>
-                    <h1 className={Style.h1}>User 1</h1>
-                    <h2 className={Style.h2}>Nome Exemplo do Usuário</h2>
+                    <h1 className={Style.h1}>{userInfo.USU_EMAIL || "user 01"}</h1>
+                    <h2 className={Style.h2}>{userInfo.PES_NOME || "Exemplo de nome de Usuário"}</h2>
                     </div>
                     </article>
                     <BotaoSection img_icone={icon_conta} nome_section="Conta" alt="Icone de perfil" text_section="Informações de contato e endereço." acesso="" />
