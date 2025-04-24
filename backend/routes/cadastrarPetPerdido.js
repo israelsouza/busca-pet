@@ -51,11 +51,23 @@ router.post("/", upload.single("imagem"), async (req, res) => {
 
         console.log("sucesso ao cadastrar o pet")
         await connection.commit(); // Confirma a transação
+
+        return res.status(201).json({
+            message: "Pet cadastrado com sucesso!",
+            petId,
+            postId,
+        });
     } catch (error) {
+        console.error("Erro ao cadastrar pet:", error);
         if (connection) {
-        await connection.rollback();
-        console.log("Rollback realizado com sucesso.");
+            await connection.rollback();
+            console.log("Rollback realizado com sucesso.");
         }
+        // Retorna uma resposta de erro ao frontend
+        return res.status(500).json({
+            message: "Erro ao cadastrar o pet.",
+            error: error.message,
+        });
     } finally {
         if (connection) await connection.close()
         console.log("Conexão com o banco de dados encerrada.");

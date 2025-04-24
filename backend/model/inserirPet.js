@@ -27,8 +27,8 @@ async function inserirPet(connection, dadosPet, idUsuario) {
       }
     );
 
-    // fs.unlinkSync(dadosPet.imagem);
-    // console.log("Arquivo de imagem deletado com sucesso!");
+    fs.unlinkSync(dadosPet.imagem);
+    console.log("Arquivo de imagem deletado com sucesso!");
     // try {
     //     fs.unlinkSync(dadosPet.imagem);
     //     console.log("Arquivo de imagem deletado com sucesso!");
