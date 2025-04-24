@@ -9,7 +9,7 @@ router.post("/", async (request, response) => {
   const dados = request.body;
   try {
 
-    await verificarUsuarioDB(dados);
+    const resultado = await verificarUsuarioDB(dados);
 
     // Gera o token JWT
     const token = jwt.sign(
@@ -17,20 +17,20 @@ router.post("/", async (request, response) => {
       SECRET_KEY,           // Chave secreta importada
       { expiresIn: "10m"}    // Tempo de expiração
     )
-    console.log("entrei apos a geração do token ")
+    console.log("entrei no login apos a geração do token ")
 
     // Retorna o token ao frontend
-    response
+    return response
     .status(200)
     .json({ 
-      message: "Login realizado com sucesso",
+      message: resultado.message,
+      userId: resultado.userId,
       token: token,
      });
 
-    
-
   } catch (error) {
-    console.error("Erro ao logar com o usuário: -> ", error);
+    console.error("Erro no login:", error);
+    
 
     if (error.message.includes("ORA-")) {
       response.status(400).json({ message: "Erro ao tentar logar. Verifique os dados e tente novamente." });
@@ -38,7 +38,6 @@ router.post("/", async (request, response) => {
       // Retorna a mensagem original para erros tratados
       response.status(400).json({ message: error.message });
     }
-    
   }
 });
 

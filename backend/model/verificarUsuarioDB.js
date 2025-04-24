@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import getConnection from "./connectionOracle.js";
 
 export default async function verificarUsuarioDB(dados) {
@@ -8,12 +9,12 @@ export default async function verificarUsuarioDB(dados) {
     console.log("Iniciando a conexão...\n \n");
 
     const consultaUsuario = `
-    SELECT USU_SENHA
+    SELECT USU_ID, USU_SENHA
     FROM USUARIO
     WHERE LOWER(USU_EMAIL) = :email
   `;
     const resultado = await connection.execute(consultaUsuario, {
-      email: dados.email,
+      email: dados.email.toLowerCase(), 
     });
 
     // Verifica se o e-mail existe no banco de dados
@@ -21,20 +22,28 @@ export default async function verificarUsuarioDB(dados) {
       throw new Error("O e-mail não está cadastrado.");
     }
 
-    // Captura a senha do banco de dados
-    const senhaBanco = resultado.rows[0][0];
+    const [USU_ID, senhaHash] = resultado.rows[0];
 
-    // Compara a senha fornecida com a senha do banco
-    if (senhaBanco !== dados.password) {
-      throw new Error("A senha está incorreta.");
+     // Compara a senha fornecida com o hash armazenado no banco
+    const senhaValida = await bcrypt.compare(dados.password, senhaHash);
+
+
+    if (!senhaValida) {
+        return res.status(401).json({ message: "Senha incorreta." });
     }
 
+    console.log("Usuário autenticado com sucesso!");
     console.log("Fechando a conexão...");
     await connection.close();
 
-    return { message: "Usuário encontrado." };
+   return { userId: USU_ID, message: "Usuário autenticado com sucesso." };
   } catch (error) {
     console.error("Erro ao verificar usuário:", error);
+
+    if (connection) {
+      await connection.close();
+    }
+
     throw error;
   }
 }
