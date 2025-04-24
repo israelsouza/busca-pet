@@ -12,7 +12,7 @@ function PostsAll() {
     const [userPosts, setUserPosts] = useState([]);
     const [lostPosts, setLostPosts] = useState([]);
     const [foundPosts, setFoundPosts] = useState([]);
-    const [category, setCategory] = useState('all'); // Estado para armazenar a categoria selecionada
+    const [category, setCategory] = useState('all');
 
     useEffect(() => {
         async function fetchPosts() {
@@ -21,7 +21,7 @@ function PostsAll() {
                 const data = await response.json();
                 setPosts(data);
             } else if (category === 'user') {
-                const response = await fetch('/api/posts/user/1'); // Substituir ID do usuário conforme necessário
+                const response = await fetch('/api/posts/user/1');
                 const data = await response.json();
                 setUserPosts(data);
             } else if (category === 'lost') {
@@ -56,7 +56,7 @@ function PostsAll() {
                     <Buttonposts 
                         key={index}
                         usuario={post.PES_NOME}
-                        imagemUsuario="/imgs/avatar_usuario.png" 
+                        imagemUsuario={post.USU_FOTO}
                         imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
@@ -68,7 +68,7 @@ function PostsAll() {
                     <Buttonposts 
                         key={index}
                         usuario={post.PES_NOME}
-                        imagemUsuario="/imgs/avatar_usuario.png"
+                        imagemUsuario={post.USU_FOTO}
                         imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
@@ -80,8 +80,8 @@ function PostsAll() {
                     <Buttonposts 
                         key={index}
                         usuario={post.PES_NOME}
-                        imagemUsuario="/imgs/avatar_usuario.png"
-                        imagemPet={post.PET_FOTO}
+                        imagemUsuario={`data:image/jpeg;base64,${post.USU_FOTO}`}
+                        imagemPet={`data:image/jpeg;base64,${post.PET_FOTO}`}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
