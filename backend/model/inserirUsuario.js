@@ -1,7 +1,7 @@
 import OracleDB from "oracledb";
 import getConnection from "./connectionOracle.js";
 
-export default async function inserirUsuario(dados) {
+export default async function inserirUsuario(dados, senhaHash) {
   let connection;
 
   try {
@@ -129,11 +129,13 @@ export default async function inserirUsuario(dados) {
       inserttUsuario,
       {
         email: dados.email,
-        senha: dados.senha,
+        senha: senhaHash,
         idPessoa: idPessoa,
       },
       { autoCommit: true }
     );
+
+    console.log("senha Hash dentro model: ", senhaHash)
 
     const queryFinal = `
       SELECT  P.PES_NOME, U.USU_EMAIL, U.USU_SENHA, P.PES_PHONE, E.END_RUA, E.END_BAIRRO, E.END_CEP, C.CID_DESCRICAO, ES.EST_SIGLA
