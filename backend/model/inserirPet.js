@@ -6,7 +6,7 @@ function formatarDataParaDDMMYYYY(data) {
   return `${dia}-${mes}-${ano}`;
 }
 
-async function inserirPet(connection, dadosPet) {
+async function inserirPet(connection, dadosPet, idUsuario) {
   try {
     const imagemBinaria = fs.readFileSync(dadosPet.imagem);
     console.log("Tamanho da imagem:", imagemBinaria.length);
@@ -36,10 +36,26 @@ async function inserirPet(connection, dadosPet) {
     //     console.error("Erro ao deletar o arquivo de imagem:", err);
     // }
 
-    
+    const petId = result.outBinds.id[0];
 
-    // Retorna o ID do pet inserido
-    return result.outBinds.id[0];
+    console.log("Id User: ", dadosPet.idUser)
+
+    const resultPost = await connection.execute(
+      `INSERT INTO POST (POS_TIPO, POS_DATA, PET_ID, USU_ID)
+       VALUES (:tipo, SYSDATE, :idPet, :idUsuario)
+       RETURNING POS_ID INTO :id`,
+      {
+        tipo: "Perdido", // Tipo fixo para esta função
+        idPet: petId,
+        idUsuario: dadosPet.idUser,
+        id: { dir: OracleDB.BIND_OUT }, // Retorna o ID gerado
+      }
+    );
+
+    const postId = resultPost.outBinds.id[0];
+    console.log("Post inserido com sucesso");
+
+    return { petId, postId };
   } catch (error) {
     console.error("Erro ao inserir pet no banco de dados:", error);
     throw error;

@@ -45,11 +45,12 @@ router.post("/", upload.single("imagem"), async (req, res) => {
 
         console.table(dados)
 
-        const idPet = await inserirPet(connection, dados);
+        const { petId, postId } = await inserirPet(connection, dados);
 
-        console.log(idPet)
+        console.log("IDs gerados:", { petId, postId });
 
         console.log("sucesso ao cadastrar o pet")
+        await connection.commit(); // Confirma a transação
     } catch (error) {
         if (connection) {
         await connection.rollback();
