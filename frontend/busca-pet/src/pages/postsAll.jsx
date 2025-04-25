@@ -48,7 +48,7 @@ function PostsAll() {
                                 <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
                             <button className={style.button}>Verificar Pet que eu publiquei</button>
-                        </div>
+                </div>
                 </div>
                 <div className={style.posts}>
                     

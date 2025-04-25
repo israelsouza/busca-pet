@@ -1,4 +1,6 @@
 .buttonhome{
+    display: flex;
+    justify-content: center;
     background-color: var(--inputs) ;
     border-radius: 28px;
     font-family: "inter", sans-serif;
@@ -15,4 +17,11 @@
     color: #ffff;
     cursor: pointer;
     transition: 0.5s;
+}
+
+.linkhome{
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    justify-content: center;
 }

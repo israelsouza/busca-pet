@@ -21,8 +21,9 @@
 
 .ul{
     display: flex;
-    margin-right: 12vw;
-    gap: 60px;
+    align-items: center;
+    margin: 3em;
+    gap: 90px;
 }
 
 .linkhome{  

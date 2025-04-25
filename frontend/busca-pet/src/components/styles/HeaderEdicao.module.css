@@ -1,0 +1,36 @@
+.header_logado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--header);
+    width: 100%;
+    height: 100px;
+    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+  }
+  
+  .logodog {
+    padding-left: 40px;
+  }
+  
+  .navegation {
+    display: flex;
+    margin-right: 10vw;
+    gap: 9vw;
+    justify-content: center;
+  }
+  
+  .links_header {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 1.2em;
+    text-decoration: none;
+    padding: 20px;
+    color: var(--fundo_form);
+  }
+  
+  .links_header:hover {
+    color: var(--botaohome);
+    transition: 0.5s;
+  }
+
+  

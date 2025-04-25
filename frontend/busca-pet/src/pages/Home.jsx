@@ -57,7 +57,6 @@ function Home(){
             <div className={style.container_header}>
                 <nav>
                     <ul className={style.ul}>
-    
                         <Link  className={style.linkhome} onClick={irParaReencontros}>Reencontros</Link>
                         <Link  className={style.linkhome} onClick={irParaFuncionamento}>Como Funciona</Link>
                         <Link  className={style.linkhome} onClick={irParaColabore}>Colabore</Link>
