@@ -18,7 +18,7 @@
                     <Link to={'/posts/pesquisa'} className={style.links_header}>Pesquisar</Link>
                 </nav>
                 
-                <img className={style.icon} src={Icone} alt="Icone de usuário sem foto"  />
+                <Link to={'/Perfil'}><img className={style.icon} src={Icone} alt="Icone de usuário sem foto"  /></Link>
 
             </header>
         </div>

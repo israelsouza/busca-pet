@@ -8,7 +8,7 @@ import TelaPost from "./pages/TelaPost";
 import PetPerdido from "./pages/PetPerdido";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
-import PostsAll from "./pages/PostsAll";
+import PostsAll from "./pages/postsAll";
 import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
 

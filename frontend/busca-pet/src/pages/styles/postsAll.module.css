@@ -11,6 +11,16 @@
     text-decoration: none;
 }
 
+.linkpost:visited,
+.linkpost:active,
+.linkppost:focus {
+  text-decoration: none;
+}
+
+ a {
+text-decoration: none;
+}
+
 .buttoncontainer{
     display: flex;
     align-items: center;

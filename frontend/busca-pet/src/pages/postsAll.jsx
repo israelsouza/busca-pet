@@ -44,8 +44,7 @@ function PostsAll() {
                 <div className={style.headopcoes}>
                     <h1 className={style.h1}>Todos os Pets</h1>
                         <div className={style.buttoncontainer}>
-                            <Link to={'/posts/criar-post'} >
-                                <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
+                            <Link to={'/posts/criar-post'} className={style.linkposts} ><button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
                             <button className={style.button}>Verificar Pet que eu publiquei</button>
                 </div>
