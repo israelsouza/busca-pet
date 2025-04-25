@@ -1,5 +1,4 @@
-import OracleDB from "oracledb";
-import getConnection from "./connectionOracle";
+import getConnection from "./connectionOracle.js";
 
 async function inserirTokenRecuperacaoSenha(idUser, token, expired_time_token) {
 
@@ -23,7 +22,7 @@ async function inserirTokenRecuperacaoSenha(idUser, token, expired_time_token) {
 
         const result = connection.execute(sqlQuery, binds, {autoCommit: true})
         
-        return result.rowsAffected > 0;
+        console.log('Inserido o token e o relacionamento com sucesso na tabela RECUPERAR_SENHA')
         
     } catch (error) {
         console.error(error)

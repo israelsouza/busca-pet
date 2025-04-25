@@ -6,6 +6,7 @@ import getTodosPosts from "./routes/getTodosPosts.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
+import recuperarSenha from './routes/recuperarSenha.js'
 
 const app = express();
 app.use(cors());
@@ -17,7 +18,7 @@ app.use(express.json());
 // rotas publicas
 app.use("/form/cadastro-usuario", cadastroUsuario);
 app.use("/form/login", logarUsuario);
-app.use("/form/recuperer-senha", )
+app.use("/form/recuperar-senha", recuperarSenha)
 
 
 // rota de verificação do token
