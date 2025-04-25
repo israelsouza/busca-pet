@@ -17,6 +17,8 @@ app.use(express.json());
 // rotas publicas
 app.use("/form/cadastro-usuario", cadastroUsuario);
 app.use("/form/login", logarUsuario);
+app.use("/form/recuperer-senha", )
+
 
 // rota de verificação do token
 app.use("/validate-token", validateToken);
