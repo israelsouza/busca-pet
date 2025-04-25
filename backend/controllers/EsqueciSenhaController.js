@@ -15,7 +15,7 @@ export async function EsqueciSenhaController(req, res) {
     if (!idUser)
         return res.status(401).send({ error: "Usuário não encontrado, reveja o email e tente novamente." });
 
-    invalidarTokensAntigos(idUser);
+    await invalidarTokensAntigos(idUser);
 
     const token = crypto.randomBytes(64).toString("hex");
     const now = new Date();

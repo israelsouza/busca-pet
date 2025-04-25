@@ -1,4 +1,4 @@
-import getConnection from "./connectionOracle";
+import getConnection from "./connectionOracle.js";
 
 async function invalidarTokensAntigos(usuarioId) {
     try {

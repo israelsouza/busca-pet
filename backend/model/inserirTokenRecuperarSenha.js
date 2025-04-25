@@ -20,7 +20,7 @@ async function inserirTokenRecuperacaoSenha(idUser, token, expired_time_token) {
             token, expired_time_token, idUser
         ]
 
-        const result = connection.execute(sqlQuery, binds, {autoCommit: true})
+        const result = await connection.execute(sqlQuery, binds, {autoCommit: true})
         
         console.log('Inserido o token e o relacionamento com sucesso na tabela RECUPERAR_SENHA')
         
