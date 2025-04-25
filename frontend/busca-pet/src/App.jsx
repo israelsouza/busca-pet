@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import PostsAll from "./pages/postsAll";
 import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
+import PostsUser from "./pages/PostsUser";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/posts/all" element={<PostsAll />} />
           <Route path="/Perfil" element={<VisualizePerfil />}/>
           <Route path="/EditarPerfil" element={<EditarPerfil />}/>
+          <Route path="/Posts/user" element={< PostsUser />} />
         </Routes>
       </BrowserRouter>
     </div>

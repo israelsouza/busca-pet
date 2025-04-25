@@ -33,11 +33,13 @@ function VisualizePerfil({userId}){
                     <h2 className={Style.h2}>{userInfo.PES_NOME || "Exemplo de nome de Usuário"}</h2>
                     </div>
                     </article>
-                    <BotaoSection img_icone={icon_conta} nome_section="Conta" alt="Icone de perfil" text_section="Informações de contato e endereço." acesso="" />
-    
-                    <BotaoSection img_icone={icon_notificacoes} nome_section="Notificações" alt="Icone de notificações" text_section="Informações Veja quem interagiu com sua publicação." acesso=""/>
 
-                    <BotaoSection img_icone={icon_publicacoes} nome_section="Publicações" alt="Icone de imagens" text_section="Veja suas próprias publicações." acesso=""/>
+                    <BotaoSection img_icone={icon_conta} nome_section="Conta" alt="Icone de perfil" text_section="Informações de contato e endereço." acesso='/EditarPerfil' />
+                       
+                    <BotaoSection img_icone={icon_notificacoes} nome_section="Notificações" alt="Icone de notificações" text_section="Veja quem interagiu com sua publicação." acesso=""/>
+                    
+                    <BotaoSection img_icone={icon_publicacoes} nome_section="Publicações" alt="Icone de imagens" text_section="Veja suas próprias publicações." acesso='/Posts/user'/>
+                
                 </section>
                 
             </div>
