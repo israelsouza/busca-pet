@@ -7,6 +7,10 @@
     margin: 10px;
 }
 
+.linkpost{
+    text-decoration: none;
+}
+
 .buttoncontainer{
     display: flex;
     align-items: center;

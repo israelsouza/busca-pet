@@ -8,17 +8,15 @@ import { Link } from "react-router-dom";
 
 function PostsAll() {
     return (
-        <div className={style.container}>
+    <div className={style.container}>
             <HeaderLog />
-            <div className={style.opcaoContainer}>
-                <div className={style.headopcoes}>
-                    <h1 className={style.h1}>Todos os Pets</h1>
-                        <div className={style.buttoncontainer}>
-                            <Link to={'/posts/criar-post'} >
-                                <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
-                            </Link>
+        <div className={style.opcaoContainer}>
+            <div className={style.headopcoes}>
+            <h1 className={style.h1}>Todos os Pets</h1>
+                <div className={style.buttoncontainer}>
+                <Link to={'/posts/criar-post'} className={style.linkpost}><button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button></Link>
                             <button className={style.button}>Verificar Pet que eu publiquei</button>
-                        </div>
+                </div>
                 </div>
                 <div className={style.posts}>
                     <Buttonposts  />
