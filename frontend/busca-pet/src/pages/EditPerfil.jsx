@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Style from "../pages/styles/EditPerfil.module.css";
 import fundo_passaro from "../assets/imgs/fundo_passaro.png";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png";
 import Upload from "../assets/imgs/Upload.png";
 import HeaderEdicao from "../components/HeaderEdicao"
 function EdicaoPerfil() {
-  const [formData, setFormData] = useState({
-    nome_usuario: "User01",
-    nome: "Usuário Teste",
-    telefone: "(11) 11111-1111",
-    email: "teste@email.com",
-    rua: "Rua do Usuário, 01",
-    bairro: "Centro",
-    cidade: "São Paulo",
-    estado: "SP",
-  });
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    fetch("http://localhost:3001/usuarios/1") // troque pelo ID real do usuário logado
+      .then(res => res.json())
+      .then(data => setFormData(data))
+      .catch(err => console.error("Erro ao carregar dados:", err));
+  }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
   const atualizarCampo = (campo) => {
@@ -31,6 +30,26 @@ function EdicaoPerfil() {
       .catch((err) => console.error("Erro:", err));
   };
 
+  const [foto, setFoto] = useState(null);
+
+  const handleFotoChange = (e) => {
+    setFoto(e.target.files[0]);
+  };
+  
+  const enviarFoto = () => {
+    const formData = new FormData();
+    formData.append("foto", foto);
+  
+    fetch("http://localhost:3001/usuarios/1/foto", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.text())
+      .then((msg) => alert(msg))
+      .catch((err) => console.error("Erro:", err));
+  };
+  
+
   return (
     <div>
     <HeaderEdicao />
@@ -40,49 +59,44 @@ function EdicaoPerfil() {
         <h2 className={Style.h2}>Informações de Contato</h2>
 
         <div className={Style.campo}>
-          <label>Nome de Usuário</label>
-          <input
-            id="nome_usuario"
-            value={formData.nome_usuario}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo("nome_usuario")}>Editar</button>
+          <label>Nick de Usuário</label>
+          {/* <p>{userInfo.USU_EMAIL || "user 01"}</p> */}
         </div>
 
         <div className={Style.campo}>
           <label>Nome</label>
           <input
-            id="nome"
-            value={formData.nome}
+            id="PES_NOME"
+            value={formData.PES_NOME}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("nome")}>Editar</button>
+          <button onClick={() => atualizarCampo(PES_NOME)}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Telefone</label>
           <input
-            id="telefone"
-            value={formData.telefone}
+            id="PES_PHONE"
+            value={formData.PES_PHONE}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("telefone")}>Editar</button>
+          <button onClick={() => atualizarCampo(PES_PHONE)}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Email</label>
           <input
-            id="email"
-            value={formData.email}
+            id="USU_EMAIL"
+            value={formData.USU_EMAIL}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("email")} className={Style.button}>Editar</button>
+          <button onClick={() => atualizarCampo(USU_EMAIL)} className={Style.button}>Editar</button>
         </div>
         
      
         <div className={Style.campo2}>
           <label className={Style.editFoto}>
-          <img src={Style.Upload} />Editar Foto de Perfil <input type="file" accept="image/*" className={Style.picture_input}/>
+          <img src={Style.Upload} />Editar Foto de Perfil <input type="file" accept="image/*" className={Style.picture_input}  onChange={handleFotoChange}/>
           </label>
          </div>
 
@@ -94,38 +108,38 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Rua</label>
           <input
-            id="rua"
-            value={formData.rua}
+            id="END_RUA"
+            value={formData.END_RUA}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("rua")}>Editar</button>
+          <button onClick={() => atualizarCampo(END_RUA)}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Bairro</label>
           <input
-            id="bairro"
-            value={formData.bairro}
+            id="END_BAIRRO"
+            value={formData.END_BAIRRO}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("bairro")}>Editar</button>
+          <button onClick={() => atualizarCampo(END_BAIRRO)}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Cidade</label>
           <input
-            id="cidade"
-            value={formData.cidade}
+            id="CID_DESCRICAO"
+            value={formData.CID_DESCRICAO}
             onChange={handleChange}
           />
-          <button onClick={() => atualizarCampo("cidade")}>Editar</button>
+          <button onClick={() => atualizarCampo(CID_DESCRICAO)}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Estado</label>
           <select
-            id="estado"
-            value={formData.estado}
+            id="EST_SIGLA"
+            value={formData.EST_SIGLA}
             onChange={handleChange}
           >
             <option value="SP">SP</option>
@@ -156,7 +170,7 @@ function EdicaoPerfil() {
             <option value="SE">SE</option>
             <option value="TO">TO</option>
           </select>
-          <button onClick={() => atualizarCampo("estado")}>Editar</button>
+          <button onClick={() => atualizarCampo(EST_SIGLA)}>Editar</button>
         </div>
       </div>
     </div>

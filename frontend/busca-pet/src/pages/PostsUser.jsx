@@ -1,7 +1,7 @@
 import Buttonposts from "../components/button_posts"; 
 import HeaderLog from "../components/HeaderLog";
 import React, { useState, useEffect } from "react";
-import style from "./styles/postsAll.module.css"; // você pode usar o mesmo estilo
+import style from "./styles/postsAll.module.css";
 import { validateToken } from "../assets/utils/validateToken";
 
 function PostsUser() {
@@ -9,7 +9,7 @@ function PostsUser() {
 
     useEffect(() => {
         async function fetchUserPosts() {
-            const response = await fetch('/api/posts/user/1'); // <-- substitua 1 pelo ID do usuário, se for dinâmico
+            const response = await fetch('/api/posts/user/1');
             const data = await response.json();
             setUserPosts(data);
         }
