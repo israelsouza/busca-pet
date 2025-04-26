@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import RecuperacaoSenha from "./pages/RecuperacaoSenha";
@@ -9,9 +8,11 @@ import PetPerdido from "./pages/PetPerdido";
 import PageResearch from "./pages/PageResearch";
 import Home from "./pages/Home";
 import PostsAll from "./pages/postsAll";
+
 import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
+
 
 function App() {
   return (

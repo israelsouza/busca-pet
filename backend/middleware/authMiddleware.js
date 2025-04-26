@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../config/authConfig.js";
 
 export default function autenticarToken(req, res, next) {

@@ -1,11 +1,36 @@
 // Importa os hooks do React e os estilos do componente
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import validateToken from '../assets/utils/validateToken.js'
 import styles from "./styles/PetPerdido.module.css";
+import {
+  verificarCampoVazioPet,
+  verificarTamanhoMaximo
+} from "../assets/utils/formValidacoes";
+import criarFormData from "../assets/utils/criarFormData.js";
 
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
+import { useNavigate } from "react-router-dom";
+
+import enviarDados from "../assets/utils/enviarDados";
 
 function PetPerdido() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+          const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); // Exibe a mensagem de erro para o usuário
+              localStorage.removeItem("authToken"); // Remove o token inválido
+              navigate("/form/login"); // Redireciona para o login
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
     // Referências para os campos do formulário
     const nomeRef = useRef(null);
     const rgaRef = useRef(null);
@@ -22,12 +47,22 @@ function PetPerdido() {
     const [erroDescricao, setErroDescricao] = useState(""); // Mensagem de erro para o campo "Descrição"
     const [erroData, setErroData] = useState(""); // Mensagem de erro para o campo "Data"
     const [erroImagem, setErroImagem] = useState(""); // Mensagem de erro para o campo "Imagem"
+    const [arquivoImagem, setArquivoImagem] = useState(null);
+
+  const [mensagem, setMensagem] = useState("");
+  const [retornoBackend, setRetornoBackend] = useState("");
 
     // Função para tratar a seleção de uma imagem
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0]; // Obtém o arquivo selecionado
         if (arquivo) {
+            if (arquivo.size > 10 * 1024 * 1024) { // Limite de 2MB
+                setErroImagem("O arquivo deve ter no máximo 2MB.");
+                return;
+            }
+            setErroImagem("");
             setNomeImagem(arquivo.name); // Atualiza o estado com o nome do arquivo
+            setArquivoImagem(arquivo); 
         } else {
             setNomeImagem(""); // Reseta o estado caso nenhum arquivo seja selecionado
         }
@@ -56,7 +91,7 @@ function PetPerdido() {
     }
 
     // Função para validar os dados do formulário ao clicar no botão
-    function validarFormulario(e) {
+    async function validarFormulario(e) {
         e.preventDefault(); // Evita o comportamento padrão do formulário (recarregar a página)
 
         // Obtém os valores dos campos do formulário
@@ -97,7 +132,7 @@ function PetPerdido() {
         ];
 
         // Verifica se algum campo obrigatório está vazio
-        if (verificarCampoVazio(camposObrigatorios)) return true;
+        if (verificarCampoVazioPet(camposObrigatorios)) return true;
 
         // Validação específica para o campo "Tipo do Pet"
         if (tipoPet.value === "Selecione o tipo do pet") {
@@ -134,7 +169,45 @@ function PetPerdido() {
         if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
         // Se todas as validações passarem, o formulário é considerado válido
+        
+       
+        
         console.log("Formulário válido!");
+
+        
+
+        const dados = {
+            nome: nomeRef.current.value,
+            rga: rgaRef.current.value,
+            tipoPet: tipoPetRef.current.value,
+            descricao: descricaoRef.current.value,
+            data: dataRef.current.value,
+            imagem: imagemRef.current.value
+        }
+
+         if (!arquivoImagem) {
+            setErroImagem("Por favor, selecione uma imagem válida.");
+            return;
+        }
+
+        const formData = criarFormData(dados, arquivoImagem);
+        
+        // exibir dados do formData
+        
+        try {
+            const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+            console.log(resultado);
+
+            if (resultado && resultado.message) {
+                setRetornoBackend(resultado.message); // Atualiza a mensagem de sucesso
+                setTimeout(() => navigate("/posts/all"), 1000); 
+            } else {
+                setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+        }} catch (error) {
+            console.error("Erro ao enviar os dados:", error);
+            setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
+        }
+
     }
 
     return (
@@ -261,6 +334,22 @@ function PetPerdido() {
                             </span>
                         )}
                     </form>
+
+          {mensagem && (
+            <span id="imagem-error" className={styles.error}>
+              {mensagem}
+            </span>
+          )}
+
+          {retornoBackend && (
+           <span
+                className={`${styles.retornoBackend} ${
+                    retornoBackend.includes("sucesso") ? styles.sucesso : styles.erro
+                }`}
+            >
+                {retornoBackend}
+            </span>
+            )}
 
                     {/* Botão de Enviar */}
                     <div className={styles.botao_center}>

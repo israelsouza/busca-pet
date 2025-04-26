@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from 'bcrypt'
 import inserirUsuarioBD from "../model/inserirUsuario.js";
 
 const router = express.Router();
@@ -7,7 +8,13 @@ router.post("/", async (request, response) => {
   const dados = request.body;
   try {
 
-    await inserirUsuarioBD(dados);
+    const saltRounds = 10; // Número de rounds para gerar o salt
+    const salt = await bcrypt.genSalt(saltRounds);
+    const senhaHash = await bcrypt.hash(dados.senha, salt);
+
+    console.log("senha Hash FORA model: ", senhaHash)
+
+    await inserirUsuarioBD(dados, senhaHash);
 
     response
     .status(200)

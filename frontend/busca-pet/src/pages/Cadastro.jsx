@@ -1,37 +1,3 @@
-{
-  /* 
-
-// TODO: Implementar exibição de mensagens de sucesso/erro na interface
-// EXEMPLO DE COMO USAR O RETORNO PARA EXIBIR NA TELA
-      
-  const [mensagem, setMensagem] = useState("");
-
-  async function cadastrarUsuario(e) {
-    e.preventDefault();
-
-    try {
-      const dadosAoBack = await enviarDados(dados, "http://localhost:3000/form/cadastro-usuario");
-      setMensagem(dadosAoBack.message); // Atualiza a mensagem no estado
-    } catch (error) {
-      setMensagem("Erro ao enviar os dados. Tente novamente.");
-    }
-  }
-
-  return (
-    <div>
-      <form onSubmit={cadastrarUsuario}>
-        // Campos do formulário
-        <button type="submit">Cadastrar</button>
-      </form>
-      {mensagem && <p>{mensagem}</p>} // * Exibe a mensagem na interface
-    </div>
-  )
-}
-      
-      
-*/
-}
-
 import { useRef, useState } from "react";
 import style from "./styles/cadastroUsuario.module.css";
 import HeaderForm from "../components/HeaderForm";
@@ -275,14 +241,14 @@ function Cadastro() {
     try {
       const dadosAoBack = await enviarDados(
         dados,
-        "http://localhost:3000/form/cadastro-usuario"
+        "form/cadastro-usuario"
       );
 
       if (dadosAoBack.message) {
         setMensagem(dadosAoBack.message);
 
         if (dadosAoBack.message === "Cadastro realizado com sucesso") {
-          setTimeout(() => navigate("/form/login"), 2000); 
+          setTimeout(() => navigate("/form/login"), 1200); 
         }
       } else {
         setMensagem("Erro inesperado. Tente novamente.");
@@ -353,7 +319,7 @@ function Cadastro() {
                 />
 
                 {erroNome && (
-                  <span id="nome-error" className={style.cad__error}>
+                  <span id="email-error" className={style.cad__error}>
                     {erroNome}
                   </span>
                 )}
@@ -475,7 +441,7 @@ function Cadastro() {
                   </select>
 
                   {erroEstado && (
-                    <span className={style.cad__error}>{erroEstado}</span>
+                    <span id="email-error" className={style.cad__error}>{erroEstado}</span>
                   )}
                 </div>
               </form>

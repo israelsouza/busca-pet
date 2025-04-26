@@ -1,6 +1,6 @@
 import style from "./styles/inputtxt.module.css";
 
-function InputTxt({ name, place, refProp, required, type }) {
+function InputTxt({ name, place, refProp, required, type, onChange }) {
   return (
     <div className={style.imput}>
       <label className={style.imput__name}>{name}</label>
@@ -11,6 +11,7 @@ function InputTxt({ name, place, refProp, required, type }) {
           ref={refProp}
           required={required}
           type={type}
+          onChange={onChange}
         />
       </div>
     </div>
