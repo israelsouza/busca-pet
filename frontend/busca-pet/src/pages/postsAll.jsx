@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import validateToken from '../assets/utils/validateToken.js'
 
 function PostsAll() {
+    const navigate = useNavigate()
     
     const [posts, setPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
@@ -15,7 +16,21 @@ function PostsAll() {
     const [category, setCategory] = useState('all');
 
     useEffect(() => {
-/*  
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); // Exibe a mensagem de erro para o usuário
+              localStorage.removeItem("authToken"); // Remove o token inválido
+              navigate("/form/login"); // Redireciona para o login
+            }
+          };
+          checkAuthentication();
+        }, [navigate]);
+    }
+
+    useEffect(() => {
         async function fetchPosts() {
             if (category === 'all') {
                 const response = await fetch('/api/posts/all');
@@ -37,21 +52,10 @@ function PostsAll() {
         }
         fetchPosts();
     }, [category]);
-*/
+
   
   
-      const checkAuthentication = async () => {
-        try {
-          await validateToken();
-        } catch (error) {
-          console.error("Erro capturado:", error.message);
-          alert(error.message); // Exibe a mensagem de erro para o usuário
-          localStorage.removeItem("authToken"); // Remove o token inválido
-          navigate("/form/login"); // Redireciona para o login
-        }
-      };
-      checkAuthentication();
-    }, [navigate]);
+      
 
 
     return (
@@ -109,6 +113,5 @@ function PostsAll() {
             </div>
         </div>
     );
-}
 
 export default PostsAll;

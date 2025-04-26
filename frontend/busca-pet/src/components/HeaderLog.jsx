@@ -8,7 +8,7 @@
         <div>
             <header className={style.header_logado}>
 
-            <Link to={'/posts/todos'} onClick={() => onSelectCategory('all')}>
+            <Link to={'/posts/all'} onClick={() => onSelectCategory('all')}>
                 <img className={style.logodog} src={Logo_Cachorro} alt="Logo com um cachorro peludo usando uma lupa" width="150px"/>
             </Link>
                 <nav className={style.navegation}>

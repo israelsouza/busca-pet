@@ -2,7 +2,7 @@ import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
 import React, { useState, useEffect } from "react";
 import style from "./styles/postsAll.module.css";
-import { validateToken } from "../assets/utils/validateToken";
+import  validateToken  from "../assets/utils/validateToken";
 
 function PostsUser() {
     const [userPosts, setUserPosts] = useState([]);
