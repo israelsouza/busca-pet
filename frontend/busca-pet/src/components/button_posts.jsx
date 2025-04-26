@@ -1,29 +1,31 @@
 import style from "../components/styles/button_posts.module.css";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png"
 import dog_post from "../assets/imgs/dog_post.png"
-function Buttonposts() {
+
+
+function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao }) {
     return (
         <div className={style.postcontainer}>
             <div className={style.postbody}>
                 <div className={style.user}>
-                <img src={avatar_usuario} alt="Imagem de perfil sem foto" width="50px" className={style.userAvatar} />
-                <h2>User 01</h2>
+                <img src={imagemUsuario} alt="Imagem de perfil" width="50px" className={style.userAvatar} />
+                    <h2>{usuario}</h2>
                 </div>
 
-                <img src={dog_post} alt="Cachorro encontrado" width="250px" />
-
+                <img src={imagemPet} alt="Imagem do Pet" width="250px" />
+                
                 <div className={style.infospost}>
-                    <h3>Nome do Pet</h3>
+                       <h3>{nomePet}</h3>
                     <ul>
-                        <li>Características</li>
-                        <li>Data que Sumiu</li>
-                        <li>Região</li>
+                        <li>{caracteristicas}</li>
+                        <li>{dataSumico}</li>
+                        <li>{regiao}</li>
                     </ul>
                 </div>
-            <div className={style.buttoninteragir}>
-                <button  className={style.envmsg}>Enviar Mensagem</button>
-                <button className={style.encontrarpet}>Encontrar seu Pet!</button>
-            </div>
+                    <div className={style.buttoninteragir}>
+                        <button  className={style.envmsg}>Enviar Mensagem</button>
+                        <button className={style.encontrarpet}>Encontrar seu Pet!</button>
+                    </div>
             </div>
         </div>
     );

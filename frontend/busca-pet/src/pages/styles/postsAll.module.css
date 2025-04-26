@@ -7,6 +7,14 @@
     margin: 10px;
 }
 
+.linkpost{
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
 .buttoncontainer{
     display: flex;
     align-items: center;
@@ -61,7 +69,6 @@
 }
 
 .container {
-    
     background-attachment: fixed;
     background-image: url(../../assets/imgs/dog_footerPosts.png);
     background-repeat: no-repeat;
