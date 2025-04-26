@@ -29,3 +29,20 @@
   min-height: 100svh;
   width: 50%;
 }
+
+.rec-senha__etapa{
+  text-align: center;
+}
+
+
+#mensagemErroRecuperarSenha{
+  color: red;
+  text-align: center;
+  font-size: 26px;
+}
+
+#mensagemSucessoRecuperarSenha{
+  color: green;
+  text-align: center;
+  font-size: 26px;
+}
