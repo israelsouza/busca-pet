@@ -21,7 +21,7 @@ async function validarTokenSenhaController(req, res) {
           }
       
         // Se tokenData não for null, significa que o token é válido e não expirou
-        return res.status(200).json({ mensagem: "Token válido.", usu_id: tokenData.USU_ID });
+        return res.status(200).json({ mensagem: "Token válido.", usu_id: tokenData.USU_ID, success: true });
             
     } catch (error) {
         console.error(error)

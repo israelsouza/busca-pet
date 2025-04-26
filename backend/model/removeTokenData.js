@@ -1,13 +1,15 @@
-import getConnection from "./connectionOracle";
+import getConnection from "./connectionOracle.js";
 
 async function removeTokenData(idUser) {
     let connection;
 
+    console.log("id user: ", idUser)
+
     try {
-        connection = await getConnection()
+        connection = await getConnection();
 
         const sqlQuery = `
-            DELETE FROM RECUPERAR_SENHA
+            DELETE  FROM RECUPERAR_SENHA
             WHERE USU_ID = :idUser
         `
 
@@ -15,12 +17,12 @@ async function removeTokenData(idUser) {
             idUser: idUser
         }
 
-        const resultQuery = connection.execute(sqlQuery, binds, {autoCommit: true})
+        const resultQuery = await connection.execute(sqlQuery, binds, {autoCommit: true})
 
         return resultQuery.rowsAffected > 0;
     } catch (error) {
         console.error(error)
-        return false;
+        console.log('entrei no error')
     } finally {
         if (connection)
             await connection.close();

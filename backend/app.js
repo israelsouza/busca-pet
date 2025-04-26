@@ -22,7 +22,7 @@ app.use("/form/cadastro-usuario", cadastroUsuario);
 app.use("/form/login", logarUsuario);
 app.use("/form/recuperar-senha", recuperarSenha)
 app.use("/validar-token-senha", validarTokenSenha)
-app.use("/atualizar-senha", )
+app.use("/atualizar-senha", atualizarSenha)
 
 
 // rota de verificação do token

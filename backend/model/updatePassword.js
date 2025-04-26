@@ -1,4 +1,4 @@
-import getConnection from "./connectionOracle";
+import getConnection from "./connectionOracle.js";
 
 async function updatePassword(newPassword, email) {
     let connection;
@@ -15,16 +15,19 @@ async function updatePassword(newPassword, email) {
             newPassword, email
         ]
 
-        const resultQuery =  connection.execute(sqlQuery, binds, {autoCommit: true})
+        const resultQuery =  await connection.execute(sqlQuery, binds, {autoCommit: true})
 
         console.log('Update com sucesso!!')
+        console.log(resultQuery.rowsAffected)
         
+        return resultQuery.rowsAffected > 0 ;
     } catch (error) {
+        console.log("ENTREI ERROO  ")
         console.error(error)
         return false; 
     } finally {
         if (connection)
-            await connection.close()
+            await connection.close();
     }
 }
 

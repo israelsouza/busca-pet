@@ -39,8 +39,9 @@ export async function EsqueciSenhaController(req, res) {
 
     await transporter.sendMail(mailOptions);
     console.log("Email enviado!!");
+    return res.status(200).send({message: "Email enviado! Verifique a sua caixa de spam, se necessário", success: true})
   } catch (error) {
     console.error(error);
-    //return res.status(401);
+    return res.status(500).send({ error: "Ocorreu um erro interno. Por favor, tente novamente mais tarde." });
   }
 }
