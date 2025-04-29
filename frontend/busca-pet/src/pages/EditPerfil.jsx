@@ -8,7 +8,7 @@ function EdicaoPerfil() {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:3001/usuarios/1") // troque pelo ID real do usuário logado
+    fetch("http://localhost:3001/usuarios/1") 
       .then(res => res.json())
       .then(data => setFormData(data))
       .catch(err => console.error("Erro ao carregar dados:", err));
@@ -66,7 +66,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Nome</label>
           <input
-            id="PES_NOME"
+            id="PESSOA"
             value={formData.PES_NOME}
             onChange={handleChange}
           />
@@ -76,7 +76,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Telefone</label>
           <input
-            id="PES_PHONE"
+            id="PESSOA"
             value={formData.PES_PHONE}
             onChange={handleChange}
           />
@@ -86,7 +86,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Email</label>
           <input
-            id="USU_EMAIL"
+            id="USUARIO"
             value={formData.USU_EMAIL}
             onChange={handleChange}
           />
@@ -108,7 +108,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Rua</label>
           <input
-            id="END_RUA"
+            id="ENDERECO"
             value={formData.END_RUA}
             onChange={handleChange}
           />
@@ -118,7 +118,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Bairro</label>
           <input
-            id="END_BAIRRO"
+            id="ENDERECO"
             value={formData.END_BAIRRO}
             onChange={handleChange}
           />
@@ -128,7 +128,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Cidade</label>
           <input
-            id="CID_DESCRICAO"
+            id="CIDADE"
             value={formData.CID_DESCRICAO}
             onChange={handleChange}
           />
@@ -138,7 +138,7 @@ function EdicaoPerfil() {
         <div className={Style.campo}>
           <label>Estado</label>
           <select
-            id="EST_SIGLA"
+            id="ESTADO"
             value={formData.EST_SIGLA}
             onChange={handleChange}
           >
