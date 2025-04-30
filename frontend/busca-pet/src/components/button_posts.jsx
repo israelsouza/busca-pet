@@ -3,7 +3,7 @@ import avatar_usuario from "../assets/imgs/avatar_usuario.png"
 import dog_post from "../assets/imgs/dog_post.png"
 
 
-function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao }) {
+function Buttonposts({key, usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao }) {
     return (
         <div className={style.postcontainer}>
             <div className={style.postbody}>

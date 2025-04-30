@@ -7,15 +7,16 @@ import { useNavigate } from "react-router-dom";
 import validateToken from '../assets/utils/validateToken.js'
 
 function PostsAll() {
-    
+
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [lostPosts, setLostPosts] = useState([]);
     const [foundPosts, setFoundPosts] = useState([]);
     const [category, setCategory] = useState('all');
 
+    /*  
     useEffect(() => {
-/*  
         async function fetchPosts() {
             if (category === 'all') {
                 const response = await fetch('/api/posts/all');
@@ -40,18 +41,18 @@ function PostsAll() {
 */
   
   
-      const checkAuthentication = async () => {
-        try {
-          await validateToken();
-        } catch (error) {
-          console.error("Erro capturado:", error.message);
-          alert(error.message); // Exibe a mensagem de erro para o usuário
-          localStorage.removeItem("authToken"); // Remove o token inválido
-          navigate("/form/login"); // Redireciona para o login
-        }
-      };
-      checkAuthentication();
-    }, [navigate]);
+    //   const checkAuthentication = async () => {
+    //     try {
+    //       await validateToken();
+    //     } catch (error) {
+    //       console.error("Erro capturado:", error.message);
+    //       alert(error.message); // Exibe a mensagem de erro para o usuário
+    //       localStorage.removeItem("authToken"); // Remove o token inválido
+    //       navigate("/form/login"); // Redireciona para o login
+    //     }
+    //   };
+    //   checkAuthentication();
+    // }, [navigate]);
 
 
     return (
@@ -111,4 +112,4 @@ function PostsAll() {
     );
 }
 
-export default PostsAll;
+export default PostsAll

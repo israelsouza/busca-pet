@@ -21,8 +21,7 @@ class PostModel {
 
     static async getUserPosts(userId) {
         const query = `
-        SELECT 
-            p.POS_TIPO,
+    
             pet.PET_NOME,
             pet.PET_DESCRICAO,
             pet.PET_FOTO,
@@ -62,4 +61,4 @@ class PostModel {
     }
 }
 
-module.exports = PostModel;
+export default PostModel;

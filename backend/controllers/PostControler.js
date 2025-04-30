@@ -1,4 +1,4 @@
-const PostModel = require('../models/PostModel');
+import PostModel from "../model/postModel";
 
 class PostController {
     static async fetchAllPosts(req, res) {
@@ -60,4 +60,4 @@ class PostController {
     
 }
 
-module.exports = PostController;
+export default PostController;
