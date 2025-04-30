@@ -4,6 +4,7 @@ import fundo_passaro from "../assets/imgs/fundo_passaro.png";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png";
 import Upload from "../assets/imgs/Upload.png";
 import HeaderEdicao from "../components/HeaderEdicao"
+
 function EdicaoPerfil() {
   const [formData, setFormData] = useState({});
 

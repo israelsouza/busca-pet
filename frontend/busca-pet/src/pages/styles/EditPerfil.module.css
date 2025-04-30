@@ -5,7 +5,6 @@
 
 .container{
   display: flex;
-  height: 100vh;
 }
 
 
@@ -14,7 +13,7 @@
     width: 50vw;
     height: 50%;
     background-color: blue;
-    padding: 20px;
+    padding: 60px;
     flex-direction: column;
   }
   
@@ -23,7 +22,7 @@
     width: 50vw;
     height: 50%;
     background-color: blueviolet; 
-    padding: 20px;
+    padding: 60px;
     flex-direction: column;
   }
   
@@ -141,7 +140,7 @@ button:hover {
   .containerfoto {
     background-image: url(../../assets/imgs/fundo_passaro.png);
     background-repeat: no-repeat;
-    height: 116.7vh;
-    width: 50vw;
+    min-height: 116.7vh;
+    min-width: 50vw;
     justify-self: right;
 }
