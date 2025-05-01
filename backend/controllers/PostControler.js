@@ -1,19 +1,42 @@
 import PostModel from "../model/postModel.js";
+import getTipoPostModel from "../model/getTipoPostModel.js";
 
 async function todosPosts(req, res) {
-
     try {
-        console.log("entrei aqui no CONTROLLER de getALL")
         const posts = await PostModel();
-        
-       return res.status(200).json({ message: "Posts capturados com sucesso", posts });
+        return res.status(200).json({ message: "Posts capturados com sucesso", posts });
     } catch (error) {
-        console.log("entrei aqui NO ERRO 500")
-        console.error(error)
+        console.error("todos os posts error: ", error)
         return res.status(500).json({ error: error.message, });
     }
-    
 }
+
+async function getPostPerdido(req, res) {
+    try {
+        const tipo = "Perdido";
+        const posts = await getTipoPostModel(tipo);
+        return res.status(200).json({ message: "Posts de pet perdidos capturados com sucesso", posts });
+    } catch (error) {
+        console.error("getTipoPost perdido error: ", error)
+        return res.status(500).json({ error: error.message, });
+    }
+}
+
+async function getPostEncontrado(req, res) {
+    try {
+        const tipo = "Encontrado";
+        const posts = await getTipoPostModel(tipo);
+        return res.status(200).json({ message: "Posts de pet encontrados capturados com sucesso", posts });
+    } catch (error) {
+        console.error("getTipoPost encontrado error: ", error)
+        return res.status(500).json({ error: error.message, });
+    }
+}
+
+
+
+
+
 
 class PostController {
     
@@ -62,4 +85,4 @@ class PostController {
     
 }
 
-export { PostController, todosPosts };
+export { PostController, todosPosts, getPostEncontrado, getPostPerdido };
