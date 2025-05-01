@@ -1,6 +1,8 @@
 import OracleDB from "oracledb";
 import dbConfig from "../config/dbConfig.js";
 
+OracleDB.fetchAsBuffer = [ OracleDB.BLOB ];
+
 async function getConnection() {
   try {
     return await OracleDB.getConnection(dbConfig);

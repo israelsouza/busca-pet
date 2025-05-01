@@ -15,6 +15,18 @@ function PostsAll() {
     const [foundPosts, setFoundPosts] = useState([]);
     const [category, setCategory] = useState('all');
 
+    const getEmailFromToken = () => {
+        const token = localStorage.getItem("authToken"); // Obtém o token do localStorage
+
+        try {
+            const decoded = jwtDecode(token); // Decodifica o token
+            return decoded.email; // Retorna o e-mail do payload
+        } catch (error) {
+            console.error("Erro ao decodificar o token:", error);
+            return null;
+        }
+    };
+
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -27,36 +39,44 @@ function PostsAll() {
             }
           };
           checkAuthentication();
-        }, [navigate]);
-    }
+    }, [navigate]);
 
     useEffect(() => {
         async function fetchPosts() {
+            const email = getEmailFromToken();
             if (category === 'all') {
-                const response = await fetch('/api/posts/all');
+                console.log('all')
+                const response = await fetch('http://localhost:3000/api/posts/all');
+                console.log(response) // retono do backend com array e os dados
+                
                 const data = await response.json();
-                setPosts(data);
+                setPosts(data.posts); //comentar com a Sabrina para so ter um setPosts
+                console.log(data.posts)
             } else if (category === 'user') {
-                const response = await fetch('/api/posts/user/1');
+                console.log('user')
+                const response = await fetch('http://localhost:3000/api/posts/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email }),
+                });
                 const data = await response.json();
-                setUserPosts(data);
+                setUserPosts(data.posts);
             } else if (category === 'lost') {
-                const response = await fetch('/api/posts/lost');
+                console.log('lost')
+                const response = await fetch('http://localhost:3000/api/posts/lost');
+                console.log(response)
                 const data = await response.json();
-                setLostPosts(data);
+                console.log(data)
+                setLostPosts(data.posts);
             } else if (category === 'found') {
-                const response = await fetch('/api/posts/found');
+                console.log('found')
+                const response = await fetch('http://localhost:3000/api/posts/found');
                 const data = await response.json();
-                setFoundPosts(data);
+                setFoundPosts(data.posts);
             }
         }
         fetchPosts();
     }, [category]);
-
-  
-  
-      
-
 
     return (
         <div className={style.container}>
@@ -68,7 +88,9 @@ function PostsAll() {
                             <Link to={'/posts/criar-post'} >
                                 <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
-                            <button className={style.button}>Verificar Pet que eu publiquei</button>
+                            <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
+                                <button className={style.button} >Verificar Pet que eu publiquei</button>
+                            </Link>
                 </div>
                 </div>
                 <div className={style.posts}>
@@ -113,5 +135,5 @@ function PostsAll() {
             </div>
         </div>
     );
-
+}
 export default PostsAll;
