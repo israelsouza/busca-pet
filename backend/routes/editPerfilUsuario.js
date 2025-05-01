@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const usuarioController = require("../controllers/usuarioController");
+import editPerfilUsuario from "../model/editPerfilUsuario";
 
 const multer = require("multer");
 const upload = multer();
@@ -9,4 +9,4 @@ router.get("/usuarios/:id", usuarioController.buscarUsuario);
 router.post("/usuarios/:id/:campo", usuarioController.editarCampo);
 router.post("/usuarios/:id/foto", upload.single("foto"), usuarioController.editarFoto);
 
-module.exports = router;
+export default router;

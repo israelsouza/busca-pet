@@ -1,4 +1,4 @@
-const usuarioModel = require("../model/editPerfilUsuario");
+   import editPerfilUsuario from "../model/editPerfilUsuario";
 
 async function editarCampo(req, res) {
     const { campo } = req.params;
