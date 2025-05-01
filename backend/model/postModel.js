@@ -1,65 +1,44 @@
-class PostModel {
-    static async getAllPosts() {
-        const query = `
-            SELECT 
-                p.POS_TIPO,
-                pet.PET_NOME,
-                pet.PET_DESCRICAO,
-                pet.PET_FOTO,
-                pet.PET_LOCAL,
-                p.POS_DATA,
-                pes.PES_NOME,
-                u.USU_FOTO
-                FROM POST p
-                INNER JOIN PET pet ON pet.PET_ID = p.POS_ID
-                INNER JOIN PESSOA pes ON pes.PES_ID = p.PES_ID
-                INNER JOIN USUARIO u ON u.PES_ID = pes.PES_ID
-        `;
-        const [rows] = await db.execute(query);
-        return rows;
-    }
+import getConnection from "./connectionOracle.js";
+import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
-    static async getUserPosts(userId) {
-        const query = `
-        SELECT 
-            p.POS_TIPO,
-            pet.PET_NOME,
-            pet.PET_DESCRICAO,
-            pet.PET_FOTO,
-            pet.PET_LOCAL,
-            p.POS_DATA,
-            pes.PES_NOME,
-            u.USU_FOTO 
-            FROM POST p
-            INNER JOIN PET pet ON pet.PET_ID = p.POS_ID
-            INNER JOIN PESSOA pes ON pes.PES_ID = p.PES_ID
-            INNER JOIN USUARIO u ON u.PES_ID = pes.PES_ID
-            WHERE p.PES_ID = ?
-        `;
-        const [rows] = await db.execute(query, [userId]);
-        return rows;
-    }
+async function PostModel() {
+  let connection;
 
-    static async getPostsByType(type) {
-        const query = `
-    SELECT 
-        p.POS_TIPO,
-        pet.PET_NOME,
-        pet.PET_DESCRICAO,
-        pet.PET_FOTO,
-        pet.PET_LOCAL,
-        p.POS_DATA,
-        pes.PES_NOME,
-        u.USU_FOTO -- Foto do perfil do usuário
-        FROM POST p
-        INNER JOIN PET pet ON pet.PET_ID = p.POS_ID
-        INNER JOIN PESSOA pes ON pes.PES_ID = p.PES_ID
-        INNER JOIN USUARIO u ON u.PES_ID = pes.PES_ID
-        WHERE p.POS_TIPO = ?
+  try {
+    console.log("estou na função");
+    connection = await getConnection();
+
+    const sql = `
+            SELECT
+                post.POS_TIPO AS "POS_TIPO",
+                pet.PET_NOME AS "PET_NOME",
+                pet.PET_DESCRICAO AS "PET_DESCRICAO",
+                pet.PET_FOTO AS "PET_FOTO",
+                pet.PET_LOCAL AS "PET_LOCAL",
+                post.POS_DATA AS "POS_DATA",
+                pessoa.PES_NOME AS "PES_NOME",
+                usuario.USU_FOTO AS "USU_FOTO"
+            FROM POST, PET, USUARIO, PESSOA
+            WHERE
+                pet.PET_ID = post.PET_ID   AND
+                usuario.USU_ID = post.USU_ID AND
+                pessoa.PES_ID = usuario.PES_ID
         `;
-        const [rows] = await db.execute(query, [type]);
-        return rows;
-    }
+        const options = {
+            fetchInfo: {
+              "PET_FOTO": { type: OracleDB.BUFFER },
+              "USU_FOTO": { type: OracleDB.BUFFER }
+            }
+          };
+
+    const { rows } = await connection.execute(sql, [], options);
+    // console.log(rows)
+    return rows;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (connection) await connection.close();
+  }
 }
 
-module.exports = PostModel;
+export default PostModel;

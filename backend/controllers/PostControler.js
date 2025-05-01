@@ -1,19 +1,21 @@
-const PostModel = require('../models/PostModel');
+import PostModel from "../model/postModel.js";
+
+async function todosPosts(req, res) {
+
+    try {
+        console.log("entrei aqui no CONTROLLER de getALL")
+        const posts = await PostModel();
+        
+       return res.status(200).json({ message: "Posts capturados com sucesso", posts });
+    } catch (error) {
+        console.log("entrei aqui NO ERRO 500")
+        console.error(error)
+        return res.status(500).json({ error: error.message, });
+    }
+    
+}
 
 class PostController {
-    static async fetchAllPosts(req, res) {
-        try {
-            const posts = await PostModel.getAllPosts();
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null, // Conversão da imagem do usuário
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null  // Conversão da imagem do pet
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
     
     static async fetchUserPosts(req, res) {
         try {
@@ -60,4 +62,4 @@ class PostController {
     
 }
 
-module.exports = PostController;
+export { PostController, todosPosts };

@@ -2,13 +2,13 @@ import express from "express";
 import cors from "cors";
 import cadastroUsuario from "./routes/cadastroUsuario.js";
 import logarUsuario from "./routes/logarUsuario.js";
-import getTodosPosts from "./routes/getTodosPosts.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
 import recuperarSenha from './routes/recuperarSenha.js'
 import validarTokenSenha from './routes/validarTokenSenha.js'
 import atualizarSenha from './routes/atualizarSenha.js'
+import postRoutes from './routes/post.js'
 
 const app = express();
 app.use(cors());
@@ -30,6 +30,8 @@ app.use("/validate-token", validateToken);
 
 // rotas privadas (protegidas)
 // app.use("/posts/all", autenticarToken, getTodosPosts);
-app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido)
+app.use("/criar-post/pet-perdido",  cadastrarPetPerdido)
+app.use('/api/posts', postRoutes)
+
 
 export default app;
