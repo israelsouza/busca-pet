@@ -1,7 +1,11 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
+<<<<<<<< HEAD:backend/model/getTodosPosts.js
 async function getTodosPosts() {
+========
+async function getUserPostsModel(email) {
+>>>>>>>> fc84c6a4185b8e6c38c2d2e47244c4b3635977cf:backend/model/getUserPost.js
   let connection;
 
   try {
@@ -22,16 +26,22 @@ async function getTodosPosts() {
             WHERE
                 pet.PET_ID = post.PET_ID   AND
                 usuario.USU_ID = post.USU_ID AND
-                pessoa.PES_ID = usuario.PES_ID
+                pessoa.PES_ID = usuario.PES_ID AND
+                usuario.USU_EMAIL = :email
         `;
-        const options = {
-            fetchInfo: {
-              "PET_FOTO": { type: OracleDB.BUFFER },
-              "USU_FOTO": { type: OracleDB.BUFFER }
-            }
-          };
 
-    const { rows } = await connection.execute(sql, [], options);
+    const binds = {
+      email: email, // Bind the tipo parameter to the SQL query
+    };
+
+    const options = {
+      fetchInfo: {
+        PET_FOTO: { type: OracleDB.BUFFER },
+        USU_FOTO: { type: OracleDB.BUFFER },
+      },
+    };
+
+    const { rows } = await connection.execute(sql, binds, options);
     // console.log(rows)
     return rows;
   } catch (error) {
@@ -41,4 +51,8 @@ async function getTodosPosts() {
   }
 }
 
+<<<<<<<< HEAD:backend/model/getTodosPosts.js
 export default getTodosPosts;
+========
+export default getUserPostsModel;
+>>>>>>>> fc84c6a4185b8e6c38c2d2e47244c4b3635977cf:backend/model/getUserPost.js
