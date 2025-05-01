@@ -1,7 +1,7 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
-async function PostModel() {
+async function getUserPostsModel(email) {
   let connection;
 
   try {
@@ -22,16 +22,22 @@ async function PostModel() {
             WHERE
                 pet.PET_ID = post.PET_ID   AND
                 usuario.USU_ID = post.USU_ID AND
-                pessoa.PES_ID = usuario.PES_ID
+                pessoa.PES_ID = usuario.PES_ID AND
+                usuario.USU_EMAIL = :email
         `;
-        const options = {
-            fetchInfo: {
-              "PET_FOTO": { type: OracleDB.BUFFER },
-              "USU_FOTO": { type: OracleDB.BUFFER }
-            }
-          };
 
-    const { rows } = await connection.execute(sql, [], options);
+    const binds = {
+      email: email, // Bind the tipo parameter to the SQL query
+    };
+
+    const options = {
+      fetchInfo: {
+        PET_FOTO: { type: OracleDB.BUFFER },
+        USU_FOTO: { type: OracleDB.BUFFER },
+      },
+    };
+
+    const { rows } = await connection.execute(sql, binds, options);
     // console.log(rows)
     return rows;
   } catch (error) {
@@ -41,4 +47,4 @@ async function PostModel() {
   }
 }
 
-export default PostModel;
+export default getUserPostsModel;

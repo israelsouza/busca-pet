@@ -1,9 +1,10 @@
-import PostModel from "../model/postModel.js";
+import getTodosPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
+import getUserPostsModel from "../model/getUserPost.js";
 
 async function todosPosts(req, res) {
     try {
-        const posts = await PostModel();
+        const posts = await getTodosPosts();
         return res.status(200).json({ message: "Posts capturados com sucesso", posts });
     } catch (error) {
         console.error("todos os posts error: ", error)
@@ -33,6 +34,17 @@ async function getPostEncontrado(req, res) {
     }
 }
 
+async function getUserPosts(req, res) {
+    const {email} = req.body; // ID do usuário via corpo da requisição
+    try {
+        const posts = await getUserPostsModel(email);
+        return res.status(200).json({ message: "Os seus posts foram capturados com sucesso", posts });
+    } catch (error) {
+        console.error("getUserPosts error: ", error)
+        return res.status(500).json({ error: error.message, });
+    }
+}
+
 
 
 
@@ -55,34 +67,8 @@ class PostController {
         }
     }
     
-    static async fetchLostPosts(req, res) {
-        try {
-            const posts = await PostModel.getPostsByType('Perdido');
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null,
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
     
-    static async fetchFoundPosts(req, res) {
-        try {
-            const posts = await PostModel.getPostsByType('Encontrado');
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null,
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
     
 }
 
-export { PostController, todosPosts, getPostEncontrado, getPostPerdido };
+export { PostController, todosPosts, getPostEncontrado, getPostPerdido, getUserPosts };
