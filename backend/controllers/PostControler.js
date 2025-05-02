@@ -43,18 +43,18 @@ async function getPostEncontrado(req, res) {
 }
 
 async function getUserPosts(req, res) {
-  const { token } = req.body;
-  try {
-    const email = await extrairEmailDoToken(token);
-    // console.log("email do token: ", email);
-    const posts = await getUserPostsModel(email);
-    return res
-      .status(200)
-      .json({ message: "Os seus posts foram capturados com sucesso", posts });
-  } catch (error) {
-    console.error("getUserPosts error: ", error);
-    return res.status(500).json({ error: error.message });
-  }
+  // const token = req.params.token;
+  // try {
+  //   const email = await extrairEmailDoToken(token);
+  //   // console.log("email do token: ", email);
+  //   const posts = await getUserPostsModel(email);
+  //   return res
+  //     .status(200)
+  //     .json({ message: "Os seus posts foram capturados com sucesso", posts });
+  // } catch (error) {
+  //   console.error("getUserPosts error: ", error);
+  //   return res.status(500).json({ error: error.message });
+  // }
 }
 
 export { todosPosts, getPostEncontrado, getPostPerdido, getUserPosts };
