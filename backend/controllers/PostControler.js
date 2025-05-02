@@ -1,11 +1,11 @@
-import getTodosPosts from "../model/getTodosPosts.js";
+import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getUserPostsModel from "../model/getUserPost.js";
 import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
 
 async function todosPosts(req, res) {
   try {
-    const posts = await getTodosPosts();
+    const posts = await getTodosOsPosts();
     return res
       .status(200)
       .json({ message: "Posts capturados com sucesso", posts });

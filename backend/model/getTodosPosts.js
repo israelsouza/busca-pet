@@ -1,7 +1,7 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
-async function getUserPostsModel(email) {
+async function getTodosOsPosts() {
   let connection;
 
   try {
@@ -22,13 +22,8 @@ async function getUserPostsModel(email) {
             WHERE
                 pet.PET_ID = post.PET_ID   AND
                 usuario.USU_ID = post.USU_ID AND
-                pessoa.PES_ID = usuario.PES_ID AND
-                usuario.USU_EMAIL = :email
+                pessoa.PES_ID = usuario.PES_ID
         `;
-
-    const binds = {
-      email: email, // Bind the tipo parameter to the SQL query
-    };
 
     const options = {
       fetchInfo: {
@@ -37,7 +32,7 @@ async function getUserPostsModel(email) {
       },
     };
 
-    const { rows } = await connection.execute(sql, binds, options);
+    const { rows } = await connection.execute(sql, [], options);
     // console.log(rows)
     return rows;
   } catch (error) {
@@ -48,4 +43,4 @@ async function getUserPostsModel(email) {
 }
 
 
-export default getUserPostsModel;
+export default getTodosOsPosts;
