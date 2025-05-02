@@ -1,11 +1,7 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
-<<<<<<<< HEAD:backend/model/getTodosPosts.js
-async function getTodosPosts() {
-========
 async function getUserPostsModel(email) {
->>>>>>>> fc84c6a4185b8e6c38c2d2e47244c4b3635977cf:backend/model/getUserPost.js
   let connection;
 
   try {
@@ -51,8 +47,5 @@ async function getUserPostsModel(email) {
   }
 }
 
-<<<<<<<< HEAD:backend/model/getTodosPosts.js
-export default getTodosPosts;
-========
+
 export default getUserPostsModel;
->>>>>>>> fc84c6a4185b8e6c38c2d2e47244c4b3635977cf:backend/model/getUserPost.js
