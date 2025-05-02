@@ -38,17 +38,15 @@ function PostsAll() {
                 console.log(response) // retono do backend com array e os dados
                 
                 const data = await response.json();
-                setPosts(data.posts); //comentar com a Sabrina para so ter um setPosts
+                setPosts(data.posts); 
                 console.log(data.posts)
             } else if (category === 'user') {
-                console.log('user')
-                const response = await fetch('http://localhost:3000/api/posts/user', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: token }),
-                });
-                const data = await response.json();
-                setUserPosts(data.posts);
+                // console.log('user')
+                // const response = await fetch(`http://localhost:3000/api/posts/user/${token}`);
+                // console.log(response)
+                // const data = await response.json();
+                // console.log(data)
+                // setUserPosts(data.posts);
             } else if (category === 'lost') {
                 console.log('lost')
                 const response = await fetch('http://localhost:3000/api/posts/lost');
@@ -76,9 +74,9 @@ function PostsAll() {
                             <Link to={'/posts/criar-post'} >
                                 <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
-                            <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
+                            {/* <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
                                 <button className={style.button} >Verificar Pet que eu publiquei</button>
-                            </Link>
+                            </Link> */}
                 </div>
                 </div>
                 <div className={style.posts}>
