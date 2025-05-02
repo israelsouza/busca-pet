@@ -1,12 +1,12 @@
 // Importa os hooks do React e os estilos do componente
 import { useRef, useState, useEffect } from "react";
-import validateToken from "../assets/utils/validateToken.js";
 import styles from "./styles/PetPerdido.module.css";
 import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo,
 } from "../assets/utils/formValidacoes.js";
-import criarFormData from "../assets/utils/criarFormData.js";
+
+import EmailFromToken from "../assets/utils/getEmailFromToken.js";
 
 // Importa o cabeçalho e funções de validação
 import HeaderLog from "../components/HeaderLog.jsx";
@@ -120,18 +120,42 @@ function PetEncontrado() {
 
     console.log("Formulário válido!");
 
+    const email = await EmailFromToken();
+
     const dados = {
       tipoPet: tipoPetRef.current.value,
       descricao: descricaoRef.current.value,
       data: dataRef.current.value,
       imagem: imagemRef.current.value,
+      email: email
     };
 
-    console.log("Dados do formulário: ", dados);
+    function criarFormData(dados, arquivoImagem) {
+        const formData = new FormData();
+      
+        formData.append("tipoPet", dados.tipoPet);
+        formData.append("descricao", dados.descricao);
+        formData.append("data", dados.data);
+        formData.append("email", dados.email);
+      
+        // Adiciona a imagem como arquivo
+        if (arquivoImagem) {
+          formData.append("imagem", arquivoImagem); // Adiciona o arquivo diretamente
+        }
+      
+        return formData;
+    }
 
-    // try {
-    //   const resultado = await enviarDados(formData, "criar-post/pet-encontrado");
-    //   console.log(resultado);
+    const formData = criarFormData(dados, arquivoImagem);
+
+    console.log("Dados do formulário: ", formData);
+    console.log("Arquivo da imagem: ", formData.get("imagem"));
+
+ 
+    
+    try {
+      const resultado = await enviarDados(formData, "criar-post/pet-encontrado");
+      console.log(resultado);
 
     //   if (resultado && resultado.message) {
     //     setRetornoBackend(resultado.message);
@@ -139,10 +163,10 @@ function PetEncontrado() {
     //   } else {
     //     setRetornoBackend("Erro inesperado ao cadastrar o pet.");
     //   }
-    // } catch (error) {
-    //   console.error("Erro ao enviar os dados:", error);
-    //   setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
-    // }
+    } catch (error) {
+      console.error("Erro ao enviar os dados:", error);
+      setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
+    }
   }
 
   return (
