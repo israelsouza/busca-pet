@@ -15,18 +15,6 @@ function PostsAll() {
     const [foundPosts, setFoundPosts] = useState([]);
     const [category, setCategory] = useState('all');
 
-    const getEmailFromToken = () => {
-        const token = localStorage.getItem("authToken"); // Obtém o token do localStorage
-
-        try {
-            const decoded = jwtDecode(token); // Decodifica o token
-            return decoded.email; // Retorna o e-mail do payload
-        } catch (error) {
-            console.error("Erro ao decodificar o token:", error);
-            return null;
-        }
-    };
-
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -43,7 +31,7 @@ function PostsAll() {
 
     useEffect(() => {
         async function fetchPosts() {
-            const email = getEmailFromToken();
+            const token = localStorage.getItem("authToken");
             if (category === 'all') {
                 console.log('all')
                 const response = await fetch('http://localhost:3000/api/posts/all');
@@ -57,7 +45,7 @@ function PostsAll() {
                 const response = await fetch('http://localhost:3000/api/posts/user', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email }),
+                    body: JSON.stringify({ token: token }),
                 });
                 const data = await response.json();
                 setUserPosts(data.posts);
