@@ -1,54 +1,62 @@
 import React, { useState, useEffect } from "react";
 import Style from "../pages/styles/EditPerfil.module.css";
-import fundo_passaro from "../assets/imgs/fundo_passaro.png";
-import avatar_usuario from "../assets/imgs/avatar_usuario.png";
-import Upload from "../assets/imgs/Upload.png";
-import HeaderEdicao from "../components/HeaderEdicao"
+import HeaderEdicao from "../components/HeaderEdicao";
 
 function EdicaoPerfil() {
   const [formData, setFormData] = useState({});
+  const [foto, setFoto] = useState(null);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/usuarios/1") 
-      .then(res => res.json())
-      .then(data => setFormData(data))
-      .catch(err => console.error("Erro ao carregar dados:", err));
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userEmail = payload.email;
+      setEmail(userEmail);
+      console.log("Email recuperado:", userEmail);
+
+      fetch(`http://localhost:3001/usuarios/email/${userEmail}`)
+        .then(res => res.json())
+        .then(data => setFormData(data))
+        .catch(err => console.error("Erro ao carregar dados:", err));
+    } else {
+      console.log("Token não encontrado.");
+    }
   }, []);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [id]: value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const atualizarCampo = (campo) => {
-    fetch(`/usuarios/1/${campo}`, {
+    fetch(`http://localhost:3001/usuarios/email/${email}/${campo}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ valor: formData[campo] }),
     })
-      .then((res) => res.text())
-      .then((mensagem) => alert(mensagem))
-      .catch((err) => console.error("Erro:", err));
+      .then(res => res.text())
+      .then(alert)
+      .catch(err => console.error("Erro:", err));
   };
-
-  const [foto, setFoto] = useState(null);
 
   const handleFotoChange = (e) => {
     setFoto(e.target.files[0]);
   };
-  
+
   const enviarFoto = () => {
-    const formData = new FormData();
-    formData.append("foto", foto);
-  
-    fetch("http://localhost:3001/usuarios/1/foto", {
-      method: "POST",
-      body: formData,
+    const data = new FormData();
+    data.append("foto", foto);
+
+    fetch(`http://localhost:3001/usuarios/email/${email}/foto`, {
+      method: "POST", 
+      body: data,
     })
-      .then((res) => res.text())
-      .then((msg) => alert(msg))
-      .catch((err) => console.error("Erro:", err));
+      .then(res => res.text())
+      .then(alert)
+      .catch(err => console.error("Erro:", err));
   };
+
   
 
   return (
@@ -66,32 +74,20 @@ function EdicaoPerfil() {
 
         <div className={Style.campo}>
           <label>Nome</label>
-          <input
-            id="PESSOA"
-            value={formData.PES_NOME}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(PES_NOME)}>Editar</button>
+          <input name="PES_NOME" value={formData.PES_NOME || ""} onChange={handleChange}/>
+          <button onClick={() => atualizarCampo("PES_NOME")}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Telefone</label>
-          <input
-            id="PESSOA"
-            value={formData.PES_PHONE}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(PES_PHONE)}>Editar</button>
+          <input name="PES_PHONE" value={formData.PES_PHONE} onChange={handleChange} />
+        <button onClick={() => atualizarCampo("PES_PHONE")}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Email</label>
-          <input
-            id="USUARIO"
-            value={formData.USU_EMAIL}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(USU_EMAIL)} className={Style.button}>Editar</button>
+          <input name="USU_EMAIL" value={formData.USU_EMAIL} onChange={handleChange} />
+          <button onClick={() => atualizarCampo("USU_EMAIL")} className={Style.button}>Editar</button>
         </div>
         
      
@@ -99,6 +95,7 @@ function EdicaoPerfil() {
           <label className={Style.editFoto}>
           <img src={Style.Upload} />Editar Foto de Perfil <input type="file" accept="image/*" className={Style.picture_input}  onChange={handleFotoChange}/>
           </label>
+          <button onClick={enviarFoto}>Enviar Foto</button>
          </div>
 
       </div>
@@ -108,41 +105,25 @@ function EdicaoPerfil() {
 
         <div className={Style.campo}>
           <label>Rua</label>
-          <input
-            id="ENDERECO"
-            value={formData.END_RUA}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(END_RUA)}>Editar</button>
+          <input name="END_RUA" value={formData.END_RUA} onChange={handleChange} />
+          <button onClick={() => atualizarCampo("END_RUA")}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Bairro</label>
-          <input
-            id="ENDERECO"
-            value={formData.END_BAIRRO}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(END_BAIRRO)}>Editar</button>
+          <input name="END_BAIRRO" value={formData.END_BAIRRO} onChange={handleChange} />
+          <button onClick={() => atualizarCampo("END_BAIRRO")}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Cidade</label>
-          <input
-            id="CIDADE"
-            value={formData.CID_DESCRICAO}
-            onChange={handleChange}
-          />
-          <button onClick={() => atualizarCampo(CID_DESCRICAO)}>Editar</button>
+          <input name="CID_DESCRICAO" value={formData.CID_DESCRICAO} onChange={handleChange} />
+          <button onClick={() => atualizarCampo("CID_DESCRICAO")}>Editar</button>
         </div>
 
         <div className={Style.campo}>
           <label>Estado</label>
-          <select
-            id="ESTADO"
-            value={formData.EST_SIGLA}
-            onChange={handleChange}
-          >
+          <select name="EST_SIGLA" value={formData.EST_SIGLA} onChange={handleChange}>
             <option value="SP">SP</option>
             <option value="RJ">RJ</option>
             <option value="MG">MG</option>
@@ -171,11 +152,11 @@ function EdicaoPerfil() {
             <option value="SE">SE</option>
             <option value="TO">TO</option>
           </select>
-          <button onClick={() => atualizarCampo(EST_SIGLA)}>Editar</button>
+          <button onClick={() => atualizarCampo("EST_SIGLA")}>Editar</button>
         </div>
       </div>
     </div>
-      <div className={Style.containerfoto}></div>   
+      <div className={Style.containerfoto}></div>
     </div>
     </div>
   );
