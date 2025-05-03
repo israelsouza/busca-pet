@@ -2,10 +2,10 @@ import OracleDB from "oracledb";
 import getConnection from "./connectionOracle.js";
 
 export default async function inserirUsuario(dados, senhaHash) {
-  let connection;
+ const connection = await getConnection();
 
   try {
-    connection = await getConnection();
+
     console.log("Iniciando a conexão...\n \n");
 
     const verificaEmail = `
