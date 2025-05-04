@@ -1,9 +1,9 @@
 import getUserIdByEmail from "../model/getUserId.js";
 import crypto from "crypto";
-import transporter from "../config/mailConfig.js";
+// import transporter from "../config/mailConfig.js";
 import inserirTokenRecuperacaoSenha from "../model/inserirTokenRecuperarSenha.js";
 import invalidarTokensAntigos from "../model/invalidarTokensAntigos.js";
-import { myEmail } from "../config/myEmail.js";
+// import { myEmail } from "../config/myEmail.js";
 
 export async function EsqueciSenhaController(req, res) {
   try {

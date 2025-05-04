@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cadastroUsuario from "./routes/cadastroUsuario.js";
 import logarUsuario from "./routes/logarUsuario.js";
-import getTodosPosts from "./routes/getTodosPosts.js";
+// import getTodosPosts from "./routes/getTodosPosts.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
