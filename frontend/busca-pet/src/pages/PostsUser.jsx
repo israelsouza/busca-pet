@@ -36,7 +36,7 @@ function PostsUser() {
                             dataSumico={post.POS_DATA}
                             regiao={post.PET_LOCAL}
                         />
-                    ))}
+                    ))} {/* DEP. GOOGLE MAPS */}
                 </div>
             </div>
         </div>

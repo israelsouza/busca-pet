@@ -257,7 +257,7 @@ function PetEncontrado() {
                 {erroImagem}
               </span>
             )}
-          </form>
+          </form> {/* DEP. GOOGLE MAPS */}
 
           {mensagem && (
             <span id="imagem-error" className={styles.error}>
