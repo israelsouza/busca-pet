@@ -29,7 +29,7 @@ export default async function verificarUsuarioDB(dados) {
 
 
     if (!senhaValida) {
-        throw new Error("Senha inválida");
+        throw new Error("Senha incorreta");        
     }
 
     console.log("Usuário autenticado com sucesso!");
