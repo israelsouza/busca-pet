@@ -2,8 +2,7 @@
     background-color: var(--post);
     border-radius: 10px;
     padding: 20px;
-    width: 400px;
-    height: 550px;
+    max-width: 600px;
     text-align: center;
     box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }

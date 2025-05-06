@@ -3,13 +3,13 @@ import avatar_usuario from "../assets/imgs/avatar_usuario.png"
 import dog_post from "../assets/imgs/dog_post.png"
 
 
-function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao }) {
+function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristicas, dataSumico, regiao, textoPrimeiroCategoria }) {
     return (
         <div className={style.postcontainer}>
             <div className={style.postbody}>
                 <div className={style.user}>
-                <img src={imagemUsuario} alt="Imagem de perfil" width="50px" className={style.userAvatar} />
-                    <h2>{usuario}</h2>
+                    {/* <img src={imagemUsuario} alt="Imagem de perfil" width="50px" className={style.userAvatar} /> */}
+                    <h2>user: {usuario}</h2>
                 </div>
 
                 <img src={imagemPet} alt="Imagem do Pet" width="250px" />
@@ -17,14 +17,15 @@ function Buttonposts({usuario, imagemUsuario, imagemPet, nomePet, caracteristica
                 <div className={style.infospost}>
                        <h3>{nomePet}</h3>
                     <ul>
-                        <li>{caracteristicas}</li>
+                        <li>{caracteristicas}</li><br />
+                        <span>Visto pela ultima vez: </span>
                         <li>{dataSumico}</li>
-                        <li>{regiao}</li>
+                        <li>{regiao}</li> {/* DEP. GOOGLE MAPS */}
                     </ul>
                 </div>
                     <div className={style.buttoninteragir}>
                         <button  className={style.envmsg}>Enviar Mensagem</button>
-                        <button className={style.encontrarpet}>Encontrar seu Pet!</button>
+                        <button className={style.encontrarpet}>{textoPrimeiroCategoria}</button>
                     </div>
             </div>
         </div>

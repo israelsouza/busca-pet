@@ -38,6 +38,8 @@ function PostsAll() {
                 console.log(response) // retono do backend com array e os dados
                 
                 const data = await response.json();
+                const post = data.posts;
+                console.log("posts", post) 
                 setPosts(data.posts); 
                 console.log(data.posts)
             } else if (category === 'user') {
@@ -52,12 +54,13 @@ function PostsAll() {
                 const response = await fetch('http://localhost:3000/api/posts/lost');
                 console.log(response)
                 const data = await response.json();
-                console.log(data)
+                const post = data.posts;
                 setLostPosts(data.posts);
             } else if (category === 'found') {
                 console.log('found')
                 const response = await fetch('http://localhost:3000/api/posts/found');
                 const data = await response.json();
+                const post = data.posts;
                 setFoundPosts(data.posts);
             }
         }
@@ -91,6 +94,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 {category === 'lost' && lostPosts.map((post, index) => (
@@ -103,18 +107,20 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 {category === 'found' && foundPosts.map((post, index) => (
                     <Buttonposts 
                         key={index}
                         usuario={post.PES_NOME}
-                        imagemUsuario={`data:image/jpeg;base64,${post.USU_FOTO}`}
-                        imagemPet={`data:image/jpeg;base64,${post.PET_FOTO}`}
+                        imagemUsuario={post.USU_FOTO}
+                        imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 </div>
