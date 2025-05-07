@@ -14,6 +14,7 @@ import {
   verificarSeTemNumeros,
   verificarSeEEmail,
 } from "../assets/utils/formValidacoes";
+import { validarCampoEmail } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
@@ -55,6 +56,12 @@ function Cadastro() {
     const cep = cepRef.current;
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
+
+    if ( validarCampoEmail({
+          campo:email,
+          setErro: setErroEmail,
+          mensagem: "Por favor, insira um e-mail válido."
+        }) ) return true;
 
     // campos vazios
     const camposObrigatorios = [

@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validarCampoEmail } from "../assets/utils/regex.js";
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import ButtonForm from "../components/ButtonForm";
@@ -26,9 +27,19 @@ const RecuperacaoSenha = () => {
 
   async function recuperarSenha(e) {
     e.preventDefault();
+
+    let email = emailRef.current;
+
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setMensagemErro,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
+
+
     console.log('emailGlobal: ', userEmail)
 
-    const email = {      email: emailRef.current.value    }
+    email = {      email: emailRef.current.value    }
     const result = await enviarDados(email, "form/recuperar-senha")
 
     if (result.success) {

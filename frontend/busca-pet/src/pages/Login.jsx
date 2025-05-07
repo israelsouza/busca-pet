@@ -1,10 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles/login.module.css";
 import HeaderForm from "../components/HeaderForm";
-import {
-  verificarTamanhoMinimo,
-  verificarSeEEmail,
-} from "../assets/utils/formValidacoes";
+import { validarCampoEmail } from "../assets/utils/regex.js";
 import { useRef, useState } from "react";
 
 function login() {
@@ -22,11 +19,11 @@ function login() {
     const email = emailRef.current;
     const senha = senhaRef.current;
 
-    verificarSeEEmail(
-      email,
-      setErroEmail,
-      "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail"
-    ) 
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setErroEmail,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
 
      if ( verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  )return true  
 
