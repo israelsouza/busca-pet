@@ -81,3 +81,34 @@ export function validarCampoEmail(config) {
 
     return hasError;
 }
+
+export function validarDataLimite(config) {
+    let hasError = false;
+  
+    if (config.campo && config.campo.value) {
+      const selectedDate = new Date(config.campo.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+  
+      if (config.dataMinima) {
+        const dataMin = new Date(config.dataMinima);
+        dataMin.setHours(0, 0, 0, 0);
+        if (selectedDate < dataMin) {
+          config.setErro(config.mensagemErroMinima || `Por favor, selecione uma data a partir de ${config.dataMinima}.`);
+          hasError = true;
+        }
+      }
+  
+      if (selectedDate > today) {
+        config.setErro(config.mensagemErroLimite || "Por favor, selecione uma data anterior ou igual a hoje.");
+        hasError = true;
+      } else if (!hasError) {
+        config.setErro(""); // Limpa o erro se passar ambas as validações
+      }
+    } else if (config.campo) {
+      config.setErro(config.mensagemObrigatoria || "Por favor, selecione uma data.");
+      hasError = true;
+    }
+  
+    return hasError;
+  }

@@ -6,6 +6,7 @@ import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
+import { validarDataLimite } from "../assets/utils/regex.js";
 import criarFormData from "../assets/utils/criarFormData.js";
 
 // Importa o cabeçalho e funções de validação
@@ -38,6 +39,7 @@ function PetPerdido() {
     const descricaoRef = useRef(null);
     const dataRef = useRef(null);
     const imagemRef = useRef(null);
+    const dataMinimaPermitida = '2000-01-01'
 
     // Estados para armazenar mensagens de erro e informações do formulário
     const [nomeImagem, setNomeImagem] = useState(""); // Nome do arquivo de imagem selecionado
@@ -102,6 +104,15 @@ function PetPerdido() {
         const data = dataRef.current;
         const imagem = imagemRef.current;
 
+        if (validarDataLimite({
+            campo: data,
+            setErro: setErroData,
+            mensagemObrigatoria: "Por favor, insira a data em que viu o pet pela última vez.",
+            mensagemErroMinima: `A data não pode ser anterior a ${dataMinimaPermitida}.`,
+            mensagemErroLimite: "A data não pode ser futura.",
+            dataMinima: dataMinimaPermitida,
+        })) return true;
+
         // Lista de campos obrigatórios e suas mensagens de erro
         const camposObrigatorios = [
             {
@@ -118,11 +129,6 @@ function PetPerdido() {
                 ref: tipoPet,
                 setErro: setErroTipoPet,
                 mensagem: "Por favor, selecione o tipo do seu pet.",
-            },
-            {
-                ref: data,
-                setErro: setErroData,
-                mensagem: "Por favor, insira a data em que perdeu o seu pet.",
             },
             {
                 ref: imagem,
