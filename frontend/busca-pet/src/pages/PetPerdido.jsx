@@ -1,4 +1,4 @@
-// Importa os hooks do React e os estilos do componente
+
 import { useRef, useState, useEffect } from "react";
 import validateToken from '../assets/utils/validateToken.js'
 import styles from "./styles/PetPerdido.module.css";
@@ -9,7 +9,6 @@ import {
 import { validarDataLimite } from "../assets/utils/regex.js";
 import criarFormData from "../assets/utils/criarFormData.js";
 
-// Importa o cabeçalho e funções de validação
 import HeaderLog from "./../components/HeaderLog";
 import { useNavigate } from "react-router-dom";
 
@@ -24,15 +23,15 @@ function PetPerdido() {
               await validateToken();
             } catch (error) {
               console.error("Erro capturado:", error.message);
-              alert(error.message); // Exibe a mensagem de erro para o usuário
-              localStorage.removeItem("authToken"); // Remove o token inválido
-              navigate("/form/login"); // Redireciona para o login
+              alert(error.message);
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
             }
           };
           checkAuthentication();
     }, [navigate]);
 
-    // Referências para os campos do formulário
+
     const nomeRef = useRef(null);
     const rgaRef = useRef(null);
     const tipoPetRef = useRef(null);
@@ -41,62 +40,52 @@ function PetPerdido() {
     const imagemRef = useRef(null);
     const dataMinimaPermitida = '2000-01-01'
 
-    // Estados para armazenar mensagens de erro e informações do formulário
-    const [nomeImagem, setNomeImagem] = useState(""); // Nome do arquivo de imagem selecionado
-    const [erroNome, setErroNome] = useState(""); // Mensagem de erro para o campo "Nome"
-    const [erroRga, setErroRga] = useState(""); // Mensagem de erro para o campo "RGA"
-    const [erroTipoPet, setErroTipoPet] = useState(""); // Mensagem de erro para o campo "Tipo do Pet"
-    const [erroDescricao, setErroDescricao] = useState(""); // Mensagem de erro para o campo "Descrição"
-    const [erroData, setErroData] = useState(""); // Mensagem de erro para o campo "Data"
-    const [erroImagem, setErroImagem] = useState(""); // Mensagem de erro para o campo "Imagem"
+
+    const [nomeImagem, setNomeImagem] = useState("");
+    const [erroNome, setErroNome] = useState("");
+    const [erroRga, setErroRga] = useState("");
+    const [erroTipoPet, setErroTipoPet] = useState("");
+    const [erroDescricao, setErroDescricao] = useState("");
+    const [erroData, setErroData] = useState("");
+    const [erroImagem, setErroImagem] = useState("");
     const [arquivoImagem, setArquivoImagem] = useState(null);
 
   const [mensagem, setMensagem] = useState("");
   const [retornoBackend, setRetornoBackend] = useState("");
 
-    // Função para tratar a seleção de uma imagem
+
     function handleImagemSelecionada(e) {
-        const arquivo = e.target.files[0]; // Obtém o arquivo selecionado
+        const arquivo = e.target.files[0];
         if (arquivo) {
-            if (arquivo.size > 10 * 1024 * 1024) { // Limite de 2MB
+            if (arquivo.size > 10 * 1024 * 1024) {
                 setErroImagem("O arquivo deve ter no máximo 2MB.");
                 return;
             }
             setErroImagem("");
-            setNomeImagem(arquivo.name); // Atualiza o estado com o nome do arquivo
+            setNomeImagem(arquivo.name);
             setArquivoImagem(arquivo); 
         } else {
-            setNomeImagem(""); // Reseta o estado caso nenhum arquivo seja selecionado
+            setNomeImagem("");
         }
     }
 
-    // Função para validar o campo "RGA" (aceita apenas números)
-    function handleRgaAlterado(e) {
-        const valor = e.target.value;
-        if (/^\d*$/.test(valor)) {
-            rgaRef.current.value = valor; // Atualiza o valor do campo
-            setErroRga(""); // Remove a mensagem de erro
-        } else {
-            setErroRga("O RGA deve conter apenas números."); // Define a mensagem de erro
-        }
-    }
 
-    // Função para validar o campo "Nome" (aceita apenas letras e espaços)
+
     function handleNomeAlterado(e) {
         const valor = e.target.value;
         if (/^[a-zA-ZÀ-ÿ\s]*$/.test(valor)) {
-            nomeRef.current.value = valor; // Atualiza o valor do campo
-            setErroNome(""); // Remove a mensagem de erro
+            nomeRef.current.value = valor;
+            setErroNome("");
         } else {
-            setErroNome("O nome deve conter apenas letras."); // Define a mensagem de erro
+            setErroNome("O nome deve conter apenas letras.");
         }
     }
 
-    // Função para validar os dados do formulário ao clicar no botão
-    async function validarFormulario(e) {
-        e.preventDefault(); // Evita o comportamento padrão do formulário (recarregar a página)
 
-        // Obtém os valores dos campos do formulário
+    async function validarFormulario(e) {
+        e.preventDefault();
+
+    
         const nome = nomeRef.current;
         const rga = rgaRef.current;
         const tipoPet = tipoPetRef.current;
@@ -113,7 +102,7 @@ function PetPerdido() {
             dataMinima: dataMinimaPermitida,
         })) return true;
 
-        // Lista de campos obrigatórios e suas mensagens de erro
+    
         const camposObrigatorios = [
             {
                 ref: nome,
@@ -137,18 +126,18 @@ function PetPerdido() {
             },
         ];
 
-        // Verifica se algum campo obrigatório está vazio
+    
         if (verificarCampoVazioPet(camposObrigatorios)) return true;
 
-        // Validação específica para o campo "Tipo do Pet"
+    
         if (tipoPet.value === "Selecione o tipo do pet") {
             setErroTipoPet("Por favor, selecione o tipo do seu pet.");
             return true;
         } else {
-            setErroTipoPet(""); // Remove a mensagem de erro se o valor for válido
+            setErroTipoPet("");
         }
 
-        // Validações de tamanho máximo para os campos
+    
         const camposTamanhoMaximo = [
             {
                 ref: nome,
@@ -174,7 +163,7 @@ function PetPerdido() {
 
         if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
-        // Se todas as validações passarem, o formulário é considerado válido
+    
         
        
         
@@ -198,14 +187,14 @@ function PetPerdido() {
 
         const formData = criarFormData(dados, arquivoImagem);
         
-        // exibir dados do formData
+    
         
         try {
             const resultado = await enviarDados(formData, "criar-post/pet-perdido");
             console.log(resultado);
 
             if (resultado && resultado.message) {
-                setRetornoBackend(resultado.message); // Atualiza a mensagem de sucesso
+                setRetornoBackend(resultado.message);
                 setTimeout(() => navigate("/posts/all"), 1000); 
             } else {
                 setRetornoBackend("Erro inesperado ao cadastrar o pet.");
@@ -218,12 +207,12 @@ function PetPerdido() {
 
     return (
         <div className={styles.pet_perdido}>
-            <HeaderLog /> {/* Componente de cabeçalho */}
+            <HeaderLog /> { /* DEP. GOOGLE MAPS */ }
 
             <div className={styles.pet_perdido__body}>
                 <div className={styles.pet_perdido__box}>
                     <form>
-                        {/* Campo Nome */}
+                        { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input50}>
                             <div>
                                 <label htmlFor="nome">Nome do Pet</label>
@@ -232,7 +221,7 @@ function PetPerdido() {
                                     ref={nomeRef}
                                     className={styles.pet_perdido__input}
                                     type="text"
-                                    onChange={handleNomeAlterado} // Validação do Nome
+                                    onChange={handleNomeAlterado}
                                 />
                                 {erroNome && (
                                     <span id="nome-error" className={styles.error}>
@@ -241,7 +230,7 @@ function PetPerdido() {
                                 )}
                             </div>
 
-                            {/* Campo RGA */}
+                            { /* DEP. GOOGLE MAPS */ }
                             <div>
                                 <label htmlFor="rga">RGA do Pet (opcional)</label>
                                 <input
@@ -249,7 +238,6 @@ function PetPerdido() {
                                     ref={rgaRef}
                                     className={styles.pet_perdido__input}
                                     type="text"
-                                    onChange={handleRgaAlterado} // Validação do RGA
                                 />
                                 {erroRga && (
                                     <span id="rga-error" className={styles.error}>
@@ -259,7 +247,7 @@ function PetPerdido() {
                             </div>
                         </div>
 
-                        {/* Campo Tipo do Pet */}
+                        { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input100}>
                             <label htmlFor="tipoPet">Selecione o tipo do seu Pet</label>
                             <select
@@ -284,7 +272,7 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        {/* Campo Descrição */}
+                        { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input100}>
                             <label htmlFor="descricao">Breve descrição do Pet</label>
                             <textarea
@@ -299,7 +287,7 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        {/* Campo Data */}
+                        { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input100}>
                             <label htmlFor="data">Data</label>
                             <input
@@ -315,7 +303,7 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        {/* Campo Imagem */}
+                        { /* DEP. GOOGLE MAPS */ }
                         <p className={styles.pet_perdido__imagem_texto}>
                             Selecione a imagem do Pet perdido
                         </p>
@@ -326,7 +314,7 @@ function PetPerdido() {
                                 ref={imagemRef}
                                 type="file"
                                 accept="image/*"
-                                onChange={handleImagemSelecionada} // Validação da Imagem
+                                onChange={handleImagemSelecionada}
                             />
                         </div>
                         {nomeImagem && (
@@ -355,12 +343,10 @@ function PetPerdido() {
                 {retornoBackend}
             </span>
             )}
-
-                    {/* Botão de Enviar */}
                     <div className={styles.botao_center}>
                         <button
                             className={`${styles.botao} ${styles.perdeu}`}
-                            onClick={validarFormulario} // Validação do formulário
+                            onClick={validarFormulario}
                         >
                             Cadastrar Pet Perdido
                         </button>

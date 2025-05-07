@@ -15,7 +15,7 @@ const RecuperacaoSenha = () => {
   const tokenRef = useRef(null);
   const passRef = useRef(null);
 
-  const [etapa, setEtapa] = useState('solicitarEmail'); // Estado para controlar a etapa do formulário
+  const [etapa, setEtapa] = useState('solicitarEmail'); 
   const [mensagemErro, setMensagemErro] = useState('');
   const [mensagemSucesso, setMensagemSucesso] = useState('');
 
@@ -43,7 +43,7 @@ const RecuperacaoSenha = () => {
     const result = await enviarDados(email, "form/recuperar-senha")
 
     if (result.success) {
-      setEtapa('validarToken'); // Mudar para a etapa de validar o token
+      setEtapa('validarToken');
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
@@ -70,7 +70,7 @@ const RecuperacaoSenha = () => {
     const result = await enviarDados(data, "validar-token-senha")
 
     if (result.success) {
-      setEtapa('atualizarSenha'); // Mudar para a etapa de atualizar a senha
+      setEtapa('atualizarSenha'); 
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
@@ -83,9 +83,6 @@ const RecuperacaoSenha = () => {
 
   async function atualizarSenha(e) {
     e.preventDefault();
-
-    // comparar se as 2 sao === iguais
-    // se nao, exibir erro
 
     if ( 
       validarTamanhoMinimo({      
@@ -100,7 +97,7 @@ const RecuperacaoSenha = () => {
     const result = await enviarDados(password, "atualizar-senha")
 
     if (result.success) {
-      setEtapa('concluido'); // Mudar para a etapa de conclusão
+      setEtapa('concluido'); 
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
@@ -162,7 +159,6 @@ const RecuperacaoSenha = () => {
           )}
 
           
-
     </div>
     </div>
       <div className={style['rec-senha__image']}></div>

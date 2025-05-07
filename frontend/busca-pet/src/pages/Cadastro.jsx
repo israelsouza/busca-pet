@@ -18,8 +18,7 @@ import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
   const navigate = useNavigate();
-
-  // REFERENCIAS
+  
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
@@ -29,8 +28,7 @@ function Cadastro() {
   const cepRef = useRef(null);
   const cidadeRef = useRef(null);
   const estadoRef = useRef(null);
-
-  // ESTADOS
+  
   const [erroNome, setErroNome] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
@@ -110,8 +108,7 @@ function Cadastro() {
       setErro: setErroEmail,
       mensagem: "Por favor, insira um e-mail válido."
     }) ) return true;
-
-    // tamanho limite
+    
     const camposTamanhoMaximo = [
       {
         ref: name,
@@ -157,8 +154,7 @@ function Cadastro() {
       },
     ];
     if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
-
-    // tamanho fixo
+    
     const camposTamanhoFixo = [
       {
         ref: phone,
@@ -185,8 +181,7 @@ function Cadastro() {
         mensagem: "NEWERROR A senha possui no mínimo 6 caracteres, verifique e tente novamente"
     })
       ) return true;    
-
-    // tem letras?
+    
     const camposNaoPodemTerLetras = [
       {
         ref: phone,
@@ -200,8 +195,7 @@ function Cadastro() {
       },
     ];
     if (verificarSeTemLetras(camposNaoPodemTerLetras)) return true;
-
-    // tem numeros?
+    
     const camposNaoPodemTerNumeros = [
       {
         ref: name,
@@ -220,8 +214,7 @@ function Cadastro() {
       },
     ];
     if (verificarSeTemNumeros(camposNaoPodemTerNumeros)) return true;
-
-    // tem @ ?
+    
     if (
       verificarSeEEmail(
         email,
@@ -264,8 +257,7 @@ function Cadastro() {
       
       if (error.message) {
         setMensagem(error.message);
-      } else {
-        // Exibe uma mensagem genérica para outros erros
+      } else {        
         setMensagem("Erro ao realizar o cadastro. Tente novamente.");
       }
     }

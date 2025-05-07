@@ -1,4 +1,4 @@
-// Importa os hooks do React e os estilos do componente
+
 import { useRef, useState, useEffect } from "react";
 import styles from "./styles/PetPerdido.module.css";
 import {
@@ -8,8 +8,6 @@ import {
 import { validarDataLimite } from "../assets/utils/regex.js";
 
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
-
-// Importa o cabeçalho e funções de validação
 import HeaderLog from "../components/HeaderLog.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -144,9 +142,8 @@ function PetEncontrado() {
         formData.append("data", dados.data);
         formData.append("email", dados.email);
       
-        // Adiciona a imagem como arquivo
         if (arquivoImagem) {
-          formData.append("imagem", arquivoImagem); // Adiciona o arquivo diretamente
+          formData.append("imagem", arquivoImagem);
         }
       
         return formData;
@@ -182,8 +179,6 @@ function PetEncontrado() {
         <div className={styles.pet_perdido__box}>
           <form>
             
-
-            {/* Campo Tipo do Pet */}
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="tipoPet">Selecione o tipo do seu Pet</label>
               <select
@@ -208,7 +203,7 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Descrição */}
+
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="descricao">Breve descrição do Pet</label>
               <textarea
@@ -223,7 +218,6 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Data */}
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="data">Em qual dia você viu esse pet?</label>
               <input
@@ -239,7 +233,6 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Imagem */}
             <p className={styles.pet_perdido__imagem_texto}>
               Selecione a imagem do Pet que viu. (Máx: 10MB)
             </p>

@@ -54,7 +54,6 @@ function login() {
           });
 
           if (!response.ok) {
-            // Se o status não for 200, lança um erro com a mensagem apropriada
             const errorData = await response.json();
             throw new Error(errorData.message || "Erro ao realizar login.");
           }
@@ -69,21 +68,18 @@ function login() {
 
     validarDadosDeLogin(data)
     .then((resultado) => {
-      // Login bem-sucedido
+      
       setErroLogin("")
       setMensagemSucesso("Login realizado com sucesso!");
 
-      // Armazena o token no localStorage
       localStorage.setItem("authToken", resultado.token);
 
-      // Redirecionar ou realizar outra ação
       setTimeout(() => navigate("/posts/all"), 1000); 
     })
     .catch((error) => {
-      // Exibe a mensagem de erro na tela
       setErroEmail("");
       setErroSenha("");
-      setErroLogin(error.message); // Exibe o erro 
+      setErroLogin(error.message); 
     });
 
 
