@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles/login.module.css";
 import HeaderForm from "../components/HeaderForm";
-import { validarCampoEmail } from "../assets/utils/regex.js";
+import { validarTamanhoMinimo, validarCampoEmail } from "../assets/utils/regex.js";
 import { useRef, useState } from "react";
 
 function login() {
@@ -25,7 +25,14 @@ function login() {
       mensagem: "Por favor, insira um e-mail válido."
     }) ) return true;
 
-     if ( verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  )return true  
+    if ( 
+      validarTamanhoMinimo({      
+        campo:senha,
+        min: 6,
+        setErro: setErroSenha,
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;
 
     const emailLowerCase = email.value.toLowerCase();
 

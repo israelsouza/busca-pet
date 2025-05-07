@@ -9,12 +9,11 @@ import {
   verificarCampoVazio,
   verificarTamanhoMaximo,
   verificarTamanhoFixo,
-  verificarTamanhoMinimo,
   verificarSeTemLetras,
   verificarSeTemNumeros,
   verificarSeEEmail,
 } from "../assets/utils/formValidacoes";
-import { validarCampoEmail } from "../assets/utils/regex.js";
+import { validarCampoEmail, validarTamanhoMinimo } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
@@ -177,16 +176,14 @@ function Cadastro() {
     ];
     if (verificarTamanhoFixo(camposTamanhoFixo)) return true;
 
-    // tamanho minimo
-    if (
-      verificarTamanhoMinimo(
-        senha,
-        6,
-        setErroSenha,
-        "A senha tem que conter no mínimo 6 caracteres."
-      )
-    )
-      return true;
+    if ( 
+      validarTamanhoMinimo({      
+        campo:senha,
+        min: 6,
+        setErro: setErroSenha,
+        mensagem: "NEWERROR A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;    
 
     // tem letras?
     const camposNaoPodemTerLetras = [

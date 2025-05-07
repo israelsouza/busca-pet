@@ -87,6 +87,15 @@ const RecuperacaoSenha = () => {
     // comparar se as 2 sao === iguais
     // se nao, exibir erro
 
+    if ( 
+      validarTamanhoMinimo({      
+        campo:passRef.current,
+        min: 6,
+        setErro: setMensagemErro,
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;    
+
     const password = { password: passRef.current.value, email: userEmail }
     const result = await enviarDados(password, "atualizar-senha")
 
