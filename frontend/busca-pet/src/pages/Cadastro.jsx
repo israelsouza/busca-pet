@@ -13,7 +13,7 @@ import {
   verificarSeTemNumeros,
   verificarSeEEmail,
 } from "../assets/utils/formValidacoes";
-import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio } from "../assets/utils/regex.js";
+import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
@@ -54,7 +54,7 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
-    const camposObrigatorios2 = [
+    const camposObrigatorios = [
       {
         ref: name,
         setErro: setErroNome,
@@ -94,7 +94,7 @@ function Cadastro() {
     ];
 
     if (
-      validarCampoVazio({campos: camposObrigatorios2})
+      validarCampoVazio({campos: camposObrigatorios})
     ) return true;
 
     if ( estado.value.length > 2) {
@@ -102,6 +102,15 @@ function Cadastro() {
     } else {
       setErroEstado("");
     }
+
+    if ( validarCampoApenasLetras({
+      campos: [
+        { ref: name, setErro: setErroNome, mensagem: "O campo nome não pode conter números." },
+        { ref: rua, setErro: setErroRua, mensagem: "O campo rua não pode conter números." },
+        { ref: bairro, setErro: setErroBairro, mensagem: "O campo bairro não pode conter números." },
+        { ref: cidade, setErro: setErroCidade, mensagem: "O campo cidade não pode conter números." },
+      ]
+    }) ) return true;
 
     if ( validarCampoEmail({
       campo:email,
@@ -251,7 +260,6 @@ function Cadastro() {
       } else {
         setMensagem("Erro inesperado. Tente novamente.");
       }
-
 
     } catch (error) {
       

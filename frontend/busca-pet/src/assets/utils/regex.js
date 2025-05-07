@@ -112,3 +112,36 @@ export function validarDataLimite(config) {
   
     return hasError;
   }
+
+export function validarCampoApenasLetras(config) {
+    let hasError = false;
+    const letrasRegex = /^[A-Za-zÀ-ú\s]+$/; // Regex para letras (maiúsculas e minúsculas), acentos e espaços
+
+    if (config.campo) {
+        const valorCampo = config.campo.value.trim();
+
+    if (!letrasRegex.test(valorCampo)) {
+            config.setErro(config.mensagemFormatoIncorreto || `O campo ${config.nomeCampo || ' '} deve conter apenas letras.`);
+            hasError = true;
+        } else {
+            config.setErro("");
+        }
+    } else if (config.campos && Array.isArray(config.campos)) {
+        config.campos.forEach(element => {
+        const valorCampo = element.ref.value.trim();
+        const nomeCampo = element.nomeCampo || ' ';
+
+        if (!valorCampo) {
+            element.setErro(element.mensagemObrigatoria || `O campo ${nomeCampo} é obrigatório.`);
+            hasError = true;
+        } else if (!letrasRegex.test(valorCampo)) {
+            element.setErro(element.mensagemFormatoIncorreto || `O campo ${nomeCampo} deve conter apenas letras.`);
+            hasError = true;
+        } else {
+            element.setErro("");
+        }
+        });
+    }
+
+    return hasError;
+}
