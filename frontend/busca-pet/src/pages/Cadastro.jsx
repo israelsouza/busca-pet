@@ -13,7 +13,7 @@ import {
   verificarSeTemNumeros,
   verificarSeEEmail,
 } from "../assets/utils/formValidacoes";
-import { validarCampoEmail, validarTamanhoMinimo } from "../assets/utils/regex.js";
+import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
@@ -56,59 +56,60 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
-    if ( validarCampoEmail({
-          campo:email,
-          setErro: setErroEmail,
-          mensagem: "Por favor, insira um e-mail válido."
-        }) ) return true;
-
-    // campos vazios
-    const camposObrigatorios = [
+    const camposObrigatorios2 = [
       {
         ref: name,
         setErro: setErroNome,
-        mensagem: "Por favor, insira seu nome.",
+        mensagem: "O campo nome é obrigatório.",
       },
       {
         ref: email,
         setErro: setErroEmail,
-        mensagem: "Por favor, insira seu e-mail.",
+        mensagem: "O campo e-mail é obrigatório.",
       },
       {
         ref: senha,
         setErro: setErroSenha,
-        mensagem: "Por favor, crie a sua senha.",
+        mensagem: "O campo senha é obrigatório.",
       },
       {
         ref: phone,
         setErro: setErroPhone,
-        mensagem: "Por favor, insira seu telefone.",
+        mensagem: "O campo telefone é obrigatório.",
       },
       {
         ref: rua,
         setErro: setErroRua,
-        mensagem: "Por favor, insira o nome da sua rua.",
+        mensagem: "O campo rua é obrigatório.",
       },
       {
         ref: bairro,
         setErro: setErroBairro,
-        mensagem: "Por favor, insira o nome do seu bairro.",
+        mensagem: "O campo bairro é obrigatório.",
       },
-      { ref: cep, setErro: setErroCEP, mensagem: "Por favor, insira seu CEP." },
+      { ref: cep, setErro: setErroCEP, mensagem: "O campo CEP é obrigatório." },
       {
         ref: cidade,
         setErro: setErroCidade,
-        mensagem: "Por favor, insira o nome da sua cidade.",
-      },
+        mensagem: "O campo cidade é obrigatório.",
+      }
     ];
-    const select = [
-      {
-        ref: estado,
-        setErro: setErroEstado,
-        mensagem: "Por favor, selecione algum estado válido.",
-      },
-    ];
-    if (verificarCampoVazio(camposObrigatorios, select)) return true;
+
+    if (
+      validarCampoVazio({campos: camposObrigatorios2})
+    ) return true;
+
+    if ( estado.value.length > 2) {
+      setErroEstado("Por favor, selecione algum estado válido.");
+    } else {
+      setErroEstado("");
+    }
+
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setErroEmail,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
 
     // tamanho limite
     const camposTamanhoMaximo = [

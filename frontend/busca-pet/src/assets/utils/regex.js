@@ -3,6 +3,32 @@
  * 
  */
 
+export function validarCampoVazio(config) {
+    let hasError = false;
+
+    if (config.campo) {
+        if (!config.campo.value.trim()) { 
+            config.setErro(config.mensagem);
+            config.campo.focus();
+            hasError = true;
+        } else {
+            config.setErro(""); 
+        }
+    } else if (config.campos && Array.isArray(config.campos)) {
+        config.campos.forEach(element => {
+        if (!element.ref.value.trim()) {
+            element.setErro(element.mensagem);
+            element.ref.focus();
+            hasError = true;
+        } else {
+            element.setErro("");
+        }
+        });
+    }
+
+    return hasError;
+}
+
 export function validarTamanhoMinimo(config){
     let hasError = false;
 
