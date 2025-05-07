@@ -1,7 +1,7 @@
 import express from "express";
 import verificarUsuarioDB from "../model/verificarUsuarioDB.js";
 import jwt from 'jsonwebtoken'
-// import { SECRET_KEY } from "../config/authConfig.js";
+import { SECRET_KEY } from "../config/authConfig.js";
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.post("/", async (request, response) => {
     // Gera o token JWT
     const token = jwt.sign(
       {email: dados.email}, // Payload
-      SECRET_KEY,           // Chave secreta importada
+        SECRET_KEY,           // Chave secreta importada
       { expiresIn: "10m"}    // Tempo de expiração
     )
     console.log("entrei no login apos a geração do token ")

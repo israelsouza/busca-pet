@@ -5,7 +5,7 @@ async function buscarUsuario(req, res) {
     const { email } = req.params;
 
     try {
-        const usuario = await usuarioModel.buscarUsuario(email);
+        const usuario = await usuarioModel.buscarPorEmail(email);
         if (!usuario) {
             return res.status(404).send("Usuário não encontrado.");
         }

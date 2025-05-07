@@ -6,9 +6,9 @@ import usuarioController from "../controllers/editPerfilUsuarioController";
 const multer = require("multer");
 const upload = multer();
 
-router.get("/usuarios/email/:email", usuarioController.buscarUsuarioPorEmail);
-router.post("/usuarios/email/:email/:campo", usuarioController.editarCampoPorEmail);
-router.post("/usuarios/email/:email/foto", upload.single("foto"), usuarioController.editarFotoPorEmail);
+router.get("/usuarios/email/:email", usuarioController.buscarUsuario);
+router.post("/usuarios/email/:email/:campo", usuarioController.atualizarCampo);
+router.post("/usuarios/email/:email/foto", upload.single("foto"), usuarioController.atualizarFoto);
 
 export default router;
 
