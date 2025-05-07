@@ -1,5 +1,7 @@
-import usuarioModel from "../model/editPerfilUsuario";
+import usuarioModel from "../model/editPerfilUsuario.js";
+import multer from "multer";
 import sharp from "sharp";
+
 
 async function buscarUsuario(req, res) {
     const { email } = req.params;

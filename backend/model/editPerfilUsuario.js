@@ -1,4 +1,5 @@
-const getConnection = require("../config/db");
+import getConnection from "./connectionOracle.js";
+
 
 async function atualizarCampo(email, campo, valor) {
   const conn = await getConnection();

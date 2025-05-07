@@ -25,21 +25,30 @@
     
         setEmail(userEmail);
         console.log("Email recuperado:", userEmail);
-    
-        fetch(`http://localhost:3000/usuarios/email/${email}`)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
-            }
-            return res.json();
-          })
-          .then((data) => setFormData(data))
-          .catch((err) => console.error("Erro ao carregar dados:", err));
+        console.log(userEmail, 'Estou AQUI!')
         
       } catch (error) {
         console.error("Erro ao recuperar email:", error);
       }
     }, []);
+    
+    useEffect(() => {
+      if (!email) return;
+      
+      console.log("Buscando dados de:", `http://localhost:3000/usuarios/email/${email}`);
+      fetch("http://localhost:3000/usuarios/email/" + email)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Dados recebidos:", data);
+          setFormData(data);
+        })
+        .catch((err) => console.error("Erro ao carregar dados:", err));
+    }, [email]);
 
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -47,7 +56,7 @@
     };
 
     const atualizarCampo = (campo) => {
-      fetch(`http://localhost:3001/usuarios/email/${email}/${campo}`, {
+      fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ valor: formData[campo] }),
@@ -98,7 +107,7 @@
           <div className={Style.campo}>
             <label>Telefone</label>
             <input name="PES_PHONE" value={formData.PES_PHONE} onChange={handleChange} />
-          <button onClick={() => atualizarCampo("PES_PHONE")}>Editar</button>
+            <button onClick={() => atualizarCampo("PES_PHONE")}>Editar</button>
           </div>
 
           <div className={Style.campo}>

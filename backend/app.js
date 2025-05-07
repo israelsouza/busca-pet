@@ -9,6 +9,9 @@ import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
 import recuperarSenha from './routes/recuperarSenha.js'
 import validarTokenSenha from './routes/validarTokenSenha.js'
 import atualizarSenha from './routes/atualizarSenha.js'
+import buscarUsuario from './routes/editPerfilUsuario.js'
+import atualizarCampo from './routes/editPerfilUsuario.js'
+import atualizarFoto from './routes/editPerfilUsuario.js'
 
 const app = express();
 app.use(cors());
@@ -23,6 +26,9 @@ app.use("/form/login", logarUsuario);
 app.use("/form/recuperar-senha", recuperarSenha)
 app.use("/validar-token-senha", validarTokenSenha)
 app.use("/atualizar-senha", atualizarSenha)
+app.use("/usuarios/email/:email", buscarUsuario)
+app.use("/usuarios/email/:email/:campo", atualizarCampo)
+app.use("/usuarios/email/:email/foto", atualizarFoto)
 
 
 // rota de verificação do token
@@ -31,5 +37,10 @@ app.use("/validate-token", validateToken);
 // rotas privadas (protegidas)
 // app.use("/posts/all", autenticarToken, getTodosPosts);
 app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido)
+
+app.get("/usuarios/email/:email", (req, res) => {
+    const { email } = req.params;
+    res.status(200).json({ message: `Usuário com e-mail ${email} encontrado.` });
+});
 
 export default app;
