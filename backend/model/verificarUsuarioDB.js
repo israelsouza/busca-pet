@@ -27,9 +27,8 @@ export default async function verificarUsuarioDB(dados) {
      // Compara a senha fornecida com o hash armazenado no banco
     const senhaValida = await bcrypt.compare(dados.password, senhaHash);
 
-
     if (!senhaValida) {
-        return res.status(401).json({ message: "Senha incorreta." });
+        throw new Error("Senha incorreta");  
     }
 
     console.log("Usuário autenticado com sucesso!");
