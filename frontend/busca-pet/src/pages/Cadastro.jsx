@@ -6,14 +6,10 @@ import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  verificarCampoVazio,
-  verificarTamanhoMaximo,
   verificarTamanhoFixo,
-  verificarSeTemLetras,
-  verificarSeTemNumeros,
-  verificarSeEEmail,
+  verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
-import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras } from "../assets/utils/regex.js";
+import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras, validarCampoApenasNumeros } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
@@ -22,6 +18,7 @@ function Cadastro() {
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
+  const senhaRef2 = useRef(null);
   const phoneRef = useRef(null);
   const ruaRef = useRef(null);
   const bairroRef = useRef(null);
@@ -32,6 +29,7 @@ function Cadastro() {
   const [erroNome, setErroNome] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
+  const [erroSenha2, setErroSenha2] = useState("");
   const [erroPhone, setErroPhone] = useState("");
   const [erroRua, setErroRua] = useState("");
   const [erroBairro, setErroBairro] = useState("");
@@ -47,6 +45,7 @@ function Cadastro() {
     const name = nomeRef.current;
     const email = emailRef.current;
     const senha = senhaRef.current;
+    const senha2 = senhaRef2.current;
     const phone = phoneRef.current;
     const rua = ruaRef.current;
     const bairro = bairroRef.current;
@@ -163,7 +162,14 @@ function Cadastro() {
       },
     ];
     if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
-    
+
+    if ( validarCampoApenasNumeros({
+      campos: [
+        { ref: phone, setErro: setErroPhone, mensagem: "O campo telefone só pode ter números." },
+        { ref: cep, setErro: setErroCEP, mensagem: "O campo cep só pode ter números." },
+      ]
+    }) ) return true;
+
     const camposTamanhoFixo = [
       {
         ref: phone,
@@ -187,51 +193,14 @@ function Cadastro() {
         campo:senha,
         min: 6,
         setErro: setErroSenha,
-        mensagem: "NEWERROR A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
     })
       ) return true;    
-    
-    const camposNaoPodemTerLetras = [
-      {
-        ref: phone,
-        setErro: setErroPhone,
-        mensagem: "O campo de telefone só pode ter números.",
-      },
-      {
-        ref: cep,
-        setErro: setErroCEP,
-        mensagem: "O campo de cep só pode ter números.",
-      },
-    ];
-    if (verificarSeTemLetras(camposNaoPodemTerLetras)) return true;
-    
-    const camposNaoPodemTerNumeros = [
-      {
-        ref: name,
-        setErro: setErroNome,
-        mensagem: "O campo de nome não pode conter números.",
-      },
-      {
-        ref: bairro,
-        setErro: setErroBairro,
-        mensagem: "O campo de bairro não pode conter números.",
-      },
-      {
-        ref: cidade,
-        setErro: setErroCidade,
-        mensagem: "O campo de cidade não pode conter números.",
-      },
-    ];
-    if (verificarSeTemNumeros(camposNaoPodemTerNumeros)) return true;
-    
-    if (
-      verificarSeEEmail(
-        email,
-        setErroEmail,
-        "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail"
-      )
-    )
-      return true;
+
+      if (senha.value !== senha2.value) {
+        setErroSenha("As senhas não coincidem. Por favor, verifique.");
+        return true;
+      } 
 
     const dados = {
       nome: nomeRef.current.value,
@@ -348,6 +317,20 @@ function Cadastro() {
                   refProp={senhaRef}
                   name="Senha"
                   place="Digite a sua senha"
+                  type="password"
+                />
+
+                {erroSenha && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroSenha}
+                  </span>
+                )}
+
+                <InputTxt
+                  required
+                  refProp={senhaRef2}
+                  name="Confirme sua senha"
+                  place="Confirme sua senha"
                   type="password"
                 />
 

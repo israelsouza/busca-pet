@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validarCampoEmail } from "../assets/utils/regex.js";
+import { validarCampoEmail, validarTamanhoMinimo } from "../assets/utils/regex.js";
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import ButtonForm from "../components/ButtonForm";
@@ -14,6 +14,7 @@ const RecuperacaoSenha = () => {
   const emailRef = useRef(null);
   const tokenRef = useRef(null);
   const passRef = useRef(null);
+  const passRef2 = useRef(null);
 
   const [etapa, setEtapa] = useState('solicitarEmail'); 
   const [mensagemErro, setMensagemErro] = useState('');
@@ -92,6 +93,11 @@ const RecuperacaoSenha = () => {
         mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
     })
       ) return true;    
+    
+      if (passRef.current.value !== passRef2.current.value) {
+        setMensagemErro("As senhas não coincidem. Por favor, verifique.");
+        return true;
+      }
 
     const password = { password: passRef.current.value, email: userEmail }
     const result = await enviarDados(password, "atualizar-senha")
@@ -147,7 +153,7 @@ const RecuperacaoSenha = () => {
           {etapa === 'atualizarSenha' && (
             <div className={style['rec-senha__etapa']}>
               <InputTxt name="Nova Senha" place="Insira a sua nova senha" refProp={passRef} type="password" />
-              <InputTxt name="Confirme a nova senha" place="Insira novamente a sua nova senha" type="password" />
+              <InputTxt name="Confirme a nova senha" place="Insira novamente a sua nova senha" refProp={passRef2} type="password" />
               <ButtonForm placeholder="Atualizar senha"  algumaFuncao={atualizarSenha} />
             </div>
           )}
