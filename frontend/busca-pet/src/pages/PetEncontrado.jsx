@@ -1,40 +1,37 @@
-// Importa os hooks do React e os estilos do componente
 import { useRef, useState, useEffect } from "react";
 import styles from "./styles/PetPerdido.module.css";
 import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo,
 } from "../assets/utils/formValidacoes.js";
-
+import { validarDataLimite } from "../assets/utils/regex.js";
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
-
-// Importa o cabeçalho e funções de validação
 import HeaderLog from "../components/HeaderLog.jsx";
 import { useNavigate } from "react-router-dom";
-
 import enviarDados from "../assets/utils/enviarDados.js";
 
 function PetEncontrado() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //       const checkAuthentication = async () => {
-  //         try {
-  //           await validateToken();
-  //         } catch (error) {
-  //           console.error("Erro capturado:", error.message);
-  //           alert(error.message); // Exibe a mensagem de erro para o usuário
-  //           localStorage.removeItem("authToken"); // Remove o token inválido
-  //           navigate("/form/login"); // Redireciona para o login
-  //         }
-  //       };
-  //       checkAuthentication();
-  // }, [navigate]);
+  useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            await validateToken();
+          } catch (error) {
+            console.error("Erro capturado:", error.message);
+            alert(error.message); 
+            localStorage.removeItem("authToken"); 
+            navigate("/form/login"); 
+          }
+        };
+        checkAuthentication();
+  }, [navigate]);
 
   const tipoPetRef = useRef(null);
   const descricaoRef = useRef(null);
   const dataRef = useRef(null);
   const imagemRef = useRef(null);
+  const dataMinimaPermitida = '2000-01-01'
 
   const [nomeImagem, setNomeImagem] = useState("");
   const [erroTipoPet, setErroTipoPet] = useState("");
@@ -69,6 +66,15 @@ function PetEncontrado() {
     const data = dataRef.current;
     const imagem = imagemRef.current;
 
+    if (validarDataLimite({
+      campo: data,
+      setErro: setErroData,
+      mensagemObrigatoria: "Por favor, insira a data em que viu o pet pela última vez.",
+      mensagemErroMinima: `A data não pode ser anterior a ${dataMinimaPermitida}.`,
+      mensagemErroLimite: "A data não pode ser futura.",
+      dataMinima: dataMinimaPermitida,
+    })) return true;
+
     const camposObrigatorios = [
       {
         ref: descricao,
@@ -79,11 +85,6 @@ function PetEncontrado() {
         ref: tipoPet,
         setErro: setErroTipoPet,
         mensagem: "Por favor, selecione o tipo do seu pet.",
-      },
-      {
-        ref: data,
-        setErro: setErroData,
-        mensagem: "Por favor, insira a data em que perdeu o seu pet.",
       },
       {
         ref: imagem,
@@ -118,8 +119,6 @@ function PetEncontrado() {
         return;
       }
 
-    console.log("Formulário válido!");
-
     const email = await EmailFromToken();
 
     const dados = {
@@ -138,9 +137,8 @@ function PetEncontrado() {
         formData.append("data", dados.data);
         formData.append("email", dados.email);
       
-        // Adiciona a imagem como arquivo
         if (arquivoImagem) {
-          formData.append("imagem", arquivoImagem); // Adiciona o arquivo diretamente
+          formData.append("imagem", arquivoImagem);
         }
       
         return formData;
@@ -148,21 +146,21 @@ function PetEncontrado() {
 
     const formData = criarFormData(dados, arquivoImagem);
 
-    console.log("Dados do formulário: ", formData);
-    console.log("Arquivo da imagem: ", formData.get("imagem"));
+    //console.log("Dados do formulário: ", formData);
+    //console.log("Arquivo da imagem: ", formData.get("imagem"));
 
  
     
     try {
       const resultado = await enviarDados(formData, "criar-post/pet-encontrado");
-      console.log(resultado);
+      //console.log(resultado);
 
-    //   if (resultado && resultado.message) {
-    //     setRetornoBackend(resultado.message);
-    //     setTimeout(() => navigate("/posts/all"), 1000);
-    //   } else {
-    //     setRetornoBackend("Erro inesperado ao cadastrar o pet.");
-    //   }
+      if (resultado && resultado.message) {
+        setRetornoBackend(resultado.message);
+        setTimeout(() => navigate("/posts/all"), 1000);
+      } else {
+        setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+      }
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);
       setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
@@ -176,8 +174,6 @@ function PetEncontrado() {
         <div className={styles.pet_perdido__box}>
           <form>
             
-
-            {/* Campo Tipo do Pet */}
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="tipoPet">Selecione o tipo do seu Pet</label>
               <select
@@ -202,7 +198,7 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Descrição */}
+
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="descricao">Breve descrição do Pet</label>
               <textarea
@@ -217,7 +213,6 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Data */}
             <div className={styles.pet_perdido__input100}>
               <label htmlFor="data">Em qual dia você viu esse pet?</label>
               <input
@@ -233,7 +228,6 @@ function PetEncontrado() {
               )}
             </div>
 
-            {/* Campo Imagem */}
             <p className={styles.pet_perdido__imagem_texto}>
               Selecione a imagem do Pet que viu. (Máx: 10MB)
             </p>

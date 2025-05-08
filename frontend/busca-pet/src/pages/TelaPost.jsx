@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-
 const TelaPost = () => {
   const navigate = useNavigate();
 
@@ -15,9 +14,9 @@ const TelaPost = () => {
             await validateToken();
           } catch (error) {
             console.error("Erro capturado:", error.message);
-            alert(error.message); // Exibe a mensagem de erro para o usuário
-            localStorage.removeItem("authToken"); // Remove o token inválido
-            navigate("/form/login"); // Redireciona para o login
+            alert(error.message);
+            localStorage.removeItem("authToken");
+            navigate("/form/login"); 
           }
         };
         checkAuthentication();

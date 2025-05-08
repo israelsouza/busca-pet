@@ -21,9 +21,9 @@ function PostsAll() {
               await validateToken();
             } catch (error) {
               console.error("Erro capturado:", error.message);
-              alert(error.message); // Exibe a mensagem de erro para o usuário
-              localStorage.removeItem("authToken"); // Remove o token inválido
-              navigate("/form/login"); // Redireciona para o login
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
             }
           };
           checkAuthentication();
@@ -33,15 +33,10 @@ function PostsAll() {
         async function fetchPosts() {
             const token = localStorage.getItem("authToken");
             if (category === 'all') {
-                console.log('all')
                 const response = await fetch('http://localhost:3000/api/posts/all');
-                console.log(response) // retono do backend com array e os dados
-                
                 const data = await response.json();
                 const post = data.posts;
-                console.log("posts", post) 
                 setPosts(data.posts); 
-                console.log(data.posts)
             } else if (category === 'user') {
                 // console.log('user')
                 // const response = await fetch(`http://localhost:3000/api/posts/user/${token}`);
@@ -49,15 +44,12 @@ function PostsAll() {
                 // const data = await response.json();
                 // console.log(data)
                 // setUserPosts(data.posts);
-            } else if (category === 'lost') {
-                console.log('lost')
-                const response = await fetch('http://localhost:3000/api/posts/lost');
-                console.log(response)
+            } else if (category === 'lost') {                
+                const response = await fetch('http://localhost:3000/api/posts/lost');                
                 const data = await response.json();
                 const post = data.posts;
                 setLostPosts(data.posts);
-            } else if (category === 'found') {
-                console.log('found')
+            } else if (category === 'found') {                
                 const response = await fetch('http://localhost:3000/api/posts/found');
                 const data = await response.json();
                 const post = data.posts;

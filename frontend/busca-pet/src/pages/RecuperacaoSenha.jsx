@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validarCampoEmail, validarTamanhoMinimo } from "../assets/utils/regex.js";
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import ButtonForm from "../components/ButtonForm";
@@ -13,8 +14,9 @@ const RecuperacaoSenha = () => {
   const emailRef = useRef(null);
   const tokenRef = useRef(null);
   const passRef = useRef(null);
+  const passRef2 = useRef(null);
 
-  const [etapa, setEtapa] = useState('solicitarEmail'); // Estado para controlar a etapa do formulário
+  const [etapa, setEtapa] = useState('solicitarEmail'); 
   const [mensagemErro, setMensagemErro] = useState('');
   const [mensagemSucesso, setMensagemSucesso] = useState('');
 
@@ -26,24 +28,26 @@ const RecuperacaoSenha = () => {
 
   async function recuperarSenha(e) {
     e.preventDefault();
-    console.log('emailGlobal: ', userEmail)
 
-    const email = {      email: emailRef.current.value    }
+    let email = emailRef.current;
+
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setMensagemErro,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
+
+    email = {      email: emailRef.current.value    }
     const result = await enviarDados(email, "form/recuperar-senha")
 
     if (result.success) {
-      setEtapa('validarToken'); // Mudar para a etapa de validar o token
+      setEtapa('validarToken');
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
       setMensagemErro(result.message || 'Erro ao solicitar código, reveja o email e tente novamente.');
       setMensagemSucesso('');
     }
-
-    console.log('email: ', email)
-    console.log('emailGlobal: ', userEmail)
-
-    console.log(result)
   }
 
   async function validarToken(e) {
@@ -54,40 +58,46 @@ const RecuperacaoSenha = () => {
       token: tokenRef.current.value
     }
 
-    console.log(data)
-
     const result = await enviarDados(data, "validar-token-senha")
 
     if (result.success) {
-      setEtapa('atualizarSenha'); // Mudar para a etapa de atualizar a senha
+      setEtapa('atualizarSenha'); 
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
       setMensagemErro(result.message || 'Token inválido.');
       setMensagemSucesso('');
     }
-
-    console.log(result)
   }
 
   async function atualizarSenha(e) {
     e.preventDefault();
 
-    // comparar se as 2 sao === iguais
-    // se nao, exibir erro
+    if ( 
+      validarTamanhoMinimo({      
+        campo:passRef.current,
+        min: 6,
+        setErro: setMensagemErro,
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;    
+    
+      if (passRef.current.value !== passRef2.current.value) {
+        setMensagemErro("As senhas não coincidem. Por favor, verifique.");
+        return true;
+      }
 
     const password = { password: passRef.current.value, email: userEmail }
     const result = await enviarDados(password, "atualizar-senha")
 
     if (result.success) {
-      setEtapa('concluido'); // Mudar para a etapa de conclusão
+      setEtapa('concluido'); 
       setMensagemSucesso(result.message);
       setMensagemErro('');
     } else {
       setMensagemErro(result.message || 'Erro ao atualizar senha.');
       setMensagemSucesso('');
     }
-    console.log("atualizar: ", result)
    
     setTimeout(() => navigate("/form/login"), 1200); 
   }
@@ -130,7 +140,7 @@ const RecuperacaoSenha = () => {
           {etapa === 'atualizarSenha' && (
             <div className={style['rec-senha__etapa']}>
               <InputTxt name="Nova Senha" place="Insira a sua nova senha" refProp={passRef} type="password" />
-              <InputTxt name="Confirme a nova senha" place="Insira novamente a sua nova senha" type="password" />
+              <InputTxt name="Confirme a nova senha" place="Insira novamente a sua nova senha" refProp={passRef2} type="password" />
               <ButtonForm placeholder="Atualizar senha"  algumaFuncao={atualizarSenha} />
             </div>
           )}
@@ -142,7 +152,6 @@ const RecuperacaoSenha = () => {
           )}
 
           
-
     </div>
     </div>
       <div className={style['rec-senha__image']}></div>

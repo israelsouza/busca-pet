@@ -16,7 +16,6 @@ function Home(){
         const navigate = useNavigate();
         const sessaoColaborar = useRef(null);
         
-        // bloco 01
         const sessaoReencontros = useRef(null);
         useEffect(() => {
             if (window.location.hash === "#reencontros") {
@@ -29,7 +28,6 @@ function Home(){
           };
 
 
-        // bloco 02
         const sessaoFuncionamento = useRef(null);
         useEffect(() => {
            if(window.location.hash === "#funcionamento"){
