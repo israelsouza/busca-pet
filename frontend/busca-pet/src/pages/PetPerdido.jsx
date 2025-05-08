@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from "react";
 import validateToken from '../assets/utils/validateToken.js'
 import styles from "./styles/PetPerdido.module.css";
@@ -8,10 +7,8 @@ import {
 } from "../assets/utils/formValidacoes";
 import { validarDataLimite } from "../assets/utils/regex.js";
 import criarFormData from "../assets/utils/criarFormData.js";
-
 import HeaderLog from "./../components/HeaderLog";
 import { useNavigate } from "react-router-dom";
-
 import enviarDados from "../assets/utils/enviarDados";
 
 function PetPerdido() {
@@ -53,7 +50,6 @@ function PetPerdido() {
   const [mensagem, setMensagem] = useState("");
   const [retornoBackend, setRetornoBackend] = useState("");
 
-
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0];
         if (arquivo) {
@@ -69,8 +65,6 @@ function PetPerdido() {
         }
     }
 
-
-
     function handleNomeAlterado(e) {
         const valor = e.target.value;
         if (/^[a-zA-ZÀ-ÿ\s]*$/.test(valor)) {
@@ -81,10 +75,8 @@ function PetPerdido() {
         }
     }
 
-
     async function validarFormulario(e) {
         e.preventDefault();
-
     
         const nome = nomeRef.current;
         const rga = rgaRef.current;
@@ -102,7 +94,6 @@ function PetPerdido() {
             dataMinima: dataMinimaPermitida,
         })) return true;
 
-    
         const camposObrigatorios = [
             {
                 ref: nome,
@@ -126,7 +117,6 @@ function PetPerdido() {
             },
         ];
 
-    
         if (verificarCampoVazioPet(camposObrigatorios)) return true;
 
     
@@ -136,7 +126,6 @@ function PetPerdido() {
         } else {
             setErroTipoPet("");
         }
-
     
         const camposTamanhoMaximo = [
             {
@@ -163,14 +152,6 @@ function PetPerdido() {
 
         if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
-    
-        
-       
-        
-        console.log("Formulário válido!");
-
-        
-
         const dados = {
             nome: nomeRef.current.value,
             rga: rgaRef.current.value,
@@ -187,11 +168,8 @@ function PetPerdido() {
 
         const formData = criarFormData(dados, arquivoImagem);
         
-    
-        
         try {
             const resultado = await enviarDados(formData, "criar-post/pet-perdido");
-            console.log(resultado);
 
             if (resultado && resultado.message) {
                 setRetornoBackend(resultado.message);

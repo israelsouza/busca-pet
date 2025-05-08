@@ -37,9 +37,6 @@ const RecuperacaoSenha = () => {
       mensagem: "Por favor, insira um e-mail válido."
     }) ) return true;
 
-
-    console.log('emailGlobal: ', userEmail)
-
     email = {      email: emailRef.current.value    }
     const result = await enviarDados(email, "form/recuperar-senha")
 
@@ -51,11 +48,6 @@ const RecuperacaoSenha = () => {
       setMensagemErro(result.message || 'Erro ao solicitar código, reveja o email e tente novamente.');
       setMensagemSucesso('');
     }
-
-    console.log('email: ', email)
-    console.log('emailGlobal: ', userEmail)
-
-    console.log(result)
   }
 
   async function validarToken(e) {
@@ -65,8 +57,6 @@ const RecuperacaoSenha = () => {
       email: userEmail,
       token: tokenRef.current.value
     }
-
-    console.log(data)
 
     const result = await enviarDados(data, "validar-token-senha")
 
@@ -78,8 +68,6 @@ const RecuperacaoSenha = () => {
       setMensagemErro(result.message || 'Token inválido.');
       setMensagemSucesso('');
     }
-
-    console.log(result)
   }
 
   async function atualizarSenha(e) {
@@ -110,7 +98,6 @@ const RecuperacaoSenha = () => {
       setMensagemErro(result.message || 'Erro ao atualizar senha.');
       setMensagemSucesso('');
     }
-    console.log("atualizar: ", result)
    
     setTimeout(() => navigate("/form/login"), 1200); 
   }

@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from "react";
 import styles from "./styles/PetPerdido.module.css";
 import {
@@ -6,29 +5,27 @@ import {
   verificarTamanhoMaximo,
 } from "../assets/utils/formValidacoes.js";
 import { validarDataLimite } from "../assets/utils/regex.js";
-
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
 import HeaderLog from "../components/HeaderLog.jsx";
 import { useNavigate } from "react-router-dom";
-
 import enviarDados from "../assets/utils/enviarDados.js";
 
 function PetEncontrado() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //       const checkAuthentication = async () => {
-  //         try {
-  //           await validateToken();
-  //         } catch (error) {
-  //           console.error("Erro capturado:", error.message);
-  //           alert(error.message); // Exibe a mensagem de erro para o usuário
-  //           localStorage.removeItem("authToken"); // Remove o token inválido
-  //           navigate("/form/login"); // Redireciona para o login
-  //         }
-  //       };
-  //       checkAuthentication();
-  // }, [navigate]);
+  useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            await validateToken();
+          } catch (error) {
+            console.error("Erro capturado:", error.message);
+            alert(error.message); 
+            localStorage.removeItem("authToken"); 
+            navigate("/form/login"); 
+          }
+        };
+        checkAuthentication();
+  }, [navigate]);
 
   const tipoPetRef = useRef(null);
   const descricaoRef = useRef(null);
@@ -122,8 +119,6 @@ function PetEncontrado() {
         return;
       }
 
-    console.log("Formulário válido!");
-
     const email = await EmailFromToken();
 
     const dados = {
@@ -151,21 +146,21 @@ function PetEncontrado() {
 
     const formData = criarFormData(dados, arquivoImagem);
 
-    console.log("Dados do formulário: ", formData);
-    console.log("Arquivo da imagem: ", formData.get("imagem"));
+    //console.log("Dados do formulário: ", formData);
+    //console.log("Arquivo da imagem: ", formData.get("imagem"));
 
  
     
     try {
       const resultado = await enviarDados(formData, "criar-post/pet-encontrado");
-      console.log(resultado);
+      //console.log(resultado);
 
-    //   if (resultado && resultado.message) {
-    //     setRetornoBackend(resultado.message);
-    //     setTimeout(() => navigate("/posts/all"), 1000);
-    //   } else {
-    //     setRetornoBackend("Erro inesperado ao cadastrar o pet.");
-    //   }
+      if (resultado && resultado.message) {
+        setRetornoBackend(resultado.message);
+        setTimeout(() => navigate("/posts/all"), 1000);
+      } else {
+        setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+      }
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);
       setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
