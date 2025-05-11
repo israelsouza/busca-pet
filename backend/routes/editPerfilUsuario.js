@@ -5,9 +5,7 @@ import multer from "multer";  // Importação correta para ES Modules
 const router = express.Router();
 const upload = multer();
 
-
 router.get("/email/:email", usuarioController.pegarTodosOsDados);
-
 router.post("/email/:email/:campo", usuarioController.atualizarCampo);
 router.post("/email/:email/foto", upload.single("foto"), usuarioController.atualizarFoto);
 

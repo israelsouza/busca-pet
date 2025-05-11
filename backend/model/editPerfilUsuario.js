@@ -4,6 +4,7 @@ import getConnection from "./connectionOracle.js";
 async function atualizarCampo(email, campo, valor) {
   let connection;
   try {
+    console.log("B-EDTPERF-MODEL-atualizarCampo: iniciando atualização");
     connection = await getConnection();
     let sql;
     const binds = { valor, email };
@@ -30,8 +31,11 @@ async function atualizarCampo(email, campo, valor) {
 
     await connection.commit();
 
+    console.log("B-EDTPERF-MODEL-atualizarCampo: atualização concluida");
+
     return `Campo: ${campo} atualizado com sucesso!`;
   } catch (error) {
+    console.log("B-EDTPERF-MODEL-atualizarCampo: erro na atualização");
     // Em caso de erro, desfaz a transação
     await connection.rollback();
     throw new Error(`Erro ao atualizar ${campo}: ${error.message}`);

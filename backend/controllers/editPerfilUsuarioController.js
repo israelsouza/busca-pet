@@ -4,16 +4,19 @@ import sharp from "sharp";
 
 async function pegarTodosOsDados(req, res) {
     const { email } = req.params;
-    //res.status(200).json({ message: `Usuário com e-mail ${email} encontrado.` });
+    console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: email capturado -> ", email);
 
     try {
         const userData = await pegarDadosDoUsuario(email);
+
+        console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: dados do usuario capturados.");
 
         return res.status(200).json({
             message: "Dados cadastrais obtidos ccom sucesso!",
             userData
         })
     } catch (error) {
+        console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: erro encontrado.");
         console.error(error)
     }
 }
@@ -37,12 +40,18 @@ async function atualizarCampo(req, res) {
     const { email, campo } = req.params;
     const { valor } = req.body;
 
+    console.log("B-EDTPERF-CONTROLLER-atualizarCampo: campo -> ", campo);
+    console.log("B-EDTPERF-CONTROLLER-atualizarCampo: valor -> ", valor);
+    console.log("B-EDTPERF-CONTROLLER-atualizarCampo: email -> ", email);
+    console.log();
+
     try {
         const mensagem = await usuarioModel.atualizarCampo(email, campo, valor);
+        console.log("B-EDTPERF-CONTROLLER-atualizarCampo: campo atualizado");
         res.send(mensagem);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Erro ao atualizar campo por email: " + err.message);
+        res.status(500).send("B-EDTPERF-CONTROLLER-atualizarCampo: erro ao atualizar campo " + err.message);
     }
 }
 
