@@ -2,46 +2,41 @@ import getConnection from "./connectionOracle.js";
 
 
 async function atualizarCampo(email, campo, valor) {
-  const conn = await getConnection();
+  let connection;
   try {
-    // Inicia uma transação
-    await conn.beginTransaction();
+    connection = await getConnection();
+    let sql;
+    const binds = { valor, email };
 
-    // Atualiza PESSOA
-    await conn.execute(
-      `UPDATE PESSOA SET ${campo} = :valor WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)`,
-      { valor, email }
-    );
+    if (campo === "PES_NOME") {
+      sql = `UPDATE PESSOA SET PES_NOME = :valor WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)`;
+    } else if (campo === "PES_PHONE") {
+      sql = `UPDATE PESSOA SET PES_PHONE = :valor WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)`;
+    } else if (campo === "USU_EMAIL") {
+      sql = `UPDATE USUARIO SET USU_EMAIL = :valor WHERE USU_EMAIL = :email`;
+    } else if (campo === "") {
+      // foto
+    } else if (campo === "END_RUA") {
+      sql = `UPDATE ENDERECO SET END_RUA = :valor WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email))`;
+    } else if (campo === "END_BAIRRO") {
+      sql = `UPDATE ENDERECO SET END_BAIRRO = :valor WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email))`;
+    } else if (campo === "CID_DESCRICAO") {
+      sql = `UPDATE CIDADE SET CID_DESCRICAO = :valor WHERE CID_ID = (SELECT CID_ID FROM ENDERECO WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)))`;
+    } else if (campo === "EST_SIGLA") {
+      sql = `UPDATE ESTADO SET EST_SIGLA = :valor WHERE EST_ID = (SELECT EST_ID FROM ENDERECO WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)))`;
+    }
 
-    // Atualiza USUARIO
-    await conn.execute(
-      `UPDATE USUARIO SET ${campo} = :valor WHERE USU_EMAIL = :email`,
-      { valor, email }
-    );
+    const result = connection.execute(sql, binds);
 
-    // Atualiza ENDERECO
-    await conn.execute(
-      `UPDATE ENDERECO SET ${campo} = :valor WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email))`,
-      { valor, email }
-    );
+    await connection.commit();
 
-    // Atualiza CIDADE
-    await conn.execute(
-      `UPDATE CIDADE SET ${campo} = :valor WHERE CID_ID = (SELECT CID_ID FROM ENDERECO WHERE END_ID = (SELECT END_ID FROM PESSOA WHERE PES_ID = (SELECT PES_ID FROM USUARIO WHERE USU_EMAIL = :email)))`,
-      { valor, email }
-    );
-
-    // Confirma a transação
-    await conn.commit();
-
-    return `${campo} atualizado com sucesso!`;
-
+    return `Campo: ${campo} atualizado com sucesso!`;
   } catch (error) {
     // Em caso de erro, desfaz a transação
-    await conn.rollback();
+    await connection.rollback();
     throw new Error(`Erro ao atualizar ${campo}: ${error.message}`);
   } finally {
-    conn.close();
+    connection.close();
   }
 }
 
