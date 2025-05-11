@@ -4,6 +4,7 @@
 
   function EdicaoPerfil() {
     const [formData, setFormData] = useState({});
+    const [isEditing, setIsEditing] = useState({})
     const [foto, setFoto] = useState(null);
     const [email, setEmail] = useState("");
 
@@ -24,8 +25,7 @@
         }
     
         setEmail(userEmail);
-        console.log("Email recuperado:", userEmail);
-        console.log(userEmail, 'Estou AQUI!')
+        console.log("F-EDITPERF: Email recuperado:", userEmail);
         
       } catch (error) {
         console.error("Erro ao recuperar email:", error);
@@ -34,8 +34,7 @@
     
     useEffect(() => {
       if (!email) return;
-      
-      console.log("Buscando dados de:", `http://localhost:3000/usuarios/email/${email}`);
+            
       fetch("http://localhost:3000/usuarios/email/" + email)
         .then((res) => {
           if (!res.ok) {
@@ -45,7 +44,9 @@
         })
         .then((data) => {
           console.log("Dados recebidos:", data);
-          setFormData(data);
+          const userData = data.userData[0];
+
+          setFormData(userData);
         })
         .catch((err) => console.error("Erro ao carregar dados:", err));
     }, [email]);
@@ -66,6 +67,10 @@
         .catch(err => console.error("Erro:", err));
     };
 
+    const toggleEdit = (campo) => {
+      setIsEditing((prev) => ({ ...prev, [campo]: !prev[campo] })); // Alterna o modo de edição
+    };
+
     const handleFotoChange = (e) => {
       setFoto(e.target.files[0]);
     };
@@ -83,8 +88,6 @@
         .catch(err => console.error("Erro:", err));
     };
 
-    
-
     return (
       <div>
       <HeaderEdicao />
@@ -100,8 +103,22 @@
 
           <div className={Style.campo}>
             <label>Nome</label>
-            <input name="PES_NOME" value={formData.PES_NOME || ""} onChange={handleChange}/>
-            <button onClick={() => atualizarCampo("PES_NOME")}>Editar</button>
+            <input 
+              name="PES_NOME" 
+              value={formData.PES_NOME || ""} 
+              onChange={handleChange}
+              disabled={!isEditing.PES_NOME}
+            />
+            <button
+              onClick={() => {
+                if (isEditing.PES_NOME) {
+                  atualizarCampo("PES_NOME"); // Salva as alterações
+                }
+                toggleEdit("PES_NOME"); // Alterna o modo de edição
+              }}
+            >
+               {isEditing.PES_NOME ? "Salvar" : "Editar"}
+            </button>
           </div>
 
           <div className={Style.campo}>
