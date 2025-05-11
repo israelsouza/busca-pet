@@ -1,7 +1,22 @@
 import usuarioModel from "../model/editPerfilUsuario.js";
-import multer from "multer";
+import pegarDadosDoUsuario from "../model/pegarTodosOsDadosModel.js";
 import sharp from "sharp";
 
+async function pegarTodosOsDados(req, res) {
+    const { email } = req.params;
+    //res.status(200).json({ message: `Usuário com e-mail ${email} encontrado.` });
+
+    try {
+        const userData = await pegarDadosDoUsuario(email);
+
+        return res.status(200).json({
+            message: "Dados cadastrais obtidos ccom sucesso!",
+            userData
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 async function buscarUsuario(req, res) {
     const { email } = req.params;
@@ -53,4 +68,4 @@ async function atualizarFoto(req, res) {
     }
 }
 
-export default {buscarUsuario, atualizarCampo, atualizarFoto};
+export default {buscarUsuario, atualizarCampo, atualizarFoto, pegarTodosOsDados};
