@@ -5,10 +5,12 @@ import logarUsuario from "./routes/logarUsuario.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from "./routes/cadastrarPetPerdido.js";
+import cadastrarPetEncontrado from './routes/petEncontrado.js'
 import recuperarSenha from "./routes/recuperarSenha.js";
 import validarTokenSenha from "./routes/validarTokenSenha.js";
 import atualizarSenha from "./routes/atualizarSenha.js";
 import buscarUsuario from "./routes/editPerfilUsuario.js";
+import postRoutes from './routes/post.js'
 
 const app = express();
 app.use(cors());

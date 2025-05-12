@@ -1,8 +1,12 @@
   import React, { useState, useEffect, useRef } from "react";
   import Style from "../pages/styles/EditPerfil.module.css";
   import HeaderEdicao from "../components/HeaderEdicao";
+  import { useNavigate } from "react-router-dom";
 
   function EdicaoPerfil() {
+    const navigate = useNavigate();
+
+    const [erros, setErros] = useState({});
     const [formData, setFormData] = useState({});
     const [originalData, setOriginalData] = useState({});
     const [isEditing, setIsEditing] = useState({})
@@ -143,11 +147,115 @@
     };
 
     const handleSalvar = (campo) => {
-      if (formData[campo] !== originalData[campo]) {
-        atualizarCampo(campo); // Chama a função de atualização se o valor mudou
-        setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
+      let isValid = true;
+      const newErros = {...erros}
+
+      switch (campo) {
+        case "PES_NOME":
+          if (!formData.PES_NOME.trim()) {
+            newErros.PES_NOME = 'O nome é obrigatório.';
+            isValid = false;
+          } else if (formData.PES_NOME.trim().length < 3) {
+            newErros.PES_NOME = 'O nome deve ter pelo menos 3 caracteres.';
+            isValid = false;
+          } if ( !/^[A-Za-zÀ-ú\s]+$/.test(formData.PES_NOME.trim()) ) { 
+            newErros.PES_NOME = 'O nome deve conter apenas letras.';
+            isValid = false;
+          } else {
+            delete newErros.PES_NOME; // Remove o erro se for válido
+          }
+          break;
+        case "PES_PHONE":
+          if (formData.PES_PHONE.trim() && !/^\d+$/.test(formData.PES_PHONE)) {
+            newErros.PES_PHONE = 'O telefone deve conter apenas números.';
+            isValid = false;
+          } else if (formData.PES_PHONE.trim().length !== 11 && formData.PES_PHONE.trim().length > 0) {
+            newErros.PES_PHONE = 'O telefone deve ter 11 dígitos (com DDD).';
+            isValid = false;
+          } else if ( !formData.PES_PHONE.trim() ) {
+            newErros.PES_PHONE = 'O telefone é obrigatório.';
+            isValid = false;
+          } else {
+            delete newErros.PES_PHONE;
+          }
+          break;
+        case "USU_EMAIL":          
+          if (!formData.USU_EMAIL.trim()) {
+            newErros.USU_EMAIL = 'O e-mail é obrigatório.';
+            isValid = false;
+          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.USU_EMAIL)) {            
+            newErros.USU_EMAIL = 'Formato de e-mail inválido.';
+            isValid = false;
+          } else {
+            delete newErros.USU_EMAIL;
+          }
+          break;
+        case "END_RUA":
+          if (!formData.END_RUA.trim()) {
+            newErros.END_RUA = 'A rua é obrigatória.';
+            isValid = false;
+          } else if (formData.END_RUA.trim().length < 3) {
+            newErros.END_RUA = 'A rua deve ter pelo menos 3 caracteres.';
+            isValid = false;
+          } if ( !/^[A-Za-zÀ-ú\s]+$/.test(formData.END_RUA.trim()) ) { 
+            newErros.END_RUA = 'A rua deve conter apenas letras.';
+            isValid = false;
+          } else {
+            delete newErros.END_RUA; // Remove o erro se for válido
+          }
+          break;
+        case "END_BAIRRO":
+          if (!formData.END_BAIRRO.trim()) {
+            newErros.END_BAIRRO = 'O bairro é obrigatório.';
+            isValid = false;
+          } else if (formData.END_BAIRRO.trim().length < 3) {
+            newErros.END_BAIRRO = 'O bairro deve ter pelo menos 3 caracteres.';
+            isValid = false;
+          } else {
+            delete newErros.END_BAIRRO;
+          }
+          break;
+        case 'CID_DESCRICAO':
+          if (!formData.CID_DESCRICAO.trim()) {
+            newErros.CID_DESCRICAO = 'A cidade é obrigatória.';
+            isValid = false;
+          } else if (formData.CID_DESCRICAO.trim().length < 3) {
+            newErros.CID_DESCRICAO = 'A cidade deve ter pelo menos 3 caracteres.';
+            isValid = false;
+          } else {
+            delete newErros.CID_DESCRICAO;
+          }
+          break;
+        case 'EST_SIGLA':
+          if (!formData.EST_SIGLA.trim()) {
+            newErros.EST_SIGLA = 'O estado é obrigatório.';
+            isValid = false;
+          } else if (formData.EST_SIGLA.trim().length !== 2) {
+            newErros.EST_SIGLA = 'A sigla do estado deve ter 2 caracteres.';
+            isValid = false;
+          } else if (!/^[A-Z]{2}$/.test(formData.EST_SIGLA.trim())) {
+            newErros.EST_SIGLA = 'A sigla do estado deve conter apenas letras maiúsculas.';
+            isValid = false;
+          } else {
+            delete newErros.EST_SIGLA;
+          }
+          break;
+        default:
+        break;
       }
-      toggleEdit(campo); // Alterna o modo de edição para "Editar"
+
+      setErros(newErros)
+
+      if (isValid) {
+        if (formData[campo] !== originalData[campo]) {
+          atualizarCampo(campo); // Chama a função de atualização se o valor mudou
+          setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
+        }
+          toggleEdit(campo); // Alterna o modo de edição para "Editar"
+          if (campo === "USU_EMAIL") {
+            setTimeout(() => navigate("/form/login"), 1000); 
+          }
+      }
     };
 
     const handleFotoChange = (e) => {
@@ -205,6 +313,7 @@
                {isEditing.PES_NOME ? "Salvar" : "Editar"}
             </button>
           </div>
+          {erros.PES_NOME && <p className={Style.erro}>{erros.PES_NOME} </p>  }
 
           <div className={Style.campo}>
             <label>Telefone</label>
@@ -226,6 +335,7 @@
               {isEditing.PES_PHONE ? "Salvar" : "Editar"}
               </button>
           </div>
+          {erros.PES_PHONE && <p className={Style.erro}>{erros.PES_PHONE} </p>  }
 
           <div className={Style.campo}>
             <label>Email</label>
@@ -246,6 +356,7 @@
               {isEditing.USU_EMAIL ? "Salvar" : "Editar"}
             </button>
           </div>
+          {erros.USU_EMAIL && <p className={Style.erro}>{erros.USU_EMAIL} </p>  }
           
       
           <div className={Style.campo2}>
@@ -265,7 +376,7 @@
             <input
             ref={ruaInputRef}
              name="END_RUA" 
-             value={formData?.END_RUA || ""} 
+             value={formData.END_RUA} 
              onChange={handleChange} 
              disabled={!isEditing.END_RUA}
              />
@@ -275,8 +386,11 @@
               }else {
                 toggleEdit("END_RUA"); // Alterna o modo de edição
               }
-            }}>Editar</button>
+            }}>
+              {isEditing.END_RUA ? "Salvar" : "Editar"}
+            </button>
           </div>
+          {erros.END_RUA && <p className={Style.erro}>{erros.END_RUA} </p>  }
 
           <div className={Style.campo}>
             <label>Bairro</label>
@@ -298,6 +412,7 @@
               {isEditing.END_BAIRRO ? "Salvar" : "Editar"}
             </button>
           </div>
+          {erros.END_BAIRRO && <p className={Style.erro}>{erros.END_BAIRRO} </p>  }
 
           <div className={Style.campo}>
             <label>Cidade</label>
@@ -319,6 +434,7 @@
                 {isEditing.CID_DESCRICAO ? "Salvar" : "Editar"}
               </button>
           </div>
+          {erros.CID_DESCRICAO && <p className={Style.erro}>{erros.CID_DESCRICAO} </p>  }
 
           <div className={Style.campo}>
             <label>Estado</label>
@@ -368,6 +484,7 @@
                 {isEditing.EST_SIGLA ? "Salvar" : "Editar"}
               </button>
           </div>
+          {erros.EST_SIGLA && <p className={Style.erro}>{erros.EST_SIGLA} </p>  }
         </div>
       </div>
         <div className={Style.containerfoto}></div>
