@@ -1,63 +1,60 @@
-import PostModel from "../model/postModel";
+import getTodosOsPosts from "../model/getTodosPosts.js";
+import getTipoPostModel from "../model/getTipoPostModel.js";
+import getUserPostsModel from "../model/getUserPost.js";
+import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
 
-class PostController {
-    static async fetchAllPosts(req, res) {
-        try {
-            const posts = await PostModel.getAllPosts();
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null, // Conversão da imagem do usuário
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null  // Conversão da imagem do pet
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-    
-    static async fetchUserPosts(req, res) {
-        try {
-            const userId = req.params.userId; // ID do usuário via parâmetro
-            const posts = await PostModel.getUserPosts(userId);
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null,
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-    
-    static async fetchLostPosts(req, res) {
-        try {
-            const posts = await PostModel.getPostsByType('Perdido');
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null,
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-    
-    static async fetchFoundPosts(req, res) {
-        try {
-            const posts = await PostModel.getPostsByType('Encontrado');
-            const processedPosts = posts.map(post => ({
-                ...post,
-                USU_FOTO: post.USU_FOTO ? post.USU_FOTO.toString("base64") : null,
-                PET_FOTO: post.PET_FOTO ? post.PET_FOTO.toString("base64") : null
-            }));
-            res.json(processedPosts);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-    
+async function todosPosts(req, res) {
+  try {
+    const posts = await getTodosOsPosts();
+    return res
+      .status(200)
+      .json({ message: "Posts capturados com sucesso", posts });
+  } catch (error) {
+    console.error("todos os posts error: ", error);
+    return res.status(500).json({ error: error.message });
+  }
 }
 
-export default PostController;
+async function getPostPerdido(req, res) {
+  try {
+    const tipo = "Perdido";
+    const posts = await getTipoPostModel(tipo);
+    return res
+      .status(200)
+      .json({ message: "Posts de pet perdidos capturados com sucesso", posts });
+  } catch (error) {
+    console.error("getTipoPost perdido error: ", error);
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+async function getPostEncontrado(req, res) {
+  try {
+    const tipo = "Encontrado";
+    const posts = await getTipoPostModel(tipo);
+    return res.status(200).json({
+      message: "Posts de pet encontrados capturados com sucesso",
+      posts,
+    });
+  } catch (error) {
+    console.error("getTipoPost encontrado error: ", error);
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+async function getUserPosts(req, res) {
+  // const token = req.params.token;
+  // try {
+  //   const email = await extrairEmailDoToken(token);
+  //   // console.log("email do token: ", email);
+  //   const posts = await getUserPostsModel(email);
+  //   return res
+  //     .status(200)
+  //     .json({ message: "Os seus posts foram capturados com sucesso", posts });
+  // } catch (error) {
+  //   console.error("getUserPosts error: ", error);
+  //   return res.status(500).json({ error: error.message });
+  // }
+}
+
+export { todosPosts, getPostEncontrado, getPostPerdido, getUserPosts };

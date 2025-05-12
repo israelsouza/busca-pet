@@ -1,10 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles/login.module.css";
 import HeaderForm from "../components/HeaderForm";
-import {
-  verificarTamanhoMinimo,
-  verificarSeEEmail,
-} from "../assets/utils/formValidacoes";
+import { validarTamanhoMinimo, validarCampoEmail } from "../assets/utils/regex.js";
 import { useRef, useState } from "react";
 
 function login() {
@@ -22,13 +19,20 @@ function login() {
     const email = emailRef.current;
     const senha = senhaRef.current;
 
-    verificarSeEEmail(
-      email,
-      setErroEmail,
-      "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail"
-    ) 
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setErroEmail,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
 
-     if ( verificarTamanhoMinimo(senha, 6, setErroSenha, "A senha possui no mínimo 6 caracteres, verifique e tente novamente")  )return true  
+    if ( 
+      validarTamanhoMinimo({      
+        campo:senha,
+        min: 6,
+        setErro: setErroSenha,
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;
 
     const emailLowerCase = email.value.toLowerCase();
 
@@ -50,7 +54,6 @@ function login() {
           });
 
           if (!response.ok) {
-            // Se o status não for 200, lança um erro com a mensagem apropriada
             const errorData = await response.json();
             throw new Error(errorData.message || "Erro ao realizar login.");
           }
@@ -65,21 +68,18 @@ function login() {
 
     validarDadosDeLogin(data)
     .then((resultado) => {
-      // Login bem-sucedido
+      
       setErroLogin("")
       setMensagemSucesso("Login realizado com sucesso!");
 
-      // Armazena o token no localStorage
       localStorage.setItem("authToken", resultado.token);
 
-      // Redirecionar ou realizar outra ação
       setTimeout(() => navigate("/posts/all"), 1000); 
     })
     .catch((error) => {
-      // Exibe a mensagem de erro na tela
       setErroEmail("");
       setErroSenha("");
-      setErroLogin(error.message); // Exibe o erro 
+      setErroLogin(error.message); 
     });
 
 

@@ -2,37 +2,33 @@ import express from "express";
 import cors from "cors";
 import cadastroUsuario from "./routes/cadastroUsuario.js";
 import logarUsuario from "./routes/logarUsuario.js";
-// import getTodosPosts from "./routes/getTodosPosts.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
-import cadastrarPetPerdido from './routes/cadastrarPetPerdido.js'
-import recuperarSenha from './routes/recuperarSenha.js'
-import validarTokenSenha from './routes/validarTokenSenha.js'
-import atualizarSenha from './routes/atualizarSenha.js'
-import buscarUsuario from './routes/editPerfilUsuario.js'
+import cadastrarPetPerdido from "./routes/cadastrarPetPerdido.js";
+import recuperarSenha from "./routes/recuperarSenha.js";
+import validarTokenSenha from "./routes/validarTokenSenha.js";
+import atualizarSenha from "./routes/atualizarSenha.js";
+import buscarUsuario from "./routes/editPerfilUsuario.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// app vai usar as rotas definidas abaixo
-// as rotas vao conter todo fluxo de execução, podendo realizar chamadas de outras funções (model)
+// middleware
+app.use("/validate-token", validateToken);
 
 // rotas publicas
 app.use("/form/cadastro-usuario", cadastroUsuario);
 app.use("/form/login", logarUsuario);
-app.use("/form/recuperar-senha", recuperarSenha)
-app.use("/validar-token-senha", validarTokenSenha)
-app.use("/atualizar-senha", atualizarSenha)
-app.use("/usuarios", buscarUsuario)
-
-
-// rota de verificação do token
-app.use("/validate-token", validateToken);
+app.use("/form/recuperar-senha", recuperarSenha);
+app.use("/validar-token-senha", validarTokenSenha);
+app.use("/atualizar-senha", atualizarSenha);
+app.use("/usuarios", buscarUsuario);
 
 // rotas privadas (protegidas)
 // app.use("/posts/all", autenticarToken, getTodosPosts);
-app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido)
-
+app.use("/criar-post/pet-perdido", cadastrarPetPerdido);
+app.use("/criar-post/pet-encontrado", cadastrarPetEncontrado);
+app.use("/api/posts", postRoutes);
 
 export default app;

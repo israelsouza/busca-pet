@@ -15,7 +15,7 @@ function PageResearch(){
                         <input type="text" className={styles.search_input} placeholder="Pesquise por Bairro, Espécie, Data..."/>
                     <img src={lupa_pesquisa} alt="Ícone de lupa de pesquisa" className={styles.lupa} />
                 </div>
-            </div>
+            </div> {/* DEP. GOOGLE MAPS */}
     </div>
     )
 }

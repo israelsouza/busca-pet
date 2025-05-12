@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import validateToken from '../assets/utils/validateToken.js'
 
 function PostsAll() {
-
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    
     const [posts, setPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [lostPosts, setLostPosts] = useState([]);
@@ -17,43 +17,49 @@ function PostsAll() {
 
     /*  
     useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
+    useEffect(() => {
         async function fetchPosts() {
+            const token = localStorage.getItem("authToken");
             if (category === 'all') {
-                const response = await fetch('/api/posts/all');
+                const response = await fetch('http://localhost:3000/api/posts/all');
                 const data = await response.json();
-                setPosts(data);
+                const post = data.posts;
+                setPosts(data.posts); 
             } else if (category === 'user') {
-                const response = await fetch('/api/posts/user/1');
+                // console.log('user')
+                // const response = await fetch(`http://localhost:3000/api/posts/user/${token}`);
+                // console.log(response)
+                // const data = await response.json();
+                // console.log(data)
+                // setUserPosts(data.posts);
+            } else if (category === 'lost') {                
+                const response = await fetch('http://localhost:3000/api/posts/lost');                
                 const data = await response.json();
-                setUserPosts(data);
-            } else if (category === 'lost') {
-                const response = await fetch('/api/posts/lost');
+                const post = data.posts;
+                setLostPosts(data.posts);
+            } else if (category === 'found') {                
+                const response = await fetch('http://localhost:3000/api/posts/found');
                 const data = await response.json();
-                setLostPosts(data);
-            } else if (category === 'found') {
-                const response = await fetch('/api/posts/found');
-                const data = await response.json();
-                setFoundPosts(data);
+                const post = data.posts;
+                setFoundPosts(data.posts);
             }
         }
         fetchPosts();
     }, [category]);
-*/
-  
-  
-    //   const checkAuthentication = async () => {
-    //     try {
-    //       await validateToken();
-    //     } catch (error) {
-    //       console.error("Erro capturado:", error.message);
-    //       alert(error.message); // Exibe a mensagem de erro para o usuário
-    //       localStorage.removeItem("authToken"); // Remove o token inválido
-    //       navigate("/form/login"); // Redireciona para o login
-    //     }
-    //   };
-    //   checkAuthentication();
-    // }, [navigate]);
-
+    */
 
     return (
         <div className={style.container}>
@@ -65,7 +71,9 @@ function PostsAll() {
                             <Link to={'/posts/criar-post'} >
                                 <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
-                            <button className={style.button}>Verificar Pet que eu publiquei</button>
+                            {/* <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
+                                <button className={style.button} >Verificar Pet que eu publiquei</button>
+                            </Link> */}
                 </div>
                 </div>
                 <div className={style.posts}>
@@ -80,6 +88,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 {category === 'lost' && lostPosts.map((post, index) => (
@@ -92,18 +101,20 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 {category === 'found' && foundPosts.map((post, index) => (
                     <Buttonposts 
                         key={index}
                         usuario={post.PES_NOME}
-                        imagemUsuario={`data:image/jpeg;base64,${post.USU_FOTO}`}
-                        imagemPet={`data:image/jpeg;base64,${post.PET_FOTO}`}
+                        imagemUsuario={post.USU_FOTO}
+                        imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
+                        textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
                 </div>
@@ -112,4 +123,6 @@ function PostsAll() {
     );
 }
 
-export default PostsAll
+
+export default PostsAll;
+

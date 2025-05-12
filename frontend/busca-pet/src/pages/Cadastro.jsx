@@ -6,34 +6,30 @@ import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  verificarCampoVazio,
-  verificarTamanhoMaximo,
   verificarTamanhoFixo,
-  verificarTamanhoMinimo,
-  verificarSeTemLetras,
-  verificarSeTemNumeros,
-  verificarSeEEmail,
+  verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
+import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras, validarCampoApenasNumeros } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 function Cadastro() {
   const navigate = useNavigate();
-
-  // REFERENCIAS
+  
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
+  const senhaRef2 = useRef(null);
   const phoneRef = useRef(null);
   const ruaRef = useRef(null);
   const bairroRef = useRef(null);
   const cepRef = useRef(null);
   const cidadeRef = useRef(null);
   const estadoRef = useRef(null);
-
-  // ESTADOS
+  
   const [erroNome, setErroNome] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
+  const [erroSenha2, setErroSenha2] = useState("");
   const [erroPhone, setErroPhone] = useState("");
   const [erroRua, setErroRua] = useState("");
   const [erroBairro, setErroBairro] = useState("");
@@ -49,6 +45,7 @@ function Cadastro() {
     const name = nomeRef.current;
     const email = emailRef.current;
     const senha = senhaRef.current;
+    const senha2 = senhaRef2.current;
     const phone = phoneRef.current;
     const rua = ruaRef.current;
     const bairro = bairroRef.current;
@@ -56,55 +53,70 @@ function Cadastro() {
     const cidade = cidadeRef.current;
     const estado = estadoRef.current;
 
-    // campos vazios
     const camposObrigatorios = [
       {
         ref: name,
         setErro: setErroNome,
-        mensagem: "Por favor, insira seu nome.",
+        mensagem: "O campo nome é obrigatório.",
       },
       {
         ref: email,
         setErro: setErroEmail,
-        mensagem: "Por favor, insira seu e-mail.",
+        mensagem: "O campo e-mail é obrigatório.",
       },
       {
         ref: senha,
         setErro: setErroSenha,
-        mensagem: "Por favor, crie a sua senha.",
+        mensagem: "O campo senha é obrigatório.",
       },
       {
         ref: phone,
         setErro: setErroPhone,
-        mensagem: "Por favor, insira seu telefone.",
+        mensagem: "O campo telefone é obrigatório.",
       },
       {
         ref: rua,
         setErro: setErroRua,
-        mensagem: "Por favor, insira o nome da sua rua.",
+        mensagem: "O campo rua é obrigatório.",
       },
       {
         ref: bairro,
         setErro: setErroBairro,
-        mensagem: "Por favor, insira o nome do seu bairro.",
+        mensagem: "O campo bairro é obrigatório.",
       },
-      { ref: cep, setErro: setErroCEP, mensagem: "Por favor, insira seu CEP." },
+      { ref: cep, setErro: setErroCEP, mensagem: "O campo CEP é obrigatório." },
       {
         ref: cidade,
         setErro: setErroCidade,
-        mensagem: "Por favor, insira o nome da sua cidade.",
-      },
+        mensagem: "O campo cidade é obrigatório.",
+      }
     ];
-    const select = [
-      {
-        ref: estado,
-        setErro: setErroEstado,
-        mensagem: "Por favor, selecione algum estado válido.",
-      },
-    ];
-    if (verificarCampoVazio(camposObrigatorios, select)) return true;
 
-    // tamanho limite
+    if (
+      validarCampoVazio({campos: camposObrigatorios})
+    ) return true;
+
+    if ( estado.value.length > 2) {
+      setErroEstado("Por favor, selecione algum estado válido.");
+    } else {
+      setErroEstado("");
+    }
+
+    if ( validarCampoApenasLetras({
+      campos: [
+        { ref: name, setErro: setErroNome, mensagem: "O campo nome não pode conter números." },
+        { ref: rua, setErro: setErroRua, mensagem: "O campo rua não pode conter números." },
+        { ref: bairro, setErro: setErroBairro, mensagem: "O campo bairro não pode conter números." },
+        { ref: cidade, setErro: setErroCidade, mensagem: "O campo cidade não pode conter números." },
+      ]
+    }) ) return true;
+
+    if ( validarCampoEmail({
+      campo:email,
+      setErro: setErroEmail,
+      mensagem: "Por favor, insira um e-mail válido."
+    }) ) return true;
+    
     const camposTamanhoMaximo = [
       {
         ref: name,
@@ -151,7 +163,13 @@ function Cadastro() {
     ];
     if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
-    // tamanho fixo
+    if ( validarCampoApenasNumeros({
+      campos: [
+        { ref: phone, setErro: setErroPhone, mensagem: "O campo telefone só pode ter números." },
+        { ref: cep, setErro: setErroCEP, mensagem: "O campo cep só pode ter números." },
+      ]
+    }) ) return true;
+
     const camposTamanhoFixo = [
       {
         ref: phone,
@@ -170,61 +188,19 @@ function Cadastro() {
     ];
     if (verificarTamanhoFixo(camposTamanhoFixo)) return true;
 
-    // tamanho minimo
-    if (
-      verificarTamanhoMinimo(
-        senha,
-        6,
-        setErroSenha,
-        "A senha tem que conter no mínimo 6 caracteres."
-      )
-    )
-      return true;
+    if ( 
+      validarTamanhoMinimo({      
+        campo:senha,
+        min: 6,
+        setErro: setErroSenha,
+        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
+    })
+      ) return true;    
 
-    // tem letras?
-    const camposNaoPodemTerLetras = [
-      {
-        ref: phone,
-        setErro: setErroPhone,
-        mensagem: "O campo de telefone só pode ter números.",
-      },
-      {
-        ref: cep,
-        setErro: setErroCEP,
-        mensagem: "O campo de cep só pode ter números.",
-      },
-    ];
-    if (verificarSeTemLetras(camposNaoPodemTerLetras)) return true;
-
-    // tem numeros?
-    const camposNaoPodemTerNumeros = [
-      {
-        ref: name,
-        setErro: setErroNome,
-        mensagem: "O campo de nome não pode conter números.",
-      },
-      {
-        ref: bairro,
-        setErro: setErroBairro,
-        mensagem: "O campo de bairro não pode conter números.",
-      },
-      {
-        ref: cidade,
-        setErro: setErroCidade,
-        mensagem: "O campo de cidade não pode conter números.",
-      },
-    ];
-    if (verificarSeTemNumeros(camposNaoPodemTerNumeros)) return true;
-
-    // tem @ ?
-    if (
-      verificarSeEEmail(
-        email,
-        setErroEmail,
-        "O e-mail precisa ter o @, verifique se digitou corretamente o seu e-mail"
-      )
-    )
-      return true;
+      if (senha.value !== senha2.value) {
+        setErroSenha("As senhas não coincidem. Por favor, verifique.");
+        return true;
+      } 
 
     const dados = {
       nome: nomeRef.current.value,
@@ -254,13 +230,11 @@ function Cadastro() {
         setMensagem("Erro inesperado. Tente novamente.");
       }
 
-
     } catch (error) {
       
       if (error.message) {
         setMensagem(error.message);
-      } else {
-        // Exibe uma mensagem genérica para outros erros
+      } else {        
         setMensagem("Erro ao realizar o cadastro. Tente novamente.");
       }
     }
@@ -343,6 +317,20 @@ function Cadastro() {
                   refProp={senhaRef}
                   name="Senha"
                   place="Digite a sua senha"
+                  type="password"
+                />
+
+                {erroSenha && (
+                  <span id="email-error" className={style.cad__error}>
+                    {erroSenha}
+                  </span>
+                )}
+
+                <InputTxt
+                  required
+                  refProp={senhaRef2}
+                  name="Confirme sua senha"
+                  place="Confirme sua senha"
                   type="password"
                 />
 
