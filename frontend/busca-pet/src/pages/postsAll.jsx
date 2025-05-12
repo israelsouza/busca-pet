@@ -15,7 +15,7 @@ function PostsAll() {
     const [foundPosts, setFoundPosts] = useState([]);
     const [category, setCategory] = useState('all');
 
-    /*  
+      
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -59,7 +59,7 @@ function PostsAll() {
         }
         fetchPosts();
     }, [category]);
-    */
+    
 
     return (
         <div className={style.container}>

@@ -4,6 +4,21 @@
   import { useNavigate } from "react-router-dom";
 
   function EdicaoPerfil() {
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
     const navigate = useNavigate();
 
     const [erros, setErros] = useState({});

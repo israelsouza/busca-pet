@@ -8,6 +8,21 @@ import Style from "../pages/styles/PerfilVisualizar.module.css";
 import React, { useState, useEffect } from "react";
 
 function VisualizePerfil({userId}){ 
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {

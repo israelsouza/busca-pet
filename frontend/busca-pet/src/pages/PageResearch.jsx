@@ -5,6 +5,20 @@ import lupa_pesquisa from "./../assets/imgs/lupa_pesquisa.png"
 
 
 function PageResearch(){
+        useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+    
     return (
     <div className={styles.main}>
 

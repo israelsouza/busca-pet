@@ -25,12 +25,12 @@ app.use("/form/login", logarUsuario);
 app.use("/form/recuperar-senha", recuperarSenha);
 app.use("/validar-token-senha", validarTokenSenha);
 app.use("/atualizar-senha", atualizarSenha);
-app.use("/usuarios", buscarUsuario);
+
 
 // rotas privadas (protegidas)
-// app.use("/posts/all", autenticarToken, getTodosPosts);
-app.use("/criar-post/pet-perdido", cadastrarPetPerdido);
-app.use("/criar-post/pet-encontrado", cadastrarPetEncontrado);
-app.use("/api/posts", postRoutes);
+app.use("/usuarios", autenticarToken, buscarUsuario);
+app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido);
+app.use("/criar-post/pet-encontrado", autenticarToken, cadastrarPetEncontrado);
+app.use("/api/posts", autenticarToken, postRoutes);
 
 export default app;

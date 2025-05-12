@@ -8,6 +8,20 @@ import  validateToken  from "../assets/utils/validateToken";
 function PostsUser() {
     const [userPosts, setUserPosts] = useState([]);
 
+        useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+              await validateToken();
+            } catch (error) {
+              console.error("Erro capturado:", error.message);
+              alert(error.message); 
+              localStorage.removeItem("authToken");
+              navigate("/form/login");
+            }
+          };
+          checkAuthentication();
+    }, [navigate]);
+
     useEffect(() => {
         async function fetchUserPosts() {
             const response = await fetch('/api/posts/user/1');
