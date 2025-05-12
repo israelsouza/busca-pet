@@ -3,25 +3,26 @@
   padding: 0px;
 }
 
-.container{
+.container {
   display: flex;
-  height: 100vh;
 }
 
 
 .EditContato{
     justify-items: center;
     width: 50vw;
+    height: 50%;
+    padding: 10px;
     /* background-color: blue; */
-    padding: 20px;
     flex-direction: column;
   }
   
   .EditEndereco {
     justify-items: center;
     width: 50vw;
-    /* background-color: blueviolet; */
-    padding: 20px;
+    height: 50%;
+    /* background-color: blueviolet;  */
+    padding: 30px;
     flex-direction: column;
   }
   
@@ -29,7 +30,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
     font-family: "Inter", sans-serif;
     font-size: 2em;
     font-weight: normal;
@@ -113,19 +113,21 @@ button:hover {
 .campo2{
   width: 35vw;
   display: flex;
+  padding-left: 30px;
+  gap: 10px;
   justify-content: center;
 }
 
 .editFoto{
   background-color: var(--botao);
-  align-items: center;justify-content: space-evenly;
-  width: 20vw;
-  padding: 12px;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 15vw;
   background-image: url(../../assets/imgs/Upload.png);
   background-position: left;
   background-repeat: no-repeat;
   background-position: 20px;
-  border-radius: 28px;
+  border-radius: 8px;
   font-weight: normal;
   box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
 }
@@ -135,10 +137,9 @@ button:hover {
   transform: scale(1.05); 
 }
 
-  .containerfoto {
-    background-image: url(../../assets/imgs/fundo_passaro.png);
-    background-repeat: no-repeat;
-    height: 116.7vh;
-    width: 50vw;
-    justify-self: right;
+.containerfoto {
+  width: 50vw;
+  background-image: url("../../assets/imgs/furao_fundo.jpeg");
+  background-size: cover;
+  background-position: center;
 }

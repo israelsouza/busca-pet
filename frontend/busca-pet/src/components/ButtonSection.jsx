@@ -1,4 +1,5 @@
 import Style from "../components/styles/ButtonSection.module.css";
+import { Link } from "react-router-dom";
 
 function BotaoSection({ nome_section, text_section, img_icone, alt, acesso}) {
     return (
@@ -8,7 +9,9 @@ function BotaoSection({ nome_section, text_section, img_icone, alt, acesso}) {
           <h3 className={Style.h3}>{nome_section}</h3>
         </div>
         <p className={Style.texto_desc}>{text_section}</p>
-        <a href={acesso} className={Style.acesso}> Acessar 🔗</a>
+        <Link to={acesso} className={Style.acesso}>
+          Acessar 🔗
+        </Link>
       </div>
     );
   }

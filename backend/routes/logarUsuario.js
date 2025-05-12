@@ -14,7 +14,7 @@ router.post("/", async (request, response) => {
     // Gera o token JWT
     const token = jwt.sign(
       {email: dados.email}, // Payload
-      SECRET_KEY,           // Chave secreta importada
+        SECRET_KEY,           // Chave secreta importada
       { expiresIn: "10m"}    // Tempo de expiração
     )
     console.log("entrei no login apos a geração do token ")

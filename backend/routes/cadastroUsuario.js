@@ -2,7 +2,10 @@ import express from "express";
 import bcrypt from 'bcrypt'
 import inserirUsuarioBD from "../model/inserirUsuario.js";
 
+
 const router = express.Router();
+
+
 
 router.post("/", async (request, response) => {
   const dados = request.body;

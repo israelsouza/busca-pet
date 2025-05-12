@@ -16,14 +16,18 @@
 .container_header{
     display: flex;
     align-items: center;
-    gap: 2.5em;
+    gap: 3.5em;
+
 }
+
 
 .ul{
     display: flex;
     align-items: center;
-    margin: 3em;
+    margin-right: 10vw;
     gap: 90px;
+    padding: 10px;
+
 }
 
 .linkhome{  

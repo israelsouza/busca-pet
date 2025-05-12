@@ -1,13 +1,12 @@
-const express = require("express");
+import express from "express";
+import usuarioController from "../controllers/editPerfilUsuarioController.js";
+import multer from "multer";  // Importação correta para ES Modules
+
 const router = express.Router();
-const usuarioController = require("../controllers/usuarioController");
-
-router.get("/usuarios/:id", usuarioController.buscarUsuario);
-router.post("/usuarios/1/:campo", usuarioController.editarCampo);
-
-const multer = require("multer");
 const upload = multer();
 
-router.post("/usuarios/1/foto", upload.single("foto"), usuarioController.editarFoto);
+router.get("/email/:email", usuarioController.pegarTodosOsDados);
+router.post("/email/:email/:campo", usuarioController.atualizarCampo);
+router.post("/email/:email/foto", upload.single("foto"), usuarioController.atualizarFoto);
 
-module.exports = router;
+export default router;

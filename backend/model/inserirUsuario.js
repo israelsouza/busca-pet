@@ -2,10 +2,11 @@ import OracleDB from "oracledb";
 import getConnection from "./connectionOracle.js";
 
 export default async function inserirUsuario(dados, senhaHash) {
-  let connection;
+ const connection = await getConnection();
+ console.log("Tentando conectar ao banco de dados...");
 
   try {
-    connection = await getConnection();
+
     console.log("Iniciando a conexão...\n \n");
 
     const verificaEmail = `
@@ -48,6 +49,9 @@ export default async function inserirUsuario(dados, senhaHash) {
     const resultadoSelectEstado = await connection.execute(selectEstado, {
       sigla: dados.estado,
     });
+    if (resultadoSelectEstado.rows.length === 0) {
+      throw new Error(`Estado com sigla '${dados.estado}' não encontrado. Verifique a sigla.`);
+    }
     const idEstado = resultadoSelectEstado.rows[0][0];
 
     // insert cidade

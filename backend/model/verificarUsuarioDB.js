@@ -14,7 +14,7 @@ export default async function verificarUsuarioDB(dados) {
     WHERE LOWER(USU_EMAIL) = :email
   `;
     const resultado = await connection.execute(consultaUsuario, {
-      email: dados.email.toLowerCase(), 
+      email: dados.email.toLowerCase(),
     });
 
     // Verifica se o e-mail existe no banco de dados
@@ -24,19 +24,18 @@ export default async function verificarUsuarioDB(dados) {
 
     const [USU_ID, senhaHash] = resultado.rows[0];
 
-     // Compara a senha fornecida com o hash armazenado no banco
+    // Compara a senha fornecida com o hash armazenado no banco
     const senhaValida = await bcrypt.compare(dados.password, senhaHash);
 
-
     if (!senhaValida) {
-        throw new Error("Senha incorreta");        
+      throw new Error("Senha incorreta");
     }
 
     console.log("Usuário autenticado com sucesso!");
     console.log("Fechando a conexão...");
     await connection.close();
 
-   return { userId: USU_ID, message: "Usuário autenticado com sucesso." };
+    return { userId: USU_ID, message: "Usuário autenticado com sucesso." };
   } catch (error) {
     console.error("Erro ao verificar usuário:", error);
 
