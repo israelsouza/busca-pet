@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-// import { SECRET_KEY } from "../config/authConfig.js";
+import { SECRET_KEY } from "../config/authConfig.js";
 
 const router = express.Router();
 
