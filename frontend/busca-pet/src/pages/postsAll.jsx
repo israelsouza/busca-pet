@@ -33,9 +33,17 @@ function PostsAll() {
     useEffect(() => {
         async function fetchPosts() {
             const token = localStorage.getItem("authToken");
+             const headerRequest = {
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                },
+                }
             if (category === 'all') {
-                const response = await fetch('http://localhost:3000/api/posts/all');
+                const response = await fetch('http://localhost:3000/api/posts/all', headerRequest );
                 const data = await response.json();
+                
                 const post = data.posts;
                 setPosts(data.posts); 
             } else if (category === 'user') {
@@ -46,12 +54,12 @@ function PostsAll() {
                 // console.log(data)
                 // setUserPosts(data.posts);
             } else if (category === 'lost') {                
-                const response = await fetch('http://localhost:3000/api/posts/lost');                
+                const response = await fetch('http://localhost:3000/api/posts/lost', headerRequest);                
                 const data = await response.json();
                 const post = data.posts;
                 setLostPosts(data.posts);
             } else if (category === 'found') {                
-                const response = await fetch('http://localhost:3000/api/posts/found');
+                const response = await fetch('http://localhost:3000/api/posts/found', headerRequest);
                 const data = await response.json();
                 const post = data.posts;
                 setFoundPosts(data.posts);
@@ -74,10 +82,11 @@ function PostsAll() {
                             {/* <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
                                 <button className={style.button} >Verificar Pet que eu publiquei</button>
                             </Link> */}
-                </div>
+                    </div>
                 </div>
                 <div className={style.posts}>
                     
+                <div className={style.containerPosts}>
                 {category === 'all' && posts.map((post, index) => (
                     <Buttonposts 
                         key={index}
@@ -91,6 +100,7 @@ function PostsAll() {
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
+                
                 {category === 'lost' && lostPosts.map((post, index) => (
                     <Buttonposts 
                         key={index}
@@ -117,6 +127,7 @@ function PostsAll() {
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     />
                 ))}
+                </div>
                 </div>
             </div>
         </div>
