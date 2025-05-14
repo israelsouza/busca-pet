@@ -69,9 +69,26 @@ async function buscarPorEmail(email) {
 }
 
 async function atualizarFoto(email, fotoBuffer) {
-  const conn = await getConnection();
-  const sql = `UPDATE USUARIO SET USU_FOTO = :foto WHERE USU_EMAIL = :email`;
-  await conn.execute(sql, { foto: fotoBuffer, email }, { autoCommit: true });
+  console.log("iniciando atualização de foto")
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const sql = `UPDATE USUARIO SET USU_FOTO = :foto WHERE USU_EMAIL = :email`;
+
+    const result = await connection.execute(sql, { foto: fotoBuffer, email }, { autoCommit: true });
+      console.log("Finalizando atualização de foto")
+    return result
+
+  } catch (error) {
+    console.error(error)
+  } finally {
+    if (connection) await connection.close();
+  }
+
+
+
 }
 
 export default { atualizarCampo, buscarPorEmail, atualizarFoto };

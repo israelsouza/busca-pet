@@ -1,9 +1,14 @@
   import React, { useState, useEffect, useRef } from "react";
   import Style from "../pages/styles/EditPerfil.module.css";
   import HeaderEdicao from "../components/HeaderEdicao";
+  import validateToken from '../assets/utils/validateToken.js'
   import { useNavigate } from "react-router-dom";
+  import enviarDados from "../assets/utils/enviarDados.js";
+
 
   function EdicaoPerfil() {
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -19,7 +24,7 @@
           checkAuthentication();
     }, [navigate]);
 
-    const navigate = useNavigate();
+    
 
     const [erros, setErros] = useState({});
     const [formData, setFormData] = useState({});
@@ -118,9 +123,19 @@
     
     useEffect(() => {
       if (!email) return;
-      setLoading(true); 
+      setLoading(true);
+
+      const token = localStorage.getItem("authToken");
+
+      const headerRequest = {
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                },
+                }
             
-      fetch("http://localhost:3000/usuarios/email/" + email)
+      fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
         .then((res) => {
           if (!res.ok) {
             throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
@@ -147,9 +162,12 @@
     };
 
     const atualizarCampo = (campo) => {
+      const token = localStorage.getItem("authToken");
       fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+         Authorization: `Bearer ${token}` 
+        }, // Adiciona o token no cabeçalho
         body: JSON.stringify({ valor: formData[campo] }),
       })
         .then(res => res.text())
@@ -265,7 +283,7 @@
         if (formData[campo] !== originalData[campo]) {
           atualizarCampo(campo); // Chama a função de atualização se o valor mudou
           setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
-        }
+        };
           toggleEdit(campo); // Alterna o modo de edição para "Editar"
           if (campo === "USU_EMAIL") {
             setTimeout(() => navigate("/form/login"), 1000); 
@@ -277,17 +295,13 @@
       setFoto(e.target.files[0]);
     };
 
-    const enviarFoto = () => {
+    const enviarFoto = async () => {
       const data = new FormData();
-      data.append("foto", foto);
+      data.append("foto", foto);;
 
-      fetch(`http://localhost:3001/usuarios/email/${email}/foto`, {
-        method: "POST", 
-        body: data,
-      })
-        .then(res => res.text())
-        .then(alert)
-        .catch(err => console.error("Erro:", err));
+      const result = await enviarDados(data, `usuarios/foto/${email}`)
+      console.log("RESULT ", result )
+      
     };
 
     if (loading) {
