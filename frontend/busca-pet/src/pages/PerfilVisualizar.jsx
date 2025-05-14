@@ -1,4 +1,5 @@
 import HeaderEdicao from "../components/HeaderEdicao";
+import validateToken from '../assets/utils/validateToken.js'
 import icon_conta from "../assets/imgs/icon_conta.png";
 import icon_notificacoes from "../assets/imgs/icon_notificacoes.png";
 import BotaoSection from "../components/ButtonSection";
@@ -6,8 +7,10 @@ import icon_publicacoes from "../assets/imgs/icon_publicacoes.png";
 import avatar_usuario from "../assets/imgs/avatar_usuario.png";
 import Style from "../pages/styles/PerfilVisualizar.module.css";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function VisualizePerfil({userId}){ 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -27,8 +30,17 @@ function VisualizePerfil({userId}){
 
     useEffect(() => {
         async function fetchUserInfo() {
-            const response = await fetch(`/api/user-info/${userId}`);
+          const token = localStorage.getItem("authToken");
+                const headerRequest = {
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                },
+                }
+            const response = await fetch(`http://localhost:3000/user/photo/${token}`, headerRequest);
             const data = await response.json();
+            console.log("userInfo: ", data );
             setUserInfo(data);
         }
         fetchUserInfo();
@@ -40,9 +52,10 @@ function VisualizePerfil({userId}){
             <div className={Style.FotoDivisao}></div>
                 <section className={Style.perfilSection}>   
                     <article className={Style.cabecalho}>
-                    <img src={avatar_usuario} alt="icone de foto de usuário" />
+
+                    <img src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`} width={200} alt="icone de foto de usuário" />
+
                     <div className={Style.namecontainer}>
-                    <h1 className={Style.h1}>{userInfo.USU_EMAIL || "user 01"}</h1>
                     <h2 className={Style.h2}>{userInfo.PES_NOME || "Exemplo de nome de Usuário"}</h2>
                     </div>
                     </article>

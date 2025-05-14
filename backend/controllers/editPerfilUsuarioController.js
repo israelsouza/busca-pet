@@ -69,8 +69,12 @@ async function atualizarFoto(req, res) {
             .jpeg({ quality: 80 }) // Converte para JPEG com qualidade reduzida
             .toBuffer();
 
-        await usuarioModel.atualizarFoto(email, imagemOtimizada);
-        res.send("Foto de perfil atualizada com sucesso!");
+        const insertImg = await usuarioModel.atualizarFoto(email, imagemOtimizada);
+        console.log("Foto atualizada com sucesso!")
+        return res.status(200).json({
+            message: "Foto de perfil atualizada com sucesso!",
+            insertImg
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send("Erro ao atualizar foto por email: " + err.message);
