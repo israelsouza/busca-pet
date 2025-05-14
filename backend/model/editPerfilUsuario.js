@@ -69,7 +69,9 @@ async function buscarPorEmail(email) {
 }
 
 async function atualizarFoto(email, fotoBuffer) {
+
   console.log("iniciando atualização de foto")
+
   let connection;
 
   try {
@@ -78,8 +80,10 @@ async function atualizarFoto(email, fotoBuffer) {
     const sql = `UPDATE USUARIO SET USU_FOTO = :foto WHERE USU_EMAIL = :email`;
 
     const result = await connection.execute(sql, { foto: fotoBuffer, email }, { autoCommit: true });
+
       console.log("Finalizando atualização de foto")
     return result
+
 
   } catch (error) {
     console.error(error)
