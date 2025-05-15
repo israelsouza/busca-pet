@@ -137,6 +137,7 @@
             
       fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
         .then((res) => {
+          console.log("F-EDITPERF: Resposta da API:", res);
           if (!res.ok) {
             throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
           }
