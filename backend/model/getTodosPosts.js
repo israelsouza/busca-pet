@@ -15,6 +15,7 @@ async function getTodosOsPosts() {
 
     const sql = `
             SELECT
+                post.POS_ID AS "POS_ID",
                 post.POS_TIPO AS "POS_TIPO",
                 pet.PET_NOME AS "PET_NOME",
                 pet.PET_DESCRICAO AS "PET_DESCRICAO",

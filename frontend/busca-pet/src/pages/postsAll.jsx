@@ -45,6 +45,7 @@ function PostsAll() {
                 const data = await response.json();
                 
                 const post = data.posts;
+                console.log(post);
                 setPosts(data.posts); 
             } else if (category === 'user') {
                 // console.log('user')
@@ -89,7 +90,7 @@ function PostsAll() {
                 <div className={style.containerPosts}>
                 {category === 'all' && posts.map((post, index) => (
                     <Buttonposts 
-                        key={index}
+                        key={post.POS_ID}
                         usuario={post.PES_NOME}
                         imagemUsuario={post.USU_FOTO}
                         imagemPet={post.PET_FOTO}
@@ -103,7 +104,7 @@ function PostsAll() {
                 
                 {category === 'lost' && lostPosts.map((post, index) => (
                     <Buttonposts 
-                        key={index}
+                        key={post.POS_ID}
                         usuario={post.PES_NOME}
                         imagemUsuario={post.USU_FOTO}
                         imagemPet={post.PET_FOTO}
@@ -116,7 +117,7 @@ function PostsAll() {
                 ))}
                 {category === 'found' && foundPosts.map((post, index) => (
                     <Buttonposts 
-                        key={index}
+                        key={post.POS_ID}
                         usuario={post.PES_NOME}
                         imagemUsuario={post.USU_FOTO}
                         imagemPet={post.PET_FOTO}
