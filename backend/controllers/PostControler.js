@@ -69,14 +69,22 @@ async function getQuemPublicou(req, res) {
     }
 
     const idNotificacaoSalva = await salvarNotificacaoUsuario(notificationData);
-
     console.log("Notificação -> ", idNotificacaoSalva)
-   
 
 
-    console.log(`B-CONTroller: SAIU De getQuemPublicou || ${userA}`);
+    const notificacaoEnviada = sendMessageToUser(idUserB, mensagemNotificacao);
+
+    if (notificacaoEnviada) {
+      console.log(`Notificação enviada para o usuário ${idUserB} (ONLINE)`);
+      return res.status(200).json({ message: 'Notificação enviada com sucesso!' });
+    } else {
+      console.log(`Usuário ${idUserB} não está online ou a conexão não está aberta. (OFFLINE)`);
+      return res.status(200).json({ message: 'Notificação salva e será entregue quando o usuário estiver online.' });
+    }
+    
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ error: "Erro ao processar a notificação.", error });
   }
 }
 
