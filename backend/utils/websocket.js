@@ -4,7 +4,7 @@ const clients = new Map();
 let wss;
 
 const setupWebSocket = (server) => {
-  wss = new WebSocketServer(server);
+  wss = new WebSocketServer({server});
 
   wss.on("connection", (ws, request) => {
     const userId = extractIdUser(request);
