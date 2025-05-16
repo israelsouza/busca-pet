@@ -1,4 +1,5 @@
 import { WebSocketServer } from "ws";
+import authenticateWebSocket from './authenticateWebSocket.js'
 
 const clients = new Map();
 let wss;
@@ -6,8 +7,8 @@ let wss;
 const setupWebSocket = (server) => {
   wss = new WebSocketServer({server});
 
-  wss.on("connection", (ws, request) => {
-    const userId = extractIdUser(request);
+  wss.on("connection", async (ws, request) => {
+    const userId = await authenticateWebSocket(request);
     if (userId) {
       console.log(`Cliente conectado com ID: ${userId}`);
       clients.set(userId, ws);
