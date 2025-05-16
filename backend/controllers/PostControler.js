@@ -2,6 +2,7 @@ import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getIdFromPost from "../model/getIdFromPost.js";
 import { sendMessageToUser } from "../utils/websocket.js";
+import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
 
 async function todosPosts(req, res) {
@@ -64,11 +65,13 @@ async function getQuemPublicou(req, res) {
       rementente: idUserA,
       destinatario: idUserB,
       type: 'pet_encontrado',
-      content: JSON.stringify(mensagemNotificacao)
+      conteudo: JSON.stringify(mensagemNotificacao)
     }
 
- 
-    
+    const idNotificacaoSalva = await salvarNotificacaoUsuario(notificationData);
+
+    console.log("Notificação -> ", idNotificacaoSalva)
+   
 
 
     console.log(`B-CONTroller: SAIU De getQuemPublicou || ${userA}`);
