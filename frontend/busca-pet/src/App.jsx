@@ -13,6 +13,7 @@ import PetEncontrado from "./pages/PetEncontrado";
 import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
+import Notification from "./pages/Notification";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/Perfil" element={<VisualizePerfil />}/>
           <Route path="/EditarPerfil" element={<EditarPerfil />}/>
           <Route path="/Posts/user" element={< PostsUser />} />
+          <Route path="/user/notificacao" element={< Notification />} />
         </Routes>
       </BrowserRouter>
     </div>
