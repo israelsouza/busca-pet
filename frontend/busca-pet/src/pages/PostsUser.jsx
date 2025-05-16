@@ -1,38 +1,39 @@
-import Buttonposts from "../components/button_posts"; 
-import HeaderLog from "../components/HeaderLog";
-import React, { useState, useEffect } from "react";
-import style from "./styles/postsAll.module.css";
-import  validateToken  from "../assets/utils/validateToken";
+import { useState, useEffect } from "react";
 
+import Buttonposts from "../components/button_posts";
+import HeaderLog from "../components/HeaderLog";
+import validateToken from "../assets/utils/validateToken";
+
+import style from "./styles/postsAll.module.css";
 
 function PostsUser() {
-    const [userPosts, setUserPosts] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
 
-        useEffect(() => {
-        const checkAuthentication = async () => {
-            try {
-              await validateToken();
-            } catch (error) {
-              console.error("Erro capturado:", error.message);
-              alert(error.message); 
-              localStorage.removeItem("authToken");
-              navigate("/form/login");
-            }
-          };
-          checkAuthentication();
-    }, [navigate]);
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        await validateToken();
+      } catch (error) {
+        console.error("Erro capturado:", error.message);
+        alert(error.message);
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
+      }
+    };
+    checkAuthentication();
+  }, [navigate]);
 
-    useEffect(() => {
-        async function fetchUserPosts() {
-            const response = await fetch('/api/posts/user/1');
-            const data = await response.json();
-            setUserPosts(data);
-        }
+  useEffect(() => {
+    async function fetchUserPosts() {
+      const response = await fetch("/api/posts/user/1");
+      const data = await response.json();
+      setUserPosts(data);
+    }
 
-        fetchUserPosts();
-    }, []);
+    fetchUserPosts();
+  }, []);
 
-    return (
+  return (
         <div className={style.container}>
             <HeaderLog />
             <div className={style.opcaoContainer}>
@@ -55,7 +56,7 @@ function PostsUser() {
                 </div>
             </div>
         </div>
-    );
+  );
 }
 
 export default PostsUser;

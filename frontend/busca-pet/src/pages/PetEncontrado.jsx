@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import styles from "./styles/PetPerdido.module.css";
+
 import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo,
@@ -7,8 +8,9 @@ import {
 import { validarDataLimite } from "../assets/utils/regex.js";
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
 import HeaderLog from "../components/HeaderLog.jsx";
-import { useNavigate } from "react-router-dom";
 import enviarDados from "../assets/utils/enviarDados.js";
+
+import styles from "./styles/PetPerdido.module.css";
 
 function PetEncontrado() {
   const navigate = useNavigate();
@@ -146,14 +148,8 @@ function PetEncontrado() {
 
     const formData = criarFormData(dados, arquivoImagem);
 
-    //console.log("Dados do formulário: ", formData);
-    //console.log("Arquivo da imagem: ", formData.get("imagem"));
-
- 
-    
     try {
       const resultado = await enviarDados(formData, "criar-post/pet-encontrado");
-      //console.log(resultado);
 
       if (resultado && resultado.message) {
         setRetornoBackend(resultado.message);

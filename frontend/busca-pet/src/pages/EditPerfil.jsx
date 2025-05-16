@@ -1,30 +1,28 @@
-  import React, { useState, useEffect, useRef } from "react";
-  import Style from "../pages/styles/EditPerfil.module.css";
-  import HeaderEdicao from "../components/HeaderEdicao";
-  import validateToken from '../assets/utils/validateToken.js'
-  import { useNavigate } from "react-router-dom";
-  import enviarDados from "../assets/utils/enviarDados.js";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
+import HeaderEdicao from "../components/HeaderEdicao";
+import validateToken from '../assets/utils/validateToken.js'
+import enviarDados from "../assets/utils/enviarDados.js";
 
-  function EdicaoPerfil() {
+import Style from "../pages/styles/EditPerfil.module.css";
 
-    const navigate = useNavigate();
+function EdicaoPerfil() {
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkAuthentication = async () => {
-            try {
-              await validateToken();
-            } catch (error) {
-              console.error("Erro capturado:", error.message);
-              alert(error.message); 
-              localStorage.removeItem("authToken");
-              navigate("/form/login");
-            }
-          };
-          checkAuthentication();
-    }, [navigate]);
-
-    
+  useEffect(() => {
+      const checkAuthentication = async () => {
+          try {
+            await validateToken();
+          } catch (error) {
+            console.error("Erro capturado:", error.message);
+            alert(error.message); 
+            localStorage.removeItem("authToken");
+            navigate("/form/login");
+          }
+        };
+        checkAuthentication();
+  }, [navigate]);
 
   const [erros, setErros] = useState({});
   const [formData, setFormData] = useState({});
@@ -48,42 +46,36 @@
     }
   }, [isEditing.PES_NOME]);
 
-  // Efeito para focar o input de telefone
   useEffect(() => {
     if (isEditing.PES_PHONE) {
       telefoneInputRef.current?.focus();
     }
   }, [isEditing.PES_PHONE]);
 
-  // Efeito para focar o input de email
   useEffect(() => {
     if (isEditing.USU_EMAIL) {
       emailInputRef.current?.focus();
     }
   }, [isEditing.USU_EMAIL]);
 
-  // Efeito para focar o input de rua
   useEffect(() => {
     if (isEditing.END_RUA) {
       ruaInputRef.current?.focus();
     }
   }, [isEditing.END_RUA]);
 
-  // Efeito para focar o input de bairro
   useEffect(() => {
     if (isEditing.END_BAIRRO) {
       bairroInputRef.current?.focus();
     }
   }, [isEditing.END_BAIRRO]);
 
-  // Efeito para focar o input de cidade
   useEffect(() => {
     if (isEditing.CID_DESCRICAO) {
       cidadeInputRef.current?.focus();
     }
   }, [isEditing.CID_DESCRICAO]);
 
-  // Efeito para focar o input de estado
   useEffect(() => {
     if (isEditing.EST_SIGLA) {
       estadoInputRef.current?.focus();
@@ -91,13 +83,7 @@
   }, [isEditing.EST_SIGLA]);
 
 
-
-
-
-
-
-
-    useEffect(() => { // Recupera o token do localStorage
+    useEffect(() => {
       try {
         const token = localStorage.getItem("authToken");
         
@@ -131,7 +117,7 @@
                     method: 'GET',
                     headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                    Authorization: `Bearer ${token}`, 
                 },
                 }
             
@@ -168,7 +154,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json",
          Authorization: `Bearer ${token}` 
-        }, // Adiciona o token no cabeçalho
+        }, 
         body: JSON.stringify({ valor: formData[campo] }),
       })
         .then(res => res.text())
@@ -177,7 +163,7 @@
     };
 
   const toggleEdit = (campo) => {
-    setIsEditing((prev) => ({ ...prev, [campo]: !prev[campo] })); // Alterna o modo de edição
+    setIsEditing((prev) => ({ ...prev, [campo]: !prev[campo] })); 
   };
 
   const handleSalvar = (campo) => {
@@ -197,7 +183,7 @@
           newErros.PES_NOME = "O nome deve conter apenas letras.";
           isValid = false;
         } else {
-          delete newErros.PES_NOME; // Remove o erro se for válido
+          delete newErros.PES_NOME; 
         }
         break;
       case "PES_PHONE":
@@ -240,7 +226,7 @@
           newErros.END_RUA = "A rua deve conter apenas letras.";
           isValid = false;
         } else {
-          delete newErros.END_RUA; // Remove o erro se for válido
+          delete newErros.END_RUA; 
         }
         break;
       case "END_BAIRRO":
@@ -291,7 +277,7 @@
           atualizarCampo(campo); // Chama a função de atualização se o valor mudou
           setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
         };
-          toggleEdit(campo); // Alterna o modo de edição para "Editar"
+          toggleEdit(campo); 
           if (campo === "USU_EMAIL") {
             setTimeout(() => navigate("/form/login"), 1000); 
           }
@@ -339,9 +325,9 @@
               <button
                 onClick={() => {
                   if (isEditing.PES_NOME) {
-                    handleSalvar("PES_NOME"); // Salva as alterações
+                    handleSalvar("PES_NOME"); 
                   } else {
-                    toggleEdit("PES_NOME"); // Alterna o modo de edição
+                    toggleEdit("PES_NOME"); 
                   }
                 }}
               >
@@ -362,9 +348,9 @@
               <button
                 onClick={() => {
                   if (isEditing.PES_PHONE) {
-                    handleSalvar("PES_PHONE"); // Salva as alterações
+                    handleSalvar("PES_PHONE"); 
                   } else {
-                    toggleEdit("PES_PHONE"); // Alterna o modo de edição
+                    toggleEdit("PES_PHONE"); 
                   }
                 }}
               >
@@ -387,9 +373,9 @@
               <button
                 onClick={() => {
                   if (isEditing.USU_EMAIL) {
-                    handleSalvar("USU_EMAIL"); // Salva as alterações
+                    handleSalvar("USU_EMAIL"); 
                   } else {
-                    toggleEdit("USU_EMAIL"); // Alterna o modo de edição
+                    toggleEdit("USU_EMAIL"); 
                   }
                 }}
                 className={Style.button}
@@ -431,9 +417,9 @@
               <button
                 onClick={() => {
                   if (isEditing.END_RUA) {
-                    handleSalvar("END_RUA"); // Salva as alterações
+                    handleSalvar("END_RUA"); 
                   } else {
-                    toggleEdit("END_RUA"); // Alterna o modo de edição
+                    toggleEdit("END_RUA"); 
                   }
                 }}
               >
@@ -454,9 +440,9 @@
               <button
                 onClick={() => {
                   if (isEditing.END_BAIRRO) {
-                    handleSalvar("END_BAIRRO"); // Salva as alterações
+                    handleSalvar("END_BAIRRO"); 
                   } else {
-                    toggleEdit("END_BAIRRO"); // Alterna o modo de edição
+                    toggleEdit("END_BAIRRO"); 
                   }
                 }}
               >
@@ -479,9 +465,9 @@
               <button
                 onClick={() => {
                   if (isEditing.CID_DESCRICAO) {
-                    handleSalvar("CID_DESCRICAO"); // Salva as alterações
+                    handleSalvar("CID_DESCRICAO"); 
                   } else {
-                    toggleEdit("CID_DESCRICAO"); // Alterna o modo de edição
+                    toggleEdit("CID_DESCRICAO");
                   }
                 }}
               >
@@ -532,9 +518,9 @@
               <button
                 onClick={() => {
                   if (isEditing.EST_SIGLA) {
-                    handleSalvar("EST_SIGLA"); // Salva as alterações
+                    handleSalvar("EST_SIGLA"); 
                   } else {
-                    toggleEdit("EST_SIGLA"); // Alterna o modo de edição
+                    toggleEdit("EST_SIGLA"); 
                   }
                 }}
               >

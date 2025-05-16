@@ -1,16 +1,18 @@
 import { useRef, useState } from "react";
-import style from "./styles/cadastroUsuario.module.css";
+import { Link, useNavigate } from "react-router-dom";
+
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
-import { Link, useNavigate } from "react-router-dom";
 import {
   verificarTamanhoFixo,
   verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
 import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras, validarCampoApenasNumeros } from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
+
+import style from "./styles/cadastroUsuario.module.css";
 
 function Cadastro() {
   const navigate = useNavigate();

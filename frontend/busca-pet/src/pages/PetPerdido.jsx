@@ -1,15 +1,17 @@
 import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import validateToken from '../assets/utils/validateToken.js'
-import styles from "./styles/PetPerdido.module.css";
 import {
-  verificarCampoVazioPet,
-  verificarTamanhoMaximo
+    verificarCampoVazioPet,
+    verificarTamanhoMaximo
 } from "../assets/utils/formValidacoes";
 import { validarDataLimite } from "../assets/utils/regex.js";
 import criarFormData from "../assets/utils/criarFormData.js";
 import HeaderLog from "./../components/HeaderLog";
-import { useNavigate } from "react-router-dom";
 import enviarDados from "../assets/utils/enviarDados";
+
+import styles from "./styles/PetPerdido.module.css";
 
 function PetPerdido() {
     const navigate = useNavigate();
@@ -53,8 +55,8 @@ function PetPerdido() {
     function handleImagemSelecionada(e) {
         const arquivo = e.target.files[0];
         if (arquivo) {
-            if (arquivo.size > 10 * 1024 * 1024) {
-                setErroImagem("O arquivo deve ter no máximo 2MB.");
+            if (arquivo.size > 5 * 1024 * 1024) {
+                setErroImagem("O arquivo deve ter no máximo 5MB.");
                 return;
             }
             setErroImagem("");

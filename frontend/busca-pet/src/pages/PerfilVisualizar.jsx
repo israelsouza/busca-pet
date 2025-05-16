@@ -1,12 +1,14 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import HeaderEdicao from "../components/HeaderEdicao";
 import validateToken from '../assets/utils/validateToken.js'
 import icon_conta from "../assets/imgs/icon_conta.png";
 import icon_notificacoes from "../assets/imgs/icon_notificacoes.png";
 import BotaoSection from "../components/ButtonSection";
 import icon_publicacoes from "../assets/imgs/icon_publicacoes.png";
+
 import Style from "../pages/styles/PerfilVisualizar.module.css";
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 function VisualizePerfil({userId}){ 
     const navigate = useNavigate();
@@ -34,7 +36,7 @@ function VisualizePerfil({userId}){
                     method: 'GET',
                     headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                    Authorization: `Bearer ${token}`,
                 },
                 }
             const response = await fetch(`http://localhost:3000/user/photo/${token}`, headerRequest);

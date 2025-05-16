@@ -1,7 +1,8 @@
-import styles from "./styles/research.module.css"
 import HeaderLog from "../components/HeaderLog"
 import listagem from "./../assets/imgs/listagem.png"
 import lupa_pesquisa from "./../assets/imgs/lupa_pesquisa.png"
+
+import styles from "./styles/research.module.css"
 
 
 function PageResearch(){

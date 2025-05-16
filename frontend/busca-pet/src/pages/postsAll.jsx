@@ -1,12 +1,14 @@
-import Buttonposts from "../components/button_posts";
-import HeaderLog from "../components/HeaderLog";
-import React, {  useState, useEffect, useCallback }  from "react";
-import useWebSocket from "../assets/utils/useWebSocket.js";
-import style from "./styles/postsAll.module.css";
+import {  useState, useEffect, useCallback }  from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
+import Buttonposts from "../components/button_posts";
+import HeaderLog from "../components/HeaderLog";
+import useWebSocket from "../assets/utils/useWebSocket.js";
 import validateToken from '../assets/utils/validateToken.js'
 import enviarDados from "../assets/utils/enviarDados.js";
+
+import style from "./styles/postsAll.module.css";
 
 function PostsAll() {
     const navigate = useNavigate()
@@ -67,22 +69,14 @@ function PostsAll() {
                     method: 'GET',
                     headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+                    Authorization: `Bearer ${token}`,
                 },
                 }
             if (category === 'all') {
                 const response = await fetch('http://localhost:3000/api/posts/all', headerRequest );
-                const data = await response.json();
-                
+                const data = await response.json();                
                 const post = data.posts;
                 setPosts(data.posts); 
-            } else if (category === 'user') {
-                // console.log('user')
-                // const response = await fetch(`http://localhost:3000/api/posts/user/${token}`);
-                // console.log(response)
-                // const data = await response.json();
-                // console.log(data)
-                // setUserPosts(data.posts);
             } else if (category === 'lost') {                
                 const response = await fetch('http://localhost:3000/api/posts/lost', headerRequest);                
                 const data = await response.json();
@@ -117,9 +111,6 @@ function PostsAll() {
                             <Link to={'/posts/criar-post'} >
                                 <button id="link-btn" className={style.button}>Adicionar Pet encontrado/perdido</button>
                             </Link>
-                            {/* <Link to={'/posts/all?category=user'} onClick={() => setCategory('user')}>
-                                <button className={style.button} >Verificar Pet que eu publiquei</button>
-                            </Link> */}
                     </div>
                 </div>
                 <div className={style.posts}>

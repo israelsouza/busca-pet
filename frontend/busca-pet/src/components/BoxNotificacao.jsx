@@ -1,5 +1,6 @@
-import style from "./styles/BoxNotificacao.module.css";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+
+import style from "./styles/BoxNotificacao.module.css";
 
 function BoxNotificacao({ nome, telefone, email }) {
   return (

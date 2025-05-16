@@ -1,8 +1,10 @@
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./styles/login.module.css";
+
 import HeaderForm from "../components/HeaderForm";
 import { validarTamanhoMinimo, validarCampoEmail } from "../assets/utils/regex.js";
-import { useRef, useState } from "react";
+
+import styles from "./styles/login.module.css";
 
 function login() {
   const navigate = useNavigate();

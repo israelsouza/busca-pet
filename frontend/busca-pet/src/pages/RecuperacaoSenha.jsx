@@ -1,13 +1,14 @@
-import React from "react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { validarCampoEmail, validarTamanhoMinimo } from "../assets/utils/regex.js";
 import HeaderForm from "../components/HeaderForm";
 import InputTxt from "../components/InputTxt";
 import ButtonForm from "../components/ButtonForm";
-import style from './styles/recuperacao_senha.module.css'
 import enviarDados from "../assets/utils/enviarDados";
 import useAuth from "../assets/utils/globalUser";
+
+import style from './styles/recuperacao_senha.module.css'
 
 const RecuperacaoSenha = () => {
   const navigate = useNavigate();

@@ -1,10 +1,12 @@
-import BoxNotificacao from "../components/BoxNotificacao.jsx";
-import HeaderLog from "../components/HeaderLog.jsx";
-import styles from "./styles/Notification.module.css";
-import { FiTrash } from "react-icons/fi";
-import validateToken from "../assets/utils/validateToken.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiTrash } from "react-icons/fi";
+
+import BoxNotificacao from "../components/BoxNotificacao.jsx";
+import HeaderLog from "../components/HeaderLog.jsx";
+import validateToken from "../assets/utils/validateToken.js";
+
+import styles from "./styles/Notification.module.css";
 
 function Notification() {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ function Notification() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Envia o token no cabeçalho
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -49,14 +51,6 @@ function Notification() {
 
     getNotifications();
   }, [])
-
-
-
-
-
-
-
-
 
   return (
     <div className={styles.pnotification}>
