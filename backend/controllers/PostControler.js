@@ -4,6 +4,7 @@ import getIdFromPost from "../model/getIdFromPost.js";
 import { sendMessageToUser } from "../utils/websocket.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
+import getPhoneFromId from "../model/getPhoneFromId.js";
 
 async function todosPosts(req, res) {
   try {
@@ -53,18 +54,20 @@ async function getQuemPublicou(req, res) {
   try {
     const idUserA = await getUserId(userA);
     const idUserB = await getIdFromPost(idPost);
+    const telefone = await getPhoneFromId(idUserA);
+
+    console.log(telefone)
 
     const mensagemNotificacao = {
-      type: "pet_encontrado",
-      remetente: idUserA,
       publicacaoId: idPost,
-      message: `@${idUserA} encontrou o seu pet!! E-mail: ${userA}`,
+      remetente: idUserA,
+      telefone: telefone,
+      email: userA
     };
 
     const notificationData = {
       rementente: idUserA,
       destinatario: idUserB,
-      type: 'pet_encontrado',
       conteudo: JSON.stringify(mensagemNotificacao)
     }
 

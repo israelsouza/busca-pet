@@ -3,11 +3,13 @@ import HeaderLog from "../components/HeaderLog.jsx";
 import styles from "./styles/Notification.module.css";
 import { FiTrash } from "react-icons/fi";
 import validateToken from "../assets/utils/validateToken.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Notification() {
   const navigate = useNavigate();
+  const [notification, setNotification] = useState([]);
+
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -37,6 +39,8 @@ function Notification() {
         .then((response) => response.json())
         .then((data) => {
           console.log("Notificações: ", data);
+          let notification = data.result;
+          setNotification(notification);
         })
         .catch((error) => {
           console.error("Erro ao buscar notificações:", error);
@@ -59,8 +63,18 @@ function Notification() {
       <HeaderLog />
       <div className={styles.pnotification__container}>
         <h1>Notificações</h1>
-        <BoxNotificacao nome="" telefone="" email="" />
-        <BoxNotificacao />
+        
+        {
+          notification.map((notificacao, key) => (
+            <BoxNotificacao
+              key={key}
+              nome={notificacao[0]}
+              telefone={notificacao[3].telefone}
+              email={notificacao[3].email}
+            />
+          ))
+        }
+
         <button className={styles.pnotification__button}>
           <span>Excluir notificações</span>
           <FiTrash className={styles.pnotification__icon} />
