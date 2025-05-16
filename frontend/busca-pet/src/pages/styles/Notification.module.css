@@ -1,0 +1,20 @@
+.pnotification {
+  height: 100svh;
+}
+
+.pnotification__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.pnotification__button {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
+
+.pnotification__icon {
+  margin: 0 5px;
+}

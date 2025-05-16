@@ -1,7 +1,11 @@
 import app from "./app.js";
-const PORT = 3000;
+import http from "http";
+import { setupWebSocket } from "./utils/websocket.js";
 
-// responsavel apenas pela inicialização do servidor
-app.listen(PORT, () => {
-  console.log("Servidor escutando na porta 3000");
+const server = http.createServer(app);
+setupWebSocket(server);
+
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`Servidor HTTP e WebSocket rodando na porta ${PORT}`);
 });

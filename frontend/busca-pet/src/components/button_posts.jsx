@@ -12,6 +12,7 @@ function Buttonposts({
   dataSumico,
   regiao,
   textoPrimeiroCategoria,
+  disparaUmaNotificacao
 }) {
   return (
     <div className={style.postcontainer}>
@@ -35,7 +36,7 @@ function Buttonposts({
         </div>
         <div className={style.buttoninteragir}>
           <button className={style.envmsg}>Enviar Mensagem</button>
-          <button className={style.encontrarpet}>
+          <button className={style.encontrarpet} onClick={disparaUmaNotificacao} >
             {textoPrimeiroCategoria}
           </button>
         </div>

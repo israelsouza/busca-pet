@@ -10,11 +10,12 @@ async function getTodosOsPosts() {
   let connection;
 
   try {
-    console.log("estou na função");
+    console.log("B-MODEL: get todos posts inicio");
     connection = await getConnection();
 
     const sql = `
             SELECT
+                post.POS_ID AS "POS_ID",
                 post.POS_TIPO AS "POS_TIPO",
                 pet.PET_NOME AS "PET_NOME",
                 pet.PET_DESCRICAO AS "PET_DESCRICAO",
@@ -40,20 +41,22 @@ async function getTodosOsPosts() {
 
     const { rows } = await connection.execute(sql, [], options);
 
-    console.log(rows)
-
     const formattedRows = rows.map((row) => ({
       ...row,
-      PET_FOTO: row.PET_FOTO ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}` : null,
-      USU_FOTO: row.USU_FOTO ? `data:image/jpeg;base64,${row.USU_FOTO.toString("base64")}` : null,
-      POS_DATA: row.POS_DATA ? formatarDataParaDDMMYYYY(new Date(row.POS_DATA).toISOString().split("T")[0])
-      : null,
+      PET_FOTO: row.PET_FOTO
+        ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}`
+        : null,
+      USU_FOTO: row.USU_FOTO
+        ? `data:image/jpeg;base64,${row.USU_FOTO.toString("base64")}`
+        : null,
+      POS_DATA: row.POS_DATA
+        ? formatarDataParaDDMMYYYY(
+            new Date(row.POS_DATA).toISOString().split("T")[0]
+          )
+        : null,
     }));
 
-    //console.log(formattedRows);
-
-
-    // console.log(rows)
+    console.log("B-MODEL: get todos posts FIM");
     return formattedRows;
   } catch (error) {
     console.error(error);
@@ -61,6 +64,5 @@ async function getTodosOsPosts() {
     if (connection) await connection.close();
   }
 }
-
 
 export default getTodosOsPosts;

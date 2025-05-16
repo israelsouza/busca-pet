@@ -1,7 +1,10 @@
 import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
-import getUserPostsModel from "../model/getUserPost.js";
-import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
+import getIdFromPost from "../model/getIdFromPost.js";
+import { sendMessageToUser } from "../utils/websocket.js";
+import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
+import getUserId from "../model/getUserId.js";
+import getPhoneFromId from "../model/getPhoneFromId.js";
 
 async function todosPosts(req, res) {
   try {
@@ -42,19 +45,50 @@ async function getPostEncontrado(req, res) {
   }
 }
 
-async function getUserPosts(req, res) {
-  // const token = req.params.token;
-  // try {
-  //   const email = await extrairEmailDoToken(token);
-  //   // console.log("email do token: ", email);
-  //   const posts = await getUserPostsModel(email);
-  //   return res
-  //     .status(200)
-  //     .json({ message: "Os seus posts foram capturados com sucesso", posts });
-  // } catch (error) {
-  //   console.error("getUserPosts error: ", error);
-  //   return res.status(500).json({ error: error.message });
-  // }
+async function getQuemPublicou(req, res) {
+  const { idPost } = req.body;
+  const userA = req.user.email;
+
+  console.log(`B-CONTroller: Entrou em getQuemPublicou || ${userA}`);
+
+  try {
+    const idUserA = await getUserId(userA);
+    const idUserB = await getIdFromPost(idPost);
+    const telefone = await getPhoneFromId(idUserA);
+
+    console.log(telefone)
+
+    const mensagemNotificacao = {
+      publicacaoId: idPost,
+      remetente: idUserA,
+      telefone: telefone,
+      email: userA
+    };
+
+    const notificationData = {
+      rementente: idUserA,
+      destinatario: idUserB,
+      conteudo: JSON.stringify(mensagemNotificacao)
+    }
+
+    const idNotificacaoSalva = await salvarNotificacaoUsuario(notificationData);
+    console.log("Notificação -> ", idNotificacaoSalva)
+
+
+    const notificacaoEnviada = sendMessageToUser(idUserB, mensagemNotificacao);
+
+    if (notificacaoEnviada) {
+      console.log(`Notificação enviada para o usuário ${idUserB} (ONLINE)`);
+      return res.status(200).json({ message: 'Notificação enviada com sucesso!' });
+    } else {
+      console.log(`Usuário ${idUserB} não está online ou a conexão não está aberta. (OFFLINE)`);
+      return res.status(200).json({ message: 'Notificação salva e será entregue quando o usuário estiver online.' });
+    }
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao processar a notificação.", error });
+  }
 }
 
-export { todosPosts, getPostEncontrado, getPostPerdido, getUserPosts };
+export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
