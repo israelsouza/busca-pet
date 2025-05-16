@@ -5,6 +5,7 @@ import style from "./styles/postsAll.module.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import validateToken from '../assets/utils/validateToken.js'
+import enviarDados from "../assets/utils/enviarDados.js";
 
 function PostsAll() {
     const navigate = useNavigate()
@@ -45,7 +46,6 @@ function PostsAll() {
                 const data = await response.json();
                 
                 const post = data.posts;
-                console.log(post);
                 setPosts(data.posts); 
             } else if (category === 'user') {
                 // console.log('user')
@@ -68,6 +68,13 @@ function PostsAll() {
         }
         fetchPosts();
     }, [category]);
+
+    function umaFuncao(idUsuarioB) {
+        const user = {
+            idPost: idUsuarioB,
+        }
+        const result = enviarDados(user, `api/posts/quem-publicou`);
+    }
     
 
     return (
@@ -99,6 +106,7 @@ function PostsAll() {
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
+                        disparaUmaNotificacao={() => { umaFuncao(post.POS_ID)}}
                     />
                 ))}
                 
@@ -113,6 +121,7 @@ function PostsAll() {
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
+                        disparaUmaNotificacao={umaFuncao(post.POS_ID)}
                     />
                 ))}
                 {category === 'found' && foundPosts.map((post, index) => (
@@ -126,6 +135,7 @@ function PostsAll() {
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
+                        disparaUmaNotificacao={umaFuncao}
                     />
                 ))}
                 </div>

@@ -1,7 +1,7 @@
 import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getUserPostsModel from "../model/getUserPost.js";
-import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
+import getIdFromPost from "../model/getIdFromPost.js";
 
 async function todosPosts(req, res) {
   try {
@@ -42,19 +42,22 @@ async function getPostEncontrado(req, res) {
   }
 }
 
-async function getUserPosts(req, res) {
-  // const token = req.params.token;
-  // try {
-  //   const email = await extrairEmailDoToken(token);
-  //   // console.log("email do token: ", email);
-  //   const posts = await getUserPostsModel(email);
-  //   return res
-  //     .status(200)
-  //     .json({ message: "Os seus posts foram capturados com sucesso", posts });
-  // } catch (error) {
-  //   console.error("getUserPosts error: ", error);
-  //   return res.status(500).json({ error: error.message });
-  // }
+async function getQuemPublicou(req, res) {
+  const {idPost} = req.body;
+  const userA = req.user.email;
+  
+  console.log(`B-CONTroller: Entrou em getQuemPublicou || ${userA}`);
+
+  try {
+    
+    const idUser = await getIdFromPost(idPost);
+
+
+    console.log(`B-CONTroller: SAIU De getQuemPublicou || ${userA}`);
+  } catch (error) {
+    console.error(error)
+
+  }
 }
 
-export { todosPosts, getPostEncontrado, getPostPerdido, getUserPosts };
+export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
