@@ -1,7 +1,8 @@
 import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
-import getUserPostsModel from "../model/getUserPost.js";
 import getIdFromPost from "../model/getIdFromPost.js";
+import { sendMessageToUser } from "../utils/websocket.js";
+import getUserId from "../model/getUserId.js";
 
 async function todosPosts(req, res) {
   try {
@@ -43,20 +44,36 @@ async function getPostEncontrado(req, res) {
 }
 
 async function getQuemPublicou(req, res) {
-  const {idPost} = req.body;
+  const { idPost } = req.body;
   const userA = req.user.email;
-  
+
   console.log(`B-CONTroller: Entrou em getQuemPublicou || ${userA}`);
 
   try {
+    const idUserA = await getUserId(userA);
+    const idUserB = await getIdFromPost(idPost);
+
+    const mensagemNotificacao = {
+      type: "pet_encontrado",
+      remetente: idUserA,
+      publicacaoId: idPost,
+      message: `@${idUserA} encontrou o seu pet!! E-mail: ${userA}`,
+    };
+
+    const notificationData = {
+      rementente: idUserA,
+      destinatario: idUserB,
+      type: 'pet_encontrado',
+      content: JSON.stringify(mensagemNotificacao)
+    }
+
+ 
     
-    const idUser = await getIdFromPost(idPost);
 
 
     console.log(`B-CONTroller: SAIU De getQuemPublicou || ${userA}`);
   } catch (error) {
-    console.error(error)
-
+    console.error(error);
   }
 }
 
