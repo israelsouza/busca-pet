@@ -52,6 +52,31 @@ function Notification() {
     getNotifications();
   }, [])
 
+  function deleteNotification(id) {
+    console.log("ID da notificação a ser deletada:", id);
+    const token = localStorage.getItem("authToken");
+    const headerRequest = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    fetch(`http://localhost:3000/user/notification/${id}`, headerRequest)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Notificações deletadas: ", data);
+        setNotification((prevNotifications) =>
+          prevNotifications.filter((notificacao) => notificacao[4] !== id)
+        );
+      })
+      .catch((error) => {
+        console.error("Erro ao deletar notificações:", error);
+      });
+  }
+
+
   return (
     <div className={styles.pnotification}>
       <HeaderLog />
@@ -65,6 +90,10 @@ function Notification() {
               nome={notificacao[0]}
               telefone={notificacao[3].telefone}
               email={notificacao[3].email}
+              id={notificacao[4]}
+              onClick={() => {
+                deleteNotification(notificacao[4]);
+              }}
             />
           ))
         }

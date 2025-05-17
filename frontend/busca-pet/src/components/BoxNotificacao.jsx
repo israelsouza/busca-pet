@@ -2,7 +2,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 
 import style from "./styles/BoxNotificacao.module.css";
 
-function BoxNotificacao({ nome, telefone, email }) {
+function BoxNotificacao({ nome, telefone, email, onClick }) {
   return (
     <div className={style.boxnotificacao__container}>
       <div>
@@ -18,7 +18,7 @@ function BoxNotificacao({ nome, telefone, email }) {
         </div>
       </div>
       <div>
-        <IoIosCloseCircleOutline className={style.boxnotificacao__icon} />
+        <IoIosCloseCircleOutline onClick={onClick} className={style.boxnotificacao__icon} />
       </div>
     </div>
   );

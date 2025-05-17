@@ -1,6 +1,7 @@
 import getUserIdByEmail from "../model/getUserId.js";
 import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
 import getNotificationModel from "../model/getNotificationModel.js";
+import deleteNotificationModel from "../model/deleteNotificationModel.js";
 
 async function getNotificationController(req, res) {
   try {
@@ -27,4 +28,16 @@ async function getNotificationController(req, res) {
   // retornar se tiver
 }
 
-export default getNotificationController;
+async function deleteNotificationController(req, res) {
+  const { id } = req.params;
+
+  try {
+    await deleteNotificationModel(id);    
+    return res.status(200).json({message: "Notificação deletada!" })
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({message: "Erro ao tentar deletar a notificação." })
+  }
+}
+
+export { getNotificationController, deleteNotificationController};

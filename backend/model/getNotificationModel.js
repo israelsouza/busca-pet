@@ -7,7 +7,7 @@ async function getNotificationModel(id) {
 
     const result = await connection.execute(
       `
-          SELECT PES_NOME, NOT_REMETENTE_ID, NOT_DATA_CRIACAO, NOT_CONTEUDO
+          SELECT PES_NOME, NOT_REMETENTE_ID, NOT_DATA_CRIACAO, NOT_CONTEUDO, NOT_ID
           FROM NOTIFICACOES, PESSOA, USUARIO
           WHERE 
             PESSOA.PES_ID = USUARIO.USU_ID AND
