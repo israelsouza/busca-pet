@@ -9,6 +9,7 @@ import { validarDataLimite } from "../assets/utils/regex.js";
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
 import HeaderLog from "../components/HeaderLog.jsx";
 import enviarDados from "../assets/utils/enviarDados.js";
+import validateToken from "../assets/utils/validateToken.js";
 
 import styles from "./styles/PetPerdido.module.css";
 
