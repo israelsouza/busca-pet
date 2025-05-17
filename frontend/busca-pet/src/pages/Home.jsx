@@ -14,62 +14,72 @@ import style from "./styles/home.module.css";
 
 
 function Home(){
-        const navigate = useNavigate();
-        const sessaoColaborar = useRef(null);
-        
-        const sessaoReencontros = useRef(null);
-        useEffect(() => {
-            if (window.location.hash === "#reencontros") {
-                sessaoReencontros.current?.scrollIntoView({ behavior: "smooth" });
-            }
-        }, [window.location.hash]);
-        const irParaReencontros = () => {
-            navigate("#reencontros", { replace: true });
+    const navigate = useNavigate();
+
+    const sessaoReencontros = useRef(null);
+    useEffect(() => {
+        if (window.location.hash === "#reencontros") {
             sessaoReencontros.current?.scrollIntoView({ behavior: "smooth" });
-          };
+        }
+    }, [window.location.hash]);
+
+    const irParaReencontros = () => {
+        navigate("#reencontros", { replace: true });
+        sessaoReencontros.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
 
-        const sessaoFuncionamento = useRef(null);
-        useEffect(() => {
-           if(window.location.hash === "#funcionamento"){
-              sessaoFuncionamento.current?.scrollIntoView({ behavior: "smooth" })
-          }
-          }, [window.location.hash]);
-       
-        const irParaFuncionamento = () => {
-            navigate("#funcionamento", { replace: true });
-            sessaoFuncionamento.current?.scrollIntoView({ behavior: "smooth" });
-          };
+    const sessaoFuncionamento = useRef(null);
+    useEffect(() => {
+        if(window.location.hash === "#funcionamento"){
+            sessaoFuncionamento.current?.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [window.location.hash]);
+    
+    
+    const irParaFuncionamento = () => {
+        navigate("#funcionamento", { replace: true });
+        sessaoFuncionamento.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
 
-
-          const irParaColabore = () => {
-            navigate("#colabore", { replace: true });
-            sessaoColaborar.current?.scrollIntoView({ behavior: "smooth" });
-          };
+    const sessaoColaborar = useRef(null);
+    const irParaColabore = () => {
+        navigate("#colabore", { replace: true });
+        sessaoColaborar.current?.scrollIntoView({ behavior: "smooth" });
+    };
       
     return (
-            <>
-            <div className={style.header}>
-                <img src={Logo_Cachorro} alt="Logo de um cachorro com uma lupa" width="150px"/>
-            <div className={style.container_header}>
+        <>
+        <div className={style.header}>
+            <div className={style.header__logo}>
+                <img 
+                    src={Logo_Cachorro} 
+                    alt="Logo de um cachorro com uma lupa" 
+                />
+            </div>
+            
+            <div className={style.header__nav}>
                 <nav>
-                    <ul className={style.ul}>
-                        <Link  className={style.linkhome} onClick={irParaReencontros}>Reencontros</Link>
-                        <Link  className={style.linkhome} onClick={irParaFuncionamento}>Como Funciona</Link>
-                        <Link  className={style.linkhome} onClick={irParaColabore}>Colabore</Link>
+                    <ul className={style.header__ul}>
+                        <Link  className={style.header__linkhome} onClick={irParaReencontros}>Reencontros</Link>
+                        <Link  className={style.header__linkhome} onClick={irParaFuncionamento}>Como Funciona</Link>
+                        <Link  className={style.header__linkhome} onClick={irParaColabore}>Colabore</Link>
                     </ul>
                 </nav>
                 <ButtonHome text_home="Cadastrar" path="/form/cadastro-usuario"/> 
-                <ButtonHome text_home="Login" path="/form/login"/> </div>
+                <ButtonHome text_home="Login" path="/form/login"/> 
             </div>
+        </div>
 
         <div>
             <img src={home} alt="Mulher segurando cachorro no alto" className={style.home_principal}/>
+
             <div className={style.text_img}>
-            <h1 className={style.h1}>Juntos por eles!</h1>
-            <p className={style.p}>Encontre seu pet perdido ou ajude a reunir famílias.</p>
-            <p className={style.p}>Cadastre, busque e traga esperança para quem precisa!</p>
+                <h1 className={style.h1}>Juntos por eles!</h1>
+                <p className={style.p}>Encontre seu pet perdido ou ajude a reunir famílias.</p>
+                <p className={style.p}>Cadastre, busque e traga esperança para quem precisa!</p>
+            </div>
         </div>
 
         <div id="reencontros" ref={sessaoReencontros}>
@@ -92,21 +102,22 @@ function Home(){
 
         <div id="colabore" ref={sessaoColaborar}>
             <article className={style.article}>
-                <h4 className={style.h4}>Ajude Mais Pets!</h4>
                 <div className={style.article_text}>
+                    <h4 className={style.h4}>Ajude Mais Pets!</h4>
                     <p className={style.p1}>Seu engajamento faz a diferença! Compartilhe nosso site com amigos, vizinhos e grupos locais. Quanto mais pessoas participarem, maior a chance de reencontros felizes.</p>
-                    <img src={abraco_dogHome} alt="Mulher agachada abraçando carinhosamente um cachorro" className={style.abraco_dogHome}/>
+                </div>
+                <div className={style.article_img}>
+                    <img src={abraco_dogHome} alt="Mulher agachada abraçando carinhosamente um cachorro"/>
                 </div>
             </article>
-            <div className={style.container_footer}>
-                <div className={style.overlay}></div>
-                <p className={style.p_footer}>Todos os Direitos Reservados</p>
-                <img src={footer_home} alt="Imagem de Rodapé com patas de animais" className={style.footer_home}/>
-            </div>
         </div>
-    </div>            
-            </>
-
+            
+            <footer className={style.container_footer}>
+                <div className={style.overlay}>
+                    <p className={style.p_footer}>Todos os Direitos Reservados</p>
+                </div>
+            </footer>
+        </>
     )
 } 
 

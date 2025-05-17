@@ -5,7 +5,6 @@
     display: flex;
 }
 
-/*  */
 .main {
     display: flex;
     flex-direction: column;
@@ -53,16 +52,16 @@
 
     & .btn_login {
         background-color: var(--botao);
-        border: none;
         box-shadow: 0px 3px 3px 0px #00000049;
         border-radius: 20px;
-        padding: 10px;
-        width: 22vw;
-        margin-left: 20px;
+        width: 200px;
         font-family: 'inter';
         font-size: 24px;
-        margin-block-start: 55px;
         cursor: pointer;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -70,11 +69,11 @@
     display: flex;
     flex-direction: column;
     color: var(--label);
-    width: 35vw;
     font-family: 'inria sans';
 }
 
 .campos input {
+    min-width: 500px;
     background-color: var(--inputs);
     border: none;
     border-radius: 14px;
@@ -92,12 +91,6 @@
    
     & .links {
         color: var(--links);
-    }
-
-    
-
-    .gato {
-        height: 200px;
     }
 
 }

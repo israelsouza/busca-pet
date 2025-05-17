@@ -1,27 +1,28 @@
-.buttonhome{
-    display: flex;
-    justify-content: center;
-    background-color: var(--inputs) ;
-    border-radius: 28px;
-    font-family: "inter", sans-serif;
-    font-size: 1em;
-    color: var(--botaohome);
-    height: 40px;
-    width: 135px;
-    border: none;
-    box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+.buttonhome {
+  display: flex;
+  justify-content: center;
+  background-color: var(--inputs);
+  border-radius: 28px;
+  font-family: "inter", sans-serif;
+  font-size: 1em;
+  color: var(--botaohome);
+  height: 40px;
+  width: 135px;
+  border: none;
+  box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+  margin-right: 10%;
 }
 
-.buttonhome:hover{
-    background-color: var(--botaohome);
-    color: #ffff;
-    cursor: pointer;
-    transition: 0.5s;
+.buttonhome:hover {
+  background-color: var(--botaohome);
+  color: #ffff;
+  cursor: pointer;
+  transition: 0.5s;
 }
 
-.linkhome{
-    text-decoration: none;
-    display: flex;
-    text-align: center;
-    justify-content: center;
+.linkhome {
+  text-decoration: none;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 }
