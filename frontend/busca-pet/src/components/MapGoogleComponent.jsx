@@ -45,13 +45,21 @@ function MapGoogleComponent() {
     }
   }, []);
 
-  const onLoad = useCallback((map) => {
-    setMap(map);
+  const onLoad = useCallback((mapInstance) => {
+    setMap(mapInstance);
   }, []);
 
-  const onUnmount = useCallback((map) => {
+  const onUnmount = useCallback(() => {
     setMap(null);
   }, []);
+
+    const handleMapClick = useCallback((event) => {
+        setMarkerPosition({
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+        })
+        console.log("Map clicked at:", { lat: event.latLng.lat(), lng: event.latLng.lng() });
+    }, [])
 
   if (loadError) return <div>Error LOADING MAPS</div>;
   if (!isLoaded) return <div>Loading Maps</div>;
@@ -63,6 +71,7 @@ function MapGoogleComponent() {
       zoom={15}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onClick={handleMapClick}
     >
       {markerPosition && <Marker position={markerPosition} />}
     </GoogleMap>
