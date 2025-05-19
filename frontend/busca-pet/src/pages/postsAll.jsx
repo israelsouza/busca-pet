@@ -19,13 +19,14 @@ function PostsAll() {
 
     const exibirNotificacao = useCallback((notificacao) => {
         console.log('Notificação de pet encontrado recebida:', notificacao.message);
-        alert(`Nova notificação: ${notificacao.message}`);
+        alert(`Nova notificação: Verifique suas notificações`);
     }, []);
 
     useEffect(() => {
-        const petEncontradoNotifications = messages.filter(msg => msg.type === 'pet_encontrado');
-
-        if (petEncontradoNotifications.length > 0) {
+        // ver retorno objeto criado no backend
+        const petEncontradoNotifications = messages
+        
+        if (petEncontradoNotifications) {
             petEncontradoNotifications.forEach(notificacao => {
                 exibirNotificacao(notificacao);
             });
