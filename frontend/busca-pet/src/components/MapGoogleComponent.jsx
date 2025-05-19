@@ -1,54 +1,72 @@
-import { useState, useCallback } from "react";
-import {  GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import React, { useState, useEffect, useCallback } from "react";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 import API_KEY from "../config/maps-api.js";
 
 const containerStyle = {
-    width: "900px",
-    height: "500px",
-}
+  width: "900px",
+  height: "500px",
+};
 
-const center = {
-    lat: -23.5505,
-    lng: -46.6333,
-}
+const spCenter = {
+  lat: -23.5505,
+  lng: -46.6333,
+};
 
-function MapGoogleComponent(){
-    const { isLoaded, loadError } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: API_KEY
-    })
+function MapGoogleComponent() {
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: API_KEY,
+  });
 
-    const [map, setMap] = useState(null)
-    const onLoad = useCallback(map => {
-        setMap(map);
-    })
+  const [mapCenter, setMapCenter] = useState(spCenter);
+  const [markerPosition, setMarkerPosition] = useState(null);
+  const [map, setMap] = useState(null);
 
-    const onUnmount = useCallback(map => {
-        setMap(null);
-    }, []);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setMapCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setMarkerPosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          console.log("Geolocalização falhou, usando posição default");
+        }
+      );
+    } else {
+      console.log("Geolocalização não suportada pelo navegador.");
+    }
+  }, []);
 
-    if (loadError) return <div>Error LOADING MAPS</div>;
-    if (!isLoaded) return <div>Loading Maps</div>;
+  const onLoad = useCallback((map) => {
+    setMap(map);
+  }, []);
 
-    return (
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={15}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-        >
-            <Marker
-                position={center}
-                onClick={() => {
-                    console.log("Marker clicked");
-                }}
-            />
-            
-        </GoogleMap>
-    );
+  const onUnmount = useCallback((map) => {
+    setMap(null);
+  }, []);
 
+  if (loadError) return <div>Error LOADING MAPS</div>;
+  if (!isLoaded) return <div>Loading Maps</div>;
+
+  return (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={mapCenter}
+      zoom={15}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+    >
+      {markerPosition && <Marker position={markerPosition} />}
+    </GoogleMap>
+  );
 }
 
 export default MapGoogleComponent;
