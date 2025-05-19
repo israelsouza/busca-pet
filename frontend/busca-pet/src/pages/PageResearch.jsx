@@ -1,11 +1,16 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+
 import HeaderLog from "../components/HeaderLog"
 import listagem from "./../assets/imgs/listagem.png"
 import lupa_pesquisa from "./../assets/imgs/lupa_pesquisa.png"
+import validateToken from "../assets/utils/validateToken"
 
 import styles from "./styles/research.module.css"
 
 
 function PageResearch(){
+  const navigate = useNavigate()
         useEffect(() => {
         const checkAuthentication = async () => {
             try {
