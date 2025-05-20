@@ -13,8 +13,8 @@ async function inserirPet(connection, dadosPet, idUsuario) {
     const dataFormatada = formatarDataParaDDMMYYYY(dadosPet.data);
 
     const result = await connection.execute(
-      `INSERT INTO PET (PET_NOME, PET_RGA, PET_TIPO, PET_DESCRICAO, PET_DATA, PET_FOTO)
-       VALUES (:nome, :rga, :tipo, :descricao, TO_DATE(:data, 'DD-MM-YYYY'), :imagem)
+      `INSERT INTO PET (PET_NOME, PET_RGA, PET_TIPO, PET_DESCRICAO, PET_DATA, PET_FOTO, PET_LOCAL)
+       VALUES (:nome, :rga, :tipo, :descricao, TO_DATE(:data, 'DD-MM-YYYY'), :imagem, :local)
        RETURNING PET_ID INTO :id`,
       {
         nome: dadosPet.nome,
@@ -23,18 +23,20 @@ async function inserirPet(connection, dadosPet, idUsuario) {
         descricao: dadosPet.descricao,
         data: dataFormatada,
         imagem: imagemBinaria,
+        local: dadosPet.local,
         id: { dir: OracleDB.BIND_OUT }, // Retorna o ID gerado
       }
     );
 
-    fs.unlinkSync(dadosPet.imagem);
-    console.log("Arquivo de imagem deletado com sucesso!");
-    // try {
-    //     fs.unlinkSync(dadosPet.imagem);
-    //     console.log("Arquivo de imagem deletado com sucesso!");
-    // } catch (err) {
-    //     console.error("Erro ao deletar o arquivo de imagem:", err);
-    // }
+    // fs.unlinkSync(dadosPet.imagem);
+    // console.log("Arquivo de imagem deletado com sucesso!");
+
+    try {
+        fs.unlinkSync(dadosPet.imagem);
+        console.log("Arquivo de imagem deletado com sucesso!");
+    } catch (err) {
+        console.error("Erro ao deletar o arquivo de imagem:", err);
+    }
 
     const petId = result.outBinds.id[0];
 

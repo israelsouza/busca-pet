@@ -186,22 +186,24 @@ function PetPerdido() {
         }
     }, [infoMapa] )
 
-    function exibirMapa() {
+    async function exibirMapa() {
         userData.local = infoMapa
         const formData = criarFormData(userData, arquivoImagem);
 
-        // try {
-        //     const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+        try {
+            const resultado = await enviarDados(formData, "criar-post/pet-perdido");
 
-        //     if (resultado && resultado.message) {
-        //         setRetornoBackend(resultado.message);
-        //         setTimeout(() => navigate("/posts/all"), 1000); 
-        //     } else {
-        //         setRetornoBackend("Erro inesperado ao cadastrar o pet.");
-        // }} catch (error) {
-        //     console.error("Erro ao enviar os dados:", error);
-        //     setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
-        // }
+            if (resultado && resultado.message) {
+                alert(resultado.message)
+                //setRetornoBackend(resultado.message);
+                setTimeout(() => navigate("/posts/all"), 1000); 
+            } else {
+                //setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+                alert("Erro inesperado ao cadastrar o pet.")
+        }} catch (error) {
+            console.error("Erro ao enviar os dados:", error);
+            setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
+        }
         
     }
 

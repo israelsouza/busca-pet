@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.post("/", upload.single("imagem"), async (req, res) => {
-    const { nome, rga, tipoPet, descricao, data } = req.body;
+    const { nome, rga, tipoPet, descricao, data, local } = req.body;
     const imagem = req.file; // Arquivo enviado
     console.log("============ Cadastrar PET PERDIDO ================")
 
@@ -41,6 +41,7 @@ router.post("/", upload.single("imagem"), async (req, res) => {
             data,
             imagem: imagem.path, // Caminho do arquivo salvo
             idUser,
+            local
         };        
 
         console.table(dados)
@@ -50,7 +51,7 @@ router.post("/", upload.single("imagem"), async (req, res) => {
         console.log("IDs gerados:", { petId, postId });
 
         console.log("sucesso ao cadastrar o pet")
-        await connection.commit(); // Confirma a transação
+        await connection.commit();
 
         return res.status(201).json({
             message: "Pet cadastrado com sucesso!",
