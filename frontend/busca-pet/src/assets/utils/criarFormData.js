@@ -7,6 +7,7 @@ function criarFormData(dados, arquivoImagem) {
   formData.append("tipoPet", dados.tipoPet);
   formData.append("descricao", dados.descricao);
   formData.append("data", dados.data);
+  formData.append("local", JSON.stringify(dados.local));
 
   // Adiciona a imagem como arquivo
   if (arquivoImagem) {

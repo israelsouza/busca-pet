@@ -13,7 +13,7 @@ const spCenter = {
   lng: -46.6333,
 };
 
-function MapGoogleComponent() {
+function MapGoogleComponent({onSelectLocalMap}) {
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: API_KEY,
@@ -59,6 +59,11 @@ function MapGoogleComponent() {
             lng: event.latLng.lng(),
         })
         console.log("Map clicked at:", { lat: event.latLng.lat(), lng: event.latLng.lng() });
+        const local = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+        }
+        onSelectLocalMap(local)
     }, [])
 
   if (loadError) return <div>Error LOADING MAPS</div>;

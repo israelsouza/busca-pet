@@ -10,6 +10,7 @@ import { validarDataLimite } from "../assets/utils/regex.js";
 import criarFormData from "../assets/utils/criarFormData.js";
 import HeaderLog from "./../components/HeaderLog";
 import enviarDados from "../assets/utils/enviarDados";
+import MapGoogleComponent from '../components/MapGoogleComponent'
 
 import styles from "./styles/PetPerdido.module.css";
 
@@ -48,6 +49,9 @@ function PetPerdido() {
     const [erroData, setErroData] = useState("");
     const [erroImagem, setErroImagem] = useState("");
     const [arquivoImagem, setArquivoImagem] = useState(null);
+    const [etapa, setEtapa] = useState("dados")
+    const [infoMapa, setInfoMapa] = useState()
+    const [userData, setUserData] = useState({})
 
   const [mensagem, setMensagem] = useState("");
   const [retornoBackend, setRetornoBackend] = useState("");
@@ -154,6 +158,11 @@ function PetPerdido() {
 
         if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
+         if (!arquivoImagem) {
+            setErroImagem("Por favor, selecione uma imagem válida.");
+            return;
+        }
+
         const dados = {
             nome: nomeRef.current.value,
             rga: rgaRef.current.value,
@@ -163,26 +172,37 @@ function PetPerdido() {
             imagem: imagemRef.current.value
         }
 
-         if (!arquivoImagem) {
-            setErroImagem("Por favor, selecione uma imagem válida.");
-            return;
-        }
+        setUserData(dados)
+        setEtapa("mapa")
+    }
 
-        const formData = criarFormData(dados, arquivoImagem);
+    const pegarGeolocalizaccao = (dado) => {
+        setInfoMapa(dado);
+    }
+
+    useEffect( () => {
+        if (infoMapa) {
+            console.log("valor do mapa att: ---> ", infoMapa)
+        }
+    }, [infoMapa] )
+
+    function exibirMapa() {
+        userData.local = infoMapa
+        const formData = criarFormData(userData, arquivoImagem);
+
+        // try {
+        //     const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+
+        //     if (resultado && resultado.message) {
+        //         setRetornoBackend(resultado.message);
+        //         setTimeout(() => navigate("/posts/all"), 1000); 
+        //     } else {
+        //         setRetornoBackend("Erro inesperado ao cadastrar o pet.");
+        // }} catch (error) {
+        //     console.error("Erro ao enviar os dados:", error);
+        //     setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
+        // }
         
-        try {
-            const resultado = await enviarDados(formData, "criar-post/pet-perdido");
-
-            if (resultado && resultado.message) {
-                setRetornoBackend(resultado.message);
-                setTimeout(() => navigate("/posts/all"), 1000); 
-            } else {
-                setRetornoBackend("Erro inesperado ao cadastrar o pet.");
-        }} catch (error) {
-            console.error("Erro ao enviar os dados:", error);
-            setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");
-        }
-
     }
 
     return (
@@ -190,7 +210,9 @@ function PetPerdido() {
             <HeaderLog /> { /* DEP. GOOGLE MAPS */ }
 
             <div className={styles.pet_perdido__body}>
-                <div className={styles.pet_perdido__box}>
+
+                {etapa === 'dados' && 
+                    <div className={styles.pet_perdido__box}>
                     <form>
                         { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input50}>
@@ -308,31 +330,46 @@ function PetPerdido() {
                             </span>
                         )}
                     </form> {/* DEP. GOOGLE MAPS */}
-          {mensagem && (
-            <span id="imagem-error" className={styles.error}>
-              {mensagem}
-            </span>
-          )}
+                        {mensagem && (
+                            <span id="imagem-error" className={styles.error}>
+                            {mensagem}
+                            </span>
+                        )}
 
-          {retornoBackend && (
-           <span
-                className={`${styles.retornoBackend} ${
-                    retornoBackend.includes("sucesso") ? styles.sucesso : styles.erro
-                }`}
-            >
-                {retornoBackend}
-            </span>
-            )}
+                        {retornoBackend && (
+                        <span
+                                className={`${styles.retornoBackend} ${
+                                    retornoBackend.includes("sucesso") ? styles.sucesso : styles.erro
+                                }`}
+                            >
+                                {retornoBackend}
+                            </span>
+                            )}
                     <div className={styles.botao_center}>
                         <button
-                            className={`${styles.botao} ${styles.perdeu}`}
+                            className={`${styles.botao}`}
                             onClick={validarFormulario}
                         >
-                            Cadastrar Pet Perdido
+                            Inserir o local
                         </button>
                     </div>
+                    </div>
+                }
+
+                {etapa === 'mapa' && 
+                <div className={styles.pet_perdido__box_mapa}>
+                    <MapGoogleComponent onSelectLocalMap={pegarGeolocalizaccao}/>
+                     <button
+                        className={`${styles.botao_mapa}`}
+                        onClick={exibirMapa}
+                    >
+                        Salvar dados
+                    </button>
                 </div>
+                }
             </div>
+
+            
         </div>
     );
 }
