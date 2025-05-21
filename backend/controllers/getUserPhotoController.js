@@ -24,5 +24,5 @@ async function getUserPhotoController(req, res) {
   }
     
 }
-
+  
 export default getUserPhotoController;
