@@ -1,37 +1,34 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "../assets/utils/cropImage.js"; // Certifique-se que o caminho está correto
 
 import HeaderEdicao from "../components/HeaderEdicao";
-import validateToken from '../assets/utils/validateToken.js'
-import enviarDados from "../assets/utils/enviarDados.js";
+import validateToken from '../assets/utils/validateToken.js';
+import enviarDados from "../assets/utils/enviarDados.js"; // Ainda usado para outros campos, mas não para a foto
 
 import Style from "../pages/styles/EditPerfil.module.css";
 
 function EdicaoPerfil() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-      const checkAuthentication = async () => {
-          try {
-            await validateToken();
-          } catch (error) {
-            console.error("Erro capturado:", error.message);
-            alert(error.message); 
-            localStorage.removeItem("authToken");
-            navigate("/form/login");
-          }
-        };
-        checkAuthentication();
-  }, [navigate]);
-
+  // ... (seus outros estados e useEffects para autenticação, dados do formulário, etc.) ...
   const [erros, setErros] = useState({});
   const [formData, setFormData] = useState({});
   const [originalData, setOriginalData] = useState({});
   const [isEditing, setIsEditing] = useState({});
-  const [foto, setFoto] = useState(null);
+  // REMOVIDO: const [foto, setFoto] = useState(null); // Não é mais necessário para o fluxo do cropper
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Estados para o Cropper
+  const [imageSrc, setImageSrc] = useState(null); // A imagem selecionada para corte (DataURL)
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null); // Coordenadas do corte
+  const [showCropperModal, setShowCropperModal] = useState(false); // Para controlar a exibição do modal de corte
+
+  // ... (seus useRefs e useEffects para foco de inputs) ...
   const nomeInputRef = useRef(null);
   const telefoneInputRef = useRef(null);
   const emailInputRef = useRef(null);
@@ -82,56 +79,69 @@ function EdicaoPerfil() {
     }
   }, [isEditing.EST_SIGLA]);
 
-
-    useEffect(() => {
+  useEffect(() => {
+    const checkAuthentication = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-        
-        if (!token) {
-          console.log("Token não encontrado.");
-          return;
-        }
-    
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const userEmail = payload.email;
-        
-        if (!userEmail) {
-          throw new Error("Email não encontrado no token.");
-        }
-    
-        setEmail(userEmail);
-        console.log("F-EDITPERF: Email recuperado:", userEmail);
-        
+        await validateToken();
       } catch (error) {
-        console.error("Erro ao recuperar email:", error);
+        console.error("Erro capturado:", error.message);
+        alert(error.message);
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
       }
-    }, []);
-    
-    useEffect(() => {
-      if (!email) return;
-      setLoading(true);
+    };
+    checkAuthentication();
+  }, [navigate]);
 
+  useEffect(() => {
+    try {
       const token = localStorage.getItem("authToken");
 
-      const headerRequest = {
-                    method: 'GET',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, 
-                },
-                }
-            
-      fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
-        .then((res) => {
-          console.log("F-EDITPERF: Resposta da API:", res);
-          if (!res.ok) {
-            throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log("Dados recebidos:", data);
-          const userData = data.userData[0];
+      if (!token) {
+        console.log("Token não encontrado.");
+        return;
+      }
+
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userEmail = payload.email;
+
+      if (!userEmail) {
+        throw new Error("Email não encontrado no token.");
+      }
+
+      setEmail(userEmail);
+      console.log("F-EDITPERF: Email recuperado:", userEmail);
+
+    } catch (error) {
+      console.error("Erro ao recuperar email:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!email) return;
+    setLoading(true);
+
+    const token = localStorage.getItem("authToken");
+
+    const headerRequest = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+
+    fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
+      .then((res) => {
+        console.log("F-EDITPERF: Resposta da API:", res);
+        if (!res.ok) {
+          throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Dados recebidos:", data);
+        const userData = data.userData[0];
 
         setFormData(userData);
         setOriginalData(userData);
@@ -148,22 +158,23 @@ function EdicaoPerfil() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-    const atualizarCampo = (campo) => {
-      const token = localStorage.getItem("authToken");
-      fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json",
-         Authorization: `Bearer ${token}` 
-        }, 
-        body: JSON.stringify({ valor: formData[campo] }),
-      })
-        .then(res => res.text())
-        .then(alert)
-        .catch(err => console.error("Erro:", err));
-    };
+  const atualizarCampo = (campo) => {
+    const token = localStorage.getItem("authToken");
+    fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ valor: formData[campo] }),
+    })
+      .then(res => res.text())
+      .then(alert)
+      .catch(err => console.error("Erro:", err));
+  };
 
   const toggleEdit = (campo) => {
-    setIsEditing((prev) => ({ ...prev, [campo]: !prev[campo] })); 
+    setIsEditing((prev) => ({ ...prev, [campo]: !prev[campo] }));
   };
 
   const handleSalvar = (campo) => {
@@ -183,7 +194,7 @@ function EdicaoPerfil() {
           newErros.PES_NOME = "O nome deve conter apenas letras.";
           isValid = false;
         } else {
-          delete newErros.PES_NOME; 
+          delete newErros.PES_NOME;
         }
         break;
       case "PES_PHONE":
@@ -226,7 +237,7 @@ function EdicaoPerfil() {
           newErros.END_RUA = "A rua deve conter apenas letras.";
           isValid = false;
         } else {
-          delete newErros.END_RUA; 
+          delete newErros.END_RUA;
         }
         break;
       case "END_BAIRRO":
@@ -272,29 +283,76 @@ function EdicaoPerfil() {
 
     setErros(newErros);
 
-      if (isValid) {
-        if (formData[campo] !== originalData[campo]) {
-          atualizarCampo(campo); // Chama a função de atualização se o valor mudou
-          setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
-        };
-          toggleEdit(campo); 
-          if (campo === "USU_EMAIL") {
-            setTimeout(() => navigate("/form/login"), 1000); 
-          }
+    if (isValid) {
+      if (formData[campo] !== originalData[campo]) {
+        atualizarCampo(campo); // Chama a função de atualização se o valor mudou
+        setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
+      };
+      toggleEdit(campo);
+      if (campo === "USU_EMAIL") {
+        setTimeout(() => navigate("/form/login"), 1000);
       }
-    };
-
-  const handleFotoChange = (e) => {
-    setFoto(e.target.files[0]);
+    }
   };
 
-    const enviarFoto = async () => {
-      const data = new FormData();
-      data.append("foto", foto);;
+  // Funções para o Cropper
+  const onFileChange = useCallback((e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        setImageSrc(reader.result);
+        setShowCropperModal(true); // Exibe o modal do cropper
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  }, []);
 
-      const result = await enviarDados(data, `usuarios/foto/${email}`)
-      console.log("RESULT ", result)
-    };
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleCropAndUpload = useCallback(async () => {
+    try {
+      if (!imageSrc || !croppedAreaPixels) {
+        alert("Nenhuma imagem ou área de corte definida.");
+        return;
+      }
+
+      // Converte a imagem cortada para um Blob (para enviar via FormData)
+      const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("profilePic", croppedImageBlob, "profile.jpeg"); // 'profilePic' é o nome do campo que o Multer espera
+
+      const token = localStorage.getItem("authToken");
+
+      // A rota no backend é agora '/upload-profile/:email'
+      const response = await fetch(`http://localhost:3000/upload-profile/${email}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Não inclua 'Content-Type': 'application/json' quando usando FormData
+        },
+        body: formDataToSend,
+      });
+
+      const responseData = await response.json(); // Assumindo que o backend sempre retorna JSON
+      if (response.ok) {
+        alert("Foto de perfil atualizada com sucesso!");
+        setShowCropperModal(false); // Fecha o modal
+        setImageSrc(null); // Limpa a imagem do cropper
+        setCroppedAreaPixels(null); // Limpa as coordenadas
+        // Opcional: recarregar a foto do perfil no frontend
+        // window.location.reload(); // Uma forma simples, mas pode ser mais elegante
+        // Ou, se o backend retornar o URL da nova imagem, usá-lo para atualizar o estado da foto.
+      } else {
+        alert(`Erro ao atualizar foto de perfil: ${responseData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Erro ao cortar ou enviar a imagem:", error);
+      alert("Ocorreu um erro ao processar a imagem.");
+    }
+  }, [imageSrc, croppedAreaPixels, email]);
 
   if (loading) {
     return <div>Carregando perfil...</div>; // Ou um componente de loading mais elaborado
@@ -325,9 +383,9 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.PES_NOME) {
-                    handleSalvar("PES_NOME"); 
+                    handleSalvar("PES_NOME");
                   } else {
-                    toggleEdit("PES_NOME"); 
+                    toggleEdit("PES_NOME");
                   }
                 }}
               >
@@ -348,9 +406,9 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.PES_PHONE) {
-                    handleSalvar("PES_PHONE"); 
+                    handleSalvar("PES_PHONE");
                   } else {
-                    toggleEdit("PES_PHONE"); 
+                    toggleEdit("PES_PHONE");
                   }
                 }}
               >
@@ -373,9 +431,9 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.USU_EMAIL) {
-                    handleSalvar("USU_EMAIL"); 
+                    handleSalvar("USU_EMAIL");
                   } else {
-                    toggleEdit("USU_EMAIL"); 
+                    toggleEdit("USU_EMAIL");
                   }
                 }}
                 className={Style.button}
@@ -389,16 +447,14 @@ function EdicaoPerfil() {
 
             <div className={Style.campo2}>
               <label className={Style.editFoto}>
-                <img src={Style.Upload} />
-                Editar Foto de Perfil{" "}
+                Editar Foto de Perfil
                 <input
                   type="file"
                   accept="image/*"
                   className={Style.picture_input}
-                  onChange={handleFotoChange}
+                  onChange={onFileChange} 
                 />
               </label>
-              <button onClick={enviarFoto}>Enviar Foto</button>
             </div>
           </div>
 
@@ -410,16 +466,16 @@ function EdicaoPerfil() {
               <input
                 ref={ruaInputRef}
                 name="END_RUA"
-                value={formData.END_RUA}
+                value={formData.END_RUA || ""}
                 onChange={handleChange}
                 disabled={!isEditing.END_RUA}
               />
               <button
                 onClick={() => {
                   if (isEditing.END_RUA) {
-                    handleSalvar("END_RUA"); 
+                    handleSalvar("END_RUA");
                   } else {
-                    toggleEdit("END_RUA"); 
+                    toggleEdit("END_RUA");
                   }
                 }}
               >
@@ -440,9 +496,9 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.END_BAIRRO) {
-                    handleSalvar("END_BAIRRO"); 
+                    handleSalvar("END_BAIRRO");
                   } else {
-                    toggleEdit("END_BAIRRO"); 
+                    toggleEdit("END_BAIRRO");
                   }
                 }}
               >
@@ -465,7 +521,7 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.CID_DESCRICAO) {
-                    handleSalvar("CID_DESCRICAO"); 
+                    handleSalvar("CID_DESCRICAO");
                   } else {
                     toggleEdit("CID_DESCRICAO");
                   }
@@ -518,9 +574,9 @@ function EdicaoPerfil() {
               <button
                 onClick={() => {
                   if (isEditing.EST_SIGLA) {
-                    handleSalvar("EST_SIGLA"); 
+                    handleSalvar("EST_SIGLA");
                   } else {
-                    toggleEdit("EST_SIGLA"); 
+                    toggleEdit("EST_SIGLA");
                   }
                 }}
               >
@@ -534,6 +590,37 @@ function EdicaoPerfil() {
         </div>
         <div className={Style.containerfoto}></div>
       </div>
+
+      {/* Modal do Cropper */}
+      {showCropperModal && (
+        <div className={Style.cropperModalOverlay}>
+          <div className={Style.cropperModalContent}>
+            {imageSrc && (
+              <>
+                <div className={Style.cropperContainer}>
+                  <Cropper
+                    image={imageSrc}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1 / 1} // Aspecto quadrado para foto de perfil
+                    onCropChange={setCrop}
+                    onCropComplete={onCropComplete}
+                    onZoomChange={setZoom}
+                  />
+                </div>
+                <div className={Style.cropperControls}>
+                  <button onClick={handleCropAndUpload}>Salvar e Enviar</button>
+                  <button onClick={() => {
+                    setShowCropperModal(false);
+                    setImageSrc(null); // Limpa a imagem ao cancelar
+                    setCroppedAreaPixels(null); // Limpa as coordenadas ao cancelar
+                  }}>Cancelar</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

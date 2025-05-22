@@ -122,19 +122,33 @@ button:hover {
   background-color: var(--botao);
   align-items: center;
   justify-content: space-evenly;
-  width: 15vw;
+  width: 20vw;
   background-image: url(../../assets/imgs/Upload.png);
   background-position: left;
   background-repeat: no-repeat;
   background-position: 20px;
   border-radius: 8px;
   font-weight: normal;
+  padding: 10px;
   box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
 }
 
 .editFoto:hover{
   transition: 0.5s;
   transform: scale(1.05); 
+}
+
+.cropperControls{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  padding: 10px 16px;
 }
 
 .containerfoto {
