@@ -291,7 +291,6 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        { /* DEP. GOOGLE MAPS */ }
                         <div className={styles.pet_perdido__input100}>
                             <label htmlFor="data">Data</label>
                             <input
@@ -307,7 +306,6 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        { /* DEP. GOOGLE MAPS */ }
                         <p className={styles.pet_perdido__imagem_texto}>
                             Selecione a imagem do Pet perdido
                         </p>
@@ -331,7 +329,7 @@ function PetPerdido() {
                                 {erroImagem}
                             </span>
                         )}
-                    </form> {/* DEP. GOOGLE MAPS */}
+                    </form>
                         {mensagem && (
                             <span id="imagem-error" className={styles.error}>
                             {mensagem}
