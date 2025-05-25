@@ -9,6 +9,7 @@ import { validarDataLimite } from "../assets/utils/regex.js";
 import EmailFromToken from "../assets/utils/getEmailFromToken.js";
 import HeaderLog from "../components/HeaderLog.jsx";
 import enviarDados from "../assets/utils/enviarDados.js";
+import criarFormData from "../assets/utils/criarFormData.js";
 import validateToken from "../assets/utils/validateToken.js";
 import MapGoogleComponent from '../components/MapGoogleComponent'
 
@@ -68,21 +69,6 @@ function PetEncontrado() {
   async function validarFormulario(e) {
     e.preventDefault();
 
-    function criarFormData(dados, arquivoImagem) {
-        const formData = new FormData();
-      
-        formData.append("tipoPet", dados.tipoPet);
-        formData.append("descricao", dados.descricao);
-        formData.append("data", dados.data);
-        formData.append("email", dados.email);
-      
-        if (arquivoImagem) {
-          formData.append("imagem", arquivoImagem);
-        }
-      
-        return formData;
-    }
-
     const tipoPet = tipoPetRef.current;
     const descricao = descricaoRef.current;
     const data = dataRef.current;
@@ -141,19 +127,14 @@ function PetEncontrado() {
         return;
       }
 
-    const email = await EmailFromToken();
-
     const dados = {
       tipoPet: tipoPetRef.current.value,
       descricao: descricaoRef.current.value,
       data: dataRef.current.value,
       imagem: imagemRef.current.value,
-      email: email
     };
 
-    const formData = criarFormData(dados, arquivoImagem);
-
-    setUserData(formData)
+    setUserData(dados)
     setEtapa('mapa')
   }
 
@@ -168,16 +149,20 @@ function PetEncontrado() {
     }, [infoMapa] )
 
   async function exibirMapa() {
-        userData.local = infoMapa
+    const email = await EmailFromToken();
+    userData.local = infoMapa
+    const formData = criarFormData(userData, arquivoImagem);
 
-        try {
-            const resultado = await enviarDados(userData, "criar-post/pet-encontrado");
+    try {
+        const resultado = await enviarDados(formData, `criar-post/pet-encontrado/${email}`);
 
-            if (resultado && resultado.message) {
-                alert(resultado.message)
-                setTimeout(() => navigate("/posts/all"), 1000); 
-            } else {
-                alert("Erro inesperado ao cadastrar o pet.")
+        console.log(resultado)
+
+        if (resultado && resultado.message) {
+            alert(resultado.message)
+           setTimeout(() => navigate("/posts/all"), 1000); 
+        } else {
+            alert("Erro inesperado ao cadastrar o pet.")
         }} catch (error) {
             console.error("Erro ao enviar os dados:", error);
             setRetornoBackend("Erro ao cadastrar o pet. Tente novamente mais tarde.");

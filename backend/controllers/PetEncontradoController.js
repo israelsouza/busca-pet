@@ -11,7 +11,8 @@ function formatarDataParaDDMMYYYY(data) {
 
 async function PetEncontradoController(req, res) {
 
-    const {data, descricao, tipoPet, email} = req.body;
+    const {data, descricao, tipoPet, local} = req.body;
+    const {email} = req.params
     const img = req.file
 
     if (!img || !data || !descricao || !tipoPet) {
@@ -24,7 +25,11 @@ async function PetEncontradoController(req, res) {
     let connection;
 
     try {
+        
+        console.log(email)
         const idUser = await getUserIdByEmail(email);
+        console.log("ID USER")
+        console.log(idUser)
 
         if (!idUser)
             return res.status(404).json({ message: "Usuário não encontrado no banco de dados" });
@@ -38,6 +43,7 @@ async function PetEncontradoController(req, res) {
             data: newData,
             imagem: imagemBinaria, 
             idUser,
+            local
         };  
 
         connection = await getConnection();

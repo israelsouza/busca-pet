@@ -31,7 +31,7 @@ app.use("/atualizar-senha", atualizarSenha);
 // rotas privadas (protegidas)
 app.use("/usuarios", autenticarToken, buscarUsuario);
 app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido);
-app.use("/criar-post/pet-encontrado", autenticarToken, cadastrarPetEncontrado);
+app.use("/criar-post/pet-encontrado/", autenticarToken, cadastrarPetEncontrado);
 app.use("/api/posts", autenticarToken, postRoutes);
 app.use('/user', autenticarToken, userPhoto)
 

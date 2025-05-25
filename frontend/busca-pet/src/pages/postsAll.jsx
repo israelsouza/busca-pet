@@ -157,7 +157,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={ () => {
-                            umaFuncaoQualquer(post.POS_ID, post.PET_LOCAL)
+                            exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
                         }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao(post.POS_ID)}
@@ -173,7 +173,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={ () => {
-                            umaFuncaoQualquer(post.POS_ID, post.POS_LOCAL)
+                            exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
                         }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao}

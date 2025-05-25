@@ -4,6 +4,6 @@ import upload from '../middleware/multerConfig.js';
 
 const router = express.Router();
 
-router.post("/", upload.single("imagem"), PetEncontradoController);
+router.post("/:email", upload.single("imagem"), PetEncontradoController);
 
 export default router;
