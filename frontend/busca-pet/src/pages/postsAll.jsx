@@ -2,6 +2,8 @@ import {  useState, useEffect, useCallback }  from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import MapGoogleComponent from '../components/MapGoogleComponent'
 import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
 import useWebSocket from "../assets/utils/useWebSocket.js";
@@ -47,7 +49,9 @@ function PostsAll() {
     const [lostPosts, setLostPosts] = useState([]);
     const [foundPosts, setFoundPosts] = useState([]);
     const [category, setCategory] = useState('all');
-
+    const [modalMap, setModalMap] = useState('close');
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
       
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -75,7 +79,7 @@ function PostsAll() {
                 }
             if (category === 'all') {
                 const response = await fetch('http://localhost:3000/api/posts/all', headerRequest );
-                const data = await response.json();                
+                const data = await response.json();
                 const post = data.posts;
                 setPosts(data.posts); 
             } else if (category === 'lost') {                
@@ -100,7 +104,16 @@ function PostsAll() {
         const result = await enviarDados(user, `api/posts/quem-publicou`);
         console.log(result)
     }
+
+    function exibirModalMapa(X,Y) {
+        setLat(X)
+        setLng(Y)
+        setModalMap('open')
+    }
     
+    function fecharModalMapa() {
+        setModalMap('close')
+    }
 
     return (
         <div className={style.container}>
@@ -126,7 +139,9 @@ function PostsAll() {
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
-                        regiao={post.PET_LOCAL}
+                        regiao={ () => {
+                            exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
+                        }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={() => { umaFuncao(post.POS_ID)}}
                     />
@@ -141,7 +156,9 @@ function PostsAll() {
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
-                        regiao={post.PET_LOCAL}
+                        regiao={ () => {
+                            umaFuncaoQualquer(post.POS_ID, post.PET_LOCAL)
+                        }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao(post.POS_ID)}
                     />
@@ -155,11 +172,33 @@ function PostsAll() {
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
-                        regiao={post.PET_LOCAL}
+                        regiao={ () => {
+                            umaFuncaoQualquer(post.POS_ID, post.POS_LOCAL)
+                        }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao}
                     />
                 ))}
+
+                {   modalMap === 'open' &&
+                    <>
+                        <div className={style.popupMap}>                        
+                            <IoIosCloseCircleOutline 
+                                className={style.icon} 
+                                onClick={fecharModalMapa}
+                            />
+                            
+                            <MapGoogleComponent 
+                                width="1200px" 
+                                height="90%" 
+                                localChamadaMapa="FEED" 
+                                longitudeOut={lng} 
+                                latitudeOut={lat} 
+                                centerOutside="0"
+                            />
+                        </div>
+                    </>
+                }
                 </div>
                 </div>
             </div>

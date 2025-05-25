@@ -26,7 +26,7 @@ function Buttonposts({
             <br />
             <span>Visto pela ultima vez: </span>
             <li>{dataSumico}</li>
-            <li>{regiao}</li> {/* DEP. GOOGLE MAPS */}
+            <li onClick={regiao} className={style.regiao}>Ver localização</li>
           </ul>
         </div>
         <div className={style.buttoninteragir}>

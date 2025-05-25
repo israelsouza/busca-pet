@@ -13,6 +13,14 @@
     gap: 10px; 
 }
 
+.regiao{
+    text-align: center;
+    padding: 5px;
+    margin: 10px 0;
+    color: blue;
+    font-weight: 600;
+}
+
 .userAvatar{
     display: flex;
 }
