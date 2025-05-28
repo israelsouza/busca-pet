@@ -54,7 +54,7 @@ function VisualizePerfil({userId}){
                 <section className={Style.perfilSection}>   
                     <article className={Style.cabecalho}>
             
-                    <img src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`} width="200px" height="100px" alt="icone de foto de usuário" />
+                    <img src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`} width="200px" alt="icone de foto de usuário" />
                        
                     <div className={Style.namecontainer}>
                     <h2 className={Style.h2}>{userInfo.PES_NOME || "Exemplo de nome de Usuário"}</h2>
