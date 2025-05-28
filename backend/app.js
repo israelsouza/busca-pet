@@ -12,6 +12,7 @@ import atualizarSenha from "./routes/atualizarSenha.js";
 import buscarUsuario from "./routes/editPerfilUsuario.js";
 import postRoutes from './routes/post.js'
 import userPhoto from './routes/getUserPhoto.js'
+import routerPublicacoes from './routes/publicacoes.js'
 
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.use("/usuarios", autenticarToken, buscarUsuario);
 app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido);
 app.use("/criar-post/pet-encontrado/", autenticarToken, cadastrarPetEncontrado);
 app.use("/api/posts", autenticarToken, postRoutes);
+app.use("/api/publicacoes", autenticarToken, routerPublicacoes);
 app.use('/user', autenticarToken, userPhoto)
 
 export default app;
