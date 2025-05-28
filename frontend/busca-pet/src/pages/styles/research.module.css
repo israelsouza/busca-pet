@@ -14,10 +14,15 @@
 }
 
 .search_container {
-  display: flex;
-  justify-content: center;
+  display: flex;  
+  align-items: center;
+  flex-direction: column;
   padding: 3.5em;
   margin-bottom: 3em;
+}
+
+.loadingMessage, .errorMessage{
+  margin-top: 50px;
 }
 
 .search_box {
