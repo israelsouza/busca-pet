@@ -12,6 +12,7 @@ import enviarDados from "../assets/utils/enviarDados.js";
 import criarFormData from "../assets/utils/criarFormData.js";
 import validateToken from "../assets/utils/validateToken.js";
 import MapGoogleComponent from '../components/MapGoogleComponent'
+import API_KEY from "../config/maps-api.js";
 
 import styles from "./styles/PetPerdido.module.css";
 
@@ -144,13 +145,58 @@ function PetEncontrado() {
 
     useEffect( () => {
         if (infoMapa) {
-            console.log("valor do mapa att: ---> ", infoMapa)
+            console.log("valor LAT: ---> ", infoMapa.lat)
+            console.log("valor LNG: ---> ", infoMapa.lng)
         }
     }, [infoMapa] )
 
   async function exibirMapa() {
+
+    if (!infoMapa || typeof infoMapa.lat === 'undefined' || typeof infoMapa.lng === 'undefined') {
+        alert("Por favor, selecione uma localização no mapa.");
+        return;
+    }
+
     const email = await EmailFromToken();
-    userData.local = infoMapa
+    let enderecoTexto = '';
+
+    if (API_KEY) {
+        try {
+            const lat = infoMapa.lat;
+            const lng = infoMapa.lng;
+
+            const geocodeResponse = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`
+            );
+            const geocodeData = await geocodeResponse.json();
+
+            if (geocodeData.status === 'OK' && geocodeData.results.length > 0) {
+                enderecoTexto = geocodeData.results[0].formatted_address;
+                console.log("Endereço obtido na submissão:", enderecoTexto);
+            } else {
+                console.warn("Geocodificação Reversa falhou na submissão:", geocodeData.status, geocodeData.error_message || '');
+                enderecoTexto = 'Endereço não encontrado para o ponto selecionado.';
+            }
+        } catch (error) {
+            console.error("Erro ao geocodificar na submissão:", error);
+            enderecoTexto = 'Erro de rede ou na API de Geocodificação.';
+        }
+
+    } else {
+        console.warn("Chave de API de Geocodificação não configurada. O endereço textual pode estar faltando.");
+        enderecoTexto = 'Endereço indisponível (chave de API ausente).';
+    }
+
+    const localizacaoFinal = {
+      lat: infoMapa.lat,
+      lng: infoMapa.lng,
+      enderecoTexto
+    }
+
+    console.log(localizacaoFinal)
+
+
+    userData.local = localizacaoFinal
     const formData = criarFormData(userData, arquivoImagem);
 
     try {
@@ -159,8 +205,8 @@ function PetEncontrado() {
         console.log(resultado)
 
         if (resultado && resultado.message) {
-            alert(resultado.message)
-           setTimeout(() => navigate("/posts/all"), 1000); 
+          alert(resultado.message)
+          setTimeout(() => navigate("/posts/all"), 1000); 
         } else {
             alert("Erro inesperado ao cadastrar o pet.")
         }} catch (error) {
