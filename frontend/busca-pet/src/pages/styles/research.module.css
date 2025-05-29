@@ -14,14 +14,15 @@
 }
 
 .search_container {
-  display: flex;  
+  display: flex;
   align-items: center;
   flex-direction: column;
   padding: 3.5em;
   margin-bottom: 3em;
 }
 
-.loadingMessage, .errorMessage{
+.loadingMessage,
+.errorMessage {
   margin-top: 50px;
 }
 
@@ -32,13 +33,13 @@
   background-color: var(--inputs);
   padding: 15px;
   border-radius: 40px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.5s ease;
   width: 60%;
 }
 
-.search_box:hover{
-  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+.search_box:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   border-color: var(--color-600);
   cursor: pointer;
 }
@@ -65,7 +66,6 @@
 .btn_search:hover {
   border-color: var(--inputs);
   cursor: pointer;
-
 }
 
 .search_input {
@@ -92,34 +92,50 @@
 
 /* RESULTADOS PREVIOS PESQUISA */
 
-.suggestions_box{
+.suggestions_box {
   margin-top: 10px;
   padding: 15px;
   border-radius: 15px;
   background-color: var(--inputs);
+  min-width: 60%;
 }
 
-.suggestion_item{
+.iconPhoto {
+  max-width: 50px;
+  border-radius: 50%;
+}
+
+.suggestion_item {
   margin-top: 10px;
   display: flex;
   gap: 10px;
 }
 
-.suggestion_itemFoto{
-  border: 1px solid black;
-}
-
-.suggestions__linkMap{
+.suggestions__linkMap {
   margin: 30px auto 0 auto;
   width: fit-content;
   padding: 10px 25px;
-  cursor: pointer;  
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.suggestions__linkIcon{
+.suggestions__linkIcon {
   font-size: 30px;
+}
+
+.map_view {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  height: 87svh;
+  gap: 50px;
+}
+
+.map_component {
+  margin: 0 auto;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader, Marker, Circle, InfoWindow   } from "@react-google-maps/api";
 
 import API_KEY from "../config/maps-api.js";
 
@@ -8,7 +8,16 @@ const spCenter = {
   lng: -46.6333,
 };
 
-function MapGoogleComponent({onSelectLocalMap, width='900px', height='500px', localChamadaMapa, latitudeOut, longitudeOut, centerOutside}) {
+function MapGoogleComponent({
+  onSelectLocalMap, 
+  width='900px', 
+  height='500px', 
+  localChamadaMapa, 
+  latitudeOut, 
+  longitudeOut, 
+  centerOutside,
+  center, radius, pets
+  }) {
 
   const containerStyle = {
     width, height
@@ -23,41 +32,90 @@ function MapGoogleComponent({onSelectLocalMap, width='900px', height='500px', lo
   const [markerPosition, setMarkerPosition] = useState(null);
   const [map, setMap] = useState(null);
 
-  useEffect(() => {
+  // InfoView
+  const [activeInfoWindow, setActiveInfoWindow] = useState(null); // Armazena o ID do pet ativo
+  const [infoWindowContent, setInfoWindowContent] = useState(null); // Armazena os dados do pet para exibir
+  const [infoWindowPosition, setInfoWindowPosition] = useState(null); // Posição do InfoWindow
+
+  useEffect(()=>{
+    if (center) {
+      setMapCenter(center);
+      //setMarkerPosition(null)
+      return;
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-
-          { centerOutside ? setMapCenter({
-            lat: latitudeOut,
-            lng: longitudeOut
-          }) : 
-          
-          setMapCenter({
+          const geoCoords = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          })
+          };
+
+          if (centerOutside && latitudeOut && longitudeOut) {
+            setMapCenter({ lat: latitudeOut, lng: longitudeOut });            
+          } else {
+            setMapCenter(geoCoords);            
           }
-
-          // { latitudeOut && longitudeOut ? setMarkerPosition({            
-          //   lat: latitudeOut,
-          //   lng: longitudeOut
-          // })
-          // : 
-          // setMarkerPosition({
-          //   lat: position.coords.latitude,
-          //   lng: position.coords.longitude,
-          // }) }
-
-        },
-        () => {
+        }, 
+        () => { // Caso a geolocalização falhe
           console.log("Geolocalização falhou, usando posição default");
+          if (centerOutside && latitudeOut && longitudeOut) {
+            setMapCenter({ lat: latitudeOut, lng: longitudeOut });
+          } else {
+            setMapCenter(spCenter);
+          }
         }
       );
-    } else {
+    } else { // Caso o navegador não suporte geolocalização
       console.log("Geolocalização não suportada pelo navegador.");
+      if (centerOutside && latitudeOut && longitudeOut) {
+        setMapCenter({ lat: latitudeOut, lng: longitudeOut });
+        // REMOVA ESTA LINHA: setMarkerPosition({ lat: latitudeOut, lng: longitudeOut });
+      } else {
+        setMapCenter(spCenter);
+        // REMOVA ESTA LINHA: setMarkerPosition(spCenter);
+      }
     }
-  }, []);
+    }, [center, centerOutside, latitudeOut, longitudeOut])
+
+
+    // COMENTAR ESSE USE PARA TESTAR SE QUEBRA NAS DEMAIS
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+
+  //         { centerOutside ? setMapCenter({
+  //           lat: latitudeOut,
+  //           lng: longitudeOut
+  //         }) : 
+          
+  //         setMapCenter({
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         })
+  //         }
+
+  //         // { latitudeOut && longitudeOut ? setMarkerPosition({            
+  //         //   lat: latitudeOut,
+  //         //   lng: longitudeOut
+  //         // })
+  //         // : 
+  //         // setMarkerPosition({
+  //         //   lat: position.coords.latitude,
+  //         //   lng: position.coords.longitude,
+  //         // }) }
+
+  //       },
+  //       () => {
+  //         console.log("Geolocalização falhou, usando posição default");
+  //       }
+  //     );
+  //   } else {
+  //     console.log("Geolocalização não suportada pelo navegador.");
+  //   }
+  // }, []);
 
   const onLoad = useCallback((mapInstance) => {
     setMap(mapInstance);
@@ -67,10 +125,11 @@ function MapGoogleComponent({onSelectLocalMap, width='900px', height='500px', lo
     setMap(null);
   }, []);
 
-    const handleMapClick = useCallback((event) => {
+  const handleMapClick = useCallback((event) => {
+      if(localChamadaMapa!=="FEED") {
         setMarkerPosition({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
         })
         console.log("Map clicked at:", { lat: event.latLng.lat(), lng: event.latLng.lng() });
         const local = {
@@ -78,27 +137,114 @@ function MapGoogleComponent({onSelectLocalMap, width='900px', height='500px', lo
             lng: event.latLng.lng(),
         }
         onSelectLocalMap(local)
-    }, [])
+
+        // Ao clicar no mapa fora de um marcador, feche o InfoWindow do pet
+        setActiveInfoWindow(null);
+        setInfoWindowContent(null);
+        setInfoWindowPosition(null);
+      }
+  }, [localChamadaMapa, onSelectLocalMap])
+
+    const handlePetMarkerClick = useCallback((pet) => {
+      // Abre o InfoWindow para este pet
+      setActiveInfoWindow(pet.POS_ID);
+      setInfoWindowContent(pet);
+      setInfoWindowPosition({ lat: pet.PET_LOCAL.lat, lng: pet.PET_LOCAL.lng });
+    }, []);
+
+    // Handler para fechar o InfoWindow
+    const handleInfoWindowClose = useCallback(() => {
+      setActiveInfoWindow(null);
+      setInfoWindowContent(null);
+      setInfoWindowPosition(null);
+    }, []);
 
   if (loadError) return <div>Error LOADING MAPS</div>;
   if (!isLoaded) return <div>Loading Maps</div>;
+
+  const radiusInMeters = radius ? radius * 1000 : 0;
+
+
+  // {Array.isArray(pets) && pets.map((pet) => {
+  //       // ADICIONE ESTES CONSOLE.LOGS AQUI:
+  //       console.log('Debugging Pet Marker:');
+  //       console.log('  pet.POS_ID:', pet.POS_ID);
+  //       console.log('  pet.PET_LOCAL.lat:', pet.PET_LOCAL.lat, 'Type:', typeof pet.PET_LOCAL.lat);
+  //       console.log('  pet.PET_LOCAL.lng:', pet.PET_LOCAL.lng, 'Type:', typeof pet.PET_LOCAL.lng);
+  //       console.log('  É NaN para PET_LOCAL.lat?', isNaN(pet.PET_LOCAL.lat));
+  //       console.log('  É NaN para PET_LOCAL.lng?', isNaN(pet.PET_LOCAL.lng));
+
+
+  //       // ATUALIZE ESTA VALIDAÇÃO PARA O NOVO CAMINHO:
+  //       if (!pet.PET_LOCAL || typeof pet.PET_LOCAL.lat !== 'number' || isNaN(pet.PET_LOCAL.lat) ||
+  //           typeof pet.PET_LOCAL.lng !== 'number' || isNaN(pet.PET_LOCAL.lng)) {
+  //           console.error(`Coordenadas inválidas (ou PET_LOCAL malformado) para o Pet ID: ${pet.POS_ID}. Não será renderizado.`);
+  //           return null; // Retorna null para não renderizar este marcador
+  //       }
+  // })}
 
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={mapCenter}
-      zoom={15}
+      zoom={center ? 12 : 15}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      onClick={ (e) => {
-
-        if (localChamadaMapa == 'FEED') {
-        } else if (!localChamadaMapa) {
-          handleMapClick(e)
-        }
-      }}
+      onClick={handleMapClick}
     >
       {markerPosition && <Marker position={markerPosition} />}
+
+      {center && radiusInMeters > 0 && (
+        <Circle
+          center={center}
+          radius={radiusInMeters}
+          options={{
+            strokeColor: 'none',
+            strokeOpacity: 0, // opaci borda
+            strokeWeight: 0,
+            fillColor: 'green', // cor dentro
+            fillOpacity: 0.15,
+          }}
+        />
+      )}
+
+      {Array.isArray(pets) && pets.map((pet) => (
+        <Marker
+          key={pet.POS_ID}
+          position={{ lat: pet.PET_LOCAL.lat, lng: pet.PET_LOCAL.lng }}
+          onClick={() => handlePetMarkerClick(pet)}
+        />
+      ))}
+
+
+      {activeInfoWindow && infoWindowContent && infoWindowPosition && (
+        <InfoWindow
+          position={infoWindowPosition}
+          onCloseClick={handleInfoWindowClose}
+        >
+          {/* CONTEÚDO SIMPLES DO INFOWINDOW */}
+          <div>
+            <h3>{infoWindowContent.PES_NOME || 'Nome do Pet Indisponível'}</h3>
+            <p>Tipo: {infoWindowContent.PET_TIPO || 'Indefinido'}</p>
+            <p>Status: {infoWindowContent.POS_TIPO || 'Indefinido'}</p>
+            {infoWindowContent.PET_DESCRICAO && (
+              <p>Descrição: {infoWindowContent.PET_DESCRICAO}</p>
+            )}
+            {/* Você pode adicionar mais informações aqui, como PET_DATA, etc. */}
+            {infoWindowContent.PET_LOCAL && infoWindowContent.PET_LOCAL.enderecoTexto && (
+              <p>{infoWindowContent.PET_LOCAL.enderecoTexto}</p>
+            )}
+            <p>
+              <a href={`https://www.google.com/maps/search/?api=1&query=${infoWindowPosition.lat},${infoWindowPosition.lng}`} target="_blank" rel="noopener noreferrer">
+                Ver no Google Maps
+              </a>
+            </p>
+          </div>
+        </InfoWindow>
+      )}
+
+      
+
     </GoogleMap>
   );
 }

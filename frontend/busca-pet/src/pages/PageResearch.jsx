@@ -5,8 +5,10 @@ import HeaderLog from "../components/HeaderLog"
 import listagem from "./../assets/imgs/listagem.png"
 import lupa_pesquisa from "./../assets/imgs/lupa_pesquisa.png"
 import validateToken from "../assets/utils/validateToken"
-import { buscarPublicacoesPorTexto } from '../assets/services/api/posts.js'
+import { getPublicacoesPorTexto, getPetsPorArea } from '../assets/services/api/posts.js'
 import { MdArrowRightAlt } from "react-icons/md";
+import {geocodeAddress} from "../assets/services/googleMapsAPI.js"
+import MapGoogleComponent from '../components/MapGoogleComponent'
 
 import styles from "./styles/research.module.css"
 
@@ -49,7 +51,7 @@ function PageResearch(){
 
     const delayDebounceFn = setTimeout(async () => {
       try {
-        const data = await buscarPublicacoesPorTexto(searchText);
+        const data = await getPublicacoesPorTexto(searchText);
         console.log(data.result)
         setSuggestions(data.result.slice(0, 3)); // Limita a 3 sugestões
       } catch (err) {
@@ -75,12 +77,13 @@ function PageResearch(){
     try {
       const { lat, lng } = await geocodeAddress(searchText);
       const centerCoords = { lat, lng };
-      const radius = 5;
 
       // 2. Buscar Pets por Proximidade no seu Backend
-      const pets = await buscarPetsPorProximidade(lat, lng, radius);
+      const pets = await getPetsPorArea(lat, lng,);
 
-      setMapData({ center: centerCoords, radius: radius, pets: pets });
+      console.log(pets);
+
+      setMapData({ center: centerCoords, radius: pets.radius, pets: pets });
 
     } catch (error) {
       console.error("Erro ao preparar o mapa:", error);
@@ -95,6 +98,13 @@ function PageResearch(){
     setMapData(null); 
   };
 
+  function primeiraLetraMaiuscula(string) {
+    if (!string || string.length === 0) {
+      return string; // Retorna a string vazia ou null
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
     return (
       <div className={styles.main}>
           <HeaderLog/>
@@ -106,11 +116,15 @@ function PageResearch(){
                   </button>
                   {mapError && <p className={styles.errorMessage}>{mapError}</p>}
                   {loadingMap && <p className={styles.loadingMessage}>Carregando mapa e pets...</p>}
-                  <PetMapComponent
-                    center={mapData.center}
-                    radius={mapData.radius}
-                    pets={mapData.pets}
-                  />
+                  <div className={styles.map_component}>
+                    //{console.log("AQUI -> ", mapData.pets.consulta)}
+                    <MapGoogleComponent
+                      localChamadaMapa="FEED"
+                      center={mapData.center}
+                      radius={mapData.radius}
+                      pets={mapData.pets.consulta}
+                    />
+                    </div>
                 </div>
               ) : ( // Senão, mostra a tela de pesquisa
                 <div className={styles.search_container}>
@@ -123,6 +137,7 @@ function PageResearch(){
                       value={searchText} // O input deve ter um value controlado
                       onChange={(e) => setSearchText(e.target.value)} // Atualiza searchText
                     />
+                    
                     <img src={lupa_pesquisa} alt="Ícone de lupa de pesquisa" className={styles.lupa} />
                   </div>                  
 
@@ -137,20 +152,24 @@ function PageResearch(){
                         {suggestions.map(pub => (
                           <div key={pub.POS_ID} className={styles.suggestion_item}>
                             <div className={styles.suggestion_itemFoto}>
-                              <strong>FOTO USER</strong>
+                              <strong>
+                                <img src={`data:image/jpeg;base64,${pub.USU_FOTO}`} alt="" className={styles.iconPhoto} />
+                              </strong>
                             </div>
                             <div className={styles.suggestion_itemInfo}>
                               <div>
-                                <strong> {pub.PES_NOME} </strong>
+                                <strong> {pub.PES_NOME
+                    ? pub.PES_NOME.charAt(0).toUpperCase() + pub.PES_NOME.slice(1).toLowerCase()
+                    : "Foto user"} </strong>
                               </div>
                               <div>
-                                {pub.PET_TIPO} {pub.POS_TIPO} na região {pub.PET_LOCAL_ENDERECO}
+                                {primeiraLetraMaiuscula(pub.PET_TIPO)} - {pub.POS_TIPO} na região {pub.PET_LOCAL_BAIRRO}. Perto da {pub.PET_LOCAL_RUA}                                                                
                               </div>
                             </div>
                           </div>
                         ))}
 
-                        <p className={styles.suggestions__linkMap}>
+                        <p className={styles.suggestions__linkMap} onClick={handleGoToMap}>
                           Ver mais no mapa 
                           
                           <MdArrowRightAlt className={styles.suggestions__linkIcon} />
