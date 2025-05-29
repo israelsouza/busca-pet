@@ -1,10 +1,23 @@
 import getTodosOsPosts from "../model/getTodosPosts.js";
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getIdFromPost from "../model/getIdFromPost.js";
+import getPostsDoUsuario  from "../model/getPostsUsuarioModel.js";
 import { sendMessageToUser } from "../utils/websocket.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
 import getPhoneFromId from "../model/getPhoneFromId.js";
+
+
+async function getPostsUsuario(req, res) {
+  try {
+    const email = req.user.email; // usuário autenticado pelo token
+    const posts = await getPostsDoUsuario(email);
+    return res.status(200).json({ message: "Posts do usuário retornados", posts });
+  } catch (error) {
+    console.error("Erro ao buscar posts do usuário:", error);
+    return res.status(500).json({ error: error.message });
+  }
+}
 
 async function todosPosts(req, res) {
   try {
@@ -91,4 +104,4 @@ async function getQuemPublicou(req, res) {
   }
 }
 
-export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
+export { getPostsUsuario, todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };

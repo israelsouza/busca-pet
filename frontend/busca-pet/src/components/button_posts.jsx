@@ -9,6 +9,7 @@ function Buttonposts({
   regiao,
   textoPrimeiroCategoria,
   disparaUmaNotificacao,
+  text_button
 }) {
   return (
     <div className={style.postcontainer}>
@@ -30,7 +31,7 @@ function Buttonposts({
           </ul>
         </div>
         <div className={style.buttoninteragir}>
-          <button className={style.envmsg}>Enviar Mensagem</button>
+          <button className={style.envmsg}>{text_button}</button>
           <button
             className={style.encontrarpet}
             onClick={disparaUmaNotificacao}
