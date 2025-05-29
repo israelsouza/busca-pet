@@ -11,6 +11,8 @@ import criarFormData from "../assets/utils/criarFormData.js";
 import HeaderLog from "./../components/HeaderLog";
 import enviarDados from "../assets/utils/enviarDados";
 import MapGoogleComponent from '../components/MapGoogleComponent'
+import API_KEY from "../config/maps-api.js";
+import obterEnderecoSelecionado from "../assets/utils/obterEnderecoSelecionado.js";
 
 import styles from "./styles/PetPerdido.module.css";
 
@@ -182,13 +184,27 @@ function PetPerdido() {
 
     useEffect( () => {
         if (infoMapa) {
-            console.log("valor do mapa att: ---> ", infoMapa)
+            console.log("valor LAT: ---> ", infoMapa.lat)
+            console.log("valor LNG: ---> ", infoMapa.lng)
         }
     }, [infoMapa] )
 
     async function exibirMapa() {
-        userData.local = infoMapa
+
+        if (!infoMapa || typeof infoMapa.lat === 'undefined' || typeof infoMapa.lng === 'undefined') {
+            alert("Por favor, selecione uma localização no mapa.");
+            return;
+        }
+
+        const localizacaoFinal = await obterEnderecoSelecionado(infoMapa, API_KEY)
+
+        console.log(localizacaoFinal)
+
+
+        userData.local = localizacaoFinal
         const formData = criarFormData(userData, arquivoImagem);
+
+        
 
         try {
             const resultado = await enviarDados(formData, "criar-post/pet-perdido");
