@@ -44,19 +44,16 @@ async function obterEnderecoSelecionado(infoMapa, API_KEY) {
       console.log(enderecoBairro);
 
       return {
-        success: true,
-        data: {
-          //   lat: infoMapa.lat,
-          //   lng: infoMapa.lng,
-          rua: enderecoRua,
-          bairro: enderecoBairro,
-          enderecoTexto,
-        },
+        lat: infoMapa.lat,
+        lng: infoMapa.lng,
+        rua: enderecoRua,
+        bairro: enderecoBairro,
+        enderecoTexto,
       };
     } catch (error) {
       return {
         success: false,
-        message: "Endereço não encontrado para o ponto selecionado."
+        message: "Endereço não encontrado para o ponto selecionado.",
       };
     }
   } else {
