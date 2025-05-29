@@ -39,15 +39,15 @@ function MapGoogleComponent({onSelectLocalMap, width='900px', height='500px', lo
           })
           }
 
-          { latitudeOut && longitudeOut ? setMarkerPosition({            
-            lat: latitudeOut,
-            lng: longitudeOut
-          })
-          : 
-          setMarkerPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }) }
+          // { latitudeOut && longitudeOut ? setMarkerPosition({            
+          //   lat: latitudeOut,
+          //   lng: longitudeOut
+          // })
+          // : 
+          // setMarkerPosition({
+          //   lat: position.coords.latitude,
+          //   lng: position.coords.longitude,
+          // }) }
 
         },
         () => {
