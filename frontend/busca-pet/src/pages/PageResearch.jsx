@@ -6,6 +6,7 @@ import listagem from "./../assets/imgs/listagem.png"
 import lupa_pesquisa from "./../assets/imgs/lupa_pesquisa.png"
 import validateToken from "../assets/utils/validateToken"
 import { buscarPublicacoesPorTexto } from '../assets/services/api/posts.js'
+import { MdArrowRightAlt } from "react-icons/md";
 
 import styles from "./styles/research.module.css"
 
@@ -49,7 +50,8 @@ function PageResearch(){
     const delayDebounceFn = setTimeout(async () => {
       try {
         const data = await buscarPublicacoesPorTexto(searchText);
-        setSuggestions(data.slice(0, 3)); // Limita a 3 sugestões
+        console.log(data.result)
+        setSuggestions(data.result.slice(0, 3)); // Limita a 3 sugestões
       } catch (err) {
         console.error("Erro ao buscar sugestões:", err);
         setErrorSuggestions("Erro ao carregar sugestões.");
@@ -129,13 +131,32 @@ function PageResearch(){
 
                   {suggestions.length > 0 && (
                     <div className={styles.suggestions_box}>
-                      <h3>Resultados de Publicações:</h3>
+                      
                       <ul className={styles.suggestions_list}>
+
                         {suggestions.map(pub => (
-                          <li key={pub.POS_ID} className={styles.suggestion_item}>
-                            <strong>{pub.PET_TIPO}:</strong> {pub.PET_NOME || 'Pet sem nome'} - {pub.PET_DESCRICAO} (Publicado em: {pub.POS_DATA})
-                          </li>
+                          <div key={pub.POS_ID} className={styles.suggestion_item}>
+                            <div className={styles.suggestion_itemFoto}>
+                              <strong>FOTO USER</strong>
+                            </div>
+                            <div className={styles.suggestion_itemInfo}>
+                              <div>
+                                <strong> {pub.PES_NOME} </strong>
+                              </div>
+                              <div>
+                                {pub.PET_TIPO} {pub.POS_TIPO} na região {pub.PET_LOCAL_ENDERECO}
+                              </div>
+                            </div>
+                          </div>
                         ))}
+
+                        <p className={styles.suggestions__linkMap}>
+                          Ver mais no mapa 
+                          
+                          <MdArrowRightAlt className={styles.suggestions__linkIcon} />
+                          
+                        </p>
+                        
                       </ul>
                     </div>
                   )}
