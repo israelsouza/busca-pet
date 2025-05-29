@@ -7,16 +7,26 @@ async function getUserPhotoController(req, res) {
     const email = await extrairEmailDoToken(token);
     const userInfo = await getPhotoAndName(email);
 
-    if (userInfo) {
-        const imagemBase64 = userInfo.imagem ? userInfo.imagem.toString('base64') : null;
-
-        return res.status(200).json({ PES_NOME: userInfo.nome, USU_FOTO: imagemBase64 })
-
+    if (userInfo && userInfo.imagem) {
+      let chunks = [];
+      userInfo.imagem.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      userInfo.imagem.on('end', async () => {
+        const buffer = Buffer.concat(chunks);
+        const imagemBase64 = buffer.toString('base64');
+        res.status(200).json({ PES_NOME: userInfo.nome, USU_FOTO: imagemBase64 });
+        if (userInfo.connection) await userInfo.connection.close();
+      });
+      userInfo.imagem.on('error', async (err) => {
+        res.status(500).json({ message: "Erro ao ler imagem do banco." });
+        if (userInfo.connection) await userInfo.connection.close();
+      });
+      
     } else {
-        return res.status(404).json({ message: "Informações do usuário não encontradas" })
+      res.status(404).json({ message: "Informações do usuário não encontradas" });
+      if (userInfo.connection) await userInfo.connection.close();
     }
-
-
 
   } catch (err) {
     console.error("ERROR: ", )

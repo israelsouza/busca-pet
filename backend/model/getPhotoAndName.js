@@ -23,15 +23,13 @@
       if (result.rows.length > 0) {
         const imagem = result.rows[0][0];
         const name = result.rows[0][1];
-        return { imagem: imagem, nome: name };
+        return { imagem: imagem, nome: name, connection };
       } else {
         return null;
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      if (connection) await connection.close();
-    }
+    } 
   }
 
   export default getPhotoAndName;
