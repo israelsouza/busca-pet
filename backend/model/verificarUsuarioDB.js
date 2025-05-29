@@ -33,16 +33,17 @@ export default async function verificarUsuarioDB(dados) {
 
     console.log("Usuário autenticado com sucesso!");
     console.log("Fechando a conexão...");
-    await connection.close();
 
     return { userId: USU_ID, message: "Usuário autenticado com sucesso." };
   } catch (error) {
     console.error("Erro ao verificar usuário:", error);
 
+    
+
+    throw error;
+  } finally {
     if (connection) {
       await connection.close();
     }
-
-    throw error;
   }
 }
