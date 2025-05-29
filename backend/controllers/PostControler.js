@@ -5,6 +5,9 @@ import { sendMessageToUser } from "../utils/websocket.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
 import getPhoneFromId from "../model/getPhoneFromId.js";
+import {
+  getPostsPorTextoModel
+} from '../model/PostModel.js'
 
 async function todosPosts(req, res) {
   try {
@@ -91,4 +94,37 @@ async function getQuemPublicou(req, res) {
   }
 }
 
-export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
+async function getPetsNaRegiao(req, res) {
+  try {
+      const latPesquisa = parseFloat(req.query.lat);
+      const lonPesquisa = parseFloat(req.query.lon);
+      const raioKm = parseFloat(req.query.raio || 5);
+
+      if (isNaN(latPesquisa) || isNaN(lonPesquisa) || isNaN(raioKm) || raioKm <= 0) {
+          return res.status(400).json({ message: 'Parâmetros de latitude, longitude ou raio inválidos.' });
+      }
+
+      const consulta = await getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm);
+      return res.status(200).json({messagem: "Sucesso", consulta})
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({messagem: "Erro Interno"})
+  }
+}
+
+async function getPostsPorTexto(req, res) {
+  const termoBuscado = req.query.q;
+  console.log("B-CONTROLLER-POST: Entrei")
+  console.log("B-CONTROLLER-POST: Termo Buscado -> ", termoBuscado)
+  
+  try {
+    const result = await getPostsPorTextoModel(termoBuscado);
+    return res.status(200).json({message:"Sucesso na requisição", result})
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({message:"Erro interno"})
+  }
+
+}
+
+export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou, getPetsNaRegiao, getPostsPorTexto };
