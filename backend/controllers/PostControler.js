@@ -6,7 +6,8 @@ import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
 import getPhoneFromId from "../model/getPhoneFromId.js";
 import {
-  getPostsPorTextoModel
+  getPostsPorTextoModel,
+  getPetsNaRegiaoModel
 } from '../model/PostModel.js'
 
 async function todosPosts(req, res) {
@@ -94,21 +95,26 @@ async function getQuemPublicou(req, res) {
   }
 }
 
-async function getPetsNaRegiao(req, res) {
+export async function getPetsPorArea(req, res) {
   try {
       const latPesquisa = parseFloat(req.query.lat);
-      const lonPesquisa = parseFloat(req.query.lon);
-      const raioKm = parseFloat(req.query.raio || 5);
+      const lngPesquisa = parseFloat(req.query.lng);
+      const raioKm = parseFloat(req.query.raio || 4);
 
-      if (isNaN(latPesquisa) || isNaN(lonPesquisa) || isNaN(raioKm) || raioKm <= 0) {
+      // console.log(latPesquisa)
+      // console.log(lngPesquisa)
+      // console.log(raioKm)
+
+      if (isNaN(latPesquisa) || isNaN(lngPesquisa) || isNaN(raioKm) || raioKm <= 0) {
           return res.status(400).json({ message: 'Parâmetros de latitude, longitude ou raio inválidos.' });
       }
 
-      const consulta = await getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm);
-      return res.status(200).json({messagem: "Sucesso", consulta})
+      const consulta = await getPetsNaRegiaoModel(latPesquisa, lngPesquisa, raioKm);
+      console.log(consulta)
+      return res.status(200).json({messagem: "Sucesso", consulta, radius: raioKm})
   } catch (error) {
     console.error(error)
-    return res.status(500).json({messagem: "Erro Interno"})
+    //return res.status(500).json({messagem: "Erro Interno"})
   }
 }
 
@@ -119,6 +125,17 @@ async function getPostsPorTexto(req, res) {
   
   try {
     const result = await getPostsPorTextoModel(termoBuscado);
+    console.log(result)
+
+    // Converte USU_FOTO binário para base64, se existir
+    if (Array.isArray(result)) {
+      result.forEach(post => {
+      if (post.USU_FOTO && Buffer.isBuffer(post.USU_FOTO)) {
+        post.USU_FOTO = post.USU_FOTO.toString('base64');
+      }
+      });
+    }
+
     return res.status(200).json({message:"Sucesso na requisição", result})
   } catch (error) {
     console.error(error);
@@ -127,4 +144,4 @@ async function getPostsPorTexto(req, res) {
 
 }
 
-export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou, getPetsNaRegiao, getPostsPorTexto };
+export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou, getPostsPorTexto };

@@ -8,39 +8,51 @@ export async function getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm) {
         connection = await getConnection();
 
         const sql = `
-            SELECT
-                p.POS_ID,
-                p.PES_NOME,
-                p.PET_TIPO,
-                POST.POS_TIPO,
-                p.PET_DESCRICAO,
-                p.PET_LOCAL,
-                p.PET_DATA,
-                DISTANCIA_HAVERSINE_KM(
-                    :lat_pesquisa,
-                    :lon_pesquisa,
-                    JSON_VALUE(p.PET_LOCAL, '$.lat'),
-                    JSON_VALUE(p.PET_LOCAL, '$.lng')
-                ) AS DISTANCIA_KM
-            FROM
-                PET p, POST, PESSOA, USUARIO
-            WHERE
-                p.PET_ID = POST.PET_ID          AND
-                USUARIO.USU_ID = POST.USU_ID    AND
-                PESSOA.PES_ID = USUARIO.PES_ID  AND
-                DISTANCIA_HAVERSINE_KM(
-                    :lat_pesquisa,
-                    :lon_pesquisa,
-                    JSON_VALUE(p.PET_LOCAL, '$.lat'),
-                    JSON_VALUE(p.PET_LOCAL, '$.lng')
-                ) <= :raio_km
-        `;
+WITH PETS_COORDS AS (
+    SELECT
+        pet.*,
+        JSON_VALUE(pet.PET_LOCAL, '$.lat' RETURNING NUMBER) AS LAT_NUMERIC,
+        JSON_VALUE(pet.PET_LOCAL, '$.lng' RETURNING NUMBER) AS LNG_NUMERIC
+    FROM PET pet
+)
+SELECT
+    post.POS_ID AS "POS_ID",
+    pessoa.PES_NOME AS "PES_NOME",
+    pet.PET_TIPO AS "PET_TIPO",
+    post.POS_TIPO AS "POS_TIPO",
+    pet.PET_DESCRICAO AS "PET_DESCRICAO",
+    pet.PET_LOCAL AS "PET_LOCAL",
+    pet.PET_DATA AS "PET_DATA",
+    DISTANCIA_HAVERSINE_KM(
+        :lat_pesquisa,
+        :lon_pesquisa,
+        pet.LAT_NUMERIC,
+        pet.LNG_NUMERIC
+    ) AS DISTANCIA_KM
+FROM
+    PETS_COORDS pet
+    JOIN POST post ON pet.PET_ID = POST.PET_ID
+    JOIN USUARIO usuario ON usuario.USU_ID = POST.USU_ID
+    JOIN PESSOA pessoa ON pessoa.PES_ID = usuario.PES_ID
+WHERE
+    DISTANCIA_HAVERSINE_KM(
+        :lat_pesquisa,
+        :lon_pesquisa,
+        pet.LAT_NUMERIC,
+        pet.LNG_NUMERIC
+    ) <= :raio_km
+        `
+
 
         const binds = {
             lat_pesquisa: latPesquisa,
             lon_pesquisa: lonPesquisa,
             raio_km: raioKm
         };
+
+        console.log(binds.lat_pesquisa)
+        console.log(binds.lon_pesquisa)
+        console.log(raioKm)
 
         const options = {
             outFormat: OracleDB.OUT_FORMAT_OBJECT
@@ -55,10 +67,7 @@ export async function getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm) {
     } catch (error) {
         console.error("Erro Modal: ", error)
         throw error;               
-    } finally {
-        if (connection)
-            await connection.close();
-    }
+    } 
 }
 
 export async function getPostsPorTextoModel(termoBuscado) {
@@ -76,11 +85,13 @@ export async function getPostsPorTextoModel(termoBuscado) {
                 pet.PET_DESCRICAO AS "PET_DESCRICAO",
                 pet.PET_FOTO AS "PET_FOTO",
                 pet.PET_LOCAL AS "PET_LOCAL",
-                pet.PET_DATA AS "POS_DATA",
+                pet.PET_TIPO AS "PET_TIPO",
                 pessoa.PES_NOME AS "PES_NOME",
                 usuario.USU_FOTO AS "USU_FOTO",
                 JSON_VALUE(pet.PET_LOCAL, '$.lat') AS "PET_LOCAL_LAT",
                 JSON_VALUE(pet.PET_LOCAL, '$.lng') AS "PET_LOCAL_LNG",
+                JSON_VALUE(pet.PET_LOCAL, '$.rua') AS "PET_LOCAL_RUA",                
+                JSON_VALUE(pet.PET_LOCAL, '$.bairro') AS "PET_LOCAL_BAIRRO",                
                 JSON_VALUE(pet.PET_LOCAL, '$.enderecoTexto') AS "PET_LOCAL_ENDERECO"                
             FROM
                 POST, PET, USUARIO, PESSOA
@@ -109,8 +120,5 @@ export async function getPostsPorTextoModel(termoBuscado) {
     } catch (error) {
         console.error("Erro Modal: ", error)
         throw error;               
-    } finally {
-        if (connection)
-            await connection.close();
     }
 }
