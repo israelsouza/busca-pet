@@ -5,7 +5,7 @@ import setPetEncontrado from "../model/PetEncontradoModel.js";
 import createPost from "../model/PostEncontradoModel.js";
 
 function formatarDataParaDDMMYYYY(data) {
-    const [ano, mes, dia] = data.split("-"); // Supondo que a data recebida seja no formato YYYY-MM-DD
+    const [ano, mes, dia] = data.split("-");
     return `${dia}-${mes}-${ano}`;
   }
 
@@ -18,6 +18,10 @@ async function PetEncontradoController(req, res) {
     if (!img || !data || !descricao || !tipoPet) {
         console.log("Todos os campos são obrigatórios")
         return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+
+    if (typeof local == 'undefined') {
+        return res.status(400).json({ error: "Insira o local em que perdeu seu pet." });
     }
 
     const newData = formatarDataParaDDMMYYYY(data)
@@ -35,7 +39,6 @@ async function PetEncontradoController(req, res) {
             return res.status(404).json({ message: "Usuário não encontrado no banco de dados" });
 
         const imagemBinaria = fs.readFileSync(img.path); 
-        // console.log("Tamanho da imagem:", imagemBinaria);
 
         const dados = {
             tipo: tipoPet,
@@ -44,7 +47,7 @@ async function PetEncontradoController(req, res) {
             imagem: imagemBinaria, 
             idUser,
             local
-        };  
+        };
 
         connection = await getConnection();
         console.log("Iniciando transação de Cadastro")
