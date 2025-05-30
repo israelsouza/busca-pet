@@ -17,7 +17,7 @@ function TelaAdm(){
             <div className={Style.ContainerFuncoes}>
                 <ButtonAdm image={icon_publicacoes} alt='Publicações' funcao="Publicações"/>
                 <ButtonAdm image={icon_denuncias} alt='Denúncias' funcao="Denúncias" />
-                <ButtonAdm image={icone} alt='Usuários' funcao="Usuários"/>
+                <ButtonAdm image={icone} alt='Usuários' funcao="Usuários" link='/adm/usuarios'/>
             </div>
 
             <div className={Style.footer}>
