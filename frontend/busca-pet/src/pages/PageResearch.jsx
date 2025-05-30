@@ -9,6 +9,7 @@ import { getPublicacoesPorTexto, getPetsPorArea } from '../assets/services/api/p
 import { MdArrowRightAlt } from "react-icons/md";
 import {geocodeAddress} from "../assets/services/googleMapsAPI.js"
 import MapGoogleComponent from '../components/MapGoogleComponent'
+import Buttonposts from "../components/button_posts";
 
 import styles from "./styles/research.module.css"
 
@@ -38,6 +39,17 @@ function PageResearch(){
     const [mapData, setMapData] = useState(null); // null = mostra busca, obj = mostra mapa
     const [loadingMap, setLoadingMap] = useState(false);
     const [mapError, setMapError] = useState(null);
+
+    const [selectedPublication, setSelectedPublication] = useState(null);
+
+    const handleShowPublication = useCallback((petData) => {
+      setSelectedPublication(petData);
+    }, []);
+
+    // fechar a visualização da publicação completa (útil se 'Buttonposts' for exibido como um overlay ou em uma nova seção)
+    const handleClosePublication = useCallback(() => {
+      setSelectedPublication(null);
+    }, []);
 
     useEffect(() => {
     if (searchText.length <= 2) {
@@ -81,8 +93,6 @@ function PageResearch(){
       // 2. Buscar Pets por Proximidade no seu Backend
       const pets = await getPetsPorArea(lat, lng,);
 
-      console.log(pets);
-
       setMapData({ center: centerCoords, radius: pets.radius, pets: pets });
 
     } catch (error) {
@@ -109,24 +119,43 @@ function PageResearch(){
       <div className={styles.main}>
           <HeaderLog/>
 
-              {mapData ? ( // Se mapData existe, mostra o mapa
+
+              {selectedPublication ? ( 
+                <div className={styles.publicationDetailContainer}> 
+
+                <Buttonposts 
+                    key={selectedPublication.POS_ID}
+                    usuario={selectedPublication.PES_NOME}                        
+                    imagemPet={selectedPublication.PET_FOTO}
+                    caracteristicas={selectedPublication.PET_DESCRICAO}
+                    dataSumico={selectedPublication.PET_DATA}
+                    onMaps={true}
+                    //disparaUmaNotificacao={() => { umaFuncao(post.POS_ID)}}
+                />
+                  
+                  <button onClick={handleClosePublication} className={styles.backToMapButton}>
+                    &larr; Voltar ao Mapa
+                  </button>
+                </div>
+              ) : mapData ? (
                 <div className={styles.map_view}>
                   <button onClick={handleBackToSearch} className={styles.backButton}>
                     &larr; Voltar para a Busca
                   </button>
+                  
                   {mapError && <p className={styles.errorMessage}>{mapError}</p>}
                   {loadingMap && <p className={styles.loadingMessage}>Carregando mapa e pets...</p>}
                   <div className={styles.map_component}>
-                    //{console.log("AQUI -> ", mapData.pets.consulta)}
                     <MapGoogleComponent
                       localChamadaMapa="FEED"
                       center={mapData.center}
                       radius={mapData.radius}
                       pets={mapData.pets.consulta}
+                      onShowPublication={handleShowPublication}
                     />
                     </div>
                 </div>
-              ) : ( // Senão, mostra a tela de pesquisa
+              ) : (
                 <div className={styles.search_container}>
                   <div className={styles.search_box}>
                     <img src={listagem} alt="Ícone de listagem" className={styles.icon_left} />

@@ -16,7 +16,8 @@ function MapGoogleComponent({
   latitudeOut, 
   longitudeOut, 
   centerOutside,
-  center, radius, pets
+  center, radius, pets,
+  onShowPublication 
   }) {
 
   const containerStyle = {
@@ -159,29 +160,18 @@ function MapGoogleComponent({
       setInfoWindowPosition(null);
     }, []);
 
+    const handleShowPublicationClick = useCallback(() => {
+      if (onShowPublication && infoWindowContent) {
+        onShowPublication(infoWindowContent); // Passa o objeto pet completo para o pai
+        // Opcional: Se você quiser fechar o InfoWindow automaticamente ao clicar em "Exibir Publicação"
+        // handleInfoWindowClose();
+      }
+    }, [onShowPublication, infoWindowContent]);
+
   if (loadError) return <div>Error LOADING MAPS</div>;
   if (!isLoaded) return <div>Loading Maps</div>;
 
   const radiusInMeters = radius ? radius * 1000 : 0;
-
-
-  // {Array.isArray(pets) && pets.map((pet) => {
-  //       // ADICIONE ESTES CONSOLE.LOGS AQUI:
-  //       console.log('Debugging Pet Marker:');
-  //       console.log('  pet.POS_ID:', pet.POS_ID);
-  //       console.log('  pet.PET_LOCAL.lat:', pet.PET_LOCAL.lat, 'Type:', typeof pet.PET_LOCAL.lat);
-  //       console.log('  pet.PET_LOCAL.lng:', pet.PET_LOCAL.lng, 'Type:', typeof pet.PET_LOCAL.lng);
-  //       console.log('  É NaN para PET_LOCAL.lat?', isNaN(pet.PET_LOCAL.lat));
-  //       console.log('  É NaN para PET_LOCAL.lng?', isNaN(pet.PET_LOCAL.lng));
-
-
-  //       // ATUALIZE ESTA VALIDAÇÃO PARA O NOVO CAMINHO:
-  //       if (!pet.PET_LOCAL || typeof pet.PET_LOCAL.lat !== 'number' || isNaN(pet.PET_LOCAL.lat) ||
-  //           typeof pet.PET_LOCAL.lng !== 'number' || isNaN(pet.PET_LOCAL.lng)) {
-  //           console.error(`Coordenadas inválidas (ou PET_LOCAL malformado) para o Pet ID: ${pet.POS_ID}. Não será renderizado.`);
-  //           return null; // Retorna null para não renderizar este marcador
-  //       }
-  // })}
 
   return (
     <GoogleMap
@@ -237,6 +227,11 @@ function MapGoogleComponent({
             <p>
               <a href={`https://www.google.com/maps/search/?api=1&query=${infoWindowPosition.lat},${infoWindowPosition.lng}`} target="_blank" rel="noopener noreferrer">
                 Ver no Google Maps
+              </a>
+            </p>
+            <p style={{ marginTop: '10px' }}>
+              <a href="#" onClick={handleShowPublicationClick} style={{ color: '#1a73e8', textDecoration: 'underline', cursor: 'pointer' }}>
+                Exibir Publicação
               </a>
             </p>
           </div>

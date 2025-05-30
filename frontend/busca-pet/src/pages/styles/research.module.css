@@ -90,6 +90,18 @@
   padding: 3em;
 }
 
+/* RESULTADO POST */
+
+.publicationDetailContainer{
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 87svh;
+  gap: 50px;
+}
+
 /* RESULTADOS PREVIOS PESQUISA */
 
 .suggestions_box {
@@ -125,6 +137,8 @@
 .suggestions__linkIcon {
   font-size: 30px;
 }
+
+/* RESULTADOS MAPA */
 
 .map_view {
   margin: 0 auto;

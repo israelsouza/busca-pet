@@ -9,6 +9,7 @@ function Buttonposts({
   regiao,
   textoPrimeiroCategoria,
   disparaUmaNotificacao,
+  onMaps
 }) {
   return (
     <div className={style.postcontainer}>
@@ -26,7 +27,9 @@ function Buttonposts({
             <br />
             <span>Visto pela ultima vez: </span>
             <li>{dataSumico}</li>
-            <li onClick={regiao} className={style.regiao}>Ver localização</li>
+            {!onMaps &&
+              <li onClick={regiao} className={style.regiao}>Ver localização</li>
+            }
           </ul>
         </div>
         <div className={style.buttoninteragir}>
