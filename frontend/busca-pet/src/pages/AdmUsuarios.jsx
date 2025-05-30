@@ -51,6 +51,9 @@ function AdmUsuarios() {
                        </tbody>
                 </table>
                 </div>
+                    <div className={Style.ContainerFooter}>
+                        <button className={Style.Atualiza}>Atualizar</button>
+                    </div>
             </div>
     </div>
   );
