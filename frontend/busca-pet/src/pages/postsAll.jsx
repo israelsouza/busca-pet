@@ -127,7 +127,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
-                        text_button="Enviar Mensagem"
+                        text_button="Denunciar"
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={() => { umaFuncao(post.POS_ID)}}
                     />
@@ -143,7 +143,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
-                        text_button="Enviar Mensagem"
+                        text_button="Denunciar"
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao(post.POS_ID)}
                     />
@@ -158,7 +158,7 @@ function PostsAll() {
                         caracteristicas={post.PET_DESCRICAO}
                         dataSumico={post.POS_DATA}
                         regiao={post.PET_LOCAL}
-                        text_button="Enviar Mensagem"
+                        text_button="Denunciar"
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                         disparaUmaNotificacao={umaFuncao}
                     />
