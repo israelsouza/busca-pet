@@ -13,7 +13,7 @@ import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
 import Notification from "./pages/Notification";
-
+import TelaAdm from "./pages/Administrador";
 function App() {
   return (
     <div className="App">
@@ -41,6 +41,8 @@ function App() {
           <Route path="/EditarPerfil" element={<EditarPerfil />} />
           <Route path="/Posts/user" element={<PostsUser />} />
           <Route path="/user/notificacao" element={<Notification />} />
+          <Route path="/adm" element={<TelaAdm />} />
+          {/* Adicione outras rotas conforme necessário */}
         </Routes>
       </BrowserRouter>
     </div>
