@@ -22,6 +22,7 @@ SELECT
     post.POS_TIPO AS "POS_TIPO",
     pet.PET_DESCRICAO AS "PET_DESCRICAO",
     pet.PET_LOCAL AS "PET_LOCAL",
+    pet.PET_FOTO AS "PET_FOTO",
     pet.PET_DATA AS "PET_DATA",
     DISTANCIA_HAVERSINE_KM(
         :lat_pesquisa,
@@ -55,7 +56,10 @@ WHERE
         console.log(raioKm)
 
         const options = {
-            outFormat: OracleDB.OUT_FORMAT_OBJECT
+            outFormat: OracleDB.OUT_FORMAT_OBJECT,
+            fetchInfo: {
+                PET_FOTO: { type: OracleDB.BUFFER }
+            },
         };
 
         const result = await connection.execute(

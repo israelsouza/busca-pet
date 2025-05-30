@@ -10,6 +10,11 @@ import {
   getPetsNaRegiaoModel
 } from '../model/PostModel.js'
 
+function formatarDataParaDDMMYYYY(data) {
+  const [ano, mes, dia] = data.split("-"); // Supondo que a data recebida seja no formato YYYY-MM-DD
+  return `${dia}-${mes}-${ano}`;
+}
+
 async function todosPosts(req, res) {
   try {
     const posts = await getTodosOsPosts();
@@ -109,8 +114,22 @@ export async function getPetsPorArea(req, res) {
           return res.status(400).json({ message: 'Parâmetros de latitude, longitude ou raio inválidos.' });
       }
 
-      const consulta = await getPetsNaRegiaoModel(latPesquisa, lngPesquisa, raioKm);
-      console.log(consulta)
+      const consultaNaoFormatada = await getPetsNaRegiaoModel(latPesquisa, lngPesquisa, raioKm);
+      console.log(consultaNaoFormatada)
+
+
+      const consulta = consultaNaoFormatada.map( (row) => ({
+        ...row,
+        PET_FOTO: row.PET_FOTO
+        ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}`
+        : null,
+        PET_DATA: row.PET_DATA
+        ? formatarDataParaDDMMYYYY(
+            new Date(row.PET_DATA).toISOString().split("T")[0]
+          )
+        : null,
+      }))
+  
       return res.status(200).json({messagem: "Sucesso", consulta, radius: raioKm})
   } catch (error) {
     console.error(error)
