@@ -2,6 +2,7 @@ import {getTodosOsPosts} from "../model/getTodosPosts.js";
 import {getMinhasPublicacoesModel} from '../model/minhasPublicacoesModel.js'
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getIdFromPost from "../model/getIdFromPost.js";
+import getPostsDoUsuario  from "../model/getPostsUsuarioModel.js";
 import { sendMessageToUser } from "../utils/websocket.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import getUserId from "../model/getUserId.js";
@@ -19,6 +20,7 @@ function formatarDataParaDDMMYYYY(data) {
 export async function getMinhasPublicacoes(req, res) {
   const email = req.user.email;
 
+
   try {
     const myPosts = await getMinhasPublicacoesModel(email);
     return res.status(200).json({message:"Ok", myPosts})
@@ -33,6 +35,21 @@ export async function getMinhasPublicacoes(req, res) {
 }
 
 export async function todosPosts(req, res) {
+
+
+async function getPostsUsuario(req, res) {
+  try {
+    const email = req.user.email; // usuário autenticado pelo token
+    const posts = await getPostsDoUsuario(email);
+    return res.status(200).json({ message: "Posts do usuário retornados", posts });
+  } catch (error) {
+    console.error("Erro ao buscar posts do usuário:", error);
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+async function todosPosts(req, res) {
+
   try {
     const posts = await getTodosOsPosts();
     return res
@@ -118,7 +135,6 @@ export async function getQuemPublicou(req, res) {
 }
 
 
-
 export async function getPetsPorArea(req, res) {
   try {
       const latPesquisa = parseFloat(req.query.lat);
@@ -181,3 +197,6 @@ export async function getPostsPorTexto(req, res) {
   }
 
 }
+
+export { getPostsUsuario, todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
+

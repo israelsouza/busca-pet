@@ -29,6 +29,24 @@
     display: flex;
 }
 
+.imageWrapper {
+  width: 250px;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
+.petImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
 .postbody {
     background-color: var(--post);
     display: flex;
@@ -58,7 +76,7 @@ li{
     
 }
 
-.envmsg{
+.denuncia{
     background-color: var(--inputs);
     border-radius: 8px;
     border: none;
@@ -70,7 +88,7 @@ li{
     box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }
 
-.envmsg:hover{
+.denuncia:hover{
     background-color:var(--botao);
     transform: scale(1.05);
     transition: 0.5s;
@@ -89,6 +107,26 @@ li{
 }
 
 .encontrarpet:hover{
+    background-color:var(--botao);
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
+.denunciarpet {
+  background-color: var(--color04);
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+}
+
+.denunciarpet:hover {
     background-color:var(--botao);
     transform: scale(1.05);
     transition: 0.5s;

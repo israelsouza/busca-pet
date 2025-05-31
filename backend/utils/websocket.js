@@ -53,4 +53,13 @@ const sendMessageToUser = (userId, message) => {
   return false;
 };
 
-export { setupWebSocket, registerClient, sendMessageToUser };
+const notifyAdmins = (mensagem) => {
+  for (const [userId, ws] of clients.entries()) {
+    if (ws.readyState === WebSocket.OPEN) {
+      // Aqui você pode adicionar lógica para verificar se o userId é admin (consultar no banco, cache, etc)
+      ws.send(JSON.stringify({ tipo: "nova_denuncia", conteudo: mensagem }));
+    }
+  }
+}
+
+export { setupWebSocket, registerClient, sendMessageToUser, notifyAdmins};

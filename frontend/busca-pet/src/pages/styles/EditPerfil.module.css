@@ -122,13 +122,14 @@ button:hover {
   background-color: var(--botao);
   align-items: center;
   justify-content: space-evenly;
-  width: 15vw;
+  width: 20vw;
   background-image: url(../../assets/imgs/Upload.png);
   background-position: left;
   background-repeat: no-repeat;
   background-position: 20px;
   border-radius: 8px;
   font-weight: normal;
+  padding: 10px;
   box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
 }
 
@@ -136,6 +137,53 @@ button:hover {
   transition: 0.5s;
   transform: scale(1.05); 
 }
+
+.cropperModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.cropperModalContent {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cropperContainer {
+  position: relative;
+  width: 60vw;
+  height: 60vw;
+  max-width: 400px;
+  max-height: 400px;
+  margin: 0 auto;
+}
+
+.cropperControls{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  padding: 10px 16px;
+}
+
 
 .containerfoto {
   width: 50vw;

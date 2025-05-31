@@ -1,7 +1,7 @@
-*{
-    margin: 0px;
-    padding: 0px;
+.container {
+  display: flex;
 }
+
 
 .container{
     display: flex;
@@ -18,31 +18,37 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+
+
+.cabecalho {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  min-width: 10px;
+  width: 50vw;
+  justify-content: space-evenly;
+  justify-self: right;
+  align-items: center;
+
 }
 
-.cabecalho{
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    min-width: 10px;
-    width: 50vw;
-    justify-content: space-evenly;
-    justify-self: right;
-    align-items: center;
+.fotoPerfil img{
+    max-width: 150px;
+    border-radius: 50%;
 }
 
-.namecontainer{
-    justify-items: center;
+.namecontainer {
+  justify-items: center;
 }
 
-h1{
-    font-family: "Inter",  sans-serif;
-    font-weight: normal;
-    font-size: 2em;
+h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  font-size: 2em;
 }
 
-.h2{
-    font-family: "Inter",  sans-serif;
-    font-weight: normal;
-    font-size: 1.2em;
+.h2 {
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  font-size: 1.2em;
 }
