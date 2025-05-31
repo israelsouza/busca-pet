@@ -19,7 +19,9 @@ function Buttonposts({
           <h2>user: {usuario}</h2>
         </div>
 
-        <img src={imagemPet} alt="Imagem do Pet" width="250px" />
+        <div className={style.imageWrapper}>
+          <img src={imagemPet} alt="Imagem do Pet" className={style.petImage} />
+        </div>
 
         <div className={style.infospost}>
           <h3>{nomePet}</h3>
