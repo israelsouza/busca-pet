@@ -37,13 +37,13 @@
     font-family: 'Inria Sans';
     font-weight: 400;
     font-size: 30px;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .form_login {
     display: flex;
     flex-direction: column;
-    gap: 70px;
+    gap: 50px;
     margin-block-start: 100px;
     width: 100%;
     align-items: center;

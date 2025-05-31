@@ -322,11 +322,8 @@ function PetPerdido() {
                             )}
                         </div>
 
-                        <p className={styles.pet_perdido__imagem_texto}>
-                            Selecione a imagem do Pet perdido
-                        </p>
                         <div className={styles.pet_perdido__imagem}>
-                            <label htmlFor="imagem">Selecionar arquivo</label>
+                            <label htmlFor="imagem">Selecionar a imagem (até 5MB)</label>
                             <input
                                 id="imagem"
                                 ref={imagemRef}

@@ -8,7 +8,9 @@ import Ellipse_home from "../assets/imgs/Ellipse_home.png";
 import AvaliacaoHome from "../components/AvaliacaoHome.jsx";
 import ComoFunciona from "../components/instrucoesHome.jsx";
 import abraco_dogHome from "../assets/imgs/abraco_dogHome.png";
-import footer_home from "../assets/imgs/footer_home.png";
+import pessoa01 from "../assets/imgs/pessoa01.jpg";
+import pessoa02 from "../assets/imgs/pessoa02.jpeg";
+import pessoa03 from "../assets/imgs/pessoa03.jpg";
 
 import style from "./styles/home.module.css";
 
@@ -85,9 +87,9 @@ function Home(){
         <div id="reencontros" ref={sessaoReencontros}>
             <h2 className={style.h2}>Reencontros de sucesso</h2>
             <div className={style.containerAvaliacoes} >
-            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
-            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
-            <AvaliacaoHome image_perfil={Ellipse_home} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
+            <AvaliacaoHome image_perfil={pessoa01} usuario_text="Paulo, MG" avaliacao_text="Nosso site facilitou o reencontro do meu gato em só dois dias! O apoio da comunidade foi enorme e muito valioso."/>
+            <AvaliacaoHome image_perfil={pessoa02} usuario_text="Fernando, SC" avaliacao_text="Meu gato perdido voltou em 48h, pura alegria! O site e seus usuários, de fato, fizeram a diferença."/>
+            <AvaliacaoHome image_perfil={pessoa03} usuario_text="Ana Paula, SP" avaliacao_text="Graças ao site, reencontrei meu cachorro em apenas dois dias! A comunidade é incrível e ajudou a espalhar a mensagem."/>
             </div>
         </div>
 

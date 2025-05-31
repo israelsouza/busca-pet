@@ -23,6 +23,7 @@
   --color03: #ddb893;
   --color04: #bf815e;
   --post: #ebeaea;
+  --fontImportada: 'inter';
 }
 
 .cad__error {
@@ -54,4 +55,8 @@
 
 #link-btn:hover {
   cursor: pointer;
+}
+
+a{
+  text-decoration: none;
 }

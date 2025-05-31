@@ -1,5 +1,5 @@
 .pet_perdido{
-    min-height: 100svh;
+    min-height: 100svh;    
     background-image: url('./../../assets/imgs/caolupa.png');
     background-position: center;
     background-repeat: no-repeat;
@@ -13,24 +13,22 @@
 }
 
 .pet_perdido__box {
-    margin-top: 100px;
+    margin-top: 30px;
     background-color: rgba(239, 163, 85, 0.5);
-    padding: 40px;
+    padding: 20px 40px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     max-width: 500px;
     width: 90%;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
 }
 
 .pet_perdido__box_mapa {
-    margin-top: 100px;
+    margin-top: 30px;
     background-color: rgba(239, 163, 85, 0.5);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-
-    margin-bottom: 100px;
 }
 
 .pet_perdido__input {
@@ -43,15 +41,20 @@
     border-radius: 5px;
     padding: 7px 0 7px 5px;
     margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.pet_perdido__box label{
+    width: 100%;
+    text-align: left;
+    margin: 0 0 10px 0;
+    color: white;
+    font-size: small;
 }
 
 .pet_perdido__textarea {
     resize: none;
     height: 75px;
-}
-
-label {
-    color: var(--inputs);
 }
 
 .pet_perdido__input50 {
@@ -69,7 +72,7 @@ label {
 }
 
 .pet_perdido__imagem_texto {
-    color: var(--inputs);
+    color: white;
     display: flex;
     text-align: left;
     gap: 5px;
@@ -83,9 +86,9 @@ label {
     outline: none;
     width: 100%;
     border-radius: 5px;
-    padding: 7px;
+    padding: 7px 0;
     cursor: pointer;
-    display: inline-block;
+    margin-top: 25px;
 }
 
 .pet_perdido__imagem label { 

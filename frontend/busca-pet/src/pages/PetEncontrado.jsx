@@ -194,7 +194,7 @@ function PetEncontrado() {
           <form>
             
             <div className={styles.pet_perdido__input100}>
-              <label htmlFor="tipoPet">Selecione o tipo do seu Pet</label>
+              <label className={styles.label} htmlFor="tipoPet">Selecione o tipo do seu Pet</label>
               <select
                 defaultValue="Selecione o tipo do pet"
                 ref={tipoPetRef}
@@ -219,7 +219,7 @@ function PetEncontrado() {
 
 
             <div className={styles.pet_perdido__input100}>
-              <label htmlFor="descricao">Breve descrição do Pet</label>
+              <label className={styles.label} htmlFor="descricao">Breve descrição do Pet</label>
               <textarea
                 id="descricao"
                 ref={descricaoRef}
@@ -233,7 +233,7 @@ function PetEncontrado() {
             </div>
 
             <div className={styles.pet_perdido__input100}>
-              <label htmlFor="data">Em qual dia você viu esse pet?</label>
+              <label className={styles.label} htmlFor="data">Em qual dia você viu esse pet?</label>
               <input
                 id="data"
                 ref={dataRef}
@@ -247,11 +247,8 @@ function PetEncontrado() {
               )}
             </div>
 
-            <p className={styles.pet_perdido__imagem_texto}>
-              Selecione a imagem do Pet que viu. (Máx: 10MB)
-            </p>
             <div className={styles.pet_perdido__imagem}>
-              <label htmlFor="imagem">Selecionar arquivo</label>
+              <label className={styles.label} htmlFor="imagem">Selecionar a imagem (até 5MB)</label>
               <input
                 id="imagem"
                 ref={imagemRef}
