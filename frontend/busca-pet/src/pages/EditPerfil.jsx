@@ -318,12 +318,12 @@ function EdicaoPerfil() {
           const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
 
           const formDataToSend = new FormData();
-          formDataToSend.append("profilePic", croppedImageBlob, "profile.jpeg"); // 'profilePic' é o nome do campo que o Multer espera
+          formDataToSend.append("foto", croppedImageBlob, "profile.jpeg"); // 'profilePic' é o nome do campo que o Multer espera
 
           const token = localStorage.getItem("authToken");
 
           // A rota no backend é agora '/upload-profile/:email'
-          const response = await fetch(`http://localhost:3000/upload-profile/${email}`, {
+          const response = await fetch(`http://localhost:3000/usuarios/foto/${email}`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
