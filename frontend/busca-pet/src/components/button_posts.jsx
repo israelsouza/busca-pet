@@ -3,6 +3,7 @@ import style from "../components/styles/button_posts.module.css";
 function Buttonposts({
   usuario,
   imagemPet,
+  imagemUsuario,
   nomePet,
   caracteristicas,
   dataSumico,
@@ -16,7 +17,8 @@ function Buttonposts({
     <div className={style.postcontainer}>
       <div className={style.postbody}>
         <div className={style.user}>
-          <h2>user: {usuario}</h2>
+          <img src={imagemUsuario} alt="" className={style.icon} />
+          <h2>{usuario}</h2>
         </div>
 
         <div className={style.imageWrapper}>
