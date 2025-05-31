@@ -5,11 +5,15 @@
 
 .container{
     display: flex;
-  }
+}
+
+.fotoPerfil{
+    border-radius: 50%;
+    max-width: 200px;
+}
 
 .FotoDivisao{
     width: 50vw;
-    height: 100vh;
     background-image: url(../../assets/imgs/fundo_pato.png);
     background-repeat: no-repeat;
     background-size: cover;
