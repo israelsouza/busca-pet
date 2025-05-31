@@ -11,7 +11,8 @@ function Buttonposts({
   textoPrimeiroCategoria,
   disparaUmaNotificacao,
   onMaps,
-  pagina
+  pagina,
+  denunciaPlaceholder
 }) {
   return (
     <div className={style.postcontainer}>
@@ -40,7 +41,7 @@ function Buttonposts({
         <div className={style.buttoninteragir}>
           {pagina != "Meus-Posts" &&
           <>
-            <button className={style.envmsg}>Enviar Mensagem</button>
+            <button className={style.envmsg}>{denunciaPlaceholder}</button>
           <button className={style.encontrarpet} onClick={disparaUmaNotificacao} >{textoPrimeiroCategoria} </button>
           </>
           }

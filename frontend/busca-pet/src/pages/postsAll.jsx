@@ -138,6 +138,7 @@ function PostsAll() {
                         imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
+                        denunciaPlaceholder="Denunciar"
                         dataSumico={post.POS_DATA}
                         regiao={ () => {
                             exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
@@ -155,6 +156,7 @@ function PostsAll() {
                         imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
+                        denunciaPlaceholder="Denunciar"
                         dataSumico={post.POS_DATA}
                         regiao={ () => {
                             exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
@@ -171,6 +173,7 @@ function PostsAll() {
                         imagemPet={post.PET_FOTO}
                         nomePet={post.PET_NOME}
                         caracteristicas={post.PET_DESCRICAO}
+                        denunciaPlaceholder="Denunciar"
                         dataSumico={post.POS_DATA}
                         regiao={ () => {
                             exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
