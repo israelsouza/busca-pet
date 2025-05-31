@@ -176,7 +176,7 @@ function PostsAll() {
                             exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng)
                         }  }
                         textoPrimeiroCategoria={post.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
-                        disparaUmaNotificacao={umaFuncao}
+                        disparaUmaNotificacao={umaFuncao(post.POS_ID)}
                     />
                 ))}
 

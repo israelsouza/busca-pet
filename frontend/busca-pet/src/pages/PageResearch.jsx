@@ -130,6 +130,7 @@ function PageResearch(){
                     caracteristicas={selectedPublication.PET_DESCRICAO}
                     dataSumico={selectedPublication.PET_DATA}
                     onMaps={true}
+                    textoPrimeiroCategoria={selectedPublication.POS_TIPO == 'Perdido' ? 'Eu encontrei esse pet!' : 'Eu perdi esse pet!'}
                     //disparaUmaNotificacao={() => { umaFuncao(post.POS_ID)}}
                 />
                   

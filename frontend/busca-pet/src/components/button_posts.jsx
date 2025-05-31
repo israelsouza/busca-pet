@@ -9,7 +9,8 @@ function Buttonposts({
   regiao,
   textoPrimeiroCategoria,
   disparaUmaNotificacao,
-  onMaps
+  onMaps,
+  pagina
 }) {
   return (
     <div className={style.postcontainer}>
@@ -33,13 +34,12 @@ function Buttonposts({
           </ul>
         </div>
         <div className={style.buttoninteragir}>
-          <button className={style.envmsg}>Enviar Mensagem</button>
-          <button
-            className={style.encontrarpet}
-            onClick={disparaUmaNotificacao}
-          >
-            {textoPrimeiroCategoria}
-          </button>
+          {pagina != "Meus-Posts" &&
+          <>
+            <button className={style.envmsg}>Enviar Mensagem</button>
+          <button className={style.encontrarpet} onClick={disparaUmaNotificacao} >{textoPrimeiroCategoria} </button>
+          </>
+          }
         </div>
       </div>
     </div>

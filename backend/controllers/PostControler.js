@@ -1,4 +1,5 @@
-import getTodosOsPosts from "../model/getTodosPosts.js";
+import {getTodosOsPosts} from "../model/getTodosPosts.js";
+import {getMinhasPublicacoesModel} from '../model/minhasPublicacoesModel.js'
 import getTipoPostModel from "../model/getTipoPostModel.js";
 import getIdFromPost from "../model/getIdFromPost.js";
 import { sendMessageToUser } from "../utils/websocket.js";
@@ -15,7 +16,23 @@ function formatarDataParaDDMMYYYY(data) {
   return `${dia}-${mes}-${ano}`;
 }
 
-async function todosPosts(req, res) {
+export async function getMinhasPublicacoes(req, res) {
+  const email = req.user.email;
+
+  try {
+    const myPosts = await getMinhasPublicacoesModel(email);
+    return res.status(200).json({message:"Ok", myPosts})
+    
+  } catch (error) {
+    console.error("meus posts error: ", error);
+    return res.status(500).json({ error: error.message });
+  }
+
+
+  
+}
+
+export async function todosPosts(req, res) {
   try {
     const posts = await getTodosOsPosts();
     return res
@@ -27,7 +44,7 @@ async function todosPosts(req, res) {
   }
 }
 
-async function getPostPerdido(req, res) {
+export async function getPostPerdido(req, res) {
   try {
     const tipo = "Perdido";
     const posts = await getTipoPostModel(tipo);
@@ -40,7 +57,7 @@ async function getPostPerdido(req, res) {
   }
 }
 
-async function getPostEncontrado(req, res) {
+export async function getPostEncontrado(req, res) {
   try {
     const tipo = "Encontrado";
     const posts = await getTipoPostModel(tipo);
@@ -54,7 +71,7 @@ async function getPostEncontrado(req, res) {
   }
 }
 
-async function getQuemPublicou(req, res) {
+export async function getQuemPublicou(req, res) {
   const { idPost } = req.body;
   const userA = req.user.email;
 
@@ -100,6 +117,8 @@ async function getQuemPublicou(req, res) {
   }
 }
 
+
+
 export async function getPetsPorArea(req, res) {
   try {
       const latPesquisa = parseFloat(req.query.lat);
@@ -137,7 +156,7 @@ export async function getPetsPorArea(req, res) {
   }
 }
 
-async function getPostsPorTexto(req, res) {
+export async function getPostsPorTexto(req, res) {
   const termoBuscado = req.query.q;
   console.log("B-CONTROLLER-POST: Entrei")
   console.log("B-CONTROLLER-POST: Termo Buscado -> ", termoBuscado)
@@ -162,5 +181,3 @@ async function getPostsPorTexto(req, res) {
   }
 
 }
-
-export { todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou, getPostsPorTexto };

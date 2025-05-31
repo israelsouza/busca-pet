@@ -5,6 +5,7 @@ import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
 import validateToken from "../assets/utils/validateToken";
 
+
 import style from "./styles/postsAll.module.css";
 
 function PostsUser() {
@@ -27,9 +28,22 @@ function PostsUser() {
 
   useEffect(() => {
     async function fetchUserPosts() {
-      const response = await fetch("/api/posts/user/1");
+      const token = localStorage.getItem("authToken");
+
+      const headerRequest = {
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                }
+
+      console.log(headerRequest)
+
+      const response = await fetch(`http://localhost:3000/api/posts/user/${token}`, headerRequest)
       const data = await response.json();
-      setUserPosts(data);
+      console.log(data)
+      setUserPosts(data.myPosts);
     }
 
     fetchUserPosts();
@@ -53,8 +67,9 @@ function PostsUser() {
                             caracteristicas={post.PET_DESCRICAO}
                             dataSumico={post.POS_DATA}
                             regiao={post.PET_LOCAL}
+                            pagina="Meus-Posts"
                         />
-                    ))} {/* DEP. GOOGLE MAPS */}
+                    ))}
                 </div>
             </div>
         </div>

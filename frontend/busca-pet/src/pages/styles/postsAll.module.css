@@ -78,16 +78,11 @@
 
 .posts {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 15px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: "Inter", sans-serif;
-    font-size: 1em;
-    font-weight: 300;
-    font-size: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 10px;
+    margin-bottom: 80px;
     
     
 }

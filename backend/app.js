@@ -13,13 +13,18 @@ import buscarUsuario from "./routes/editPerfilUsuario.js";
 import postRoutes from './routes/post.js'
 import userPhoto from './routes/getUserPhoto.js'
 import routerPublicacoes from './routes/publicacoes.js'
+import minhasPublicacoes from './routes/minhasPublicacoes.js'
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
 // middleware
 app.use("/validate-token", validateToken);
+
+// app.use('/qualquercoisa', minhasPublicacoes)
 
 // rotas publicas
 app.use("/form/cadastro-usuario", cadastroUsuario);
@@ -36,5 +41,6 @@ app.use("/criar-post/pet-encontrado/", autenticarToken, cadastrarPetEncontrado);
 app.use("/api/posts", autenticarToken, postRoutes);
 app.use("/api/publicacoes", autenticarToken, routerPublicacoes);
 app.use('/user', autenticarToken, userPhoto)
+
 
 export default app;

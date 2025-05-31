@@ -12,9 +12,13 @@ export async function getPublicacoesPorTexto(query) {
 }
 
 export async function getPetsPorArea(lat, lng) {
-    console.log(lat)
-    console.log(lng)
     return apiFetch(`/publicacoes/area?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`, {
         method: 'GET'
     })
 }
+
+// export async function getMinhasPublicacoes() {
+//     return apiFetch(`/api/posts/user`, {
+//         method: 'GET'
+//     })
+// }

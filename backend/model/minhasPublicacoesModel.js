@@ -6,11 +6,10 @@ function formatarDataParaDDMMYYYY(data) {
   return `${dia}-${mes}-${ano}`;
 }
 
-export async function getTodosOsPosts() {
-  let connection;
-
+export async function getMinhasPublicacoesModel(email) {
+    let connection;
   try {
-    console.log("B-MODEL: get todos posts inicio");
+    console.log("B-MODEL: get meus posts inicio");
     connection = await getConnection();
 
     const sql = `
@@ -28,8 +27,13 @@ export async function getTodosOsPosts() {
             WHERE
                 pet.PET_ID = post.PET_ID   AND
                 usuario.USU_ID = post.USU_ID AND
-                pessoa.PES_ID = usuario.PES_ID
+                pessoa.PES_ID = usuario.PES_ID AND
+                usuario.USU_EMAIL = :email
         `;
+
+        const binds = {
+          email: email
+        }
 
     const options = {
       fetchInfo: {
@@ -39,7 +43,7 @@ export async function getTodosOsPosts() {
       outFormat: OracleDB.OUT_FORMAT_OBJECT,
     };
 
-    const { rows } = await connection.execute(sql, [], options);
+    const {rows } = await connection.execute(sql, binds, options);
 
     const formattedRows = rows.map((row) => ({
       ...row,
