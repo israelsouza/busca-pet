@@ -33,7 +33,7 @@ async function atualizarCampo(email, campo, valor) {
 
     console.log("B-EDTPERF-MODEL-atualizarCampo: atualização concluida");
 
-    return `Campo: ${campo} atualizado com sucesso!`;
+    return `Campo atualizado com sucesso!`; //${campo}
   } catch (error) {
     console.log("B-EDTPERF-MODEL-atualizarCampo: erro na atualização");
     // Em caso de erro, desfaz a transação

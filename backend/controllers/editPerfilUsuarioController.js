@@ -12,7 +12,7 @@ async function pegarTodosOsDados(req, res) {
         console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: dados do usuario capturados.");
 
         return res.status(200).json({
-            message: "Dados cadastrais obtidos ccom sucesso!",
+            message: "Dados cadastrais obtidos com sucesso!",
             userData
         })
     } catch (error) {
