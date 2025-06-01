@@ -1,12 +1,12 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
-import getUserId from "./getUserId.js";
+import { getUserIdByEmail } from "./getUserId.js";
 
 async function getPostsDoUsuario(email) {
   let connection;
 
   try {
-    const userId = await getUserId(email); // reuso da função já existente
+    const userId = await getUserIdByEmail(email); // reuso da função já existente
     connection = await getConnection();
 
     const sql = `

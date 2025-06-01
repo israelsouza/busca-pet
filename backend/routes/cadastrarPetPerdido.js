@@ -1,5 +1,5 @@
 import express from "express";
-import getUserIdByEmail  from "../model/getUserId.js";
+import { getUserIdByEmail }  from "../model/getUserId.js";
 import getConnection from "../model/connectionOracle.js";
 import inserirPet from "../model/inserirPet.js";
 import upload from "../middleware/multerConfig.js";

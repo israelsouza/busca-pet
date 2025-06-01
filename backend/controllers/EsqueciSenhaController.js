@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import { getUserIdByEmail } from "../model/getUserId.js";
 import crypto from "crypto";
 import transporter from "../configs/mailConfig.js";
 import inserirTokenRecuperacaoSenha from "../model/inserirTokenRecuperarSenha.js";

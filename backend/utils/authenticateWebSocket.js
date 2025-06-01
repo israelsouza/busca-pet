@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import {getUserIdByEmail} from "../model/getUserId.js";
 import extrairEmailDoToken from "./extrairEmailDoToken.js";
 
 const authenticateWebSocket = async (request) => {

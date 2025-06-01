@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import {getUserIdByEmail} from "../model/getUserId.js";
 import extrairEmailDoToken from "../utils/extrairEmailDoToken.js";
 import getNotificationModel from "../model/getNotificationModel.js";
 import deleteNotificationModel from "../model/deleteNotificationModel.js";

@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import { getUserIdByEmail } from "../model/getUserId.js";
 import getTokenPassword from '../model/getTokenPassword.js'
 
 async function validarTokenSenhaController(req, res) {

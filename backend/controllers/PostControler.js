@@ -5,7 +5,7 @@ import getIdFromPost from "../model/getIdFromPost.js";
 import getPostsDoUsuario  from "../model/getPostsUsuarioModel.js";
 import { sendMessageToUser } from "../utils/websocket.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
-import getUserId from "../model/getUserId.js";
+import {getUserIdByEmail} from "../model/getUserId.js";
 import getPhoneFromId from "../model/getPhoneFromId.js";
 import {
   getPostsPorTextoModel,
@@ -93,7 +93,7 @@ export async function getQuemPublicou(req, res) {
   console.log(`B-CONTroller: Entrou em getQuemPublicou || ${userA}`);
 
   try {
-    const idUserA = await getUserId(userA);
+    const idUserA = await getUserIdByEmail(userA);
     const idUserB = await getIdFromPost(idPost);
     const telefone = await getPhoneFromId(idUserA);
 

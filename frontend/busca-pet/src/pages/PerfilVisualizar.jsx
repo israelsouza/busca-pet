@@ -7,6 +7,7 @@ import icon_conta from "../assets/imgs/icon_conta.png";
 import icon_notificacoes from "../assets/imgs/icon_notificacoes.png";
 import BotaoSection from "../components/ButtonSection";
 import icon_publicacoes from "../assets/imgs/icon_publicacoes.png";
+import Icone from "./../assets/imgs/Icone.png";
 
 import Style from "../pages/styles/PerfilVisualizar.module.css";
 
@@ -28,6 +29,7 @@ function VisualizePerfil({ userId }) {
   }, [navigate]);
 
   const [userInfo, setUserInfo] = useState({});
+  const [userPhotoSrc, setUserPhotoSrc] = useState(null);
 
   useEffect(() => {
     async function fetchUserInfo() {
@@ -39,15 +41,34 @@ function VisualizePerfil({ userId }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await fetch(
-        `http://localhost:3000/user/photo/${token}`,
-        headerRequest
-      );
-      const data = await response.json();
-      console.log("userInfo: ", data);
-      console.log("userInfo: ", data.PES_NOME);
-      console.log("userInfo: ", data.USU_FOTO);
-      setUserInfo(data);
+
+      try {
+        const response = await fetch(
+          `http://localhost:3000/user/photo/${token}`,
+          headerRequest
+        );
+        const data = await response.json();
+
+        setUserInfo(data);
+
+        if (
+          data &&
+          data.USU_FOTO &&
+          data.USU_FOTO.type === "Buffer" &&
+          Array.isArray(data.USU_FOTO.data)
+        ) {
+          const photoBase64 = arrayBufferToBase64(
+            data.USU_FOTO.data,
+            "image/jpeg"
+          );
+          setUserPhotoSrc(photoBase64);
+        } else {
+          // Se não houver foto, não for Buffer, ou se deu erro, usa o ícone padrão
+          setUserPhotoSrc(Icone);
+        }
+      } catch (error) {
+        console.error("PerfVisualizar: ", error);
+      }
     }
     fetchUserInfo();
   }, [userId]);
@@ -59,17 +80,13 @@ function VisualizePerfil({ userId }) {
         <div className={Style.FotoDivisao}></div>
         <section className={Style.perfilSection}>
           <article className={Style.cabecalho}>
-            <img
-              className={Style.fotoPerfil}
-              src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`}
-              alt="icone de foto de usuário"
-            />
-
             <div className={Style.fotoPerfil}>
+
               <img
-                src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`}
-                alt="icone de foto de usuário"
-              />
+                  src={userPhotoSrc}
+                  alt="icone de foto de usuário"
+                />
+                
             </div>
 
             <div className={Style.namecontainer}>

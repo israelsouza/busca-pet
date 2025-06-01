@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import { getUserIdByEmail } from "../model/getUserId.js";
 import fs from "fs";
 import getConnection from "../model/connectionOracle.js";
 import setPetEncontrado from "../model/PetEncontradoModel.js";

@@ -1,4 +1,4 @@
-import getUserIdByEmail from "../model/getUserId.js";
+import {getUserIdByEmail} from "../model/getUserId.js";
 import removeTokenData from '../model/removeTokenData.js'
 import updatePassword from '../model/updatePassword.js'
 import bcrypt from 'bcrypt';
