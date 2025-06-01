@@ -2,22 +2,21 @@
   display: flex;
 }
 
-
-.container{
-    display: flex;
+.container {
+  display: flex;
 }
 
-.fotoPerfil{
-    border-radius: 50%;
-    max-width: 200px;
+.fotoPerfil {
+  border-radius: 50%;
+  max-width: 200px;
 }
 
-.FotoDivisao{
-    width: 50vw;
-    background-image: url(../../assets/imgs/fundo_pato.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+.FotoDivisao {
+  width: 50vw;
+  background-image: url(../../assets/imgs/fundo_pato.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .cabecalho {
@@ -29,12 +28,11 @@
   justify-content: space-evenly;
   justify-self: right;
   align-items: center;
-
 }
 
-.fotoPerfil img{
-    max-width: 150px;
-    border-radius: 50%;
+.fotoPerfil img {
+  max-width: 150px;
+  border-radius: 50%;
 }
 
 .namecontainer {

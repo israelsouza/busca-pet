@@ -50,7 +50,7 @@ function Notification() {
     }
 
     getNotifications();
-  }, [])
+  }, []);
 
   function deleteNotification(id) {
     console.log("ID da notificação a ser deletada:", id);
@@ -76,27 +76,24 @@ function Notification() {
       });
   }
 
-
   return (
     <div className={styles.pnotification}>
       <HeaderLog />
       <div className={styles.pnotification__container}>
         <h1>Notificações</h1>
-        
-        {
-          notification.map((notificacao, key) => (
-            <BoxNotificacao
-              key={key}
-              nome={notificacao[0]}
-              telefone={notificacao[3].telefone}
-              email={notificacao[3].email}
-              id={notificacao[4]}
-              onClick={() => {
-                deleteNotification(notificacao[4]);
-              }}
-            />
-          ))
-        }
+
+        {notification.map((notificacao, key) => (
+          <BoxNotificacao
+            key={key}
+            nome={notificacao[0]}
+            telefone={notificacao[3].telefone}
+            email={notificacao[3].email}
+            id={notificacao[4]}
+            onClick={() => {
+              deleteNotification(notificacao[4]);
+            }}
+          />
+        ))}
 
         <button className={styles.pnotification__button}>
           <span>Excluir notificações</span>

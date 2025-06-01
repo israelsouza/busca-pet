@@ -25,17 +25,22 @@ const TelaPost = () => {
   }, [navigate]);
 
   return (
-     <div className={styles.bg_tela_post}>
-
+    <div className={styles.bg_tela_post}>
       <HeaderLog />
 
       <div className={styles.post__body}>
         <div className={styles.container}>
           <h1>Você...</h1>
-          <Link to={'/posts/criar-post/pet-encontrado'} className={`${styles.botao} ${styles.encontrou}`}>
+          <Link
+            to={"/posts/criar-post/pet-encontrado"}
+            className={`${styles.botao} ${styles.encontrou}`}
+          >
             Encontrou um Pet
           </Link>
-          <Link to={'/posts/criar-post/pet-perdido'} className={`${styles.botao} ${styles.perdeu}`}>
+          <Link
+            to={"/posts/criar-post/pet-perdido"}
+            className={`${styles.botao} ${styles.perdeu}`}
+          >
             Perdeu um Pet
           </Link>
         </div>

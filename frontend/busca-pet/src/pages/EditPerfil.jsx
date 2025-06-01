@@ -4,9 +4,8 @@ import Cropper from "react-easy-crop";
 
 import getCroppedImg from "../assets/utils/cropImage.js";
 import HeaderEdicao from "../components/HeaderEdicao";
-import validateToken from '../assets/utils/validateToken.js'
+import validateToken from "../assets/utils/validateToken.js";
 import enviarDados from "../assets/utils/enviarDados.js"; //////////////////////
-
 
 import Style from "../pages/styles/EditPerfil.module.css";
 
@@ -22,13 +21,11 @@ function EdicaoPerfil() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
 
-
   const [imageSrc, setImageSrc] = useState(null); // A imagem selecionada para corte (DataURL)
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null); // Coordenadas do corte
-  const [showCropperModal, setShowCropperModal] = useState(false); 
-
+  const [showCropperModal, setShowCropperModal] = useState(false);
 
   const nomeInputRef = useRef(null);
   const telefoneInputRef = useRef(null);
@@ -99,37 +96,38 @@ function EdicaoPerfil() {
       const token = localStorage.getItem("authToken");
 
       const headerRequest = {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      }
-            
+      };
+
       fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
         .then((res) => {
           console.log("F-EDITPERF: Resposta da API:", res);
           if (!res.ok) {
-            throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
+            throw new Error(
+              `Erro na requisição: ${res.status} - ${res.statusText}`
+            );
           }
           return res.json();
         })
         .then((data) => {
           console.log("Dados recebidos:", data);
           const userData = data.userData[0];
-          setFormData(userData); 
+          setFormData(userData);
           setOriginalData(userData);
           setLoading(false);
         })
         .catch((err) => {
           console.error("Erro ao buscar dados do usuário:", err);
           setLoading(false);
-        })}
-       catch (e) {
-          console.error("Erro F-EditPerf: ", e);
-       }
-      
-    }, [email]);
+        });
+    } catch (e) {
+      console.error("Erro F-EditPerf: ", e);
+    }
+  }, [email]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -142,13 +140,13 @@ function EdicaoPerfil() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ valor: formData[campo] }),
     })
-      .then(res => res.text())
+      .then((res) => res.text())
       .then(alert)
-      .catch(err => console.error("Erro:", err));
+      .catch((err) => console.error("Erro:", err));
   };
 
   const toggleEdit = (campo) => {
@@ -265,84 +263,91 @@ function EdicaoPerfil() {
       if (formData[campo] !== originalData[campo]) {
         atualizarCampo(campo); // Chama a função de atualização se o valor mudou
         setOriginalData((prev) => ({ ...prev, [campo]: formData[campo] })); // Atualiza o valor original após a tentativa de salvar (sucesso ou falha, dependendo da sua lógica)
-      };
+      }
       toggleEdit(campo);
       if (campo === "USU_EMAIL") {
         setTimeout(() => navigate("/form/login"), 1000);
       }
+    }
 
-    };
+    const onFileChange = useCallback((e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          setImageSrc(reader.result);
+          setShowCropperModal(true); // Exibe o modal do cropper
+        });
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    }, []);
 
-     const onFileChange = useCallback((e) => {
-        if (e.target.files && e.target.files.length > 0) {
-          const reader = new FileReader();
-          reader.addEventListener('load', () => {
-            setImageSrc(reader.result);
-            setShowCropperModal(true); // Exibe o modal do cropper
-          });
-          reader.readAsDataURL(e.target.files[0]);
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    }, []);
+
+    const handleCropAndUpload = useCallback(async () => {
+      try {
+        if (!imageSrc || !croppedAreaPixels) {
+          alert("Nenhuma imagem ou área de corte definida.");
+          return;
         }
-      }, []);
 
-      const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-        setCroppedAreaPixels(croppedAreaPixels);
-      }, []);
+        // Converte a imagem cortada para um Blob (para enviar via FormData)
+        const croppedImageBlob = await getCroppedImg(
+          imageSrc,
+          croppedAreaPixels
+        );
 
-      const handleCropAndUpload = useCallback(async () => {
-        try {
-          if (!imageSrc || !croppedAreaPixels) {
-            alert("Nenhuma imagem ou área de corte definida.");
-            return;
-          }
+        const formDataToSend = new FormData();
+        formDataToSend.append("foto", croppedImageBlob, "profile.jpeg"); // 'profilePic' é o nome do campo que o Multer espera
 
-          // Converte a imagem cortada para um Blob (para enviar via FormData)
-          const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+        const token = localStorage.getItem("authToken");
 
-          const formDataToSend = new FormData();
-          formDataToSend.append("foto", croppedImageBlob, "profile.jpeg"); // 'profilePic' é o nome do campo que o Multer espera
-
-          const token = localStorage.getItem("authToken");
-
-          // A rota no backend é agora '/upload-profile/:email'
-          const response = await fetch(`http://localhost:3000/usuarios/foto/${email}`, {
+        // A rota no backend é agora '/upload-profile/:email'
+        const response = await fetch(
+          `http://localhost:3000/usuarios/foto/${email}`,
+          {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
               // Não inclua 'Content-Type': 'application/json' quando usando FormData
             },
             body: formDataToSend,
-          });
-
-          const responseData = await response.json(); // Assumindo que o backend sempre retorna JSON
-          if (response.ok) {
-            alert("Foto de perfil atualizada com sucesso!");
-            setShowCropperModal(false); // Fecha o modal
-            setImageSrc(null); // Limpa a imagem do cropper
-            setCroppedAreaPixels(null); // Limpa as coordenadas
-            // Opcional: recarregar a foto do perfil no frontend
-            // window.location.reload(); // Uma forma simples, mas pode ser mais elegante
-            // Ou, se o backend retornar o URL da nova imagem, usá-lo para atualizar o estado da foto.
-          } else {
-            alert(`Erro ao atualizar foto de perfil: ${responseData.message || response.statusText}`);
           }
-        } catch (error) {
-          console.error("Erro ao cortar ou enviar a imagem:", error);
-          alert("Ocorreu um erro ao processar a imagem.");
+        );
+
+        const responseData = await response.json(); // Assumindo que o backend sempre retorna JSON
+        if (response.ok) {
+          alert("Foto de perfil atualizada com sucesso!");
+          setShowCropperModal(false); // Fecha o modal
+          setImageSrc(null); // Limpa a imagem do cropper
+          setCroppedAreaPixels(null); // Limpa as coordenadas
+          // Opcional: recarregar a foto do perfil no frontend
+          // window.location.reload(); // Uma forma simples, mas pode ser mais elegante
+          // Ou, se o backend retornar o URL da nova imagem, usá-lo para atualizar o estado da foto.
+        } else {
+          alert(
+            `Erro ao atualizar foto de perfil: ${
+              responseData.message || response.statusText
+            }`
+          );
         }
-      }, [imageSrc, croppedAreaPixels, email]);
+      } catch (error) {
+        console.error("Erro ao cortar ou enviar a imagem:", error);
+        alert("Ocorreu um erro ao processar a imagem.");
+      }
+    }, [imageSrc, croppedAreaPixels, email]);
 
-  const handleFotoChange = (e) => {
-    setFoto(e.target.files[0]);
-
-    }
-
+    const handleFotoChange = (e) => {
+      setFoto(e.target.files[0]);
+    };
   };
 
   // Funções para o Cropper
   const onFileChange = useCallback((e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener('load', () => {
+      reader.addEventListener("load", () => {
         setImageSrc(reader.result);
         setShowCropperModal(true); // Exibe o modal do cropper
       });
@@ -370,14 +375,17 @@ function EdicaoPerfil() {
       const token = localStorage.getItem("authToken");
 
       // A rota no backend é agora '/upload-profile/:email'
-      const response = await fetch(`http://localhost:3000/usuarios/foto/${email}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // Não inclua 'Content-Type': 'application/json' quando usando FormData
-        },
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        `http://localhost:3000/usuarios/foto/${email}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Não inclua 'Content-Type': 'application/json' quando usando FormData
+          },
+          body: formDataToSend,
+        }
+      );
 
       const responseData = await response.json(); // Assumindo que o backend sempre retorna JSON
       if (response.ok) {
@@ -389,7 +397,11 @@ function EdicaoPerfil() {
         // window.location.reload(); // Uma forma simples, mas pode ser mais elegante
         // Ou, se o backend retornar o URL da nova imagem, usá-lo para atualizar o estado da foto.
       } else {
-        alert(`Erro ao atualizar foto de perfil: ${responseData.message || response.statusText}`);
+        alert(
+          `Erro ao atualizar foto de perfil: ${
+            responseData.message || response.statusText
+          }`
+        );
       }
     } catch (error) {
       console.error("Erro ao cortar ou enviar a imagem:", error);
@@ -499,7 +511,6 @@ function EdicaoPerfil() {
                 />
               </label>
               {/* <button onClick={enviarFoto}>Enviar Foto</button> */}
-
             </div>
           </div>
 
@@ -636,8 +647,7 @@ function EdicaoPerfil() {
         <div className={Style.containerfoto}></div>
       </div>
 
-
-            {/* Modal do Cropper */}
+      {/* Modal do Cropper */}
       {showCropperModal && (
         <div className={Style.cropperModalOverlay}>
           <div className={Style.cropperModalContent}>
@@ -656,11 +666,15 @@ function EdicaoPerfil() {
                 </div>
                 <div className={Style.cropperControls}>
                   <button onClick={handleCropAndUpload}>Salvar e Enviar</button>
-                  <button onClick={() => {
-                    setShowCropperModal(false);
-                    setImageSrc(null); // Limpa a imagem ao cancelar
-                    setCroppedAreaPixels(null); // Limpa as coordenadas ao cancelar
-                  }}>Cancelar</button>
+                  <button
+                    onClick={() => {
+                      setShowCropperModal(false);
+                      setImageSrc(null); // Limpa a imagem ao cancelar
+                      setCroppedAreaPixels(null); // Limpa as coordenadas ao cancelar
+                    }}
+                  >
+                    Cancelar
+                  </button>
                 </div>
               </>
             )}

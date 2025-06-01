@@ -7,16 +7,22 @@ import Option from "../components/Option";
 import ButtonForm from "../components/ButtonForm";
 import {
   verificarTamanhoFixo,
-  verificarTamanhoMaximo
+  verificarTamanhoMaximo,
 } from "../assets/utils/formValidacoes";
-import { validarCampoEmail, validarTamanhoMinimo, validarCampoVazio, validarCampoApenasLetras, validarCampoApenasNumeros } from "../assets/utils/regex.js";
+import {
+  validarCampoEmail,
+  validarTamanhoMinimo,
+  validarCampoVazio,
+  validarCampoApenasLetras,
+  validarCampoApenasNumeros,
+} from "../assets/utils/regex.js";
 import enviarDados from "../assets/utils/enviarDados";
 
 import style from "./styles/cadastroUsuario.module.css";
 
 function Cadastro() {
   const navigate = useNavigate();
-  
+
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
@@ -27,7 +33,7 @@ function Cadastro() {
   const cepRef = useRef(null);
   const cidadeRef = useRef(null);
   const estadoRef = useRef(null);
-  
+
   const [erroNome, setErroNome] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroSenha, setErroSenha] = useState("");
@@ -91,34 +97,54 @@ function Cadastro() {
         ref: cidade,
         setErro: setErroCidade,
         mensagem: "O campo cidade é obrigatório.",
-      }
+      },
     ];
 
-    if (
-      validarCampoVazio({campos: camposObrigatorios})
-    ) return true;
+    if (validarCampoVazio({ campos: camposObrigatorios })) return true;
 
-    if ( estado.value.length > 2) {
+    if (estado.value.length > 2) {
       setErroEstado("Por favor, selecione algum estado válido.");
     } else {
       setErroEstado("");
     }
 
-    if ( validarCampoApenasLetras({
-      campos: [
-        { ref: name, setErro: setErroNome, mensagem: "O campo nome não pode conter números." },
-        { ref: rua, setErro: setErroRua, mensagem: "O campo rua não pode conter números." },
-        { ref: bairro, setErro: setErroBairro, mensagem: "O campo bairro não pode conter números." },
-        { ref: cidade, setErro: setErroCidade, mensagem: "O campo cidade não pode conter números." },
-      ]
-    }) ) return true;
+    if (
+      validarCampoApenasLetras({
+        campos: [
+          {
+            ref: name,
+            setErro: setErroNome,
+            mensagem: "O campo nome não pode conter números.",
+          },
+          {
+            ref: rua,
+            setErro: setErroRua,
+            mensagem: "O campo rua não pode conter números.",
+          },
+          {
+            ref: bairro,
+            setErro: setErroBairro,
+            mensagem: "O campo bairro não pode conter números.",
+          },
+          {
+            ref: cidade,
+            setErro: setErroCidade,
+            mensagem: "O campo cidade não pode conter números.",
+          },
+        ],
+      })
+    )
+      return true;
 
-    if ( validarCampoEmail({
-      campo:email,
-      setErro: setErroEmail,
-      mensagem: "Por favor, insira um e-mail válido."
-    }) ) return true;
-    
+    if (
+      validarCampoEmail({
+        campo: email,
+        setErro: setErroEmail,
+        mensagem: "Por favor, insira um e-mail válido.",
+      })
+    )
+      return true;
+
     const camposTamanhoMaximo = [
       {
         ref: name,
@@ -165,12 +191,23 @@ function Cadastro() {
     ];
     if (verificarTamanhoMaximo(camposTamanhoMaximo)) return true;
 
-    if ( validarCampoApenasNumeros({
-      campos: [
-        { ref: phone, setErro: setErroPhone, mensagem: "O campo telefone só pode ter números." },
-        { ref: cep, setErro: setErroCEP, mensagem: "O campo cep só pode ter números." },
-      ]
-    }) ) return true;
+    if (
+      validarCampoApenasNumeros({
+        campos: [
+          {
+            ref: phone,
+            setErro: setErroPhone,
+            mensagem: "O campo telefone só pode ter números.",
+          },
+          {
+            ref: cep,
+            setErro: setErroCEP,
+            mensagem: "O campo cep só pode ter números.",
+          },
+        ],
+      })
+    )
+      return true;
 
     const camposTamanhoFixo = [
       {
@@ -190,19 +227,21 @@ function Cadastro() {
     ];
     if (verificarTamanhoFixo(camposTamanhoFixo)) return true;
 
-    if ( 
-      validarTamanhoMinimo({      
-        campo:senha,
+    if (
+      validarTamanhoMinimo({
+        campo: senha,
         min: 6,
         setErro: setErroSenha,
-        mensagem: "A senha possui no mínimo 6 caracteres, verifique e tente novamente"
-    })
-      ) return true;    
+        mensagem:
+          "A senha possui no mínimo 6 caracteres, verifique e tente novamente",
+      })
+    )
+      return true;
 
-      if (senha.value !== senha2.value) {
-        setErroSenha("As senhas não coincidem. Por favor, verifique.");
-        return true;
-      } 
+    if (senha.value !== senha2.value) {
+      setErroSenha("As senhas não coincidem. Por favor, verifique.");
+      return true;
+    }
 
     const dados = {
       nome: nomeRef.current.value,
@@ -217,26 +256,21 @@ function Cadastro() {
     };
 
     try {
-      const dadosAoBack = await enviarDados(
-        dados,
-        "form/cadastro-usuario"
-      );
+      const dadosAoBack = await enviarDados(dados, "form/cadastro-usuario");
 
       if (dadosAoBack.message) {
         setMensagem(dadosAoBack.message);
 
         if (dadosAoBack.message === "Cadastro realizado com sucesso") {
-          setTimeout(() => navigate("/form/login"), 1200); 
+          setTimeout(() => navigate("/form/login"), 1200);
         }
       } else {
         setMensagem("Erro inesperado. Tente novamente.");
       }
-
     } catch (error) {
-      
       if (error.message) {
         setMensagem(error.message);
-      } else {        
+      } else {
         setMensagem("Erro ao realizar o cadastro. Tente novamente.");
       }
     }
@@ -431,7 +465,9 @@ function Cadastro() {
                   </select>
 
                   {erroEstado && (
-                    <span id="email-error" className={style.cad__error}>{erroEstado}</span>
+                    <span id="email-error" className={style.cad__error}>
+                      {erroEstado}
+                    </span>
                   )}
                 </div>
               </form>

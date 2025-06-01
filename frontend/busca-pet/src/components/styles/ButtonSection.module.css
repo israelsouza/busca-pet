@@ -1,50 +1,50 @@
-.container_section{
-    /* background-color: pink; */
-    padding: 50px;
-    width: 50vw;
-    justify-self: right;
+.container_section {
+  /* background-color: pink; */
+  padding: 50px;
+  width: 50vw;
+  justify-self: right;
 }
 
-.conteudo_section{
-    /* background-color: aquamarine; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    border: solid rgba(82, 81, 81, 0.5) 0.1em;
-    border-radius: 0.5em;
-    min-width: fit-content;
-    max-width: 219px;
-    height: 46px;
-    margin-bottom: 10px;
+.conteudo_section {
+  /* background-color: aquamarine; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border: solid rgba(82, 81, 81, 0.5) 0.1em;
+  border-radius: 0.5em;
+  min-width: fit-content;
+  max-width: 219px;
+  height: 46px;
+  margin-bottom: 10px;
 }
 
-.img{
-    width: 20px;
-    height: 20px;
+.img {
+  width: 20px;
+  height: 20px;
 }
 
-.h3{
-    font-family: "Inter",  sans-serif;
-    font-size: 1.5em;
-    font-weight: normal;
+.h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 1.5em;
+  font-weight: normal;
 }
 
-.texto_desc{
-    font-family: "Inter",  sans-serif;
-    /* background-color: blue; */
-    font-size: 1.5em;
+.texto_desc {
+  font-family: "Inter", sans-serif;
+  /* background-color: blue; */
+  font-size: 1.5em;
 }
 
-.a{
-    text-decoration: none;
-    font-family: "Inter", sans-serif;
+.a {
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
 }
 
-.acesso{
-    text-decoration: none;
-    color: black;
-    font-family: "Inter", sans-serif;
-    font-size: 1.5em;
-    padding-top: 10px;
+.acesso {
+  text-decoration: none;
+  color: black;
+  font-family: "Inter", sans-serif;
+  font-size: 1.5em;
+  padding-top: 10px;
 }

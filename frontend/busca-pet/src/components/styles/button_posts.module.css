@@ -1,28 +1,28 @@
 .postcontainer {
-    background-color: var(--post);
-    border-radius: 10px;
-    padding: 30px 20px;
-    max-width: 600px;
-    text-align: center;
-    box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+  background-color: var(--post);
+  border-radius: 10px;
+  padding: 30px 20px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }
 
 .user {
-    display: flex;
-    align-items: center;
-    gap: 10px; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.regiao{
-    text-align: center;
-    padding: 5px;
-    margin: 10px 0;
-    color: blue;
-    font-weight: 600;
+.regiao {
+  text-align: center;
+  padding: 5px;
+  margin: 10px 0;
+  color: blue;
+  font-weight: 600;
 }
 
-.regiao:hover{
-    cursor: pointer;
+.regiao:hover {
+  cursor: pointer;
 }
 
 .imageWrapper {
@@ -36,8 +36,8 @@
   align-items: center; */
 }
 
-.userAvatar{
-    display: flex;
+.userAvatar {
+  display: flex;
 }
 
 .petImage {
@@ -47,50 +47,49 @@
 }
 
 .postbody {
-    background-color: var(--post);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  background-color: var(--post);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .infospost {
-    background-color: var(--post);
-    padding: 10px;
-    border-radius: 10px;
-    text-align: left;
-    width: 250px;
-    height: auto;
+  background-color: var(--post);
+  padding: 10px;
+  border-radius: 10px;
+  text-align: left;
+  width: 250px;
+  height: auto;
 }
 
-li{
-    list-style-type: none;
-    padding-top: 10px;
+li {
+  list-style-type: none;
+  padding-top: 10px;
 }
 
-.buttoninteragir{
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    
+.buttoninteragir {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.denuncia{
-    background-color: var(--inputs);
-    border-radius: 8px;
-    border: none;
-    padding: 10px;
-    font-family: "Inter", sans-serif;
-    font-size: 1em;
-    font-weight: 400;
-    color: var(--botaohome);
-    box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+.denuncia {
+  background-color: var(--inputs);
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--botaohome);
+  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }
 
-.denuncia:hover{
-    background-color:var(--botao);
-    transform: scale(1.05);
-    transition: 0.5s;
+.denuncia:hover {
+  background-color: var(--botao);
+  transform: scale(1.05);
+  transition: 0.5s;
 }
 
 .icon {
@@ -99,22 +98,22 @@ li{
   margin-right: 15px;
 }
 
-.encontrarpet{
-    background-color: var(--color04);
-    border-radius: 8px;
-    border: none;
-    padding: 10px;
-    font-family: "Inter", sans-serif;
-    font-size: 1em;
-    font-weight: 400;
-    color: #ffff;
-    box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
+.encontrarpet {
+  background-color: var(--color04);
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  color: #ffff;
+  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }
 
-.encontrarpet:hover{
-    background-color:var(--botao);
-    transform: scale(1.05);
-    transition: 0.5s;
+.encontrarpet:hover {
+  background-color: var(--botao);
+  transform: scale(1.05);
+  transition: 0.5s;
 }
 
 .denunciarpet {
@@ -132,7 +131,7 @@ li{
 }
 
 .denunciarpet:hover {
-    background-color:var(--botao);
-    transform: scale(1.05);
-    transition: 0.5s;
+  background-color: var(--botao);
+  transform: scale(1.05);
+  transition: 0.5s;
 }

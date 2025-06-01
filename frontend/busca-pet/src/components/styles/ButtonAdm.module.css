@@ -1,47 +1,47 @@
 .ContainerBotao {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .funcao {
-    width: 250px;
-    height: 150px;
-    background-color: var(--header);
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 1em;
-    color: #000;
-    border-radius: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    transition: 0.3s ease;
-    position: relative;
-    text-align: center;
+  width: 250px;
+  height: 150px;
+  background-color: var(--header);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1em;
+  color: #000;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  transition: 0.3s ease;
+  position: relative;
+  text-align: center;
 }
 
 .funcao:hover {
-    background-color: var(--label);
+  background-color: var(--label);
 }
 
 p {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .img {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 .link {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .link:hover {
-    text-decoration: none;
+  text-decoration: none;
 }

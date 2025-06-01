@@ -121,7 +121,7 @@
   width: 50%;
 }
 
-.article_img img{
+.article_img img {
   box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
 }
 
@@ -133,7 +133,7 @@
 }
 
 .container_footer {
-  background: url('../../assets/imgs/footer_home.png');
+  background: url("../../assets/imgs/footer_home.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

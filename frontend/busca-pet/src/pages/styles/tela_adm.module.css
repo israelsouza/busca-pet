@@ -1,59 +1,57 @@
 .ContainerBody {
-    margin-top: 20px;
-    text-align: center;
-    ;
+  margin-top: 20px;
+  text-align: center;
 }
 
-.H1{
-    font-family: 'Inter', sans-serif;
-    font-size: 2em;
-    font-weight: 400;
-    color: #0d0d0d;
-    padding: 20px;
+.H1 {
+  font-family: "Inter", sans-serif;
+  font-size: 2em;
+  font-weight: 400;
+  color: #0d0d0d;
+  padding: 20px;
 }
 
 .ContainerFuncoes {
-    display: flex;
-    gap: 2rem;
-    margin: 40px 0;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 100px;
-    gap: 50px;
+  display: flex;
+  gap: 2rem;
+  margin: 40px 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 100px;
+  gap: 50px;
 }
 
 .footer {
-    position: fixed;         
-    bottom: 20px;            
-    right: 80px;             
-    background-color: transparent;
-    display: flex;
-    justify-content: flex-end;
-    width: auto;         
-    z-index: 100;
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  background-color: transparent;
+  display: flex;
+  justify-content: flex-end;
+  width: auto;
+  z-index: 100;
 }
 
 .botaoSair {
-    width: 150px;
-    height: 40px;
-    border-radius: 28px;
-    background-color: var(--botao);
-    font-family: 'Inter', sans-serif;
-    color: var(--titulo);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url(../../assets/imgs/icon_logOut.png);
-    background-repeat: no-repeat;
-    background-position: 90px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+  width: 150px;
+  height: 40px;
+  border-radius: 28px;
+  background-color: var(--botao);
+  font-family: "Inter", sans-serif;
+  color: var(--titulo);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../../assets/imgs/icon_logOut.png);
+  background-repeat: no-repeat;
+  background-position: 90px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .botaoSair:hover {
-    transition: 0.5s;
-    transform: scale(1.05);
-    background-color: var(--label);
+  transition: 0.5s;
+  transform: scale(1.05);
+  background-color: var(--label);
 }
-

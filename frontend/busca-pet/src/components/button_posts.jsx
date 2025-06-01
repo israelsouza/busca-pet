@@ -2,7 +2,6 @@ import style from "../components/styles/button_posts.module.css";
 import ModalDenuncia from "../components/ModalDenuncias.jsx";
 import { useState } from "react";
 
-
 function Buttonposts({
   usuario,
   imagemPet,
@@ -17,14 +16,9 @@ function Buttonposts({
   pagina,
   denunciaPlaceholder,
 
-
   text_button,
   petId,
-  onDenunciarClick
-
-
-  
-
+  onDenunciarClick,
 }) {
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -39,9 +33,9 @@ function Buttonposts({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ tipo, descricao, petId })
+      body: JSON.stringify({ tipo, descricao, petId }),
     });
 
     setMostrarModal(false);
@@ -56,7 +50,6 @@ function Buttonposts({
           <h2>{usuario}</h2>
         </div>
 
-
         <div className={style.imageWrapper}>
           <img src={imagemPet} alt="Imagem do Pet" className={style.petImage} />
         </div>
@@ -68,19 +61,25 @@ function Buttonposts({
             <br />
             <span>Visto pela ultima vez: </span>
             <li>{dataSumico}</li>
-            {!onMaps &&
-              <li onClick={regiao} className={style.regiao}>Ver localização</li>
-            }
+            {!onMaps && (
+              <li onClick={regiao} className={style.regiao}>
+                Ver localização
+              </li>
+            )}
           </ul>
         </div>
         <div className={style.buttoninteragir}>
-
-          {pagina != "Meus-Posts" &&
-          <>
-            <button className={style.envmsg}>{denunciaPlaceholder}</button>
-          <button className={style.encontrarpet} onClick={disparaUmaNotificacao} >{textoPrimeiroCategoria} </button>
-          </>
-          }
+          {pagina != "Meus-Posts" && (
+            <>
+              <button className={style.envmsg}>{denunciaPlaceholder}</button>
+              <button
+                className={style.encontrarpet}
+                onClick={disparaUmaNotificacao}
+              >
+                {textoPrimeiroCategoria}{" "}
+              </button>
+            </>
+          )}
 
           <button className={style.denuncia} onClick={abrirModal}>
             {text_button}
@@ -98,7 +97,6 @@ function Buttonposts({
           >
             {textoPrimeiroCategoria}
           </button>
-
         </div>
       </div>
     </div>

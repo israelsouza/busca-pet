@@ -1,100 +1,96 @@
 /* Variaveis de cores */
-@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jua&display=swap&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jua&display=swap&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
-.fundo_login{
-    display: flex;
+.fundo_login {
+  display: flex;
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.lado_form{
-    max-width: 100svh;
+.lado_form {
+  max-width: 100svh;
 }
 
 .conjuntoEsquerdo {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--fundo_form);
-    width: 80%; 
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--fundo_form);
+  width: 80%;
+  min-height: 100vh;
 }
 
-.lado_img{
-    background: url("../../assets/imgs/Gato.png") no-repeat center;
-    background-size: cover;
-    width: 100%;
-    
+.lado_img {
+  background: url("../../assets/imgs/Gato.png") no-repeat center;
+  background-size: cover;
+  width: 100%;
 }
 
 /* Header e componentes*/
 /* esta consumindo o header componente, com estilos de escopo fechado no proprio componente */
 
 .sub_title_login {
-    text-align: center;
-    font-family: 'Inria Sans';
-    font-weight: 400;
-    font-size: 30px;
-    margin-top: 20px;
+  text-align: center;
+  font-family: "Inria Sans";
+  font-weight: 400;
+  font-size: 30px;
+  margin-top: 20px;
 }
 
 .form_login {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-block-start: 60px;
+  width: 100%;
+  align-items: center;
+
+  & .btn_login {
+    background-color: var(--botao);
+    box-shadow: 0px 3px 3px 0px #00000049;
+    border-radius: 20px;
+    width: 200px;
+    font-family: "inter";
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
     display: flex;
-    flex-direction: column;
-    gap: 50px;
-    margin-block-start: 60px;
-    width: 100%;
+    justify-content: center;
     align-items: center;
-    
-
-
-    & .btn_login {
-        background-color: var(--botao);
-        box-shadow: 0px 3px 3px 0px #00000049;
-        border-radius: 20px;
-        width: 200px;
-        font-family: 'inter';
-        font-size: 24px;
-        cursor: pointer;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  }
 }
 
 .campos {
-    display: flex;
-    flex-direction: column;
-    color: var(--label);
-    font-family: 'inria sans';
+  display: flex;
+  flex-direction: column;
+  color: var(--label);
+  font-family: "inria sans";
 }
 
 .campos input {
-    min-width: 500px;
-    background-color: var(--inputs);
-    border: none;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0px 3px 3px 0px #00000049;  
+  min-width: 500px;
+  background-color: var(--inputs);
+  border: none;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0px 3px 3px 0px #00000049;
 }
 
 .redirect {
-    margin-block-start: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 70px;
-   
-    & .links {
-        color: var(--links);
-    }
+  margin-block-start: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 70px;
 
+  & .links {
+    color: var(--links);
+  }
 }
 
-.login__label{
-    color: var(--label)
+.login__label {
+  color: var(--label);
 }
