@@ -11,7 +11,6 @@
 
             console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: dados do usuario capturados.");
 
-<<<<<<< HEAD
         return res.status(200).json({
             message: "Dados cadastrais obtidos com sucesso!",
             userData
@@ -27,9 +26,10 @@ async function buscarUsuario(req, res) {
 
     try {
         const usuario = await usuarioModel.buscarPorEmail(email);
-        if (!usuario) {
-            return res.status(404).send("Usuário não encontrado.");
-=======
+            if (!usuario) {
+                return res.status(404).send("Usuário não encontrado.");
+            }
+
             return res.status(200).json({
                 message: "Dados cadastrais obtidos ccom sucesso!",
                 userData
@@ -37,7 +37,6 @@ async function buscarUsuario(req, res) {
         } catch (error) {
             console.log("B-EDTPERF-CONTROLLER-pegarTodosDados: erro encontrado.");
             console.error(error)
->>>>>>> b8062f307c0da13e8b4ed66970f0ae308870d8a6
         }
     }
 

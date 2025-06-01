@@ -3,4 +3,5 @@
   align-items: center;
   justify-content: center;
   background-color: var(--header);
+  box-shadow: 6px 4px 6px rgba(10, 10, 10, 0.568);
 }

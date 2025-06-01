@@ -15,9 +15,14 @@ import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
 import Notification from "./pages/Notification";
 
+
 import API_KEY from './config/maps-api.js';
 
 const libraries = ['places', 'geometry']
+
+
+import TelaAdm from "./pages/Administrador";
+import AdmUsuarios from "./pages/AdmUsuarios";
 
 function App() {
 
@@ -69,6 +74,9 @@ function App() {
           <Route path="/EditarPerfil" element={<EditarPerfil />} />
           <Route path="/Posts/user" element={<PostsUser />} />
           <Route path="/user/notificacao" element={<Notification />} />
+          <Route path="/adm" element={<TelaAdm />} />
+          <Route path="/adm/usuarios" element={<AdmUsuarios />} />
+          {/* Adicione outras rotas conforme necessário */}
         </Routes>
 
         </LoadScript>

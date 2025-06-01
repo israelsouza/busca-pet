@@ -42,19 +42,29 @@ function VisualizePerfil({userId}){
             const response = await fetch(`http://localhost:3000/user/photo/${token}`, headerRequest);
             const data = await response.json();
             console.log("userInfo: ", data );
+            console.log("userInfo: ", data.PES_NOME );
+            console.log("userInfo: ", data.USU_FOTO );
             setUserInfo(data);
         }
         fetchUserInfo();
     }, [userId]);
-       
-        return <div>
+    
+    return <div>
             <HeaderEdicao />
             <div className={Style.container}>
             <div className={Style.FotoDivisao}></div>
                 <section className={Style.perfilSection}>   
                     <article className={Style.cabecalho}>
 
+
                     <img className={Style.fotoPerfil} src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`} alt="icone de foto de usuário" />
+
+
+            
+                    <div className={Style.fotoPerfil}>
+                        <img src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`} alt="icone de foto de usuário" />
+                    </div>
+                       
 
                     <div className={Style.namecontainer}>
                     <h2 className={Style.h2}>{userInfo.PES_NOME || "Exemplo de nome de Usuário"}</h2>
