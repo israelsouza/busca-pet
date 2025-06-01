@@ -1,1 +1,0 @@
-export const myEmail = "sbuscapet@gmail.com"; 
