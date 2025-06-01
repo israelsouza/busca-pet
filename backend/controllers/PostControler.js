@@ -34,10 +34,8 @@ export async function getMinhasPublicacoes(req, res) {
   
 }
 
-export async function todosPosts(req, res) {
 
-
-async function getPostsUsuario(req, res) {
+export async function getPostsUsuario(req, res) {
   try {
     const email = req.user.email; // usuário autenticado pelo token
     const posts = await getPostsDoUsuario(email);
@@ -48,7 +46,7 @@ async function getPostsUsuario(req, res) {
   }
 }
 
-async function todosPosts(req, res) {
+export async function todosPosts(req, res) {
 
   try {
     const posts = await getTodosOsPosts();
@@ -197,6 +195,3 @@ export async function getPostsPorTexto(req, res) {
   }
 
 }
-
-export { getPostsUsuario, todosPosts, getPostEncontrado, getPostPerdido, getQuemPublicou };
-

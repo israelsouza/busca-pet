@@ -1,22 +1,16 @@
-
-import {  useState, useEffect, useCallback }  from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import MapGoogleComponent from '../components/MapGoogleComponent'
-
 // pages/PostsAll.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 import Buttonposts from "../components/button_posts";
 import HeaderLog from "../components/HeaderLog";
 import useWebSocket from "../assets/utils/useWebSocket.js";
 import validateToken from '../assets/utils/validateToken.js';
 import enviarDados from "../assets/utils/enviarDados.js"; // Importe a sua função enviarDados
-
+import MapGoogleComponent from '../components/MapGoogleComponent'
 import ModalDenuncia from "../components/ModalDenuncias.jsx"; // Importe o modal com o nome correto
+
 import style from "./styles/postsAll.module.css";
 
 function PostsAll() {
@@ -53,10 +47,10 @@ function PostsAll() {
             }
         });
 
-        }
-    }, [messages, exibirNotificacao, setNotificacoesRecebidas]);
+        }, [messages, exibirNotificacao, setNotificacoesRecebidas]);
 
     
+    // }, [messages, exibirNotificacao]);
     
     const [posts, setPosts] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
@@ -67,10 +61,6 @@ function PostsAll() {
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
       
-
-    }, [messages, exibirNotificacao]);
-
-
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -84,11 +74,6 @@ function PostsAll() {
         };
         checkAuthentication();
     }, [navigate]);
-
-    const [posts, setPosts] = useState([]);
-    const [lostPosts, setLostPosts] = useState([]);
-    const [foundPosts, setFoundPosts] = useState([]);
-    const [category, setCategory] = useState('all');
 
     useEffect(() => {
         async function fetchPosts() {
@@ -135,7 +120,9 @@ function PostsAll() {
                 else if (category === 'lost') setLostPosts(data.posts);
                 else if (category === 'found') setFoundPosts(data.posts);
 
-            } catch (error) {
+            } 
+        }
+            catch (error) {
                 console.error('Erro ao buscar posts:', error);
             }
         }

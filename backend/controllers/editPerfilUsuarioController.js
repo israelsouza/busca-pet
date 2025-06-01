@@ -21,7 +21,7 @@
     }
 }
 
-async function buscarUsuario(req, res) {
+export async function buscarUsuario(req, res) {
     const { email } = req.params;
 
     try {
@@ -40,24 +40,7 @@ async function buscarUsuario(req, res) {
         }
     }
 
-    async function buscarUsuario(req, res) {
-        const { email } = req.params;
 
-        try {
-            const usuario = await usuarioModel.buscarPorEmail(email);
-            if (!usuario) {
-                return res.status(404).send("Usuário não encontrado.");
-            }
-             if (usuario.USU_FOTO && Buffer.isBuffer(usuario.USU_FOTO)) {
-            usuario.USU_FOTO = usuario.USU_FOTO.toString("base64");
-        }
-
-        res.json(usuario);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Erro ao buscar dados por email: " + err.message);
-    }
-}
 
     async function atualizarCampo(req, res) {
         const { email, campo } = req.params;

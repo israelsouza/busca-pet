@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import HeaderLog from "../components/HeaderLog";
 import validateToken from "../assets/utils/validateToken";
 
-
-
 import style from "./styles/postsAll.module.css";
 
 import PostUser from "../components/PostUser";
@@ -34,7 +32,6 @@ function PostsUser() {
     async function fetchUserPosts() {
       const token = localStorage.getItem("authToken");
 
-
       const headerRequest = {
                     method: 'GET',
                     headers: {
@@ -42,26 +39,11 @@ function PostsUser() {
                     Authorization: `Bearer ${token}`,
                 },
                 }
-
-      console.log(headerRequest)
-
-      const response = await fetch(`http://localhost:3000/api/posts/user/${token}`, headerRequest)
+      try {
+        const response = await fetch(`http://localhost:3000/api/posts/user/${token}`, headerRequest)
       const data = await response.json();
       console.log(data)
       setUserPosts(data.myPosts);
-
-      const headerRequest = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      try {
-        const response = await fetch('http://localhost:3000/api/posts/user', headerRequest);
-        const data = await response.json();
-        setUserPosts(data.posts);
       } catch (error) {
         console.error("Erro ao buscar posts do usuário:", error);
       }
@@ -118,6 +100,8 @@ function PostsUser() {
               </div>
 
             </div>
+    </div>
+    </div>
     </div>
   );
 }
