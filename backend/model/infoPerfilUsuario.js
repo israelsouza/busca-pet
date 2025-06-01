@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('../configs/db');
 
 class InfoPerfilUsuarioModel {
     static async getUserAndPersonInfo(userId) {
