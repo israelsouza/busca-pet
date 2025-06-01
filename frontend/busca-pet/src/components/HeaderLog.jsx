@@ -43,13 +43,13 @@ function HeaderLog({ onSelectCategory }) {
 
         setUserInfo(data);
 
-        if (data && data.USU_FOTO && data.USU_FOTO.type === 'Buffer' && Array.isArray(data.USU_FOTO.data)) {
-            const photoBase64 = arrayBufferToBase64(data.USU_FOTO.data, 'image/jpeg');
-            setUserPhotoSrc(photoBase64);
-        } else {
-            // Se não houver foto, não for Buffer, ou se deu erro, usa o ícone padrão
-            setUserPhotoSrc(Icone);
-        }
+       if (data && typeof data.USU_FOTO === 'string' && data.USU_FOTO.length > 0) {
+               const photoBase64String = `data:image/jpeg;base64,${data.USU_FOTO}`;
+               setUserPhotoSrc(photoBase64String);
+             } else {
+               // Se não houver foto ou não for uma string válida, usa o ícone
+               setUserPhotoSrc(Icone);
+             }
 
 
       } catch (error) {

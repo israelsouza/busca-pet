@@ -11,11 +11,11 @@ async function getPhotoAndName(email) {
             FROM USUARIO, PESSOA
             WHERE
               PESSOA.PES_ID = USUARIO.PES_ID AND
-              USUARIO.USU_EMAIL = :email
+              USUARIO.USU_EMAIL = :emaill
         `;
 
     const binds = {
-      email: email,
+      emaill: email,
     };
 
     const result = await connection.execute(query, binds);

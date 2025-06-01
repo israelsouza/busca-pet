@@ -184,7 +184,7 @@ function PetEncontrado() {
 
       if (resultado && resultado.message) {
         alert(resultado.message);
-        //setTimeout(() => navigate("/posts/all"), 1000);
+        setTimeout(() => navigate("/posts/all"), 1000);
       } else {
         alert("Erro inesperado ao cadastrar o pet.");
       }

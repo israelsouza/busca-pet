@@ -5,7 +5,8 @@ import Cropper from "react-easy-crop";
 import getCroppedImg from "../assets/utils/cropImage.js";
 import HeaderEdicao from "../components/HeaderEdicao";
 import validateToken from "../assets/utils/validateToken.js";
-import enviarDados from "../assets/utils/enviarDados.js"; //////////////////////
+import enviarDados from "../assets/utils/enviarDados.js";
+import EmailFromToken from '../assets/utils/getEmailFromToken.js'
 
 import Style from "../pages/styles/EditPerfil.module.css";
 
@@ -94,6 +95,8 @@ function EdicaoPerfil() {
   useEffect(() => {
     try {
       const token = localStorage.getItem("authToken");
+      const email = EmailFromToken();
+      console.log(email)
 
       const headerRequest = {
         method: "GET",
@@ -136,6 +139,7 @@ function EdicaoPerfil() {
 
   const atualizarCampo = (campo) => {
     const token = localStorage.getItem("authToken");
+    const email = EmailFromToken();
     fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
       method: "POST",
       headers: {
@@ -360,52 +364,35 @@ function EdicaoPerfil() {
   }, []);
 
   const handleCropAndUpload = useCallback(async () => {
+    const email = EmailFromToken();
     try {
       if (!imageSrc || !croppedAreaPixels) {
         alert("Nenhuma imagem ou área de corte definida.");
         return;
-      }
+      }      
 
-      // Converte a imagem cortada para um Blob (para enviar via FormData)
-      const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+      const croppedImageBlob = await getCroppedImg(
+          imageSrc,
+          croppedAreaPixels
+        );
 
       const formDataToSend = new FormData();
-      formDataToSend.append("foto", croppedImageBlob, "profile.jpeg"); // 'foto' é o nome do campo que o Multer espera
+      formDataToSend.append("foto", croppedImageBlob, "foto.jpg");
+            
+      const response = await enviarDados(formDataToSend, `usuarios/foto/${email}`)
 
-      const token = localStorage.getItem("authToken");
-
-      // A rota no backend é agora '/upload-profile/:email'
-      const response = await fetch(
-        `http://localhost:3000/usuarios/foto/${email}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // Não inclua 'Content-Type': 'application/json' quando usando FormData
-          },
-          body: formDataToSend,
-        }
-      );
-
-      const responseData = await response.json(); // Assumindo que o backend sempre retorna JSON
       if (response.ok) {
         alert("Foto de perfil atualizada com sucesso!");
-        setShowCropperModal(false); // Fecha o modal
-        setImageSrc(null); // Limpa a imagem do cropper
+        setShowCropperModal(false); 
+        setImageSrc(null);
         setCroppedAreaPixels(null); // Limpa as coordenadas
-        // Opcional: recarregar a foto do perfil no frontend
-        // window.location.reload(); // Uma forma simples, mas pode ser mais elegante
-        // Ou, se o backend retornar o URL da nova imagem, usá-lo para atualizar o estado da foto.
       } else {
-        alert(
-          `Erro ao atualizar foto de perfil: ${
-            responseData.message || response.statusText
-          }`
-        );
+        console.log( "ERROR ERROR ERROR ")
+        console.log(response)
       }
     } catch (error) {
+      console.log( "ERROR ERROR ERROR ------------------------------------")
       console.error("Erro ao cortar ou enviar a imagem:", error);
-      alert("Ocorreu um erro ao processar a imagem.");
     }
   }, [imageSrc, croppedAreaPixels, email]);
 
