@@ -8,6 +8,12 @@ import style from "./styles/header_log.module.css";
 
 function HeaderLog({ onSelectCategory }) {
   const [userInfo, setUserInfo] = useState(null);
+  const [userPhotoSrc, setUserPhotoSrc] = useState(null);
+
+  useEffect(() => {
+    console.log("UserInfo ->", userInfo)
+  }, [userInfo])
+  
 
   useEffect(() => {
     async function fetchUserInfo() {
@@ -36,6 +42,16 @@ function HeaderLog({ onSelectCategory }) {
         const data = await response.json();
 
         setUserInfo(data);
+
+        if (data && data.USU_FOTO && data.USU_FOTO.type === 'Buffer' && Array.isArray(data.USU_FOTO.data)) {
+            const photoBase64 = arrayBufferToBase64(data.USU_FOTO.data, 'image/jpeg');
+            setUserPhotoSrc(photoBase64);
+        } else {
+            // Se não houver foto, não for Buffer, ou se deu erro, usa o ícone padrão
+            setUserPhotoSrc(Icone);
+        }
+
+
       } catch (error) {
         console.error("Erro ao buscar informações do usuário:", error);
         setUserInfo(Icone);
@@ -83,10 +99,11 @@ function HeaderLog({ onSelectCategory }) {
         </nav>
 
         <Link to={"/Perfil"}>
-          {userInfo ? ( // Se userPhotoSrc tem um valor (Base64 ou URL do Icone)
+          {userPhotoSrc  ? ( // Se userPhotoSrc tem um valor (Base64 ou URL do Icone)
+          
             <img
               className={style.icon}
-              src={`data:image/jpeg;base64,${userInfo.USU_FOTO}`}
+              src={userPhotoSrc}
               alt="Foto do usuário"
             />
           ) : (
