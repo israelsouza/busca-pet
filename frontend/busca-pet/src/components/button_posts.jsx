@@ -71,19 +71,16 @@ function Buttonposts({
         <div className={style.buttoninteragir}>
           {pagina != "Meus-Posts" && (
             <>
-              <button className={style.envmsg}>{denunciaPlaceholder}</button>
+              <button className={`${style.denuncia} ${style.envmsg}`}  onClick={abrirModal}>{denunciaPlaceholder}</button>
               <button
                 className={style.encontrarpet}
                 onClick={disparaUmaNotificacao}
               >
-                {textoPrimeiroCategoria}{" "}
+                {textoPrimeiroCategoria}
               </button>
             </>
           )}
 
-          <button className={style.denuncia} onClick={abrirModal}>
-            {text_button}
-          </button>
           {mostrarModal && (
             <ModalDenuncia
               petId={petId}
@@ -91,12 +88,7 @@ function Buttonposts({
               onSubmit={onDenunciarClick}
             />
           )}
-          <button
-            className={style.encontrarpet}
-            onClick={disparaUmaNotificacao}
-          >
-            {textoPrimeiroCategoria}
-          </button>
+
         </div>
       </div>
     </div>
