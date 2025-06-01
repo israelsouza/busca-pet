@@ -303,7 +303,7 @@ function PetEncontrado() {
 
         {etapa === "mapa" && (
           <div className={styles.pet_perdido__box_mapa}>
-            <MapGoogleComponent onSelectLocalMap={pegarGeolocalizaccao} />
+            <MapGoogleComponent localChamadaMapa="PET_REGISTER" onSelectLocalMap={pegarGeolocalizaccao} />
             <button className={`${styles.botao_mapa}`} onClick={exibirMapa}>
               Salvar dados
             </button>

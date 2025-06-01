@@ -18,7 +18,7 @@ function MapGoogleComponent({
   onSelectLocalMap,
   width = "900px",
   height = "500px",
-  localChamadaMapa,
+  localChamadaMapa,  // 'FEED_SINGLE_POST', 'MY_PUBS_SINGLE_POST', 'SEARCH_RESULTS', 'PET_REGISTER'
   latitudeOut,
   longitudeOut,
   centerOutside,
@@ -47,12 +47,22 @@ function MapGoogleComponent({
   const [infoWindowPosition, setInfoWindowPosition] = useState(null); // Posição do InfoWindow
 
   useEffect(() => {
+    // Cenário 1: Mapa de Pesquisa ou qualquer outro que passe 'center' diretamente
     if (center) {
       setMapCenter(center);
-      //setMarkerPosition(null)
+      setMarkerPosition(null); // Garante que não haja marcador único nesse cenário (apenas múltiplos pets)
       return;
     }
 
+    // Cenário 2: Feed / Minhas Publicações ou onde o centro e o marcador vêm de latitudeOut/longitudeOut
+    if (centerOutside && latitudeOut != null && longitudeOut != null) {
+      const externalCoords = { lat: latitudeOut, lng: longitudeOut };
+      setMapCenter(externalCoords);
+      setMarkerPosition(externalCoords); // <<<<<<<<<<< IMPORTANTE: Define o marcador único aqui
+      return;
+    }
+
+    // Cenário 3: Default - tentar geolocalização ou usar o centro de SP
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -60,35 +70,65 @@ function MapGoogleComponent({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-
-          if (centerOutside && latitudeOut && longitudeOut) {
-            setMapCenter({ lat: latitudeOut, lng: longitudeOut });
-          } else {
-            setMapCenter(geoCoords);
-          }
+          setMapCenter(geoCoords);
+          setMarkerPosition(null); // Não coloca marcador único se for geolocalização padrão
         },
         () => {
-          // Caso a geolocalização falhe
-          console.log("Geolocalização falhou, usando posição default");
-          if (centerOutside && latitudeOut && longitudeOut) {
-            setMapCenter({ lat: latitudeOut, lng: longitudeOut });
-          } else {
-            setMapCenter(spCenter);
-          }
+          console.log("Geolocalização falhou ou negada, usando posição default de SP.");
+          setMapCenter(spCenter);
+          setMarkerPosition(null); // Não coloca marcador único se usar SP default
         }
       );
     } else {
-      // Caso o navegador não suporte geolocalização
-      console.log("Geolocalização não suportada pelo navegador.");
-      if (centerOutside && latitudeOut && longitudeOut) {
-        setMapCenter({ lat: latitudeOut, lng: longitudeOut });
-        // REMOVA ESTA LINHA: setMarkerPosition({ lat: latitudeOut, lng: longitudeOut });
-      } else {
-        setMapCenter(spCenter);
-        // REMOVA ESTA LINHA: setMarkerPosition(spCenter);
-      }
+      console.log("Geolocalização não suportada pelo navegador, usando posição default de SP.");
+      setMapCenter(spCenter);
+      setMarkerPosition(null); // Não coloca marcador único se usar SP default
     }
   }, [center, centerOutside, latitudeOut, longitudeOut]);
+
+  // useEffect(() => {
+  //   if (center) {
+  //     setMapCenter(center);
+  //     //setMarkerPosition(null)
+  //     return;
+  //   }
+
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const geoCoords = {
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         };
+
+  //         if (centerOutside && latitudeOut && longitudeOut) {
+  //           setMapCenter({ lat: latitudeOut, lng: longitudeOut });
+  //         } else {
+  //           setMapCenter(geoCoords);
+  //         }
+  //       },
+  //       () => {
+  //         // Caso a geolocalização falhe
+  //         console.log("Geolocalização falhou, usando posição default");
+  //         if (centerOutside && latitudeOut && longitudeOut) {
+  //           setMapCenter({ lat: latitudeOut, lng: longitudeOut });
+  //         } else {
+  //           setMapCenter(spCenter);
+  //         }
+  //       }
+  //     );
+  //   } else {
+  //     // Caso o navegador não suporte geolocalização
+  //     console.log("Geolocalização não suportada pelo navegador.");
+  //     if (centerOutside && latitudeOut && longitudeOut) {
+  //       setMapCenter({ lat: latitudeOut, lng: longitudeOut });
+  //       // REMOVA ESTA LINHA: setMarkerPosition({ lat: latitudeOut, lng: longitudeOut });
+  //     } else {
+  //       setMapCenter(spCenter);
+  //       // REMOVA ESTA LINHA: setMarkerPosition(spCenter);
+  //     }
+  //   }
+  // }, [center, centerOutside, latitudeOut, longitudeOut]);
 
   // COMENTAR ESSE USE PARA TESTAR SE QUEBRA NAS DEMAIS
   // useEffect(() => {
@@ -137,12 +177,8 @@ function MapGoogleComponent({
 
   const handleMapClick = useCallback(
     (event) => {
-      if (localChamadaMapa !== "FEED") {
+      if (localChamadaMapa === "PET_REGISTER") { // Use o novo valor específico
         setMarkerPosition({
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
-        });
-        console.log("Map clicked at:", {
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
         });
@@ -150,9 +186,9 @@ function MapGoogleComponent({
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
         };
-        onSelectLocalMap(local);
+        onSelectLocalMap(local); // Passa a localização selecionada para o componente pai
 
-        // Ao clicar no mapa fora de um marcador, feche o InfoWindow do pet
+        // Fecha InfoWindow se clicar em área vazia
         setActiveInfoWindow(null);
         setInfoWindowContent(null);
         setInfoWindowPosition(null);
@@ -160,6 +196,7 @@ function MapGoogleComponent({
     },
     [localChamadaMapa, onSelectLocalMap]
   );
+
 
   const handlePetMarkerClick = useCallback((pet) => {
     // Abre o InfoWindow para este pet

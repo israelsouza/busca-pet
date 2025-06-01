@@ -299,10 +299,10 @@ function PostsAll() {
                   <MapGoogleComponent
                     width="1200px"
                     height="90%"
-                    localChamadaMapa="FEED"
+                    localChamadaMapa="FEED_SINGLE_POST"
                     longitudeOut={lng}
                     latitudeOut={lat}
-                    centerOutside="0"
+                    centerOutside={true}
                   />
                 </div>
               </>

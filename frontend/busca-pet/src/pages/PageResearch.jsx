@@ -158,7 +158,7 @@ function PageResearch() {
           )}
           <div className={styles.map_component}>
             <MapGoogleComponent
-              localChamadaMapa="FEED"
+              localChamadaMapa="SEARCH_RESULTS"
               center={mapData.center}
               radius={mapData.radius}
               pets={mapData.pets.consulta}
