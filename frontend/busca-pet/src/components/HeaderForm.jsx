@@ -7,7 +7,7 @@ import style from "./styles/headerform.module.css";
 function HeaderForm() {
   return (
     <div className={style["header-form"]}>
-      <Link to={"/"}>
+      <Link to={"/adm"}>
         <img src={logo} alt="Imagem de um cachorro com uma lupa" />
       </Link>
 

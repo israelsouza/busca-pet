@@ -27,8 +27,14 @@ td {
   padding: 30px;
   border: 2px solid #a19f9f;
   text-align: center;
-  width: 200px;
+  width: 220px;
   border-radius: 8px;
+}
+
+.btn_container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {

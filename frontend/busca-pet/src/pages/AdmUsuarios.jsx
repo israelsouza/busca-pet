@@ -1,16 +1,20 @@
 import HeaderForm from "../components/HeaderForm";
 import Style from "../pages/styles/admUsuarios.module.css";
 import React, { useEffect, useState } from "react";
+import fetchAPI from "../assets/utils/fetchAPI.js";
+
 function AdmUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
     async function carregarUsuarios() {
       try {
-        const res = await fetch("http://localhost:3000/api/usuarios");
+        const res = await fetchAPI('api/adm/usuarios')        
         if (!res.ok) throw new Error("Erro ao buscar usuários");
         const data = await res.json();
-        setUsuarios(data);
+        console.log(data)
+        console.log(data.usuarios)
+        setUsuarios(data.usuarios);
       } catch (error) {
         console.error("Erro ao carregar usuários:", error);
       }
@@ -37,14 +41,17 @@ function AdmUsuarios() {
               </tr>
             </thead>
             <tbody>
-              {usuarios.map((usuario) => (
+              {usuarios && 
+              usuarios.map((usuario) => (
                 <tr key={usuario.id}>
                   <td>{usuario.PES_NOME}</td>
                   <td>{usuario.USU_EMAIL}</td>
-                  <td>{usuario.DEN_ID}</td>
+                  <td>{usuario.DENUNCIAS_COUNT}</td>
                   <td>
-                    <button className={Style.Button}>Banir</button>
-                    <button className={Style.Button}>Editar</button>
+                    <div className={Style.btn_container}>
+                      <button className={Style.Button}>Banir</button>
+                      <button className={Style.Button}>Editar</button>
+                    </div>
                   </td>
                 </tr>
               ))}

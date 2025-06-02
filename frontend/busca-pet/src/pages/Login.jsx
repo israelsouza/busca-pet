@@ -81,16 +81,12 @@ function login() {
         setErroLogin("");
         setMensagemSucesso("Login realizado com sucesso!");
 
-        console.log(resultado)
-        console.log(resultado.token)
-        console.log(resultado.role)
-
         localStorage.setItem("authToken", resultado.token);
 
         if (resultado.role === "ADM") {
           setTimeout(() => navigate("/adm"), 1000);  
         } else {
-          //setTimeout(() => navigate("/posts/all"), 1000);
+          setTimeout(() => navigate("/posts/all"), 1000);
         }
 
       })
