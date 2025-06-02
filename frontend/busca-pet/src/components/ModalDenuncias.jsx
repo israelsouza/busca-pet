@@ -43,7 +43,6 @@ function ModalDenuncia({ onClose, onSubmit, post }) {
   async function submitData(tipo, descricao) {
     const data = {tipo: tipo, descricao: descricao, idPost: post.POS_ID}
     try {
-      const result = await enviarDados(data, `api/adm/denuncia`)
       const result = await enviarDados(data, `api/posts/denuncia`)
       console.log(result);
       alert("Denúncia enviada com sucesso!");
@@ -71,10 +70,7 @@ function ModalDenuncia({ onClose, onSubmit, post }) {
           onChange={(e) => setDescricao(e.target.value)}
         />
         <div className={style.botoes}>
-          <button onClick={ () => {
-            console.log("onClick DenunciaCompon")
-            handleSubmit()
-          }}>Enviar</button>
+          <button onClick={handleSubmit}>Enviar</button>
           <button onClick={onClose}>Cancelar</button>
         </div>
       </div>
