@@ -18,3 +18,26 @@
 .pnotification__icon {
   margin: 0 5px;
 }
+
+.btn_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_trash{
+  /* position: fixed;
+  bottom: 2%;
+  right: 4%; */
+  font-size: 45px;
+  margin-bottom: 500px;
+}
+
+.icon_refresh{
+  border-radius: 50%;
+    font-size: 45px;
+
+  /* position: fixed;
+  bottom: 2%;
+  right: 2%; */
+}

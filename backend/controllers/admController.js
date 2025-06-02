@@ -45,7 +45,17 @@ async function getUsuariosEDenuncias(req, res) {
   }
 }
 
+async function getDenuncias(req, res) {
+  try {
+    const denuncias = await AdmModel.listarDenuncias();
+    return res.status(200).json({denuncias});
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao buscar as denuncias", error: error.message });
+  }
+}
+
 export default {
   registrarUmaDenuncia,
-  getUsuariosEDenuncias
+  getUsuariosEDenuncias,
+  getDenuncias
 };

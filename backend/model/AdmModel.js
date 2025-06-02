@@ -76,7 +76,55 @@ async function listarUsuariosEDenuncias() {
   }
 }
 
+async function listarDenuncias() {
+  let connection
+  try {
+    connection = await getConnection()
+    
+    const sql = `
+      SELECT
+          d.DEN_ID AS DEN_ID,
+          d.DEN_TIPO AS DEN_TIPO,
+          d.DEN_DESCRICAO AS DEN_DESCRICAO,
+          d.DEN_DATA AS DEN_DATA,
+          d.USU_ID AS ID_DENUNCIANTE_USUARIO,
+          p_denunciante.PES_NOME AS NOME_DENUNCIANTE,
+          d.POS_ID AS POS_ID,
+          p.USU_ID AS ID_USUARIO_DENUNCIADO,
+          p_denunciado.PES_NOME AS NOME_DENUNCIADO
+      FROM
+          DENUNCIAS d
+      JOIN
+          USUARIO u_denunciante ON d.USU_ID = u_denunciante.USU_ID
+      JOIN
+          PESSOA p_denunciante ON u_denunciante.PES_ID = p_denunciante.PES_ID 
+      JOIN
+          POST p ON d.POS_ID = p.POS_ID
+      JOIN
+          USUARIO u_denunciado ON p.USU_ID = u_denunciado.USU_ID
+      JOIN
+          PESSOA p_denunciado ON u_denunciado.PES_ID = p_denunciado.PES_ID
+      ORDER BY
+          d.DEN_DATA DESC
+        `;
+console.log(" _____________________antes executar ")
+const result = await connection.execute(sql, [], { outFormat: OracleDB.OUT_FORMAT_OBJECT });
+console.log("depois executar ________________ ")
+    console.log(result.rows)
+    return result.rows;
+    
+  } catch (error) {
+    console.error("Erro no modelo ao buscar as denúncias:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
+    }
+  }
+}
+
 export default {
   salvarDenuncia,
   listarUsuariosEDenuncias,
+  listarDenuncias
 };
