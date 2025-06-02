@@ -1,8 +1,10 @@
 import HeaderForm from "../components/HeaderForm";
 import Style from "../pages/styles/admUsuarios.module.css";
 import React, { useEffect, useState, useCallback } from "react";
-import { IoMdRefresh } from "react-icons/io";
 import fetchAPI from "../assets/utils/fetchAPI.js";
+import { IoMdRefresh } from "react-icons/io";
+import { LuUserRoundPen, LuUserRoundMinus } from "react-icons/lu";
+
 
 function AdmUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -50,8 +52,8 @@ function AdmUsuarios() {
                   <td>{usuario.DENUNCIAS_COUNT}</td>
                   <td>
                     <div className={Style.btn_container}>
-                      <button className={Style.Button}>Banir</button>
-                      <button className={Style.Button}>Editar</button>
+                      <button className={Style.Button_ban}> <LuUserRoundMinus className={Style.icon_user} /> Banir</button>
+                      <button className={Style.Button_edit}> <LuUserRoundPen className={Style.icon_user} /> Editar</button>
                     </div>
                   </td>
                 </tr>

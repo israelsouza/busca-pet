@@ -59,6 +59,15 @@ button {
   font-size: 1em;
 }
 
+.icon_user{
+  font-size: 35px;
+  padding-right: 8px;
+}
+
+.Button_ban:hover{
+  background-color: red;
+}
+
 .ContainerFooter {
   display: flex;
   justify-content: flex-end;
@@ -81,3 +90,4 @@ button {
 .icon_refresh{
   font-size: 45px;
 }
+
