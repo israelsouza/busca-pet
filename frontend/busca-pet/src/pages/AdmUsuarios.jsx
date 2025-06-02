@@ -1,13 +1,13 @@
 import HeaderForm from "../components/HeaderForm";
 import Style from "../pages/styles/admUsuarios.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { IoMdRefresh } from "react-icons/io";
 import fetchAPI from "../assets/utils/fetchAPI.js";
 
 function AdmUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
 
-  useEffect(() => {
-    async function carregarUsuarios() {
+  const fetchUsers = useCallback( async () => {
       try {
         const res = await fetchAPI('api/adm/usuarios')        
         if (!res.ok) throw new Error("Erro ao buscar usuários");
@@ -18,10 +18,11 @@ function AdmUsuarios() {
       } catch (error) {
         console.error("Erro ao carregar usuários:", error);
       }
-    }
+  }, [] )
 
-    carregarUsuarios();
-  }, []);
+  useEffect( () => {
+    fetchUsers()
+  }, [fetchUsers] )
 
   return (
     <div className={Style.ContainerMain}>
@@ -59,7 +60,7 @@ function AdmUsuarios() {
           </table>
         </div>
         <div className={Style.ContainerFooter}>
-          <button className={Style.Atualiza}>Atualizar</button>
+          <button className={Style.Atualiza} onClick={fetchUsers}> <IoMdRefresh className={Style.icon_refresh} /> </button>
         </div>
       </div>
     </div>
