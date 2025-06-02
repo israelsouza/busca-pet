@@ -2,40 +2,47 @@ import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 
 async function salvarDenuncia(tipo, descricao, idPost, userId) {
-    let connection;
+  let connection;
 
-    try {        
-      connection = await getConnection();
+  try {
+    connection = await getConnection();
 
     const dataAtualObj = new Date();
-    const dataAtual = `${String(dataAtualObj.getDate()).padStart(2, '0')}/${String(dataAtualObj.getMonth() + 1).padStart(2, '0')}/${dataAtualObj.getFullYear()}`;
+    const dataAtual = `${String(dataAtualObj.getDate()).padStart(
+      2,
+      "0"
+    )}/${String(dataAtualObj.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}/${dataAtualObj.getFullYear()}`;
 
-      await connection.execute(
-        `INSERT INTO DENUNCIAS (DEN_TIPO, DEN_DESCRICAO, DEN_DATA, USU_ID, POS_ID)
+    await connection.execute(
+      `INSERT INTO DENUNCIAS (DEN_TIPO, DEN_DESCRICAO, DEN_DATA, USU_ID, POS_ID)
          VALUES (:tipo, :descricao, :data, :userId, :idPost)`,
-        {
-          tipo,
-          descricao,
-          data: dataAtual,
-          userId,
-          idPost,
-        },
-        { autoCommit: true }
-      );
-      return { success: true, message: "Denúncia registrada com sucesso!" };
-    } catch (error) {
-      console.error("Erro ao registrar denúncia no modelo:", error);
-      throw new Error("Erro interno ao registrar denúncia.");
-    } finally {
-      if (connection) await connection.close()
-    }
+      {
+        tipo,
+        descricao,
+        data: dataAtual,
+        userId,
+        idPost,
+      },
+      { autoCommit: true }
+    );
+    return { success: true, message: "Denúncia registrada com sucesso!" };
+  } catch (error) {
+    console.error("Erro ao registrar denúncia no modelo:", error);
+    throw new Error("Erro interno ao registrar denúncia.");
+  } finally {
+    if (connection) await connection.close();
+  }
 }
 
-export async function listarUsuariosEDenuncias() {
+async function listarUsuariosEDenuncias() {
   let connection;
   try {
     connection = await getConnection();
-    const result = await connection.execute(`
+    const result = await connection.execute(
+      `
                 SELECT
                     U.USU_ID AS id,
                     P.PES_NOME AS PES_NOME,
@@ -51,23 +58,14 @@ export async function listarUsuariosEDenuncias() {
                     U.USU_ID, P.PES_NOME, U.USU_EMAIL
                 ORDER BY
                     P.PES_NOME
-            `, [], {
-              outFormat: OracleDB.OUT_FORMAT_OBJECT
-            });
-      console.log("antes do map")
-      //console.log(result.rows.map(row => row));
-      console.log("apos do map")
+            `,
+      [],
+      {
+        outFormat: OracleDB.OUT_FORMAT_OBJECT,
+      }
+    );
 
-      return result.rows
-
-    // return result.rows.map((row) => {
-    //   return {
-    //     id: row.ID,
-    //     nome: row.NOME,
-    //     email: row.EMAIL,
-    //     denuncias_count: row.DENUNCIAS_COUNT,
-    //   };
-    // });
+    return result.rows;
   } catch (error) {
     console.error("Erro no modelo ao buscar usuários com denúncias:", error);
     throw error;
@@ -80,5 +78,5 @@ export async function listarUsuariosEDenuncias() {
 
 export default {
   salvarDenuncia,
-  listarUsuariosEDenuncias
+  listarUsuariosEDenuncias,
 };

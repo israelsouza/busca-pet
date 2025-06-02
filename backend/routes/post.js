@@ -1,20 +1,23 @@
 import express from "express";
 import {
-  getPostsUsuario,
   getPostPerdido,
   todosPosts,
   getPostEncontrado,
   getQuemPublicou,
-  getMinhasPublicacoes
+  getMinhasPublicacoes,
 } from "../controllers/PostControler.js";
+
+import AdminController from "../controllers/admController.js";
 
 const router = express.Router();
 
-router.get('/user/:token', getMinhasPublicacoes)
-router.get("/all", todosPosts); // Rotas para todos os posts
-router.get("/lost", getPostPerdido); // Rotas para pets perdidos
-router.get("/user", ); // Rotas para posts do usuário autenticado
-router.get("/found", getPostEncontrado); // Rotas para pets encontrados
-router.post('/quem-publicou',getQuemPublicou )
+router.get("/user/:token", getMinhasPublicacoes);
+router.get("/all", todosPosts);
+router.get("/lost", getPostPerdido);
+router.get("/user");
+router.get("/found", getPostEncontrado);
+router.post("/quem-publicou", getQuemPublicou);
+
+router.post("/denuncia", AdminController.registrarUmaDenuncia);
 
 export default router;
