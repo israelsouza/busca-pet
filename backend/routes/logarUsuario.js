@@ -13,7 +13,11 @@ router.post("/", async (request, response) => {
 
     // Gera o token JWT
     const token = jwt.sign(
-      {email: dados.email}, // Payload
+      {
+        id: resultado.userId,
+        email: dados.email,
+        role: resultado.role
+      }, // Payload
         SECRET_KEY,           // Chave secreta importada
       { expiresIn: "1d"}    // Tempo de expiração
     )

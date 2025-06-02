@@ -13,8 +13,8 @@ import buscarUsuario from "./routes/editPerfilUsuario.js";
 import postRoutes from './routes/post.js'
 import userPhoto from './routes/getUserPhoto.js'
 import routerPublicacoes from './routes/publicacoes.js'
-import minhasPublicacoes from './routes/minhasPublicacoes.js'
 import adminRouter from './routes/admRouter.js';
+import authorizeAdminRole from './middleware/authRole.js'
 
 const app = express();
 app.use(cors());
@@ -40,7 +40,7 @@ app.use("/criar-post/pet-encontrado/", autenticarToken, cadastrarPetEncontrado);
 app.use("/api/posts", autenticarToken, postRoutes);
 app.use("/api/publicacoes", autenticarToken, routerPublicacoes);
 app.use('/user', autenticarToken, userPhoto)
-app.use('/api/adm', autenticarToken, adminRouter); 
 
+app.use('/api/adm', autenticarToken, authorizeAdminRole, adminRouter); 
 
 export default app;
