@@ -15,7 +15,7 @@
   background: #fff;
   border-radius: 12px;
   padding: 24px;
-  max-width: 90vw;
+  width: 30%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -25,15 +25,28 @@
 
 .modal h2 {
   margin-bottom: 10px;
-}
-
-select,
-textarea {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
   resize: none;
+}
+
+.selecao{
+  width: 100%;
+}
+
+textarea {
+  padding: 10px;
+  height: 150px;
+  border-radius: 8px;
+  border: 1px solid #cccccc92;
+  font-size: 1rem;
+  resize: none;
+}
+
+textarea:focus{
+  outline: 1px solid #ccc;
 }
 
 .botoes {

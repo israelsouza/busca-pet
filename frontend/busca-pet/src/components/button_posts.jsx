@@ -3,6 +3,7 @@ import ModalDenuncia from "../components/ModalDenuncias.jsx";
 import { useState } from "react";
 
 function Buttonposts({
+  idCurrentPost,
   usuario,
   imagemPet,
   imagemUsuario,
@@ -19,27 +20,13 @@ function Buttonposts({
   text_button,
   petId,
   onDenunciarClick,
+  infoPost
 }) {
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [currentPostIdToDenounce, setCurrentPostIdToDenounce] = useState(null);
 
   const abrirModal = () => {
     setMostrarModal(true);
-  };
-
-  const enviarDenuncia = async ({ tipo, descricao, petId }) => {
-    const token = localStorage.getItem("authToken");
-
-    await fetch("http://localhost:3000/api/denunciar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ tipo, descricao, petId }),
-    });
-
-    setMostrarModal(false);
-    alert("Denúncia enviada com sucesso!");
   };
 
   return (
@@ -71,7 +58,11 @@ function Buttonposts({
         <div className={style.buttoninteragir}>
           {pagina != "Meus-Posts" && (
             <>
-              <button className={`${style.denuncia} ${style.envmsg}`}  onClick={abrirModal}>{denunciaPlaceholder}</button>
+              <button className={`${style.denuncia} ${style.envmsg}`}  onClick={abrirModal}>
+                
+                Denunciar
+                
+              </button>
               <button
                 className={style.encontrarpet}
                 onClick={disparaUmaNotificacao}
@@ -83,9 +74,9 @@ function Buttonposts({
 
           {mostrarModal && (
             <ModalDenuncia
-              petId={petId}
               onClose={() => setMostrarModal(false)}
-              onSubmit={onDenunciarClick}
+              onSubmit={ (e) => onDenunciarClick(e.target.value)}
+              post={infoPost}
             />
           )}
 

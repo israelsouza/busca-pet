@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import enviarDados from "../assets/utils/enviarDados.js";
 import style from "./styles/ModalDenuncia.module.css";
 
 const tipos = [
@@ -12,30 +13,50 @@ const tipos = [
   "Outros",
 ];
 
-function ModalDenuncia({ petId, onClose, onSubmit }) {
+function ModalDenuncia({ onClose, onSubmit, post }) {
   const [tipo, setTipo] = useState("");
   const [descricao, setDescricao] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    try {
+      validateData(tipo, descricao)
+      const resultData = await submitData(tipo, descricao)
+      onClose();     
+    } catch (error) {
+      console.error(error)
+      alert('Ocorreu um erro')
+    }
+  };
+
+  function validateData(tipo, descricao) {
     if (!tipo) {
       alert("Por favor, selecione o tipo de denúncia.");
-      return;
+      return false;
     }
     if (!descricao.trim()) {
       alert("Por favor, descreva o motivo da denúncia.");
-      return;
+      return false;
     }
+    return true;
+  }
 
-    // O onSubmit é a função que vem do componente pai (PostsAll)
-    onSubmit({ tipo, descricao, petId });
-    onClose(); // Fecha o modal após enviar
-  };
+  async function submitData(tipo, descricao) {
+    const data = {tipo: tipo, descricao: descricao, idPost: post.POS_ID}
+    try {
+      const result = await enviarDados(data, `api/adm/denuncia`)
+      console.log(result);
+      alert("Denúncia enviada com sucesso!");
+    } catch (error) {
+      console.error(error)
+      alert("Denúncia: ERRO AO enviar ");
+    }    
+  }
 
   return (
     <div className={style.overlay}>
       <div className={style.modal}>
         <h2>Denunciar</h2>
-        <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+        <select className={style.selecao} value={tipo} onChange={(e) => setTipo(e.target.value)}>
           <option value="">Selecione o tipo</option>
           {tipos.map((t, i) => (
             <option key={i} value={t}>
@@ -49,7 +70,10 @@ function ModalDenuncia({ petId, onClose, onSubmit }) {
           onChange={(e) => setDescricao(e.target.value)}
         />
         <div className={style.botoes}>
-          <button onClick={handleSubmit}>Enviar</button>
+          <button onClick={ () => {
+            console.log("onClick DenunciaCompon")
+            handleSubmit()
+          }}>Enviar</button>
           <button onClick={onClose}>Cancelar</button>
         </div>
       </div>

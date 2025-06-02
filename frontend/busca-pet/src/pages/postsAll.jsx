@@ -9,7 +9,7 @@ import useWebSocket from "../assets/utils/useWebSocket.js";
 import validateToken from "../assets/utils/validateToken.js";
 import enviarDados from "../assets/utils/enviarDados.js"; // Importe a sua função enviarDados
 import MapGoogleComponent from "../components/MapGoogleComponent";
-import ModalDenuncia from "../components/ModalDenuncias.jsx"; // Importe o modal com o nome correto
+
 
 import style from "./styles/postsAll.module.css";
 
@@ -21,7 +21,7 @@ function PostsAll() {
   const [notificacoesRecebidas, setNotificacoesRecebidas] = useState([]);
 
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [currentPetIdToDenounce, setCurrentPetIdToDenounce] = useState(null);
+  
 
   const exibirNotificacao = useCallback((notificacao) => {
     console.log("Nova notificação recebida:", notificacao.message);
@@ -50,8 +50,6 @@ function PostsAll() {
       }
     });
   }, [messages, exibirNotificacao, setNotificacoesRecebidas]);
-
-  // }, [messages, exibirNotificacao]);
 
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
@@ -146,39 +144,6 @@ function PostsAll() {
     fetchPosts();
   }, [category]);
 
-  const handleDenunciarClick = (petId) => {
-    setCurrentPetIdToDenounce(petId);
-    setMostrarModal(true);
-  };
-
-  const handleSubmitDenuncia = async ({ tipo, descricao, petId }) => {
-    try {
-      const token = localStorage.getItem("authToken");
-      const denunciaData = {
-        tipo: tipo,
-        descricao: descricao,
-        petId: petId,
-      };
-
-      const url = "http://localhost:3000/api/denunciar";
-      const res = await enviarDados(denunciaData, url, "POST", token);
-
-      if (res.success) {
-        alert("Denúncia enviada com sucesso!");
-      } else {
-        alert(`Erro ao enviar denúncia: ${res.message || "Erro desconhecido"}`);
-      }
-    } catch (error) {
-      console.error("Erro ao enviar denúncia:", error);
-      alert(
-        "Ocorreu um erro ao enviar a denúncia. Tente novamente mais tarde."
-      );
-    } finally {
-      setMostrarModal(false);
-      setCurrentPetIdToDenounce(null);
-    }
-  };
-
   async function umaFuncao(idPet) {
     const user = {
       idPost: idPet,
@@ -222,13 +187,14 @@ function PostsAll() {
               posts.map((post, index) => (
                 <Buttonposts
                   key={post.POS_ID}
+                  idCurrentPost={post.POS_ID}
                   usuario={post.PES_NOME}
                   imagemUsuario={post.USU_FOTO}
                   imagemPet={post.PET_FOTO}
                   nomePet={post.PET_NOME}
                   caracteristicas={post.PET_DESCRICAO}
-                  denunciaPlaceholder="Denunciar"
-                  dataSumico={post.POS_DATA}
+                  dataSumico={post.POS_DATA}                  
+                  infoPost={ post } 
                   regiao={() => {
                     exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng);
                   }}
@@ -251,8 +217,7 @@ function PostsAll() {
                   imagemUsuario={post.USU_FOTO}
                   imagemPet={post.PET_FOTO}
                   nomePet={post.PET_NOME}
-                  caracteristicas={post.PET_DESCRICAO}
-                  denunciaPlaceholder="Denunciar"
+                  caracteristicas={post.PET_DESCRICAO}                  
                   dataSumico={post.POS_DATA}
                   regiao={() => {
                     exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng);
@@ -273,8 +238,7 @@ function PostsAll() {
                   imagemUsuario={post.USU_FOTO}
                   imagemPet={post.PET_FOTO}
                   nomePet={post.PET_NOME}
-                  caracteristicas={post.PET_DESCRICAO}
-                  denunciaPlaceholder="Denunciar"
+                  caracteristicas={post.PET_DESCRICAO}                  
                   dataSumico={post.POS_DATA}
                   regiao={() => {
                     exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng);
@@ -312,13 +276,6 @@ function PostsAll() {
           
         </div>
       </div>
-      {mostrarModal && (
-        <ModalDenuncia
-          petId={currentPetIdToDenounce}
-          onClose={() => setMostrarModal(false)}
-          onSubmit={handleSubmitDenuncia}
-        />
-      )}
     </div>
   );
 }
