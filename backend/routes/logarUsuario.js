@@ -26,6 +26,7 @@ router.post("/", async (request, response) => {
       message: resultado.message,
       userId: resultado.userId,
       token: token,
+      role: resultado.role
      });
 
   } catch (error) {
