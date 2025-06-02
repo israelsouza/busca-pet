@@ -19,6 +19,7 @@ function TelaAdm() {
         <ButtonAdm image={icon_publicacoes} alt="Publicações" funcao="Publicações"        />
 
         <ButtonAdm image={icon_denuncias} alt="Denúncias" funcao="Denúncias" />
+        <ButtonAdm image={icon_denuncias} alt="Denúncias" funcao="Denúncias" link="/adm/denuncias" />
 
         <ButtonAdm image={icone} alt="Usuários" funcao="Usuários" link="/adm/usuarios"        />
 

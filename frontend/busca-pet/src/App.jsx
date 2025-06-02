@@ -14,6 +14,7 @@ import VisualizePerfil from "./pages/PerfilVisualizar";
 import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
 import Notification from "./pages/Notification";
+import AdmDenuncias from './pages/AdmDenuncias'
 
 
 import API_KEY from './config/maps-api.js';
@@ -76,6 +77,7 @@ function App() {
           <Route path="/user/notificacao" element={<Notification />} />
           <Route path="/adm" element={<TelaAdm />} />
           <Route path="/adm/usuarios" element={<AdmUsuarios />} />
+          <Route path="/adm/denuncias" element={<AdmDenuncias />} />
           {/* Adicione outras rotas conforme necessário */}
         </Routes>
 
