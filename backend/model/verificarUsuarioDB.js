@@ -9,7 +9,7 @@ export default async function verificarUsuarioDB(dados) {
     console.log("Iniciando a conexão...\n \n");
 
     const consultaUsuario = `
-    SELECT USU_ID, USU_SENHA
+    SELECT USU_ID, USU_SENHA, USU_ROLE
     FROM USUARIO
     WHERE LOWER(USU_EMAIL) = :email
   `;
@@ -22,7 +22,7 @@ export default async function verificarUsuarioDB(dados) {
       throw new Error("O e-mail não está cadastrado.");
     }
 
-    const [USU_ID, senhaHash] = resultado.rows[0];
+    const [USU_ID, senhaHash, role] = resultado.rows[0];
 
     // Compara a senha fornecida com o hash armazenado no banco
     const senhaValida = await bcrypt.compare(dados.password, senhaHash);
@@ -34,11 +34,9 @@ export default async function verificarUsuarioDB(dados) {
     console.log("Usuário autenticado com sucesso!");
     console.log("Fechando a conexão...");
 
-    return { userId: USU_ID, message: "Usuário autenticado com sucesso." };
+    return { userId: USU_ID, message: "Usuário autenticado com sucesso.", role: role };
   } catch (error) {
     console.error("Erro ao verificar usuário:", error);
-
-    
 
     throw error;
   } finally {

@@ -74,14 +74,25 @@ function login() {
       }
     }
 
+    
+
     validarDadosDeLogin(data)
       .then((resultado) => {
         setErroLogin("");
         setMensagemSucesso("Login realizado com sucesso!");
 
+        console.log(resultado)
+        console.log(resultado.token)
+        console.log(resultado.role)
+
         localStorage.setItem("authToken", resultado.token);
 
-        setTimeout(() => navigate("/posts/all"), 1000);
+        if (resultado.role === "ADM") {
+          setTimeout(() => navigate("/adm"), 1000);  
+        } else {
+          //setTimeout(() => navigate("/posts/all"), 1000);
+        }
+
       })
       .catch((error) => {
         setErroEmail("");
