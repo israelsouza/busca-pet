@@ -9,6 +9,11 @@
   margin-top: 30px;
 }
 
+.denuncia__container{
+  max-width: 1400px;
+  margin: 30px auto;
+}
+
 .pnotification__button {
   position: fixed;
   right: 5%;
