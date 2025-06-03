@@ -16,3 +16,12 @@
   font-size: 30px;
   cursor: pointer;
 }
+
+.postDenuncia__link{
+  max-width: max-content;
+  text-decoration: underline;
+}
+
+.postDenuncia__link:hover{
+ cursor: pointer;
+}

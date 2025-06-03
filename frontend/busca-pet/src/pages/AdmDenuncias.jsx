@@ -37,15 +37,15 @@ function AdmDenuncias() {
             denunciado={denuncia.NOME_DENUNCIADO}
             denunciante={denuncia.NOME_DENUNCIANTE}
             tipo={denuncia.DEN_TIPO}
-            descricao={denuncia.DEN_DESCRICAO}            
+            descricao={denuncia.DEN_DESCRICAO}
+            info={denuncia}            
           />
         ))}
 
-        <div className={styles.btn_container}>
-          <button className={styles.pnotification__button}>  <FaTrashCan className={styles.icon_trash} />   </button>
-        </div>
-          <button className={styles.pnotification__button}>     </button>
-
+      </div>
+      <div className={styles.btn_container}>
+          <button className={styles.btn_refresh}>  <IoMdRefresh className={styles.icon_refresh} />   </button>
+          <button className={styles.btn_trash}>  <FaTrashCan className={styles.icon_trash} />   </button>              
       </div>
     </div>
   );
