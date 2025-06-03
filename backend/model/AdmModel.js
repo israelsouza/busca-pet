@@ -43,21 +43,28 @@ async function listarUsuariosEDenuncias() {
     connection = await getConnection();
     const result = await connection.execute(
       `
-                SELECT
-                    U.USU_ID AS id,
-                    P.PES_NOME AS PES_NOME,
-                    U.USU_EMAIL AS USU_EMAIL,
-                    COUNT(D.DEN_ID) AS denuncias_count
-                FROM
-                    USUARIO U
-                INNER JOIN
-                    PESSOA P ON U.PES_ID = P.PES_ID
-                LEFT JOIN
-                    DENUNCIAS D ON U.USU_ID = D.USU_ID
-                GROUP BY
-                    U.USU_ID, P.PES_NOME, U.USU_EMAIL
-                ORDER BY
-                    P.PES_NOME
+          SELECT
+              U.USU_ID AS id,
+              P.PES_NOME AS PES_NOME,
+              U.USU_EMAIL AS USU_EMAIL,
+                COALESCE(DenunciasRecebidas.count_denuncias_recebidas, 0) AS denuncias_recebidas_count
+          FROM
+              USUARIO U
+          INNER JOIN
+              PESSOA P ON U.PES_ID = P.PES_ID
+          LEFT JOIN (
+                      SELECT
+                          POST.USU_ID AS ID_DO_DONO_DO_POST, 
+                          COUNT(DENUNCIAS.DEN_ID) AS count_denuncias_recebidas
+                      FROM
+                          DENUNCIAS
+                      INNER JOIN
+                          POST ON DENUNCIAS.POS_ID = POST.POS_ID
+                      GROUP BY
+                          POST.USU_ID 
+                  ) DenunciasRecebidas ON U.USU_ID = DenunciasRecebidas.ID_DO_DONO_DO_POST
+                  ORDER BY
+                      P.PES_NOME
             `,
       [],
       {

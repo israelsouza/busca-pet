@@ -13,6 +13,7 @@
   font-weight: 400;
   color: #0d0d0d;
   padding: 20px;
+  margin-top: 20px;
 }
 
 .table {
@@ -91,3 +92,35 @@ button {
   font-size: 45px;
 }
 
+
+.unicoUser__container{
+  border: 1px solid black;
+  padding: 20px;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.unicoUser__row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unicoUser__row input{
+  background-color: var(--botao);
+  width: 350px;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+}
+
+.unicoUser__btnContainer{
+  display: flex;
+  gap: 50px;
+}
+
+.unicoUser__btnContainer button{
+  padding: 10px 20px;
+}
