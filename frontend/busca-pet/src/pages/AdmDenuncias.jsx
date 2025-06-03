@@ -19,7 +19,7 @@ function AdmDenuncias() {
   const [postError, setPostError] = useState(null);
   const [currPetFoto, setCurrPetFoto] = useState(null)
 
-  const fetchDenuncias = useCallback(async () => {
+  const fetchDenuncias = useCallback( async () => {
     try {
       const res = await fetchAPI("api/adm/denuncias");
       if (!res.ok) throw new Error("Erro ao buscar usuários");
@@ -30,6 +30,10 @@ function AdmDenuncias() {
       console.error("Erro ao carregar usuários:", error);
     }
   }, []);
+
+  useEffect(() => {
+    fetchDenuncias();
+  }, [fetchDenuncias]);
 
   async function fetchPublicacao(id) {
     setIsLoadingPost(true);
@@ -48,11 +52,6 @@ function AdmDenuncias() {
         const photoBase64String = `data:image/jpeg;base64,${data.PET_FOTO}`;
         setCurrPetFoto(photoBase64String);
       } 
-
-
-
-
-
 
     } catch (error) {
       console.error("Erro ao carregar a publicação:", error);
@@ -80,9 +79,7 @@ function AdmDenuncias() {
     }
   }
 
-  useEffect(() => {
-    fetchDenuncias();
-  }, [fetchDenuncias]);
+
 
   const handleBackToList = useCallback(() => {
     setEtapa('all');
@@ -152,7 +149,7 @@ function AdmDenuncias() {
         { etapa === 'one' ? (
           <button className={styles.btn_refresh} onClick={handleBackToList} >  <IoIosArrowRoundBack  className={styles.icon_refresh} />   </button>
         ) : (
-          <button className={styles.btn_refresh} >  <IoMdRefresh className={styles.icon_refresh} />   </button>
+          <button className={styles.btn_refresh} onClick={fetchDenuncias} >  <IoMdRefresh className={styles.icon_refresh} />   </button>
         )}       
       </div>
     </div>
