@@ -1,5 +1,7 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
+import formatarDataParaDDMMYYYY from '../utils/formatarData.js'
+import readLobAsBase64 from '../utils/converteLobBase64.js';
 
 async function salvarDenuncia(tipo, descricao, idPost, userId) {
   let connection;

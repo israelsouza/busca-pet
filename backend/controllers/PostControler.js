@@ -4,6 +4,7 @@ import getTipoPostModel from "../model/getTipoPostModel.js";
 import getIdFromPost from "../model/getIdFromPost.js";
 import getPostsDoUsuario  from "../model/getPostsUsuarioModel.js";
 import { sendMessageToUser } from "../utils/websocket.js";
+import formatarDataParaDDMMYYYY from "../utils/formatarData.js";
 import salvarNotificacaoUsuario from '../model/salvarNotificacao.js'
 import {getUserIdByEmail} from "../model/getUserId.js";
 import getPhoneFromId from "../model/getPhoneFromId.js";
@@ -11,11 +12,6 @@ import {
   getPostsPorTextoModel,
   getPetsNaRegiaoModel
 } from '../model/PostModel.js'
-
-function formatarDataParaDDMMYYYY(data) {
-  const [ano, mes, dia] = data.split("-"); // Supondo que a data recebida seja no formato YYYY-MM-DD
-  return `${dia}-${mes}-${ano}`;
-}
 
 export async function getMinhasPublicacoes(req, res) {
   const email = req.user.email;
