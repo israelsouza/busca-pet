@@ -54,8 +54,19 @@ async function getDenuncias(req, res) {
   }
 }
 
+async function getPublicacaoDenunciada(req, res) {
+  const id = req.params.id
+  try {
+    const publicacao = await AdmModel.pegarPublicacao(id); 
+    return res.status(200).json({publicacao});
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao buscar aa publicacao ", error: error.message });
+  }
+}
+
 export default {
   registrarUmaDenuncia,
   getUsuariosEDenuncias,
-  getDenuncias
+  getDenuncias,
+  getPublicacaoDenunciada,
 };
