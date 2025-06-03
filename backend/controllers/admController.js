@@ -64,9 +64,36 @@ async function getPublicacaoDenunciada(req, res) {
   }
 }
 
+async function atualizarStatus(req, res) {
+  const { idPost, status, idDenuncia } = req.params
+  
+  console.log("idPost -> ",idPost)
+  console.log("id -> ",status)
+  console.log("idDenuncia -> ",idDenuncia)
+
+  if (!status || (status !== 'manter' && status !== 'excluir')) {
+      return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
+  }
+  
+  try {
+
+    if (status === "MANTER") {
+      //const atualizaDenuncia = await AdmModel.manterPublicacao(idDenuncia)
+    } else if (status === "DELETAR") {
+      //const atualizaDenunciaEPublicacao = await AdmModel.deletarPublicacaoPorDenuncia(idDenuncia, idPost)
+    } else {
+      console.error("ERRO: status inválido")
+    }
+
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao atualizar o status da denuncia:  ", error: error.message });
+  }
+}
+
 export default {
   registrarUmaDenuncia,
   getUsuariosEDenuncias,
   getDenuncias,
   getPublicacaoDenunciada,
+  atualizarStatus
 };
