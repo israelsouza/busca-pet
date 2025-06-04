@@ -133,6 +133,76 @@ const result = await connection.execute(sql, [], { outFormat: OracleDB.OUT_FORMA
   }
 }
 
+async function pegarPublicacao(idPost) {
+  let connection;
+  console.log("entrei pegarPublicacao(idPost) MODEL ->", idPost)
+  try {
+    connection = await getConnection();
+
+    const sql = `
+       SELECT
+          post.POS_ID AS "POS_ID",
+          post.POS_TIPO AS "POS_TIPO",
+          pet.PET_NOME AS "PET_NOME",
+          pet.PET_DESCRICAO AS "PET_DESCRICAO",
+          pet.PET_FOTO AS "PET_FOTO",
+          pet.PET_LOCAL AS "PET_LOCAL",
+          pet.PET_DATA AS "POS_DATA",
+          pessoa.PES_NOME AS "PES_NOME",
+          usuario.USU_FOTO AS "USU_FOTO"
+      FROM POST, PET, USUARIO, PESSOA
+      WHERE
+          pet.PET_ID = post.PET_ID   AND
+          usuario.USU_ID = post.USU_ID AND
+          pessoa.PES_ID = usuario.PES_ID AND
+          post.POS_ID = :idPost
+    `;
+
+    const options = {
+      fetchInfo: {
+        PET_FOTO: { type: OracleDB.BUFFER },
+        USU_FOTO: { type: OracleDB.BUFFER },
+      },
+      outFormat: OracleDB.OUT_FORMAT_OBJECT,
+    };
+
+    const result = await connection.execute(      sql,      { idPost: idPost },      options    );
+
+    if (result.rows.length > 0) {
+      const row = result.rows[0]
+      
+      const postDataToSend = {
+          POS_ID: row.POS_ID,
+          POS_TIPO: row.POS_TIPO,
+          PET_NOME: row.PET_NOME,
+          PET_DESCRICAO: row.PET_DESCRICAO,
+          PET_LOCAL: row.PET_LOCAL,
+          PES_NOME: row.PES_NOME,
+          POS_DATA: formatarDataParaDDMMYYYY(
+            new Date(row.POS_DATA).toISOString().split("T")[0]
+          ),
+          PET_FOTO: row.PET_FOTO
+        ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}`
+        : null,
+          USU_FOTO: row.USU_FOTO
+        ? `data:image/jpeg;base64,${row.USU_FOTO.toString("base64")}`
+        : null,
+      };
+
+      return postDataToSend
+
+    } else {
+      console.error("Erro ao buscar publicação ELSE:", error);
+      throw error;
+    } 
+
+  } catch (error) {
+    console.error("Erro ao buscar publicação CATCH:", error);
+    throw error;
+  } finally {
+    if (connection) await connection.close();
+  }
+}
 export default {
   salvarDenuncia,
   listarUsuariosEDenuncias,
