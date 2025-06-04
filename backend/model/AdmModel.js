@@ -203,6 +203,37 @@ async function pegarPublicacao(idPost) {
     if (connection) await connection.close();
   }
 }
+
+async function manterPublicacao(idDenuncia) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    console.log("entrei model, id denuncia -->", idDenuncia);
+    
+
+    const result = await connection.execute(
+      `UPDATE DENUNCIAS SET DEN_STATUS = 'MANTIDO' WHERE DEN_ID = :idDenuncia`,
+      { idDenuncia },
+      { autoCommit: true }
+    );
+
+    if (result.rowsAffected && result.rowsAffected > 0) {
+      console.log("model denuncia mantida com sucesso")
+      return { success: true, message: "Denúncia mantida com sucesso!" };
+    } else {
+      console.log("model denuncia mantida com FRACASSSSOOOOO_______")
+      return { success: false, message: "Denúncia não encontrada ou já está mantida." };
+    }
+
+  } catch (error) {
+    console.error("Erro ao manter denúncia:", error);
+    throw new Error("Erro interno ao manter denúncia.");
+  } finally {
+    if (connection) await connection.close();
+  }
+  
+}
 export default {
   salvarDenuncia,
   listarUsuariosEDenuncias,
