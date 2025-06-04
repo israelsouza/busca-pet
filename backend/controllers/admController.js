@@ -68,17 +68,20 @@ async function atualizarStatus(req, res) {
   const { idPost, status, idDenuncia } = req.params
   
   console.log("idPost -> ",idPost)
-  console.log("id -> ",status)
+  console.log("status -> ",status)
   console.log("idDenuncia -> ",idDenuncia)
 
-  if (!status || (status !== 'manter' && status !== 'excluir')) {
+  if (!status || !idDenuncia || !idPost) {
       return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
   }
   
   try {
 
-    if (status === "MANTER") {
-      //const atualizaDenuncia = await AdmModel.manterPublicacao(idDenuncia)
+    if (status == "MANTER") {
+      console.log("entrei em manter");
+      
+      const atualizaDenuncia = await AdmModel.manterPublicacao(idDenuncia)
+      return res.status(200).json({ message: "Denúncia marcada como mantida com sucesso!" });
     } else if (status === "DELETAR") {
       //const atualizaDenunciaEPublicacao = await AdmModel.deletarPublicacaoPorDenuncia(idDenuncia, idPost)
     } else {
