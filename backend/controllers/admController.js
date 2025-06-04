@@ -77,13 +77,13 @@ async function atualizarStatus(req, res) {
   
   try {
 
-    if (status == "MANTER") {
-      console.log("entrei em manter");
-      
+    if (status == "MANTER") {    
       const atualizaDenuncia = await AdmModel.manterPublicacao(idDenuncia)
       return res.status(200).json({ message: "Denúncia marcada como mantida com sucesso!" });
     } else if (status === "DELETAR") {
-      //const atualizaDenunciaEPublicacao = await AdmModel.deletarPublicacaoPorDenuncia(idDenuncia, idPost)
+      console.log("entrei em DELETAR");
+      const atualizaDenunciaEPublicacao = await AdmModel.deletarPublicacaoPorDenuncia(idDenuncia, idPost)
+      return res.status(200).json({ message: `Denúncia atendida e post excluido com sucesso! -->  ${atualizaDenunciaEPublicacao} `});
     } else {
       console.error("ERRO: status inválido")
     }

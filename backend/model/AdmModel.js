@@ -101,6 +101,7 @@ async function listarDenuncias() {
 
           d.DEN_DATA AS DEN_DATA,
           d.USU_ID AS ID_DENUNCIANTE_USUARIO,
+          p.USU_ID AS ID_USUARIO_DENUNCIADO
       FROM
           DENUNCIAS d
       JOIN
@@ -234,8 +235,66 @@ async function manterPublicacao(idDenuncia) {
   }
   
 }
+
+async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    console.log("atualizando o status para deletado");
+    
+    const op1 = await connection.execute(
+      `UPDATE DENUNCIAS SET DEN_STATUS = 'DELETADO' WHERE DEN_ID = :idDenuncia`,
+      { idDenuncia },
+      {  }
+    );
+
+    console.log(op1);
+    console.log("Atualizado. Status agora é deletado");
+
+
+    console.log("Iniciando a exclusão do registro DENNCIA");
+    
+    const op2 = await connection.execute(
+      `DELETE FROM DENUNCIAS WHERE DEN_ID = :idDenuncia `,
+      { idDenuncia },
+      {  }
+    );
+
+    console.log(op2);
+    console.log("DENUNCIA Excluida com sucesso. Ou seja, não há 'dependencia' apontando para o post");
+
+
+    console.log("Iniciando a exclusão da publicação");
+    
+    const op3 = await connection.execute(
+      `DELETE FROM POST WHERE POS_ID = :idPost`,
+      { idPost },
+      {  }
+    );
+
+    console.log(op3);
+    console.log("Exclusão do POST realizada com sucesso!!!!!")
+    
+
+    await connection.commit();
+
+    return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
+  } catch (error) {
+    if (connection) await connection.rollback();
+    console.error("Erro ao deletar publicação por denúncia:", error);
+    throw new Error("Erro interno ao deletar publicação e atualizar denúncia.");
+  } finally {
+    if (connection) await connection.close();
+  }
+}
+
+
 export default {
   salvarDenuncia,
   listarUsuariosEDenuncias,
-  listarDenuncias
+  listarDenuncias,
+  pegarPublicacao,
+  manterPublicacao,
+  deletarPublicacaoPorDenuncia
 };

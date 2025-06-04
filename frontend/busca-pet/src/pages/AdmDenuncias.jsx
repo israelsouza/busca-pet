@@ -35,15 +35,13 @@ function AdmDenuncias() {
     fetchDenuncias();
   }, [fetchDenuncias]);
 
-  async function fetchPublicacao(id) {
+  const fetchPublicacao = useCallback ( async (id) => {
     setIsLoadingPost(true);
     setPostError(null);  
     setCurrentPost(null);
     console.log("ID recebido em fetchPublicacao antes de chamar fetchAPI:", id); 
     try {
       const res = await fetchAPI(`api/adm/denuncias/post/${id}`);
-      console.log('fetchAPI - endpoint:', endpoint);
-      console.log('fetchAPI - URL final:', url);
       if (!res.ok) throw new Error("Erro ao buscar a publicação");
       const data = await res.json();
       setCurrentPost(data.publicacao)
@@ -55,64 +53,62 @@ function AdmDenuncias() {
 
     } catch (error) {
       console.error("Erro ao carregar a publicação:", error);
-      setPostError(error.message || "Falha ao carregar a publicação."); // Armazena o erro
+      setPostError(error.message || "Falha ao carregar a publicação.");
     } finally {
-      // <<<<<< ATENÇÃO AQUI! Adicione o bloco finally
-      setIsLoadingPost(false); // Indica que o carregamento terminou (sucesso ou falha)
-      // <<<<<< FIM - ATENÇÃO AQUI!
+      setIsLoadingPost(false); 
     }
-  }
+  }, [])
 
   async function manterPublicacao(idPost, status, idDenuncia) {
     try {
-      const res = await fetchAPI(`api/adm/denuncias/${idDenuncia}/${idPost}/${status}`, 'PUT', null, true, true)      
+      const res = await fetchAPI(`api/adm/denuncias/${idDenuncia}/${idPost}/${status}`, 'PUT', null, true, true)    
+      const data = await res.json()  
+      console.log(data);
+      alert(data.message)
+      
 
-
-      // setEtapa('all');
-      // fetchDenuncias(); // Recarrega a lista para remover a denúncia resolvida
-      // setCurrentPost(null); // Garante que o post anterior não será mostrado novamente
-      // setCurrentDenuncia(null); // Limpa o ID da denúncia
-      // setPostError(null); // Limpa qualquer erro
-      // setIsLoadingPost(false); // Desliga o loading
+      handleBackToList()
     } catch (error) {
       console.error("Erro ao tentar alterar o status da publicação: ", error);
     }
   }
 
-
-
   const handleBackToList = useCallback(() => {
-    setEtapa('all');
     setCurrentPost(null);
     setCurrentDenuncia(null);
     setPostError(null);
     setIsLoadingPost(false);
+    setEtapa('all');
   }, []);
 
   return (
     <div className={styles.pnotification}>
       <HeaderForm />
       <div className={`${styles.pnotification__container} ${styles.denuncia__container}`}>
-        <h1>Gerenciar denúncias</h1>
+        
 
         { etapa === "all" &&
-        
-        denuncias.map((denuncia, key) => (
-          <BoxDenuncia
-            key={denuncia.DEN_ID}
-            id={denuncia.DEN_ID}
-            denunciado={denuncia.NOME_DENUNCIADO}
-            denunciante={denuncia.NOME_DENUNCIANTE}
-            tipo={denuncia.DEN_TIPO}
-            descricao={denuncia.DEN_DESCRICAO}
-            onClick={ () => {
-              console.log("POS_ID clicado:", denuncia.POS_ID); 
-              setCurrentDenuncia(denuncia.DEN_ID); 
-              fetchPublicacao(denuncia.POS_ID); 
-              setEtapa('one'); 
-            } }            
-          />
-        ))}
+              <>
+                <h1>Gerenciar denúncias</h1>
+                
+                {denuncias.map((denuncia, key) => (
+                  <BoxDenuncia
+                    key={denuncia.DEN_ID}
+                    id={denuncia.DEN_ID}
+                    denunciado={denuncia.NOME_DENUNCIADO}
+                    denunciante={denuncia.NOME_DENUNCIANTE}
+                    tipo={denuncia.DEN_TIPO}
+                    descricao={denuncia.DEN_DESCRICAO}
+                    onClick={ () => {
+                      console.log("POS_ID clicado:", denuncia.POS_ID); 
+                      setCurrentDenuncia(denuncia.DEN_ID); 
+                      fetchPublicacao(denuncia.POS_ID); 
+                      setEtapa('one'); 
+                    } }            
+                  />
+                ))}
+            </>                
+          }
 
         { etapa === 'one' && (
 
@@ -125,7 +121,7 @@ function AdmDenuncias() {
                   key={currentPost.POS_ID}
                   usuario={currentPost.PES_NOME}
                   imagemUsuario={currentPost.USU_FOTO}
-                  imagemPet={currPetFoto}
+                  imagemPet={currentPost.PET_FOTO}
                   nomePet={currentPost.PET_NOME}
                   caracteristicas={currentPost.PET_DESCRICAO}
                   dataSumico={currentPost.POS_DATA}                  
