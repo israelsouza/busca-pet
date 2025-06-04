@@ -9,4 +9,6 @@ router.get("/denuncias/post/:id", AdminController.getPublicacaoDenunciada);
 
 router.put("/denuncias/:idDenuncia/:idPost/:status", AdminController.atualizarStatus);
 
+router.delete("/post/:idPost", AdminController.deletarUmaPublicacao);
+
 export default router;

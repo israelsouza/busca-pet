@@ -289,6 +289,59 @@ async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
   }
 }
 
+async function deletarDadosDaPublicacao(id) {
+  let connection;
+  try {
+    console.log("Iniciando conexão com o banco...");
+    connection = await getConnection();
+    console.log("Conexão estabelecida.");
+
+    // Buscar o PET_ID relacionado ao POST
+    console.log("Buscando PET_ID relacionado ao POST...");
+    const result = await connection.execute(
+      `SELECT PET_ID FROM POST WHERE POS_ID = :id`,
+      { id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    console.log("Busca de PET_ID finalizada.");
+
+    if (!result.rows.length) {
+      console.log("Publicação não encontrada.");
+      return { success: false, message: "Publicação não encontrada." };
+    }
+
+    const petId = result.rows[0].PET_ID;
+
+    // Excluir o POST primeiro
+    console.log("Excluindo POST...");
+    await connection.execute(
+      `DELETE FROM POST WHERE POS_ID = :id`,
+      { id }
+    );
+    console.log("POST excluído.");
+
+    // Excluir o PET depois
+    console.log("Excluindo PET...");
+    await connection.execute(
+      `DELETE FROM PET WHERE PET_ID = :petId`,
+      { petId }
+    );
+    console.log("PET excluído.");
+
+    console.log("POST e PET deletados com sucesso");
+
+    await connection.commit();
+
+    return { success: true, message: "Dados da publicação excluídos com sucesso!" };
+  } catch (error) {
+    if (connection) await connection.rollback();
+    console.error("Erro ao deletar dados da publicação:", error);
+    throw new Error("Erro interno ao deletar dados da publicação.");
+  } finally {
+    if (connection) await connection.close();
+  }
+}
+
 
 export default {
   salvarDenuncia,
@@ -296,5 +349,6 @@ export default {
   listarDenuncias,
   pegarPublicacao,
   manterPublicacao,
-  deletarPublicacaoPorDenuncia
+  deletarPublicacaoPorDenuncia,
+  deletarDadosDaPublicacao
 };

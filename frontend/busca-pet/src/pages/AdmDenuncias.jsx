@@ -91,7 +91,7 @@ function AdmDenuncias() {
               <>
                 <h1>Gerenciar denúncias</h1>
                 
-                {denuncias.map((denuncia, key) => (
+                {denuncias.map((denuncia, key) => {
                   <BoxDenuncia
                     key={denuncia.DEN_ID}
                     id={denuncia.DEN_ID}
@@ -106,7 +106,7 @@ function AdmDenuncias() {
                       setEtapa('one'); 
                     } }            
                   />
-                ))}
+                })}
             </>                
           }
 

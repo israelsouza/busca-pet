@@ -15,15 +15,13 @@ import EditarPerfil from "./pages/EditPerfil";
 import PostsUser from "./pages/PostsUser";
 import Notification from "./pages/Notification";
 import AdmDenuncias from './pages/AdmDenuncias'
-
+import AdmPublicacoes from './pages/AdmPublicacoes'
+import TelaAdm from "./pages/Administrador";
+import AdmUsuarios from "./pages/AdmUsuarios";
 
 import API_KEY from './config/maps-api.js';
 
 const libraries = ['places', 'geometry']
-
-
-import TelaAdm from "./pages/Administrador";
-import AdmUsuarios from "./pages/AdmUsuarios";
 
 function App() {
 
@@ -36,8 +34,6 @@ function App() {
       </div>
     )
   }
-
-
 
   return (
     <div className="App">
@@ -78,7 +74,7 @@ function App() {
           <Route path="/adm" element={<TelaAdm />} />
           <Route path="/adm/usuarios" element={<AdmUsuarios />} />
           <Route path="/adm/denuncias" element={<AdmDenuncias />} />
-          {/* Adicione outras rotas conforme necessário */}
+          <Route path="/adm/publicacoes" element={<AdmPublicacoes />} />
         </Routes>
 
         </LoadScript>

@@ -1,5 +1,4 @@
 import style from "../components/styles/button_posts.module.css";
-import { useState } from "react";
 
 function Buttonposts_ADM({
   usuario,
@@ -9,7 +8,8 @@ function Buttonposts_ADM({
   caracteristicas,
   dataSumico,
   manter,
-  deletar
+  deletar,
+  local
 }) {
 
   return (
@@ -34,20 +34,14 @@ function Buttonposts_ADM({
           </ul>
         </div>
         <div className={style.buttoninteragir}>
-
-              <button className={`${style.denuncia} ${style.envmsg}`}  onClick={manter}>
-                
-                Manter Post
-                
-              </button>
-              <button
-                className={style.encontrarpet}
-                onClick={deletar}
-              >
-                Deletar Post
-              </button>
-
-
+          { local === 'sodeletar' ? (
+            <button className={style.encontrarpet} onClick={deletar} > Deletar Post </button>
+          ) : (
+            <>
+              <button className={`${style.denuncia} ${style.envmsg}`}  onClick={manter}> Manter Post </button>
+              <button className={style.encontrarpet} onClick={deletar} > Deletar Post </button>
+            </>
+          )}
         </div>
       </div>
     </div>

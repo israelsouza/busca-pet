@@ -1,0 +1,42 @@
+
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.publicacao{
+  text-align: center;
+  padding: 20px;
+}
+
+.containerPosts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  max-width: 1200px;
+  margin: 10px auto;
+}
+
+.btn_container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  position: fixed;
+  bottom:  2%;
+  right: 0; 
+}
+
+.btn_refresh{
+  padding: 10px;
+  font-size: 35px;
+  border-radius: 50%;
+}
+

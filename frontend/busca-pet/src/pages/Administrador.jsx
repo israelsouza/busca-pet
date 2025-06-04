@@ -16,7 +16,7 @@ function TelaAdm() {
       </div>
       <div className={Style.ContainerFuncoes}>
 
-        <ButtonAdm image={icon_publicacoes} alt="Publicações" funcao="Publicações"        />
+        <ButtonAdm image={icon_publicacoes} alt="Publicações" funcao="Publicações"  link="/adm/publicacoes"      />
 
         <ButtonAdm image={icon_denuncias} alt="Denúncias" funcao="Denúncias" link="/adm/denuncias" />
 

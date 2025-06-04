@@ -93,10 +93,28 @@ async function atualizarStatus(req, res) {
   }
 }
 
+async function deletarUmaPublicacao(req, res) {
+  const {idPost} = req.params;
+
+  if(!idPost)
+      return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
+
+  try {    
+    const result = await AdmModel.deletarDadosDaPublicacao(idPost);
+    console.log(result)
+    return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
+    
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao deletar a publicação:  ", error: error.message });
+  }
+  
+}
+
 export default {
   registrarUmaDenuncia,
   getUsuariosEDenuncias,
   getDenuncias,
   getPublicacaoDenunciada,
-  atualizarStatus
+  atualizarStatus,
+  deletarUmaPublicacao
 };
