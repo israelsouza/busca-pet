@@ -73,7 +73,9 @@ function AdmPublicacoes() {
 
             </div>
             <div className={style.btn_container}>
-                    <button className={style.btn_refresh} onClick={fetchPublicacoes} >  <IoMdRefresh  className={style.icon_refresh} /> </button>
+                    <button className="global-ADM__button" onClick={fetchPublicacoes}> 
+                        <IoMdRefresh className="global-ADM__icon" /> 
+                    </button>
             </div>
         </div>
     )

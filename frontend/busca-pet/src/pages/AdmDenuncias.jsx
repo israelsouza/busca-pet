@@ -92,20 +92,22 @@ function AdmDenuncias() {
                 <h1>Gerenciar denúncias</h1>
                 
                 {denuncias.map((denuncia, key) => {
-                  <BoxDenuncia
-                    key={denuncia.DEN_ID}
-                    id={denuncia.DEN_ID}
-                    denunciado={denuncia.NOME_DENUNCIADO}
-                    denunciante={denuncia.NOME_DENUNCIANTE}
-                    tipo={denuncia.DEN_TIPO}
-                    descricao={denuncia.DEN_DESCRICAO}
-                    onClick={ () => {
-                      console.log("POS_ID clicado:", denuncia.POS_ID); 
-                      setCurrentDenuncia(denuncia.DEN_ID); 
-                      fetchPublicacao(denuncia.POS_ID); 
-                      setEtapa('one'); 
+                  return (
+                    <BoxDenuncia
+                      key={denuncia.DEN_ID}
+                      id={denuncia.DEN_ID}
+                      denunciado={denuncia.NOME_DENUNCIADO}
+                      denunciante={denuncia.NOME_DENUNCIANTE}
+                      tipo={denuncia.DEN_TIPO}
+                      descricao={denuncia.DEN_DESCRICAO}
+                      onClick={ () => {
+                        console.log("POS_ID clicado:", denuncia.POS_ID); 
+                        setCurrentDenuncia(denuncia.DEN_ID); 
+                        fetchPublicacao(denuncia.POS_ID); 
+                        setEtapa('one'); 
                     } }            
                   />
+                  )
                 })}
             </>                
           }
@@ -143,9 +145,10 @@ function AdmDenuncias() {
       </div>
       <div className={styles.btn_container}>
         { etapa === 'one' ? (
-          <button className={styles.btn_refresh} onClick={handleBackToList} >  <IoIosArrowRoundBack  className={styles.icon_refresh} />   </button>
+          <button className="global-ADM__button" onClick={handleBackToList} >  
+          <IoIosArrowRoundBack  className="global-ADM__icon" />   </button>
         ) : (
-          <button className={styles.btn_refresh} onClick={fetchDenuncias} >  <IoMdRefresh className={styles.icon_refresh} />   </button>
+          <button className="global-ADM__button" onClick={fetchDenuncias} >            <IoMdRefresh className="global-ADM__icon" />   </button>
         )}       
       </div>
     </div>
