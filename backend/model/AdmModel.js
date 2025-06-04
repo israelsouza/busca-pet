@@ -213,15 +213,25 @@ async function manterPublicacao(idDenuncia) {
     console.log("entrei model, id denuncia -->", idDenuncia);
     
 
-    const result = await connection.execute(
+    const up = await connection.execute(
       `UPDATE DENUNCIAS SET DEN_STATUS = 'MANTIDO' WHERE DEN_ID = :idDenuncia`,
       { idDenuncia },
-      { autoCommit: true }
+      { autoCommit: false }
     );
 
-    if (result.rowsAffected && result.rowsAffected > 0) {
+    const result = await connection.execute(
+      `DELETE FROM DENUNCIAS WHERE DEN_ID = :idDenuncia`,
+      { idDenuncia },
+      { autoCommit: false }
+    );
+
+    await connection.commit();
+    
+    if (result.rowsAffected && result.rowsAffected > 0 && up.rowsAffected && up.rowsAffected > 0) {
+
       console.log("model denuncia mantida com sucesso")
-      return { success: true, message: "Denúncia mantida com sucesso!" };
+      
+      return { success: true, message: "Denúncia mantida e registro deletado com sucesso!" };
     } else {
       console.log("model denuncia mantida com FRACASSSSOOOOO_______")
       return { success: false, message: "Denúncia não encontrada ou já está mantida." };
