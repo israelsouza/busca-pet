@@ -110,7 +110,11 @@ export async function getPostsPorTextoModel(termoBuscado) {
         const binds = {termoBuscado:termoBuscado}
 
         const options = {
-            outFormat: OracleDB.OUT_FORMAT_OBJECT
+            outFormat: OracleDB.OUT_FORMAT_OBJECT,
+            fetchInfo: {
+                "PET_FOTO": { type: OracleDB.BUFFER },  // Garante que PET_FOTO venha como Buffer
+                "USU_FOTO": { type: OracleDB.BUFFER }  // Garante que PET_FOTO venha como Buffer
+            }
         }
 
         const result = await connection.execute(
@@ -119,7 +123,29 @@ export async function getPostsPorTextoModel(termoBuscado) {
             options
         );
 
-        return result.rows;
+        const posts = result.rows.map(row => {
+            return {
+                POS_ID: row.POS_ID,
+                POS_TIPO: row.POS_TIPO,
+                PET_NOME: row.PET_NOME,
+                PET_DESCRICAO: row.PET_DESCRICAO,
+                PET_FOTO: row.PET_FOTO ? row.PET_FOTO.toString('base64') : null,
+               
+                    PET_LOCAL_LAT: row.PET_LOCAL_LAT,
+                    PET_LOCAL_LNG: row.PET_LOCAL_LNG,
+                    PET_LOCAL_RUA: row.PET_LOCAL_RUA,
+                    PET_LOCAL_BAIRRO: row.PET_LOCAL_BAIRRO,
+                    PET_LOCAL_ENDERECO: row.PET_LOCAL_ENDERECO,
+              
+                PET_TIPO: row.PET_TIPO,
+                PES_NOME: row.PES_NOME,
+                USU_FOTO: row.USU_FOTO ? row.USU_FOTO.toString('base64') : null
+            };
+        });
+
+        console.log("DENTRO MODEL --> ", posts);
+        
+        return posts
         
     } catch (error) {
         console.error("Erro Modal: ", error)

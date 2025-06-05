@@ -86,21 +86,27 @@ export async function getQuemPublicou(req, res) {
   const { idPost } = req.body;
   const userA = req.user.email;
 
-  console.log(`B-CONTroller: Entrou em getQuemPublicou || ${userA}`);
+  console.log(`B-CONT-NOTIFICACAO || ${userA}`);
 
   try {
     const idUserA = await getUserIdByEmail(userA);
     const idUserB = await getIdFromPost(idPost);
     const telefone = await getPhoneFromId(idUserA);
 
-    console.log(telefone)
+    console.log("FONE: ",telefone," DO: ",userA)
 
     const mensagemNotificacao = {
       publicacaoId: idPost,
       remetente: idUserA,
       telefone: telefone,
-      email: userA
+      email: userA,
+      mensagem: "Olá, parece que um usuário viu uma publicação sua, confira suas notificações!!"
     };
+
+    console.log("MENSAGEM ----> ", mensagemNotificacao);
+    
+
+    
 
     const notificationData = {
       rementente: idUserA,
@@ -108,8 +114,10 @@ export async function getQuemPublicou(req, res) {
       conteudo: JSON.stringify(mensagemNotificacao)
     }
 
+    console.log("notificação -----> ",notificationData)
+
     const idNotificacaoSalva = await salvarNotificacaoUsuario(notificationData);
-    console.log("Notificação -> ", idNotificacaoSalva)
+    console.log("B-CONT-NOTIFICACAO resultado -> ", idNotificacaoSalva)
 
 
     const notificacaoEnviada = sendMessageToUser(idUserB, mensagemNotificacao);
@@ -173,17 +181,12 @@ export async function getPostsPorTexto(req, res) {
   
   try {
     const result = await getPostsPorTextoModel(termoBuscado);
-    console.log(result)
-
+    // console.log(result)
+    
     // Converte USU_FOTO binário para base64, se existir
-    if (Array.isArray(result)) {
-      result.forEach(post => {
-      if (post.USU_FOTO && Buffer.isBuffer(post.USU_FOTO)) {
-        post.USU_FOTO = post.USU_FOTO.toString('base64');
-      }
-      });
-    }
-
+    
+    
+    console.log("B-CONTROLLER-POST: finalizadoooooo")
     return res.status(200).json({message:"Sucesso na requisição", result})
   } catch (error) {
     console.error(error);

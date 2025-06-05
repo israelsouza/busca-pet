@@ -21,7 +21,7 @@ async function salvarNotificacaoUsuario(data) {
         autoCommit: true
     });
 
-    console.log(result.outBinds);
+    console.log("B-MODEL-NOTIFICACAO, result --> ",result);
     return result.outBinds.notificacaoId[0]
   } catch (err) {
     console.error(err);

@@ -24,7 +24,7 @@ function PostsAll() {
   
 
   const exibirNotificacao = useCallback((notificacao) => {
-    console.log("Nova notificação recebida:", notificacao.message);
+    alert("Nova notificação recebida:", notificacao.message);
 
     if (notificacao.type === "novaDenuncia") {
       alert(`Nova denúncia: ${notificacao.message}`);
@@ -77,6 +77,8 @@ function PostsAll() {
   useEffect(() => {
     async function fetchPosts() {
       const token = localStorage.getItem("authToken");
+      console.log(token);
+      
       const headerRequest = {
         method: "GET",
         headers: {
@@ -154,7 +156,7 @@ function PostsAll() {
       "POST",
       token
     );
-    console.log(result);
+    alert(result.message);
   }
 
   function exibirModalMapa(X, Y) {

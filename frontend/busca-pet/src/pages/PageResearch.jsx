@@ -221,9 +221,7 @@ function PageResearch() {
                         </strong>
                       </div>
                       <div>
-                        {primeiraLetraMaiuscula(pub.PET_TIPO)} - {pub.POS_TIPO}{" "}
-                        na região {pub.PET_LOCAL_BAIRRO}. Perto da{" "}
-                        {pub.PET_LOCAL_RUA}
+                        {primeiraLetraMaiuscula(pub.PET_TIPO)} - {pub.POS_TIPO} na região {pub.PET_LOCAL_BAIRRO}
                       </div>
                     </div>
                   </div>

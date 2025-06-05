@@ -11,7 +11,7 @@ function HeaderLog({ onSelectCategory }) {
   const [userPhotoSrc, setUserPhotoSrc] = useState(null);
 
   useEffect(() => {
-    console.log("UserInfo ->", userInfo)
+    //console.log("UserInfo ->", userInfo)
   }, [userInfo])
   
 

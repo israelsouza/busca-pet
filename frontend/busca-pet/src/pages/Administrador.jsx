@@ -24,9 +24,7 @@ function TelaAdm() {
 
       </div>
 
-      <div className={Style.footer}>
-        <button className={Style.botaoSair}>Sair</button>
-      </div>
+
     </div>
   );
 }

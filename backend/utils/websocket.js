@@ -45,6 +45,8 @@ const registerClient = (userId, ws) => {
 };
 
 const sendMessageToUser = (userId, message) => {
+  console.log("MESSAGE DENTRO DA FUNçÂO ---> ",message);
+  
   const client = clients.get(userId);
   if (client && client.readyState === WebSocket.OPEN) {
     client.send(JSON.stringify(message));
