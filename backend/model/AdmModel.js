@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 import formatarDataParaDDMMYYYY from '../utils/formatarData.js'
@@ -226,7 +227,7 @@ async function manterPublicacao(idDenuncia) {
     );
 
     await connection.commit();
-    
+
     if (result.rowsAffected && result.rowsAffected > 0 && up.rowsAffected && up.rowsAffected > 0) {
 
       console.log("model denuncia mantida com sucesso")
@@ -352,6 +353,145 @@ async function deletarDadosDaPublicacao(id) {
   }
 }
 
+async function existeUsuario(email, userId) {
+  console.log("ENTREI Na MODAL -> existeUsuario")
+  let connection;
+  try {
+    connection = await getConnection();
+    const result = await connection.execute(
+      `SELECT COUNT(*) AS COUNT FROM USUARIO WHERE USU_EMAIL = :email AND USU_ID = :userId`,
+      { email, userId },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return result.rows[0].COUNT > 0;
+    } catch (error) {
+    console.error("Erro ao verificar existência de usuário:", error);
+    throw new Error("Erro interno ao verificar usuário.");
+    } finally {
+    if (connection) await connection.close();
+    }
+}
+
+
+// Função para atualizar dados do usuário dinamicamente
+// Recebe: userId, objeto com campos a atualizar (ex: { USU_EMAIL: 'novo@email.com', USU_NOME: 'Novo Nome' })
+async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
+  console.log("Iniciando atualização de usuário:", userId);
+  let connection;
+  try {
+    const validatedData = {};
+        if (nome !== undefined && nome !== null) validatedData.nome = nome;
+        if (email !== undefined && email !== null) validatedData.email = email;
+        if (senha !== undefined && senha !== null) validatedData.senha = senha; // Assumimos que 'senha' já vem hasheada aqui
+
+        // Se nenhum campo foi fornecido para atualização, retorna cedo
+        if (Object.keys(validatedData).length === 0) {
+            console.log("Nenhum dado fornecido para atualização.");
+            return 0; // Nenhuma linha afetada
+        }
+
+        connection = await getConnection();
+        await connection.execute('SET TRANSACTION ISOLATION LEVEL READ COMMITTED'); // Inicia a transação
+        let rowsAffectedTotal = 0;
+
+        // --- Atualização da tabela USUARIO (email e senha) ---
+        const userUpdateFields = [];
+        const userBindParams = {};
+        let userParamCounter = 1; // Para nomes de parâmetros únicos
+
+        if (validatedData.email !== undefined) {
+
+
+
+            const paramName = `email${userParamCounter++}`;
+            userUpdateFields.push(`USU_EMAIL = :${paramName}`);
+            userBindParams[paramName] = validatedData.email;
+
+            // Opcional: Verificação de unicidade do e-mail (regra de negócio no serviço)
+            const checkEmailSql = `SELECT USU_ID FROM USUARIO WHERE USU_EMAIL = :email AND USU_ID != :userId`;
+            const existingUser = await connection.execute(checkEmailSql, { email: validatedData.email, userId: userId });
+            if (existingUser.rows && existingUser.rows.length > 0) {
+                // Lançar um erro mais específico para a camada superior tratar
+                const error = new Error('Este e-mail já está em uso por outro usuário.');
+                error.status = 409; // Status HTTP para Conflito
+                throw error;
+            }
+        }
+
+        if (validatedData.senha !== undefined) {
+
+            const salt = await bcrypt.genSalt(10);
+            const senhaHash = await bcrypt.hash(validatedData.senha, salt);
+            
+            // passwordHashed = `${senhaHash}`;
+            // console.log(senha);
+            // console.log(passwordHashed);    
+
+            const paramName = `senha${userParamCounter++}`;
+            userUpdateFields.push(`USU_SENHA = :${paramName}`);
+            userBindParams[paramName] = senhaHash;
+        }
+
+        if (userUpdateFields.length > 0) {
+            const userSetClause = userUpdateFields.join(', ');
+            const userUpdateSql = `UPDATE USUARIO SET ${userSetClause} WHERE USU_ID = :userIdParam`;
+            userBindParams.userIdParam = userId;
+
+            const userResult = await connection.execute(userUpdateSql, userBindParams, { autoCommit: false });
+            rowsAffectedTotal += userResult.rowsAffected;
+        }
+
+        // --- Atualização da tabela PESSOA (nome) ---
+        if (validatedData.nome !== undefined) {
+            // Primeiro, obter o FK_PESSOA_ID do usuário
+            const getPessoaIdSql = `SELECT PES_ID FROM USUARIO WHERE USU_ID = :userIdParam`;
+            const pessoaResult = await connection.execute(getPessoaIdSql, { userIdParam: userId });
+
+            if (pessoaResult.rows.length === 0) {
+                const error = new Error('Usuário não encontrado para obter ID da pessoa.');
+                error.status = 404;
+                throw error;
+            }
+            const pessoaId = pessoaResult.rows[0][0]; // Extrai o PES_ID
+
+            const pessoaUpdateFields = [];
+            const pessoaBindParams = {};
+            let pessoaParamCounter = 1; // Para nomes de parâmetros únicos
+
+            const paramName = `nome${pessoaParamCounter++}`;
+            pessoaUpdateFields.push(`PES_NOME = :${paramName}`);
+            pessoaBindParams[paramName] = validatedData.nome;
+
+            const pessoaSetClause = pessoaUpdateFields.join(', ');
+            const pessoaUpdateSql = `UPDATE PESSOA SET ${pessoaSetClause} WHERE PES_ID = :pessoaIdParam`;
+            pessoaBindParams.pessoaIdParam = pessoaId;
+
+            const pessoaResult2 = await connection.execute(pessoaUpdateSql, pessoaBindParams, { autoCommit: false });
+            rowsAffectedTotal += pessoaResult2.rowsAffected;
+        }
+
+        // --- Commitar a transação ---
+        await connection.commit();
+
+        // Verificação final se alguma linha foi afetada quando deveria
+        if (rowsAffectedTotal === 0 && Object.keys(validatedData).length > 0) {
+            const error = new Error('Nenhuma linha foi afetada. Usuário pode não existir ou dados já estão atualizados.');
+            error.status = 404; // Ou 200 com mensagem específica se for considerado sucesso sem alteração
+            throw error;
+        }
+
+        return rowsAffectedTotal;
+
+    //return { success: result.rowsAffected > 0 };
+  } catch (error) {
+    console.error("Erro ao atualizar usuário:", error);
+    throw new Error("Erro interno ao atualizar usuário.");
+  } finally {
+    if (connection) await connection.close();
+  }
+}
+
+
 
 export default {
   salvarDenuncia,
@@ -360,5 +500,7 @@ export default {
   pegarPublicacao,
   manterPublicacao,
   deletarPublicacaoPorDenuncia,
-  deletarDadosDaPublicacao
+  deletarDadosDaPublicacao,
+  existeUsuario,
+  realizarAtualizacaoUsuario
 };

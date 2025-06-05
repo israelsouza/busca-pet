@@ -1,6 +1,7 @@
 import AdmModel from '../model/AdmModel.js'
 import { notifyAdmins } from "../utils/websocket.js";
 import { getUserIdByEmail } from '../model/getUserId.js'
+import bcrypt from 'bcrypt'
 
 async function registrarUmaDenuncia(req, res) {
     const { tipo, descricao, idPost } = req.body;
@@ -110,11 +111,30 @@ async function deletarUmaPublicacao(req, res) {
   
 }
 
+async function atualizarUnicoUsuario(req, res) {
+  console.log("ENTREI NO BACKEND -> atualizarUnicoUsuario")
+  const userId = req.params.id;
+  const { nome, email, senha } = req.body;
+
+  try {
+        
+    const operacao = AdmModel.realizarAtualizacaoUsuario(userId, nome, email, senha)
+
+    return res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
+
+  } catch (error) {
+    console.error("Erro ao atualizar usuário:", error);
+    res.status(500).json({ message: 'Erro interno do servidor.', error: error.message });
+  }
+    
+}
+
 export default {
   registrarUmaDenuncia,
   getUsuariosEDenuncias,
   getDenuncias,
   getPublicacaoDenunciada,
   atualizarStatus,
-  deletarUmaPublicacao
+  deletarUmaPublicacao,
+  atualizarUnicoUsuario
 };
