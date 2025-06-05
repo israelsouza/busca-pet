@@ -276,7 +276,23 @@ async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
 
     console.log(op2);
     console.log("DENUNCIA Excluida com sucesso. Ou seja, não há 'dependencia' apontando para o post");
-
+    console.log("Indo INCREMENTAR");
+    
+    const sql = `
+    UPDATE USUARIO
+    SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
+    WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :postIdParam)
+    `;
+    const bindParams = { postIdParam: idPost }; 
+    
+    const result = await connection.execute(sql, bindParams);
+    
+    if (result.rowsAffected === 0) {
+      console.warn(`Aviso: Contador de denúncias não incrementado. Publicação ID ${idPost} não encontrada ou não associada a um usuário existente.`);
+      return false;
+    }  
+    
+    console.log("Incremento com SUCESSO", result );
 
     console.log("Iniciando a exclusão da publicação");
     
@@ -287,9 +303,7 @@ async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
     );
 
     console.log(op3);
-    console.log("Exclusão do POST realizada com sucesso!!!!!")
-    
-
+    console.log("Exclusão do POST realizada com sucesso!!!!!")  
     await connection.commit();
 
     return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
@@ -325,6 +339,22 @@ async function deletarDadosDaPublicacao(id) {
 
     const petId = result.rows[0].PET_ID;
 
+        const sql = `
+        UPDATE USUARIO
+        SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
+        WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :id)
+    `;
+
+    const resultado = await connection.execute(sql, [id]);
+
+    console.log(`Contador de denúncias incrementado para o usuário. Linhas afetadas: ${resultado.rowsAffected}`);
+
+    if (resultado.rowsAffected === 0) {
+        const error = new Error('Falha ao deletar a publicação. Pode não existir ou já foi deletada.');
+        error.status = 404;
+        throw error;
+    }
+
     // Excluir o POST primeiro
     console.log("Excluindo POST...");
     await connection.execute(
@@ -343,6 +373,9 @@ async function deletarDadosDaPublicacao(id) {
 
     console.log("POST e PET deletados com sucesso");
 
+
+
+    
     await connection.commit();
 
     return { success: true, message: "Dados da publicação excluídos com sucesso!" };
@@ -522,7 +555,6 @@ async function realizarBanimentoEnviarEmail(email) {
   }
 
   console.log("EMAIL E BANIMENTO SUCESSO");
-  
   await connection.commit(); // Confirma as mudanças no banco de dados
 
   return { success: true, message: 'Usuário banido e e-mail enviado com sucesso.' };
