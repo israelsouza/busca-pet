@@ -9,9 +9,10 @@ export default async function verificarUsuarioDB(dados) {
     console.log("Iniciando a conexão...\n \n");
 
     const consultaUsuario = `
-    SELECT USU_ID, USU_SENHA, USU_ROLE
+    SELECT USU_ID, USU_SENHA, USU_ROLE, USU_STATUS
     FROM USUARIO
-    WHERE LOWER(USU_EMAIL) = :email
+    WHERE LOWER(USU_EMAIL) = :email AND
+          USU_STATUS = 'A'
   `;
     const resultado = await connection.execute(consultaUsuario, {
       email: dados.email.toLowerCase(),

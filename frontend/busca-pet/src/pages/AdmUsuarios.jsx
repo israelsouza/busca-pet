@@ -216,6 +216,7 @@ function AdmUsuarios() {
               <table className={Style.Table}>
                 <thead>
                   <tr>
+                    <th>Status</th>
                     <th>Nome</th>
                     <th>E-mail</th>
                     <th>Denúncias</th>
@@ -226,12 +227,37 @@ function AdmUsuarios() {
                   {usuarios && 
                   usuarios.map((usuario) => (
                     <tr key={usuario.ID}>
+                      <td>{usuario.USU_STATUS}</td>
                       <td>{usuario.PES_NOME}</td>
                       <td>{usuario.USU_EMAIL}</td>
                       <td>{usuario.DENUNCIAS_RECEBIDAS_COUNT}</td>
                       <td>
                         <div className={Style.btn_container}>
-                          <button className={Style.Button_ban}> <LuUserRoundMinus className={Style.icon_user} /> Banir</button>
+                          <button className={Style.Button_ban}> <LuUserRoundMinus className={Style.icon_user} onClick={ async () => {
+                            // const resultadoBanir = window.confirm(`Tem certeza que deseja banir o ${usuario.PES_NOME} ?`)
+
+                            // if(!resultadoBanir) return;
+
+                            const banir = await banirUsuario(usuario.USU_EMAIL);
+
+                            async function banirUsuario(email) {
+                              try {
+                                const req = await fetchAPI(
+                                  `api/adm/usuario/${email}`,
+                                  'PUT',
+                                  null,
+                                  false,
+                                  true
+                                )
+
+                                console.log(await req.json())
+                              } catch (error) {
+                                
+                              }
+                            }
+
+
+                          } }/> Banir</button>
                           <button onClick={ () => {
                             setCurrentUser(usuario);
                             setFase('usuarioUnico')

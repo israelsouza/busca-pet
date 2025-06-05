@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt'
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 import formatarDataParaDDMMYYYY from '../utils/formatarData.js'
-import readLobAsBase64 from '../utils/converteLobBase64.js';
+import transporter from "../configs/mailConfig.js";
+import { myEmail } from "../configs/myEmail.js";
 
 async function salvarDenuncia(tipo, descricao, idPost, userId) {
   let connection;
@@ -49,6 +50,7 @@ async function listarUsuariosEDenuncias() {
           SELECT
               U.USU_ID AS id,
               P.PES_NOME AS PES_NOME,
+              U.USU_STATUS AS USU_STATUS,
               U.USU_EMAIL AS USU_EMAIL,
                 COALESCE(DenunciasRecebidas.count_denuncias_recebidas, 0) AS denuncias_recebidas_count
           FROM
@@ -491,6 +493,58 @@ async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
   }
 }
 
+async function realizarBanimentoEnviarEmail(email) {
+  let connection;
+  try {
+    connection = await getConnection()
+
+    const mailOptions = {
+    from: myEmail,
+    to: email,
+    subject: "Banimento do site BuscaPet",
+    html: `
+            <p>Prezado(a) usuário(a),</p>
+            <p>Informamos que sua conta foi banida do site BuscaPet devido ao descumprimento de nossas políticas de uso.</p>
+            <p>O acesso à sua conta foi bloqueado e você não poderá mais utilizar nossos serviços.</p>
+            <p>Atenciosamente,<br>Equipe BuscaPet</p>
+          `,
+  };
+
+  await transporter.sendMail(mailOptions);
+  console.log(`Email de banimento enviado para ${email}.`);
+  const sql = `UPDATE USUARIO SET USU_STATUS = 'B' WHERE USU_EMAIL = :email`;
+  const updateResult = await connection.execute(sql, [email], { autoCommit: false });
+
+  if (updateResult.rowsAffected === 0) {
+      const error = new Error('Usuário não encontrado ou já estava banido. Status do banco não foi alterado.');
+      error.status = 400;
+      throw error;
+  }
+
+  console.log("EMAIL E BANIMENTO SUCESSO");
+  
+  await connection.commit(); // Confirma as mudanças no banco de dados
+
+  return { success: true, message: 'Usuário banido e e-mail enviado com sucesso.' };
+
+  } catch (error) {
+    
+    if (connection) {
+        try {
+            await connection.rollback();
+        } catch (rbErr) {
+            console.error("Erro no rollback da transação:", rbErr);
+        }
+
+        console.error("Falha no processo de banimento do usuário:", error);
+        throw new Error("Erro interno ao banir usuário e enviar e-mail.");         
+    }
+
+  } finally {
+    if (connection) await connection.close();
+  }
+}
+
 
 
 export default {
@@ -502,5 +556,6 @@ export default {
   deletarPublicacaoPorDenuncia,
   deletarDadosDaPublicacao,
   existeUsuario,
-  realizarAtualizacaoUsuario
+  realizarAtualizacaoUsuario,
+  realizarBanimentoEnviarEmail
 };

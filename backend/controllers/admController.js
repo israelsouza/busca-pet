@@ -1,7 +1,6 @@
 import AdmModel from '../model/AdmModel.js'
 import { notifyAdmins } from "../utils/websocket.js";
 import { getUserIdByEmail } from '../model/getUserId.js'
-import bcrypt from 'bcrypt'
 
 async function registrarUmaDenuncia(req, res) {
     const { tipo, descricao, idPost } = req.body;
@@ -129,6 +128,24 @@ async function atualizarUnicoUsuario(req, res) {
     
 }
 
+async function banirUsuario(req, res) {
+  const {email } = req.params;
+  
+  try {
+    const resultado = await AdmModel.realizarBanimentoEnviarEmail(email);
+    console.log(resultado)
+    if (resultado.success) {
+      return res.status(200).json({ message: 'Usuário banido e notificação enviada com sucesso!' });
+    } else {
+      return res.status(400).json({ message: resultado.message || 'Não foi possível banir o usuário.' });
+    }
+  } catch (error) {
+    console.error("Erro ao banir usuário:", error);
+    return res.status(500).json({ message: 'Erro interno do servidor.', error: error.message });
+  }
+  
+}
+
 export default {
   registrarUmaDenuncia,
   getUsuariosEDenuncias,
@@ -136,5 +153,6 @@ export default {
   getPublicacaoDenunciada,
   atualizarStatus,
   deletarUmaPublicacao,
-  atualizarUnicoUsuario
+  atualizarUnicoUsuario,
+  banirUsuario
 };

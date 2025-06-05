@@ -8,6 +8,7 @@ router.get("/denuncias", AdminController.getDenuncias);
 router.get("/denuncias/post/:id", AdminController.getPublicacaoDenunciada);
 
 router.put("/denuncias/:idDenuncia/:idPost/:status", AdminController.atualizarStatus);
+router.put("/usuario/:email", AdminController.banirUsuario);
 
 router.patch("/usuario/:id", AdminController.atualizarUnicoUsuario);
 
