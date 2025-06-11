@@ -95,10 +95,10 @@ function Notification() {
           />
         ))}
 
-        <button className={styles.pnotification__button}>
+        {/* <button className={styles.pnotification__button}>
           <span>Excluir notificações</span>
           <FiTrash className={styles.pnotification__icon} />
-        </button>
+        </button> */}
       </div>
     </div>
   );

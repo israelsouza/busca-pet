@@ -59,6 +59,8 @@ const notifyAdmins = (mensagem) => {
   for (const [userId, ws] of clients.entries()) {
     if (ws.readyState === WebSocket.OPEN) {
       // Aqui você pode adicionar lógica para verificar se o userId é admin (consultar no banco, cache, etc)
+      console.log("WS: ", mensagem);
+      
       ws.send(JSON.stringify({ tipo: "nova_denuncia", conteudo: mensagem }));
     }
   }

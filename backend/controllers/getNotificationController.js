@@ -4,12 +4,20 @@ import getNotificationModel from "../model/getNotificationModel.js";
 import deleteNotificationModel from "../model/deleteNotificationModel.js";
 
 async function getNotificationController(req, res) {
+ console.log("ENTREEEEIII");
+ 
   try {
     const { token } = req.params;
+
+    console.log("NOT-CONT-NOTIF --->", token);
+    
 
     const email = await extrairEmailDoToken(token);
 
     const id = await getUserIdByEmail(email);
+
+    console.log("ID NA MODEL ---->", id);
+    
 
     const result = await getNotificationModel(id);
 

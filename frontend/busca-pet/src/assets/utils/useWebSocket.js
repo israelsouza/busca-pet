@@ -24,7 +24,7 @@ const useWebSocket =  (url) => {
 
     ws.onmessage = (event) => {
       try {                       
-        console.log(messages);
+        console.log("EVENTOOOOOOOOOO: ", event);
         const message = JSON.parse(event.data);                
         setMessages((prevMessages) => [...prevMessages, message]);   
         
