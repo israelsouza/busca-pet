@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import cadastroUsuario from "./routes/cadastroUsuario.js";
+
 import logarUsuario from "./routes/logarUsuario.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
@@ -16,6 +16,8 @@ import routerPublicacoes from './routes/publicacoes.js'
 import adminRouter from './routes/admRouter.js';
 import authorizeAdminRole from './middleware/authRole.js'
 
+import UserRouter from './routes/UserRouter.js';
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -25,8 +27,10 @@ app.use(express.json());
 app.use("/validate-token", validateToken);
 
 
+app.use("/api/usuario", UserRouter)
+
 // rotas publicas
-app.use("/form/cadastro-usuario", cadastroUsuario);
+
 app.use("/form/login", logarUsuario);
 app.use("/form/recuperar-senha", recuperarSenha);
 app.use("/validar-token-senha", validarTokenSenha);

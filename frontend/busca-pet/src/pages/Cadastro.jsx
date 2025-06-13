@@ -256,12 +256,12 @@ function Cadastro() {
     };
 
     try {
-      const dadosAoBack = await enviarDados(dados, "form/cadastro-usuario");
-
+        const dadosAoBack = await enviarDados(dados, "api/usuario/cadastro");
+        setMensagem(dadosAoBack.message);
       if (dadosAoBack.message) {
         setMensagem(dadosAoBack.message);
 
-        if (dadosAoBack.message === "Cadastro realizado com sucesso") {
+        if (dadosAoBack.message === "Usuario cadastrado com sucesso") {
           setTimeout(() => navigate("/form/login"), 1200);
         }
       } else {
@@ -269,6 +269,7 @@ function Cadastro() {
       }
     } catch (error) {
       if (error.message) {
+        alert("ERRO")
         setMensagem(error.message);
       } else {
         setMensagem("Erro ao realizar o cadastro. Tente novamente.");
