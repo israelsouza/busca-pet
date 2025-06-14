@@ -1,6 +1,7 @@
 import log from '../utils/logger.js'
 import bcrypt from 'bcrypt'
 import UserModel from '../model/UserModel.js'
+import TokenService from '../service/TokenService.js'
 
 class UserService {
     static MENSAGEM_NAO_CONTEM_NUMERO = 'inválido, só pode conter letras e espaços';
@@ -53,6 +54,51 @@ class UserService {
             throw error;
         }
 
+    }
+
+    async validarLogin({email, password}){
+        log('INFO', 'UserService', 'validarLogin', 'INICIO')        
+
+        if( !this.validarCamposObrigatorios(email, 'email') ) throw error ;
+        if( !this.validarCamposObrigatorios(password, 'senha') ) throw error ;
+
+        if( !this.validarTamanho(email, 'email') ) throw error ;
+        if( !this.validarTamanho(password, 'senha') ) throw error ;
+
+        if( !this.validarFormatoEmail(email) ) throw new Error("Formato do e-mail inválido");
+
+        try {
+            const userInfo = await this.realizarLogin({email, password});
+            log('INFO', 'UserService', 'validarLogin', 'FIM')
+            return userInfo;
+        } catch (error) {
+            log('ERROR', 'UserService', 'validarLogin', 'Falha no login do usuário')
+            console.log(error);            
+            throw error;
+        }
+    }
+
+    async realizarLogin(dados){
+        log('INFO', 'UserService', 'realizarLogin', 'INICIO')
+        try { 
+            const result = await UserModel.logarUsuario(dados) 
+            console.log("log result ", result);
+            
+            log('INFO', 'UserService', 'realizarLogin', 'COM SUCESSO SUCESSO')
+            log('INFO', 'UserService', 'realizarLogin', 'GERANDO TOKEN')
+
+            const token = TokenService.gerarToken(result);
+            
+            console.log(token);
+            
+            log('INFO', 'UserService', 'realizarLogin', 'FIM')
+            return {token, id: result.userId, role: result.role, email: result.email};
+            
+        } catch (error) {
+            log('ERRO', 'UserService', 'realizarLogin', 'AO TENTAR LOGAR USUARIO')
+            console.log(error);            
+            throw error;
+        }
     }
 
     async criptografarSenha(senha){

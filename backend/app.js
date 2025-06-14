@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 
-import logarUsuario from "./routes/logarUsuario.js";
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from "./routes/cadastrarPetPerdido.js";
@@ -31,7 +30,6 @@ app.use("/api/usuario", UserRouter)
 
 // rotas publicas
 
-app.use("/form/login", logarUsuario);
 app.use("/form/recuperar-senha", recuperarSenha);
 app.use("/validar-token-senha", validarTokenSenha);
 app.use("/atualizar-senha", atualizarSenha);

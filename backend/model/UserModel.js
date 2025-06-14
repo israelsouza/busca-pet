@@ -1,5 +1,6 @@
 import log from '../utils/logger.js'
 import getConnection from "./connectionOracle.js";
+import bcrypt from "bcrypt";
 import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
 
 class UserModel {
@@ -147,6 +148,67 @@ class UserModel {
             }
         }
 
+    }
+
+    async logarUsuario(dados){
+        log('INFO', 'UserModel', 'logarUsuario', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const query = await connection.execute(
+                `
+                    SELECT USU_ID, USU_SENHA, USU_ROLE, USU_STATUS
+                    FROM USUARIO
+                    WHERE LOWER(USU_EMAIL) = :email AND
+                        USU_STATUS = 'A'
+                `,
+                [dados.email]
+            )
+
+            if (query.rows.length === 0) {
+                log('ERROR', 'UserModel', 'logarUsuario', 'EMAIL NÃO CADASTRADO')
+                throw new Error("O e-mail não está cadastrado.");
+            }
+
+            const [USU_ID, senhaHash, role] = query.rows[0];
+            console.log("ID: ", USU_ID, " ROLE: ", role, " SENHA ", senhaHash);
+            
+
+            const senhaValida = await bcrypt.compare(dados.password, senhaHash);
+
+            if (!senhaValida) {
+                log('ERROR', 'UserModel', 'logarUsuario', 'SENHA INCORRETA')
+                throw new Error("Senha incorreta");
+            }
+
+            log('INFO', 'UserModel', 'logarUsuario', 'SENHA CORRETA, FIM MODEL')
+            
+            return { 
+                userId: USU_ID,
+                message: "Usuário autenticado com sucesso.",
+                role: role,
+                email: dados.email
+            };
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'logarUsuario', 'ERRO AO LOGAR USUARIO')
+            console.log(error);
+            throw error;
+            
+
+        } finally{
+            if(connection) {
+                try {
+                    log('INFO', 'UserModel', 'logarUsuario', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'UserModel', 'logarUsuario', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'logarUsuario', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);                    
+                }
+            }
+        }
     }
     
 }

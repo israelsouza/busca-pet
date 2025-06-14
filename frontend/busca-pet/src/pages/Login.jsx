@@ -53,7 +53,7 @@ function login() {
 
     async function validarDadosDeLogin(dados) {
       try {
-        const response = await fetch("http://localhost:3000/form/login", {
+        const response = await fetch("http://localhost:3000/api/usuario/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -67,8 +67,8 @@ function login() {
         }
 
         const resultado = await response.json();
-
-        return resultado;
+        
+        return resultado.token;
       } catch (error) {
         throw error;
       }
