@@ -7,5 +7,6 @@ router.post("/cadastro", UserController.cadastrarUsuario);
 router.post("/login", UserController.logarUsuario)
 router.post("/solicitar-nova-senha", UserController.solicitarNovaSenha)
 router.post("/validar-token", UserController.verificarToken)
+router.post("/registrar-nova-senha", UserController.submeterNovaSenha)
 
 export default router;

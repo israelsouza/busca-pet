@@ -58,6 +58,21 @@ class UserController {
         }
     }
 
+    async submeterNovaSenha(req, res){
+        log('INFO', 'UserController', 'submeterNovaSenha', 'INICIO')
+        try {
+            await UserService.atualizarSenha(req.body);
+            log('INFO', 'UserController', 'submeterNovaSenha', 'FIM')
+            return res.status(200).send({ message: "Sucesso, senha atualizada. Realize o login.", success: true });
+        } catch (error) {
+
+            log('ERRO', 'UserController', 'submeterNovaSenha', 'ERRO AO SALVAR SENHA')
+            console.log(error);
+            return res.status(400).send({message: "Erro ao tentar atualizar a senha. Tente novamente"})
+            
+        }
+    }
+
 }
 
 export default new UserController;

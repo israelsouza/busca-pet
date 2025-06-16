@@ -100,7 +100,7 @@ const RecuperacaoSenha = () => {
     }
 
     const password = { password: passRef.current.value, email: userEmail };
-    const result = await enviarDados(password, "atualizar-senha");
+    const result = await enviarDados(password, "api/usuario/registrar-nova-senha");
 
     if (result.success) {
       setEtapa("concluido");

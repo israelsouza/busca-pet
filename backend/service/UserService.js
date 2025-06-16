@@ -244,6 +244,36 @@ class UserService {
         return valor;
     }
 
+    async atualizarSenha({password, email}){
+        log('INFO', 'UserService', 'atualizarSenha', 'INICIO')
+        if ( !this.validarCamposObrigatorios(password) ) throw new Error("O campo senha é obrigatório");
+        if ( !this.validarCamposObrigatorios(email) ) throw new Error("O e-mail não foi preenchido");
+        
+        if( !this.validarTamanho(email, 'email') ) throw error ;
+        if( !this.validarTamanho(password, 'senha') ) throw error ;
+        
+        if( !this.validarFormatoEmail(email) ) throw new Error("Formato do e-mail inválido");
+        
+        log('INFO', 'UserService', 'atualizarSenha', 'VALIDAÇÕES FEITAS')
+        try {
+            const senha = await this.criptografarSenha(password);
+            const atualizada = await UserModel.salvarSenha(senha, email);
+            
+            log('INFO', 'UserService', 'atualizarSenha', 'SENHA SALVA')
+            log('INFO', 'UserService', 'atualizarSenha', 'FIM')
+            return true;
+
+        } catch (error) {
+
+            log('ERRO', 'UserService', 'atualizarSenha', 'ERRO AO TENTAR SALVAR A SENHA')
+            console.log(error);
+            return false; 
+            
+        }
+
+        
+    }
+
 }
 
 export default new UserService();

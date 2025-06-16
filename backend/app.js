@@ -5,7 +5,6 @@ import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
 import cadastrarPetPerdido from "./routes/cadastrarPetPerdido.js";
 import cadastrarPetEncontrado from './routes/petEncontrado.js'
-import atualizarSenha from "./routes/atualizarSenha.js";
 import buscarUsuario from "./routes/editPerfilUsuario.js";
 import postRoutes from './routes/post.js'
 import userPhoto from './routes/getUserPhoto.js'
@@ -25,9 +24,6 @@ app.use("/validate-token", validateToken);
 
 
 app.use("/api/usuario", UserRouter)
-
-// rotas publicas
-app.use("/atualizar-senha", atualizarSenha);
 
 
 // rotas privadas (protegidas)

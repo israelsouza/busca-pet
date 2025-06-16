@@ -241,6 +241,44 @@ class UserModel {
             }
         }
     }
+
+    async salvarSenha(senha, email) {
+        log('INFO', 'UserModel', 'salvarSenha', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+            
+            const result = await connection.execute(
+                `
+                UPDATE USUARIO
+                SET USU_SENHA = :newPassword
+                WHERE USU_EMAIL = :email
+                `, [senha, email], {autoCommit: true}
+            );
+            
+            log('INFO', 'UserModel', 'salvarSenha', 'FIM')
+
+            return result.rowsAffected > 0;
+            
+        } catch (error) {
+
+            log('ERROR', 'UserModel', 'salvarSenha', 'ERRO AO SALVAR NOVA SENHA')
+            console.log(error);
+            throw error;
+            
+        } finally {
+            if(connection) {
+                try {
+                    log('INFO', 'UserModel', 'salvarSenha', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'UserModel', 'salvarSenha', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'salvarSenha', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);                    
+                }
+            }
+        }
+    }
     
 }
 
