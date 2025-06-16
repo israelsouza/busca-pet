@@ -210,6 +210,37 @@ class UserModel {
             }
         }
     }
+
+    async pegarIdUsuarioPeloEmail(email){
+        log('INFO', 'UserModel', 'pegarIdUsuarioPeloEmail', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+            
+            const userId = await connection.execute(
+                `SELECT USU_ID FROM USUARIO WHERE USU_EMAIL = :email`,
+                [email]
+            );
+            
+            log('INFO', 'UserModel', 'pegarIdUsuarioPeloEmail', 'FIM')
+            return userId.rows.length > 0 ? userId.rows[0][0] : null;
+        } catch (error) {
+            log('ERROR', 'UserModel', 'pegarIdUsuarioPeloEmail', 'ERRO AO CAPTURAR O USUARIO')
+            console.log(error);
+            throw error;
+        } finally {
+            if(connection) {
+                try {
+                    log('INFO', 'UserModel', 'pegarIdUsuarioPeloEmail', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'UserModel', 'pegarIdUsuarioPeloEmail', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'pegarIdUsuarioPeloEmail', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);                    
+                }
+            }
+        }
+    }
     
 }
 

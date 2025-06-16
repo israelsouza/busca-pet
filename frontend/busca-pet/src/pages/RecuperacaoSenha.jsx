@@ -45,7 +45,7 @@ const RecuperacaoSenha = () => {
       return true;
 
     email = { email: emailRef.current.value };
-    const result = await enviarDados(email, "form/recuperar-senha");
+    const result = await enviarDados(email, "api/usuario/solicitar-nova-senha");
 
     if (result.success) {
       setEtapa("validarToken");

@@ -87,7 +87,7 @@ class UserService {
             log('INFO', 'UserService', 'realizarLogin', 'COM SUCESSO SUCESSO')
             log('INFO', 'UserService', 'realizarLogin', 'GERANDO TOKEN')
 
-            const token = TokenService.gerarToken(result);
+            const token = TokenService.gerarTokenJWT(result);
             
             console.log(token);
             
@@ -120,6 +120,35 @@ class UserService {
             const result = await UserModel.salvarUsuario(dados)  
         } catch (error) {
             throw error;
+        }
+    }
+
+    async gerarTokenSenha({email}){
+        log('INFO', 'UserService', 'gerarTokenSenha', 'INICIO')
+        this.validarCamposObrigatorios(email, 'email');
+        this.validarFormatoEmail(email);
+        this.validarTamanho(email, 'email');
+        
+        try {
+            const id = await UserModel.pegarIdUsuarioPeloEmail(email);
+            if (!id) {
+                log('ERRO', 'UserService', 'gerarTokenSenha', 'USUARIO NÃO ENCONTRADO NO BANCO DE DADOS')
+                throw new Error("Usuário não encontrado no banco de dados");
+            }
+    
+            log('INFO', 'UserService', 'gerarTokenSenha', 'ID CAPTURADO')
+            
+            await TokenService.criarTokenSenha(id, email);
+            
+            log('INFO', 'UserService', 'gerarTokenSenha', 'FIM')
+
+            return true;
+        } catch (error) {
+
+            log('ERRO', 'UserService', 'gerarTokenSenha', 'ERRO AO TENTAR GERAR O TOKEN')
+            console.log(error);
+            return false;           
+            
         }
     }
 

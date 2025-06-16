@@ -28,6 +28,19 @@ class UserController {
         }
     }
 
+    async solicitarNovaSenha(req, res){
+        log('INFO', 'UserController', 'solicitarNovaSenha', 'INICIO')
+        try {
+            await UserService.gerarTokenSenha(req.body);
+            log('INFO', 'UserController', 'solicitarNovaSenha', 'SUCESSO')
+            return res.status(200).json({message: "Email enviado! Verifique a sua caixa de spam, se necessário", success: true})
+        } catch (error) {
+            log('ERROR', 'UserController', 'solicitarNovaSenha', 'ERRO AO TENTAR GERAR TOKEN')
+            console.log(error);
+            return res.status(500).json({ error: "Ocorreu um erro interno. Por favor, tente novamente mais tarde." })
+        }
+    }
+
 }
 
 export default new UserController;
