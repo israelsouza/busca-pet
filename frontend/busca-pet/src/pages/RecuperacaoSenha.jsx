@@ -68,7 +68,7 @@ const RecuperacaoSenha = () => {
       token: tokenRef.current.value,
     };
 
-    const result = await enviarDados(data, "validar-token-senha");
+    const result = await enviarDados(data, "api/usuario/validar-token");
 
     if (result.success) {
       setEtapa("atualizarSenha");

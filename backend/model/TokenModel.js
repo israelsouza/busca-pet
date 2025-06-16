@@ -75,6 +75,68 @@ class TokenModel {
             }
         }
     }
+
+    async pegarToken(id, token){
+        log('INFO', 'TokenModel', 'pegarToken', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const tokenResult = await connection.execute(
+                `
+                    SELECT REC_TOKEN, REC_DTLIMITE, USU_ID
+                    FROM RECUPERAR_SENHA
+                    WHERE   USU_ID = :idUser
+                    AND     REC_TOKEN = :token
+                `, [id, token]
+            )
+
+            log('INFO', 'TokenModel', 'pegarToken', 'CONSULTA FEITA')
+            log('INFO', 'TokenModel', 'pegarToken', 'INICIO VALIDAÇÕES')
+            
+            if (tokenResult.rows.length === 0) return null;
+
+            const tokenData = tokenResult.rows[0];
+            const expiryDate = new Date(tokenData.REC_DTLIMITE);
+            const now = new Date();
+
+            if (now > expiryDate) return null;
+
+            log('INFO', 'TokenModel', 'pegarToken', 'VALIDAÇÕES FEITAS')
+
+            console.log(`
+                USU_ID -- ${tokenData[2]} ------------
+                REC_TOKEN -- ${tokenData[0]} ------------
+                REC_DTLIMITE -- ${tokenData[1]}    
+            `)
+
+            log('INFO', 'TokenModel', 'pegarToken', 'FIM')
+
+            return {
+                USU_ID: tokenData[2],
+                REC_TOKEN: tokenData[0],
+                REC_DTLIMITE: tokenData[1],
+            }
+
+        } catch (error) {
+
+            log('ERRO', 'TokenModel', 'pegarToken', 'ERRO AO CONSULTAR O BANCO')
+            console.log(error);
+            return false;            
+            
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'TokenModel', 'pegarToken', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'TokenModel', 'pegarToken', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'TokenModel', 'pegarToken', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);                    
+                }
+            }
+        }
+    }
 }
 
 export default new TokenModel();
