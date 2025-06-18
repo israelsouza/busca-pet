@@ -172,12 +172,13 @@ function PetEncontrado() {
     console.log(localizacaoFinal);
 
     userData.local = localizacaoFinal;
+    userData.categoria = 'encontrado'
     const formData = criarFormData(userData, arquivoImagem);
 
     try {
       const resultado = await enviarDados(
         formData,
-        `criar-post/pet-encontrado/${email}`
+        `api/posts/registrar-pet`
       );
 
       console.log(resultado);
@@ -186,7 +187,7 @@ function PetEncontrado() {
         alert(resultado.message);
         setTimeout(() => navigate("/posts/all"), 1000);
       } else {
-        alert("Erro inesperado ao cadastrar o pet.");
+        alert(resultado.error);
       }
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);

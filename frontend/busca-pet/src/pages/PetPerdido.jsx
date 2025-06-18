@@ -205,18 +205,18 @@ function PetPerdido() {
     console.log(localizacaoFinal);
 
     userData.local = localizacaoFinal;
+    userData.categoria = 'perdido'
+
     const formData = criarFormData(userData, arquivoImagem);
 
     try {
-      const resultado = await enviarDados(formData, "criar-post/pet-perdido");
+      const resultado = await enviarDados(formData, `api/posts/registrar-pet`);
 
       if (resultado && resultado.message) {
         alert(resultado.message);
-        //setRetornoBackend(resultado.message);
         setTimeout(() => navigate("/posts/all"), 1000);
       } else {
-        //setRetornoBackend("Erro inesperado ao cadastrar o pet.");
-        alert("Erro inesperado ao cadastrar o pet.");
+        alert(resultado.error);
       }
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);
