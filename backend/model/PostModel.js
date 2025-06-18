@@ -1,5 +1,7 @@
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
+import log from '../utils/logger.js'
+import fs from "fs";
 
 export async function getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm) {
     let connection;
@@ -152,3 +154,106 @@ export async function getPostsPorTextoModel(termoBuscado) {
         throw error;               
     }
 }
+
+class PostModel {
+    async lerImagem(img){
+        return fs.readFileSync(img.path);
+    }
+
+    async encerrarImagem(img){
+        return fs.unlinkSync(img.path);
+    }
+
+    async criarPublicacao(dadosPet, img){
+        log('INFO', 'PostModel', 'criarPublicacao', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+            
+            log('INFO', 'PostModel', 'criarPublicacao', 'LER A IMG');
+            console.log(img);
+            
+            const imgBinaria = await this.lerImagem(img);
+
+            const imgSizeMB = (imgBinaria.length / (1024 * 1024)).toFixed(2);
+            log('INFO', 'PostModel', 'criarPublicacao', `Imagem lida com sucesso: nome -> ${img.originalname || img.filename || 'desconhecido'}, tamanho -> ${imgSizeMB} MB`);
+
+            const insertPet = await connection.execute(
+                `
+                    INSERT INTO PET (PET_NOME, PET_RGA, PET_TIPO, PET_DESCRICAO, PET_DATA, PET_FOTO, PET_LOCAL)
+                    VALUES (:nome, :rga, :tipo, :descricao, TO_DATE(:data, 'DD-MM-YYYY'), :imagem, :local)
+                    RETURNING PET_ID INTO :id
+                `,{
+                    nome: dadosPet.nome,
+                    rga: dadosPet.rga,
+                    tipo: dadosPet.tipoPet,
+                    descricao: dadosPet.descricao,
+                    data: dadosPet.data,
+                    imagem: imgBinaria,
+                    local: dadosPet.local,
+                    id: { dir: OracleDB.BIND_OUT }
+                }
+            )
+
+            log('INFO', 'PostModel', 'criarPublicacao', 'INSERT REALIZADO');
+
+            try {
+                await this.encerrarImagem(img)
+                log('INFO', 'PostModel', 'criarPublicacao', 'IMG Encerrada');
+            } catch (error) {
+                log('ERRO', 'PostModel', 'criarPublicacao', 'ERRO AO ENCERRAR IMG');
+                console.log(error);                
+            }
+            
+            const petId = insertPet.outBinds.id[0];
+            
+            const insertPost = await connection.execute(
+                `INSERT INTO POST (POS_TIPO, POS_DATA, PET_ID, USU_ID)
+                VALUES (:tipo, SYSDATE, :idPet, :idUsuario)
+                RETURNING POS_ID INTO :id`,
+                {
+                    tipo: "Perdido",
+                    idPet: petId,
+                    idUsuario: dadosPet.idUser,
+                    id: { dir: OracleDB.BIND_OUT },
+                }
+            );
+
+            const postId = insertPost.outBinds.id[0];
+
+            log('INFO', 'PostModel', 'criarPublicacao', 'POST FEITO');
+            
+            // console.log(`
+            //     ID PET   - ${petId}
+            //     ID POST  - ${postId}
+            //     `);
+                
+            await connection.commit();
+                
+            log('INFO', 'PostModel', 'criarPublicacao', 'COMMITADO COM SUCESSO ');
+            
+        } catch (error) {
+
+            await connection.rollback();
+            log('ERRO', 'PostModel', 'criarPublicacao', 'ROLLBACK FEITO');
+            log('ERRO', 'PostModel', 'criarPublicacao', 'ERRO AO CADASTRAR PET');
+            console.log(error);
+            throw error;           
+            
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'PostModel', 'criarPublicacao', 'Encerrando Conexão');
+                    await connection.close();
+                    log('INFO', 'PostModel', 'criarPublicacao', 'Conexão Encerrada');
+                } catch (error) {
+                    log('ERRO', 'PostModel', 'criarPublicacao', 'Erro ao fechar conexão');
+                    console.log(error);
+                    throw error
+                }
+            }
+        }
+    }
+}
+
+export default new PostModel();
