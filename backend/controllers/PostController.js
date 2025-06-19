@@ -18,6 +18,19 @@ class PostController {
       return res.status(500).json({message: "Erro interno do servidor"})      
     }
   }
+
+  async pegarMinhasPublicacoes(req, res) {
+    log('INFO', 'PostController', 'pegarMinhasPublicacoes', 'INICIO');
+    try {
+      const meusPosts = await PostService.capturarPublicacoes(req.user.id)
+      log('INFO', 'PostController', 'pegarMinhasPublicacoes', 'FIM');
+      return res.status(200).json({message:"Ok", meusPosts})
+    } catch (error) {
+      log('ERROR', 'PostController', 'pegarMinhasPublicacoes', 'Erro ao buscar publicações');
+      console.error(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 export default new PostController();

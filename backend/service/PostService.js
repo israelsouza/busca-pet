@@ -43,7 +43,11 @@ class PostService {
             console.log(error);
             throw new HttpError(400, `Erro ao salvar no banco: ${error}`)
         }
-    }    
+    }
+
+    async capturarPublicacoes(id){
+        return await PostModel.listarPostsPorUsuario(id);
+    }
 }
 
 export default new PostService();

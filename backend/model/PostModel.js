@@ -2,6 +2,7 @@ import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 import log from '../utils/logger.js'
 import fs from "fs";
+import ValidationUtils from '../utils/ValidationUtils.js'
 
 export async function getPetsNaRegiaoModel(latPesquisa, lonPesquisa, raioKm) {
     let connection;
@@ -248,6 +249,69 @@ class PostModel {
                     log('INFO', 'PostModel', 'criarPublicacao', 'Conexão Encerrada');
                 } catch (error) {
                     log('ERRO', 'PostModel', 'criarPublicacao', 'Erro ao fechar conexão');
+                    console.log(error);
+                    throw error
+                }
+            }
+        }
+    }
+
+    async listarPostsPorUsuario(id){
+        log('INFO', 'PostModel', 'listarPostsPorUsuario', 'INICIO');
+        
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const { rows } = await connection.execute(
+                `
+                    SELECT
+                        post.POS_ID AS "POS_ID",
+                        post.POS_TIPO AS "POS_TIPO",
+                        pet.PET_NOME AS "PET_NOME",
+                        pet.PET_DESCRICAO AS "PET_DESCRICAO",
+                        pet.PET_FOTO AS "PET_FOTO",
+                        pet.PET_LOCAL AS "PET_LOCAL",
+                        pet.PET_DATA AS "POS_DATA",
+                        pessoa.PES_NOME AS "PES_NOME",
+                        usuario.USU_FOTO AS "USU_FOTO"
+                    FROM POST, PET, USUARIO, PESSOA
+                    WHERE
+                        pet.PET_ID = post.PET_ID   AND
+                        usuario.USU_ID = post.USU_ID AND
+                        pessoa.PES_ID = usuario.PES_ID AND
+                        usuario.USU_ID = :id
+                `, [id], {
+                    fetchInfo: {
+                        PET_FOTO: { type: OracleDB.BUFFER },
+                        USU_FOTO: { type: OracleDB.BUFFER },
+                    },
+                    outFormat: OracleDB.OUT_FORMAT_OBJECT,
+                }
+            );
+
+            log('INFO', 'PostModel', 'listarPostsPorUsuario', 'TRATAR IMAGENS');
+            
+            const dadosTratados = await ValidationUtils.tratarImagensEData(rows);
+            
+            log('INFO', 'PostModel', 'listarPostsPorUsuario', 'FIM');
+
+            return dadosTratados;
+            
+        } catch (error) {
+
+            log('ERRO', 'PostModel', 'listarPostsPorUsuario', 'ERRO AO LISTAR POSTS');
+            console.log(error);
+            throw error;
+            
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'PostModel', 'listarPostsPorUsuario', 'Encerrando Conexão');
+                    await connection.close();
+                    log('INFO', 'PostModel', 'listarPostsPorUsuario', 'Conexão Encerrada');
+                } catch (error) {
+                    log('ERRO', 'PostModel', 'listarPostsPorUsuario', 'Erro ao fechar conexão');
                     console.log(error);
                     throw error
                 }

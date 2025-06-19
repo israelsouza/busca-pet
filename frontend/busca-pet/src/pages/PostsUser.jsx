@@ -45,10 +45,10 @@ function PostsUser() {
 
       console.log(headerRequest)
 
-      const response = await fetch(`http://localhost:3000/api/posts/user/${token}`, headerRequest)
+      const response = await fetch(`http://localhost:3000/api/posts/meus`, headerRequest)
       const data = await response.json();
       console.log(data)
-      setUserPosts(data.myPosts);
+      setUserPosts(data.meusPosts);
     }
 
     fetchUserPosts();

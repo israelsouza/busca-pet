@@ -17,6 +17,11 @@ class ValidationUtils {
         return `${dia}-${mes}-${ano}`;
     }
 
+    formatarSYSDATEParaDDMMYYYY(data) {
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}-${mes}-${ano}`;
+    }
+
     validarTamanho(valor, campo){
         log('INFO', 'ValidationUtils', 'validarTamanho', 'INICIO')
         switch (campo) {            
@@ -43,6 +48,26 @@ class ValidationUtils {
 
         log('INFO', 'ValidationUtils', 'validarTamanho', 'FIM')
         return true;
+    }
+
+    async tratarImagensEData(posts){
+        log('INFO', 'ValidationUtils', 'tratarImagensEData', 'INICIO');
+        const postsFormatados = posts.map( row => ({
+            ...row,
+            PET_FOTO: row.PET_FOTO
+                ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}`
+                : null,
+            USU_FOTO: row.USU_FOTO
+                ? `data:image/jpeg;base64,${row.USU_FOTO.toString("base64")}`
+                : null,
+            POS_DATA: row.POS_DATA
+                ? this.formatarSYSDATEParaDDMMYYYY(
+                    new Date(row.POS_DATA).toISOString().split("T")[0]
+                )
+                : null,
+        }))
+        log('INFO', 'ValidationUtils', 'tratarImagensEData', 'FIM');
+        return postsFormatados
     }
 
 
