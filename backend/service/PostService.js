@@ -46,7 +46,12 @@ class PostService {
     }
 
     async capturarPublicacoes(id){
-        return await PostModel.listarPostsPorUsuario(id);
+        return await PostModel.listarPosts('individual', id);
+    }
+
+    async capturarPublicacoesPorCategoria(categoria){
+        log('INFO', 'PostService', 'capturarPublicacoesPorCategoria', 'INICIO');
+        return await PostModel.listarPosts(categoria);
     }
 }
 

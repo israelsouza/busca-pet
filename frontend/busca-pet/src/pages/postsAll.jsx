@@ -20,8 +20,11 @@ function PostsAll() {
   const { socket, messages, sendMessage } = useWebSocket(websocketUrl);
   const [notificacoesRecebidas, setNotificacoesRecebidas] = useState([]);
 
-  const [mostrarModal, setMostrarModal] = useState(false);
-  
+  const [currentPosts, setCurrentPosts] = useState([]);
+  const [category, setCategory] = useState("todos");
+  const [modalMap, setModalMap] = useState("close");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
 
   const exibirNotificacao = useCallback((notificacao) => {
     alert("Nova notificação recebida:", notificacao.message);
@@ -51,15 +54,6 @@ function PostsAll() {
     });
   }, [messages, exibirNotificacao, setNotificacoesRecebidas]);
 
-  const [posts, setPosts] = useState([]);
-  const [userPosts, setUserPosts] = useState([]);
-  const [lostPosts, setLostPosts] = useState([]);
-  const [foundPosts, setFoundPosts] = useState([]);
-  const [category, setCategory] = useState("all");
-  const [modalMap, setModalMap] = useState("close");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -77,8 +71,8 @@ function PostsAll() {
   useEffect(() => {
     async function fetchPosts() {
       const token = localStorage.getItem("authToken");
-      console.log(token);
-      
+      if (!category) return;
+
       const headerRequest = {
         method: "GET",
         headers: {
@@ -86,61 +80,24 @@ function PostsAll() {
           Authorization: `Bearer ${token}`,
         },
       };
+
       try {
-        let response;
-        if (category === "all") {
-          response = await fetch(
-            "http://localhost:3000/api/posts/all",
-            headerRequest
-          );
-        } else if (category === "lost") {
-          response = await fetch(
-            "http://localhost:3000/api/posts/lost",
-            headerRequest
-          );
-        } else if (category === "found") {
-          response = await fetch(
-            "http://localhost:3000/api/posts/found",
-            headerRequest
-          );
-        } else {
-          return;
-        }
+
+        const response = await fetch(
+          `http://localhost:3000/api/posts/${category}`,
+          headerRequest
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        if (category === "all") {
-          const response = await fetch(
-            "http://localhost:3000/api/posts/all",
-            headerRequest
-          );
-          const data = await response.json();
-          const post = data.posts;
-          setPosts(data.posts);
-        } else if (category === "lost") {
-          const response = await fetch(
-            "http://localhost:3000/api/posts/lost",
-            headerRequest
-          );
-          const data = await response.json();
-          const post = data.posts;
-          setLostPosts(data.posts);
-        } else if (category === "found") {
-          const response = await fetch(
-            "http://localhost:3000/api/posts/found",
-            headerRequest
-          );
-
-          const data = await response.json();
-
-          if (category === "all") setPosts(data.posts);
-          else if (category === "lost") setLostPosts(data.posts);
-          else if (category === "found") setFoundPosts(data.posts);
-        }
+        const data = await response.json();
+        setCurrentPosts(data.posts || []); 
+        
       } catch (error) {
         console.error("Erro ao buscar posts:", error);
+        setCurrentPosts([]);
       }
     }
     fetchPosts();
@@ -185,8 +142,7 @@ function PostsAll() {
         </div>
         <div className={style.posts}>
           <div className={style.containerPosts}>
-            {category === "all" &&
-              posts.map((post, index) => (
+            {currentPosts.map((post) => (
                 <Buttonposts
                   key={post.POS_ID}
                   idCurrentPost={post.POS_ID}
@@ -208,49 +164,6 @@ function PostsAll() {
                   disparaUmaNotificacao={() => {
                     umaFuncao(post.POS_ID);
                   }}
-                />
-              ))}
-
-            {category === "lost" &&
-              lostPosts.map((post, index) => (
-                <Buttonposts
-                  key={post.POS_ID}
-                  usuario={post.PES_NOME}
-                  imagemUsuario={post.USU_FOTO}
-                  imagemPet={post.PET_FOTO}
-                  nomePet={post.PET_NOME}
-                  caracteristicas={post.PET_DESCRICAO}                  
-                  dataSumico={post.POS_DATA}
-                  regiao={() => {
-                    exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng);
-                  }}
-                  textoPrimeiroCategoria={
-                    post.POS_TIPO == "Perdido"
-                      ? "Eu encontrei esse pet!"
-                      : "Eu perdi esse pet!"
-                  }
-                  disparaUmaNotificacao={umaFuncao(post.POS_ID)}
-                />
-              ))}
-            {category === "found" &&
-              foundPosts.map((post, index) => (
-                <Buttonposts
-                  key={post.POS_ID}
-                  usuario={post.PES_NOME}
-                  imagemUsuario={post.USU_FOTO}
-                  imagemPet={post.PET_FOTO}
-                  nomePet={post.PET_NOME}
-                  caracteristicas={post.PET_DESCRICAO}                  
-                  dataSumico={post.POS_DATA}
-                  regiao={() => {
-                    exibirModalMapa(post.PET_LOCAL.lat, post.PET_LOCAL.lng);
-                  }}
-                  textoPrimeiroCategoria={
-                    post.POS_TIPO == "Perdido"
-                      ? "Eu encontrei esse pet!"
-                      : "Eu perdi esse pet!"
-                  }
-                  disparaUmaNotificacao={umaFuncao(post.POS_ID)}
                 />
               ))}
 

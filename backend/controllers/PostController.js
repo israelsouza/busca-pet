@@ -31,6 +31,19 @@ class PostController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async pegarPostsPorCategoria(req, res){  
+    try {
+      log('INFO', 'PostController', 'pegarPostsPorCategoria', 'INICIO');
+      const posts = await PostService.capturarPublicacoesPorCategoria(req.params.categoria);
+      log('INFO', 'PostController', 'pegarPostsPorCategoria', 'FIM');
+      return res.status(200).json({ message: "Posts capturados com sucesso", posts });
+    } catch (error) {
+      log('ERRO', 'PostController', 'pegarPostsPorCategoria', 'Erro ao capturar por categoria');
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 export default new PostController();

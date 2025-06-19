@@ -73,22 +73,22 @@ function HeaderLog({ onSelectCategory }) {
         </Link>
         <nav className={style.navegation}>
           <Link
-            to={"/posts/all?category=all"}
-            onClick={() => onSelectCategory("all")}
+            to={"/posts/all?category=todos"}
+            onClick={() => onSelectCategory("todos")}
             className={style.links_header}
           >
             Todos
           </Link>
           <Link
-            to={"/posts/all?category=found"}
-            onClick={() => onSelectCategory("found")}
+            to={"/posts/all?category=encontrados"}
+            onClick={() => onSelectCategory("Encontrado")}
             className={style.links_header}
           >
             Achados
           </Link>
           <Link
-            to={"/posts/all?category=lost"}
-            onClick={() => onSelectCategory("lost")}
+            to={"/posts/all?category=perdido"}
+            onClick={() => onSelectCategory("Perdido")}
             className={style.links_header}
           >
             Perdidos

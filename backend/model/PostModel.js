@@ -256,15 +256,37 @@ class PostModel {
         }
     }
 
-    async listarPostsPorUsuario(id){
-        log('INFO', 'PostModel', 'listarPostsPorUsuario', 'INICIO');
+    async listarPosts(categoria, id = null){
+        log('INFO', 'PostModel', 'listarPosts', 'INICIO');
         
         let connection;
         try {
-            connection = await getConnection();
 
-            const { rows } = await connection.execute(
-                `
+            let sql;
+            let binds = {}        
+
+            if (categoria === 'todos') {
+                sql = `
+                        SELECT
+                            post.POS_ID AS "POS_ID",
+                            post.POS_TIPO AS "POS_TIPO",
+                            pet.PET_NOME AS "PET_NOME",
+                            pet.PET_DESCRICAO AS "PET_DESCRICAO",
+                            pet.PET_FOTO AS "PET_FOTO",
+                            pet.PET_LOCAL AS "PET_LOCAL",
+                            pet.PET_DATA AS "POS_DATA",
+                            pessoa.PES_NOME AS "PES_NOME",
+                            usuario.USU_FOTO AS "USU_FOTO"
+                        FROM POST, PET, USUARIO, PESSOA
+                        WHERE
+                            pet.PET_ID = post.PET_ID   AND
+                            usuario.USU_ID = post.USU_ID AND
+                            pessoa.PES_ID = usuario.PES_ID
+                    `;
+            } 
+
+            if (categoria === "individual") {
+                sql = `
                     SELECT
                         post.POS_ID AS "POS_ID",
                         post.POS_TIPO AS "POS_TIPO",
@@ -281,37 +303,68 @@ class PostModel {
                         usuario.USU_ID = post.USU_ID AND
                         pessoa.PES_ID = usuario.PES_ID AND
                         usuario.USU_ID = :id
-                `, [id], {
-                    fetchInfo: {
-                        PET_FOTO: { type: OracleDB.BUFFER },
-                        USU_FOTO: { type: OracleDB.BUFFER },
-                    },
-                    outFormat: OracleDB.OUT_FORMAT_OBJECT,
-                }
+                `
+                binds = {id: id}
+            }
+
+            if (categoria === "Perdido" || categoria === "Encontrado") {
+                sql = `
+                    SELECT
+                        post.POS_TIPO AS "POS_TIPO",
+                        pet.PET_NOME AS "PET_NOME",
+                        pet.PET_DESCRICAO AS "PET_DESCRICAO",
+                        pet.PET_FOTO AS "PET_FOTO",
+                        pet.PET_LOCAL AS "PET_LOCAL",
+                        pet.PET_DATA AS "POS_DATA",
+                        pessoa.PES_NOME AS "PES_NOME",
+                        usuario.USU_FOTO AS "USU_FOTO"
+                    FROM POST, PET, USUARIO, PESSOA
+                    WHERE
+                        pet.PET_ID = post.PET_ID   AND
+                        usuario.USU_ID = post.USU_ID AND
+                        pessoa.PES_ID = usuario.PES_ID  AND
+                        post.POS_TIPO = :tipo
+                `
+
+                binds = {tipo: categoria}
+            }
+
+            const options = {
+                fetchInfo: {
+                    PET_FOTO: { type: OracleDB.BUFFER },
+                    USU_FOTO: { type: OracleDB.BUFFER },
+                },
+                outFormat: OracleDB.OUT_FORMAT_OBJECT,
+            }
+
+            connection = await getConnection();
+
+            const { rows } = await connection.execute(
+                sql, binds, options
             );
 
-            log('INFO', 'PostModel', 'listarPostsPorUsuario', 'TRATAR IMAGENS');
+            log('INFO', 'PostModel', 'listarPosts', 'TRATAR IMAGENS');
             
             const dadosTratados = await ValidationUtils.tratarImagensEData(rows);
             
-            log('INFO', 'PostModel', 'listarPostsPorUsuario', 'FIM');
+            log('INFO', 'PostModel', 'listarPosts', 'FIM');
 
             return dadosTratados;
             
         } catch (error) {
 
-            log('ERRO', 'PostModel', 'listarPostsPorUsuario', 'ERRO AO LISTAR POSTS');
+            log('ERRO', 'PostModel', 'listarPosts', 'ERRO AO LISTAR POSTS');
             console.log(error);
             throw error;
             
         } finally {
             if (connection) {
                 try {
-                    log('INFO', 'PostModel', 'listarPostsPorUsuario', 'Encerrando Conexão');
+                    log('INFO', 'PostModel', 'listarPosts', 'Encerrando Conexão');
                     await connection.close();
-                    log('INFO', 'PostModel', 'listarPostsPorUsuario', 'Conexão Encerrada');
+                    log('INFO', 'PostModel', 'listarPosts', 'Conexão Encerrada');
                 } catch (error) {
-                    log('ERRO', 'PostModel', 'listarPostsPorUsuario', 'Erro ao fechar conexão');
+                    log('ERRO', 'PostModel', 'listarPosts', 'Erro ao fechar conexão');
                     console.log(error);
                     throw error
                 }
