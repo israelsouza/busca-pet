@@ -138,6 +138,21 @@ class UserController {
         }
     }
 
+    async pegarNotificacoes(req, res){
+        log('INFO', 'UserController', 'pegarNotificacoes', 'INICIO')
+        try {
+            const notificacoes = await UserService.obterNotificacoes(req.user.id);
+            log('INFO', 'UserController', 'pegarNotificacoes', 'FIM')
+            return res.status(200).json({ notificacoes });
+        } catch (error) {
+            log('ERRO', 'UserController', 'pegarNotificacoes', 'ERRO AO BUSCAR NOTIFICACOES', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao buscar notificações."
+            });
+        }
+    }
+
 }
 
 export default new UserController;

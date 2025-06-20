@@ -391,6 +391,18 @@ class UserService {
         }
     }
 
+    async obterNotificacoes(id){
+        log('INFO', 'UserService', 'obterNotificacoes', 'INICIO')
+        if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
+        try {
+            return await UserModel.listarNotificacoes(id)
+        } catch (error) {
+            log('ERROR', 'UserService', 'obterNotificacoes', "ERRO ao obter as notificações do usuário");
+            console.log(error)            
+            throw error;
+        }
+    }
+
 }
 
 export default new UserService();

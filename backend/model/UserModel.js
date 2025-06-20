@@ -516,6 +516,45 @@ class UserModel {
             }
         }
     }
+
+    async listarNotificacoes(id){
+        log('INFO', 'UserModel', 'listarNotificacoes', 'INICIO');
+        let connection;
+        try {
+
+            connection = await getConnection();
+
+            const { rows } = await connection.execute(
+                `
+                    SELECT
+                        PES_NOME, NOT_REMETENTE_ID, NOT_DATA_CRIACAO, NOT_CONTEUDO, NOT_ID
+                    FROM NOTIFICACOES, PESSOA, USUARIO
+                    WHERE 
+                        PESSOA.PES_ID = USUARIO.USU_ID AND
+                        USUARIO.USU_ID = NOT_REMETENTE_ID AND
+                        NOT_DESTINATARIO_ID = :id
+                `,[id]
+            );
+            
+            log('INFO', 'UserModel', 'listarNotificacoes', 'FIM bem sucedido');
+            return rows;
+            
+        } catch (error) {
+            log('ERROR', 'UserModel', 'listarNotificacoes', 'Erro ao listar as notificações', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'listarNotificacoes', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'listarNotificacoes', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'listarNotificacoes', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
     
 }
 

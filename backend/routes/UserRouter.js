@@ -1,7 +1,9 @@
 import express from 'express'
 import autenticarToken from "../middleware/authMiddleware.js";
 import UserController from '../controllers/UserController.js'
+import multer from "multer";
 
+const upload = multer();
 const router = express.Router();
 
 router.post("/cadastro", UserController.cadastrarUsuario);
@@ -16,6 +18,7 @@ router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)
 router.post('/perfil/foto/nova', autenticarToken, upload.single("foto"), UserController.atualizarFotoPerfil)
 
+router.get('/notificacao', autenticarToken, UserController.pegarNotificacoes)
 
 
 export default router;

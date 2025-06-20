@@ -37,11 +37,11 @@ function Notification() {
         },
       };
 
-      fetch(`http://localhost:3000/user/notification/${token}`, headerRequest)
+      fetch(`http://localhost:3000/api/usuario/notificacao`, headerRequest)
         .then((response) => response.json())
         .then((data) => {
           console.log("Notificações: ", data);
-          let notification = data.result;
+          let notification = data.notificacoes;
           setNotification(notification);
         })
         .catch((error) => {
