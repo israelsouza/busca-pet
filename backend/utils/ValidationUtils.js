@@ -82,7 +82,7 @@ class ValidationUtils {
         return imgTratada
     }
 
-    validarApenasNumeros(valor){
+    validarID(valor){
         log('INFO', 'UserService', 'validarApenasNumeros', 'INICIO')
         if ( !valor ) return false;
         if (typeof valor === "number") return true;

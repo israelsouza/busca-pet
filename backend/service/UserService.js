@@ -276,7 +276,7 @@ class UserService {
 
     async obterFotoPerfilUsuario(id){
         log('INFO', 'UserService', 'obterFotoPerfilUsuario', 'INICIO')
-        if ( !ValidationUtils.validarApenasNumeros(id) ) throw new HttpError(400, "ID do usuário inválido");
+        if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
 
         try {
             return await UserModel.buscarfotoUsuario(id);
