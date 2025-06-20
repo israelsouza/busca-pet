@@ -70,6 +70,30 @@ class ValidationUtils {
         return postsFormatados
     }
 
+    async tratarImagem(img){
+        log('INFO', 'ValidationUtils', 'tratarImagem', 'INICIO');
+        const imgTratada = img.map( row => ({
+            ...row,
+            USU_FOTO: row.USU_FOTO
+                ? `data:image/jpeg;base64,${row.USU_FOTO.toString("base64")}`
+                : null
+        }))
+        log('INFO', 'ValidationUtils', 'tratarImagem', 'FIM');
+        return imgTratada
+    }
+
+    validarApenasNumeros(valor){
+        log('INFO', 'UserService', 'validarApenasNumeros', 'INICIO')
+        if ( !valor ) return false;
+        if (typeof valor === "number") return true;
+        if (typeof valor === "string") {
+            valor = valor.trim();
+            const regex = /^[0-9]+$/;
+            return regex.test(valor);
+        }
+        return false;
+    }
+
 
 }
 
