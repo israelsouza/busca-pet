@@ -11,6 +11,7 @@ router.post("/validar-token", UserController.verificarToken)
 router.post("/registrar-nova-senha", UserController.submeterNovaSenha)
 
 router.get('/foto', autenticarToken, UserController.pegarFotoPerfil)
+router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 
 
 

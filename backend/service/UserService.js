@@ -287,6 +287,19 @@ class UserService {
         }
     }
 
+    async obterDadosUsuario(id){
+        log('INFO', 'UserService', 'obterDadosUsuario', 'INICIO')
+        if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
+
+        try {
+            return await UserModel.listarDadosUsuario(id);
+        } catch (error) {
+            log('ERROR', 'UserService', 'obterDadosUsuario', "ERRO ao obter os dados do usuário");
+            console.log(error)            
+            throw error;
+        }
+    }
+
 }
 
 export default new UserService();

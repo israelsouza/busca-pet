@@ -86,6 +86,24 @@ class UserController {
         }
     }
 
+    async pegarDadosUsuario(req, res){
+        log('INFO', 'UserController', 'pegarDadosUsuario', 'INICIO')
+        try {
+            const userData = await UserService.obterDadosUsuario(req.user.id);
+            log('INFO', 'UserController', 'pegarDadosUsuario', 'FIM')
+            return res.status(200).json({
+                message: "Dados cadastrais obtidos com sucesso!",
+                userData,
+            })
+        } catch (error) {
+            log('ERRO', 'UserController', 'pegarDadosUsuario', 'ERRO AO BUSCAR OS DADOS DO USUARIO')
+            console.log(error);            
+            return res.status(400).json({ 
+                message: "Erro ao tentar pegar seus dados, atualize a página"
+            });     
+        }
+    }
+
 }
 
 export default new UserController;

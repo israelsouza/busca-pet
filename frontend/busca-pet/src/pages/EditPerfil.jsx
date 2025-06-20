@@ -106,7 +106,7 @@ function EdicaoPerfil() {
         },
       };
 
-      fetch(`http://localhost:3000/usuarios/email/${email}`, headerRequest)
+      fetch(`http://localhost:3000/api/usuario/perfil`, headerRequest)
         .then((res) => {
           console.log("F-EDITPERF: Resposta da API:", res);
           if (!res.ok) {
@@ -118,7 +118,7 @@ function EdicaoPerfil() {
         })
         .then((data) => {
           console.log("Dados recebidos:", data);
-          const userData = data.userData[0];
+          const userData = data.userData;
           setFormData(userData);
           setOriginalData(userData);
           setLoading(false);

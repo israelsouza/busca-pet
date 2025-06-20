@@ -2,7 +2,7 @@ import ValidationUtils from '../utils/ValidationUtils.js';
 import log from '../utils/logger.js'
 import getConnection from "./connectionOracle.js";
 import bcrypt from "bcrypt";
-import OracleDB from "oracledb"; // Certifique-se de importar OracleDB aqui
+import OracleDB from "oracledb";
 
 class UserModel {
     async salvarUsuario(dados){
@@ -329,6 +329,63 @@ class UserModel {
                     log('INFO', 'UserModel', 'buscarfotoUsuario', 'CONEXÃO ENCERRADA')
                 } catch (error) {
                     log('ERROR', 'UserModel', 'buscarfotoUsuario', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);
+                }
+            }
+        }
+    }
+
+    async listarDadosUsuario(id){
+        log('INFO', 'UserModel', 'listarDadosUsuario', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+            `
+            SELECT 
+             PESSOA.PES_NOME,
+             PESSOA.PES_PHONE,
+             USUARIO.USU_EMAIL,
+             ENDERECO.END_RUA,
+             ENDERECO.END_BAIRRO,
+             CIDADE.CID_DESCRICAO,
+             ESTADO.EST_SIGLA
+            FROM
+             PESSOA,
+             USUARIO,
+             ENDERECO,
+             CIDADE,
+             ESTADO
+            WHERE
+               ESTADO.EST_ID = CIDADE.EST_ID      AND
+               CIDADE.CID_ID = ENDERECO.CID_ID    AND
+               ENDERECO.END_ID = PESSOA.END_ID    AND
+               PESSOA.PES_ID = USUARIO.PES_ID     AND
+               USUARIO.USU_ID = :id                
+            `, [id], { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+            );
+
+            log('INFO', 'UserModel', 'listarDadosUsuario', 'FIM')
+
+            if (result.rows.length > 0) {
+                return result.rows[0];
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'listarDadosUsuario', 'ERRO AO LISTAR DADOS DO USUARIO')
+            console.log(error);
+            throw error;
+        } finally {
+            if(connection) {
+                try {
+                    log('INFO', 'UserModel', 'listarDadosUsuario', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'UserModel', 'listarDadosUsuario', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'listarDadosUsuario', 'ERRO AO ENCERRAR A CONEXÃO')
                     console.log(error);
                 }
             }
