@@ -37,7 +37,7 @@ function HeaderLog({ onSelectCategory }) {
         
         const data = await response.json();
 
-        if (data && typeof data.foto.USU_FOTO === 'string' && data.foto.USU_FOTO.length > 0) {
+        if (data.foto.USU_FOTO !== null || data.foto.USU_FOTO !== 'null' ) {
           setUserPhotoSrc(data.foto.USU_FOTO);
         } else {
           setUserPhotoSrc(Icone);
