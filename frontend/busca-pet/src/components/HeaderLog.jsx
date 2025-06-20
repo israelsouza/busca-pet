@@ -7,13 +7,7 @@ import Icone from "./../assets/imgs/Icone.png";
 import style from "./styles/header_log.module.css";
 
 function HeaderLog({ onSelectCategory }) {
-  const [userInfo, setUserInfo] = useState(null);
   const [userPhotoSrc, setUserPhotoSrc] = useState(null);
-
-  useEffect(() => {
-    //console.log("UserInfo ->", userInfo)
-  }, [userInfo])
-  
 
   useEffect(() => {
     async function fetchUserInfo() {
@@ -28,33 +22,30 @@ function HeaderLog({ onSelectCategory }) {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // 'Authorization' com 'A' maiúsculo
+            Authorization: `Bearer ${token}`,
           },
         };
 
         const response = await fetch(
-          `http://localhost:3000/user/photo/${token}`,
+          `http://localhost:3000/api/usuario/foto`,
           headerRequest
         );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
 
-        setUserInfo(data);
-
-       if (data && typeof data.USU_FOTO === 'string' && data.USU_FOTO.length > 0) {
-               const photoBase64String = `data:image/jpeg;base64,${data.USU_FOTO}`;
-               setUserPhotoSrc(photoBase64String);
-             } else {
-               // Se não houver foto ou não for uma string válida, usa o ícone
-               setUserPhotoSrc(Icone);
-             }
-
+        if (data && typeof data.foto.USU_FOTO === 'string' && data.foto.USU_FOTO.length > 0) {
+          setUserPhotoSrc(data.foto.USU_FOTO);
+        } else {
+          setUserPhotoSrc(Icone);
+        }
 
       } catch (error) {
         console.error("Erro ao buscar informações do usuário:", error);
-        setUserInfo(Icone);
+        setUserPhotoSrc(Icone);
       }
     }
     fetchUserInfo();
@@ -99,15 +90,13 @@ function HeaderLog({ onSelectCategory }) {
         </nav>
 
         <Link to={"/Perfil"}>
-          {userPhotoSrc  ? ( // Se userPhotoSrc tem um valor (Base64 ou URL do Icone)
-          
+          {userPhotoSrc  ? (
             <img
               className={style.icon}
               src={userPhotoSrc}
               alt="Foto do usuário"
             />
           ) : (
-            // Enquanto userPhotoSrc é nulo (carregando), ou se deu erro, exibe um placeholder ou Icone
             <img
               className={style.icon}
               src={Icone}

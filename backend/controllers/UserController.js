@@ -73,6 +73,19 @@ class UserController {
         }
     }
 
+    async pegarFotoPerfil(req, res){
+        log('INFO', 'UserController', 'pegarFotoPerfil', 'INICIO')
+        try {
+            const foto = await UserService.obterFotoPerfilUsuario(req.user.id);
+            log('INFO', 'UserController', 'pegarFotoPerfil', 'FIM')
+            return res.status(200).json({foto})
+        } catch (error) {
+            log('ERRO', 'UserController', 'pegarFotoPerfil', 'ERRO AO BUSCAR FOTO')
+            console.log(error);            
+            return res.status(400).json({ message: "Erro ao tentar pegar sua foto, atualize a página" });            
+        }
+    }
+
 }
 
 export default new UserController;

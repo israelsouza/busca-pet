@@ -2,6 +2,8 @@ import log from '../utils/logger.js'
 import bcrypt from 'bcrypt'
 import UserModel from '../model/UserModel.js'
 import TokenService from '../service/TokenService.js'
+import HttpError from '../utils/HttpError.js';
+import ValidationUtils from '../utils/ValidationUtils.js';
 
 class UserService {
     static MENSAGEM_NAO_CONTEM_NUMERO = 'inválido, só pode conter letras e espaços';
@@ -270,8 +272,19 @@ class UserService {
             return false; 
             
         }
+    }
 
-        
+    async obterFotoPerfilUsuario(id){
+        log('INFO', 'UserService', 'obterFotoPerfilUsuario', 'INICIO')
+        if ( !ValidationUtils.validarApenasNumeros(id) ) throw new HttpError(400, "ID do usuário inválido");
+
+        try {
+            return await UserModel.buscarfotoUsuario(id);
+        } catch (error) {
+            log('ERROR', 'UserService', 'obterFotoPerfilUsuario', "ERRO ao obter a foto");
+            console.log(error)            
+            throw error;
+        }
     }
 
 }

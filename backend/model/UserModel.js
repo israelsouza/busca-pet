@@ -1,3 +1,4 @@
+import ValidationUtils from '../utils/ValidationUtils.js';
 import log from '../utils/logger.js'
 import getConnection from "./connectionOracle.js";
 import bcrypt from "bcrypt";
@@ -275,6 +276,60 @@ class UserModel {
                 } catch (error) {
                     log('ERROR', 'UserModel', 'salvarSenha', 'ERRO AO ENCERRAR A CONEXÃO')
                     console.log(error);                    
+                }
+            }
+        }
+    }
+
+    async buscarfotoUsuario(id){
+        log('INFO', 'UserModel', 'buscarfotoUsuario', 'INICIO')
+        let connection;
+        try {
+
+            connection = await getConnection();
+
+            const result = await connection.execute(
+                `
+                    SELECT 
+                        USUARIO.USU_FOTO AS "USU_FOTO"
+                    FROM USUARIO, PESSOA
+                    WHERE
+                        PESSOA.PES_ID = USUARIO.PES_ID AND
+                        USUARIO.USU_ID = :id
+                
+                `, [id], {
+                    fetchInfo: {
+                        USU_FOTO: { type: OracleDB.BUFFER },
+                    },
+                    outFormat: OracleDB.OUT_FORMAT_OBJECT,
+                }
+            );
+
+            if ( result.rows.length > 0 ) {
+                log('INFO', 'UserModel', 'buscarfotoUsuario', 'IMG encontrada')
+                const dadosTratados = await ValidationUtils.tratarImagem(result.rows);
+
+                return dadosTratados[0]
+            } else {
+                log('INFO', 'UserModel', 'buscarfotoUsuario', 'Não há foto salva')
+                return null
+            }
+            
+        } catch (error) {
+
+            log('ERROR', 'UserModel', 'buscarfotoUsuario', 'Erro ao buscar foto')
+            console.log(error);            
+            throw error;
+
+        } finally {
+            if(connection) {
+                try {
+                    log('INFO', 'UserModel', 'buscarfotoUsuario', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'UserModel', 'buscarfotoUsuario', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'buscarfotoUsuario', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);
                 }
             }
         }
