@@ -94,7 +94,15 @@ class ValidationUtils {
         return false;
     }
 
-
+    async validarTamanhoMaximoImagem(img){
+        log('INFO', 'ValidationUtils', 'validarTamanhoMaximoImagem', 'INICIO');
+        const VALOR_MAXIMO_MB = 5;
+        const tamanhoMaximoEmBytes = VALOR_MAXIMO_MB * 1024 * 1024;
+        if (img.length > tamanhoMaximoEmBytes) {
+            throw new HttpError(400, `O tamanho da imagem não pode exceder ${VALOR_MAXIMO_MB}MB.`);
+        }
+        log('INFO', 'ValidationUtils', 'validarTamanhoMaximoImagem', 'FIM');
+    }
 }
 
 export default new ValidationUtils();
