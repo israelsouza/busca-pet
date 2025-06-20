@@ -3,11 +3,7 @@ import cors from "cors";
 
 import autenticarToken from "./middleware/authMiddleware.js";
 import validateToken from "./routes/validateToken.js";
-import cadastrarPetPerdido from "./routes/cadastrarPetPerdido.js";
-import cadastrarPetEncontrado from './routes/petEncontrado.js'
-import buscarUsuario from "./routes/editPerfilUsuario.js";
-import postRoutes from './routes/post.js'
-import userPhoto from './routes/getUserPhoto.js'
+import PostRouter from './routes/post.js'
 import routerPublicacoes from './routes/publicacoes.js'
 import adminRouter from './routes/admRouter.js';
 import authorizeAdminRole from './middleware/authRole.js'
@@ -19,20 +15,12 @@ app.use(cors());
 app.use(express.json());
 
 
-// middleware
 app.use("/validate-token", validateToken);
-
 
 app.use("/api/usuario", UserRouter)
 
-
-// rotas privadas (protegidas)
-app.use("/usuarios", autenticarToken, buscarUsuario);
-app.use("/criar-post/pet-perdido", autenticarToken, cadastrarPetPerdido);
-app.use("/criar-post/pet-encontrado/", autenticarToken, cadastrarPetEncontrado);
-app.use("/api/posts", autenticarToken, postRoutes);
+app.use("/api/posts", autenticarToken, PostRouter);
 app.use("/api/publicacoes", autenticarToken, routerPublicacoes);
-app.use('/user', autenticarToken, userPhoto)
 
 app.use('/api/adm', autenticarToken, authorizeAdminRole, adminRouter); 
 

@@ -153,6 +153,21 @@ class UserController {
         }
     }
 
+    async excluirUmaNotificacao(req, res){
+        log('INFO', 'UserController', 'deletarUmaNotificacao', 'INICIO')
+        try {
+            await UserService.deletarUmaNotificacao(req.params.id, req.user.id);
+            log('INFO', 'UserController', 'deletarUmaNotificacao', 'FIM')
+            return res.status(200).json({ message: "Notificação deletada com sucesso." });
+        } catch (error) {
+            log('ERRO', 'UserController', 'deletarUmaNotificacao', 'ERRO AO DELETAR NOTIFICACAO', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao deletar notificação."
+            });
+        }
+    }
+
 }
 
 export default new UserController;

@@ -555,6 +555,41 @@ class UserModel {
             }
         }
     }
+
+    async deletarNotificacao(idNot, idUser){
+        log('INFO', 'UserModel', 'deletarNotificacao', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+            `
+                DELETE FROM NOTIFICACOES
+                WHERE NOT_ID = :idNot AND NOT_DESTINATARIO_ID = :idUser
+            `,
+            { idNot, idUser },
+            { autoCommit: true }
+            );
+
+            log('INFO', 'UserModel', 'deletarNotificacao', 'FIM bem sucedido');
+            return result.rowsAffected > 0;
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'deletarNotificacao', 'Erro ao deletar a notificação', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'deletarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'deletarNotificacao', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'deletarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
     
 }
 

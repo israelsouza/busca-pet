@@ -403,6 +403,22 @@ class UserService {
         }
     }
 
+    async deletarUmaNotificacao(idNot, idUser){
+        log('INFO', 'UserService', 'deletarUmaNotificacao', 'INICIO');
+
+        if ( !ValidationUtils.validarID(idNot) ) throw new HttpError(400, "ID da notificação inválido");
+        if ( !ValidationUtils.validarID(idUser) ) throw new HttpError(400, "ID do usuário inválido");
+
+        try {
+            await UserModel.deletarNotificacao(idNot, idUser);
+            log('INFO', 'UserService', 'deletarUmaNotificacao', 'FIM com sucesso');
+        } catch (error) {
+            log('ERROR', 'UserService', 'deletarUmaNotificacao', "ERRO ao deletar a notificação");
+            console.log(error);
+            throw error;
+        }
+    }
+
 }
 
 export default new UserService();
