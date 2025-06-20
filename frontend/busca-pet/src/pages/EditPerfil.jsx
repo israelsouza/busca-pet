@@ -140,7 +140,7 @@ function EdicaoPerfil() {
   const atualizarCampo = (campo) => {
     const token = localStorage.getItem("authToken");
     const email = EmailFromToken();
-    fetch(`http://localhost:3000/usuarios/email/${email}/${campo}`, {
+    fetch(`http://localhost:3000/api/usuario/perfil/${campo}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

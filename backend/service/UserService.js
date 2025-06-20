@@ -300,6 +300,75 @@ class UserService {
         }
     }
 
+    async atualizarCampoUsuario(id, {valor}, campo){
+        log('INFO', 'UserService', 'atualizarCampoUsuario', 'INICIO');
+
+        if (!ValidationUtils.validarID(id)) 
+            throw new HttpError(400, "ID do usuário inválido");
+
+        if (!campo || typeof campo !== 'string')
+            throw new HttpError(400, "Campo a ser atualizado é inválido ou não foi fornecido.");
+
+        try {
+            
+            await this.processarValidacoesCampos(valor, campo)
+
+            log('INFO', 'UserService', 'atualizarCampoUsuario', `VALIDAÇÕES PARA O CAMPO '${campo}' FEITAS`);
+
+            await UserModel.atualizarCampoUsuario(id, campo, valor);
+
+            log('INFO', 'UserService', 'atualizarCampoUsuario', 'FIM com sucesso');
+            return { message: `Campo '${campo}' atualizado com sucesso.` };
+
+        } catch (error) {
+            log('ERROR', 'UserService', 'atualizarCampoUsuario', `ERRO ao atualizar o campo '${campo}'`);
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async processarValidacoesCampos(valor, campo) {
+        switch (campo) {
+            case 'PES_NOME':
+                this.validarCamposObrigatorios(valor, 'nome');
+                this.validarTamanho(valor, 'nome');
+                if (!this.validarTextoSemNumero(valor)) throw new Error(`Nome ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                break;
+            case 'PES_PHONE':
+                this.validarCamposObrigatorios(valor, 'telefone');
+                this.validarTamanho(valor, 'telefone');
+                if (!this.validarApenasNumeros(valor)) throw new Error(`Telefone ${UserService.MENSAGEM_SO_CONTEM_NUMERO}`);
+                break;
+            case 'USU_EMAIL':
+                this.validarCamposObrigatorios(valor, 'email');
+                this.validarTamanho(valor, 'email');
+                this.validarFormatoEmail(valor)
+                break;
+            case 'END_RUA':
+                this.validarCamposObrigatorios(valor, 'rua');
+                this.validarTamanho(valor, 'rua');
+                if (!this.validarTextoSemNumero(valor)) throw new Error(`Rua ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                break;
+            case 'END_BAIRRO':
+                this.validarCamposObrigatorios(valor, 'bairro');
+                this.validarTamanho(valor, 'bairro');
+                break;
+            case 'CID_DESCRICAO':
+                this.validarCamposObrigatorios(valor, 'cidade');
+                this.validarTamanho(valor, 'cidade');
+                if (!this.validarTextoSemNumero(valor)) throw new Error(`Cidade ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                break;
+            case 'EST_SIGLA':
+                this.validarCamposObrigatorios(valor, 'estado');
+                this.validarTamanho(valor, 'estado');
+                if (!this.validarTextoSemNumero(valor)) throw new Error(`Estado ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                this.validarSiglaEstado(valor);
+                break;
+            default:
+                throw new HttpError(400, `O campo '${campo}' não é permitido para atualização.`);
+        }
+    }
+
 }
 
 export default new UserService();

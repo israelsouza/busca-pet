@@ -13,6 +13,8 @@ router.post("/registrar-nova-senha", UserController.submeterNovaSenha)
 router.get('/foto', autenticarToken, UserController.pegarFotoPerfil)
 router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 
+router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)
+
 
 
 export default router;

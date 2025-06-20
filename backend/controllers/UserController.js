@@ -104,6 +104,23 @@ class UserController {
         }
     }
 
+    async atualizarCampo(req, res){
+        log('INFO', 'UserController', 'atualizarCampo', 'INICIO')
+        try {
+            await UserService.atualizarCampoUsuario(req.user.id, req.body, req.params.campo);
+            log('INFO', 'UserController', 'atualizarCampo', 'FIM')
+            return res.status(200).json({ 
+                message: `Campo ${req.params.campo} atualizado com sucesso!`
+             });
+        } catch (error) {
+            log('ERRO', 'UserController', 'atualizarCampo', 'ERRO AO ATUALIZAR CAMPO', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao tentar atualizar o campo."
+             });
+        }
+    }
+
 }
 
 export default new UserController;
