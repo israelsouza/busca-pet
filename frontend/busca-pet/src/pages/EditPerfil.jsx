@@ -378,8 +378,8 @@ function EdicaoPerfil() {
 
       const formDataToSend = new FormData();
       formDataToSend.append("foto", croppedImageBlob, "foto.jpg");
-            
-      const response = await enviarDados(formDataToSend, `usuarios/foto/${email}`)
+
+      const response = await enviarDados(formDataToSend, `api/usuario/perfil/foto/nova`)
 
       if (response.ok) {
         alert("Foto de perfil atualizada com sucesso!");

@@ -481,6 +481,41 @@ class UserModel {
             }
         }
     }
+
+    async salvarNovaFoto(id, binario){;
+        log('INFO', 'UserModel', 'salvarNovaFoto', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+            `UPDATE USUARIO SET USU_FOTO = :foto WHERE USU_ID = :id`,
+            {
+                foto: binario,
+                id: id
+            },
+            { autoCommit: true }
+            );
+
+            log('INFO', 'UserModel', 'salvarNovaFoto', 'FIM bem sucedido');
+            return result.rowsAffected > 0;
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'salvarNovaFoto', 'Erro ao salvar nova foto', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'salvarNovaFoto', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'salvarNovaFoto', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'salvarNovaFoto', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
     
 }
 

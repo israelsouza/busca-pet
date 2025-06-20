@@ -369,6 +369,28 @@ class UserService {
         }
     }
 
+    async atualizarFotoPerfilUsuario(id, binario){
+        log('INFO', 'UserService', 'atualizarFotoPerfilUsuario', 'INICIO');
+        
+        if (!ValidationUtils.validarID(id)) 
+            throw new HttpError(400, "ID do usuário inválido");
+        
+        if (!binario)
+            throw new HttpError(400, "Nenhuma imagem foi enviada");
+        
+        try {
+            await ValidationUtils.validarTamanhoMaximoImagem(binario);
+            log('INFO', 'UserService', 'atualizarFotoPerfilUsuario', 'VALIDAÇÕES FEITAS');
+
+            await UserModel.salvarNovaFoto(id, binario);
+            log('INFO', 'UserService', 'atualizarFotoPerfilUsuario', 'FIM bem sucedido');            
+        } catch (error) {
+            log('ERROR', 'UserService', 'atualizarFotoPerfilUsuario', `ERRO ao atualizar a imagem`);
+            console.log(error);
+            throw error;
+        }
+    }
+
 }
 
 export default new UserService();

@@ -121,6 +121,23 @@ class UserController {
         }
     }
 
+    async atualizarFotoPerfil(req, res){
+        log('INFO', 'UserController', 'atualizarFotoPerfil', 'INICIO')
+        try {
+            await UserService.atualizarFotoPerfilUsuario(req.user.id, req.file.buffer);
+            log('INFO', 'UserController', 'atualizarFotoPerfil', 'FIM')
+            return res.status(200).json({ 
+                message: "Foto de perfil atualizada com sucesso!"
+            });
+        } catch (error) {
+            log('ERRO', 'UserController', 'atualizarFotoPerfil', 'ERRO AO ATUALIZAR FOTO', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao tentar atualizar a foto de perfil."
+            });
+        }
+    }
+
 }
 
 export default new UserController;

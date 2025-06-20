@@ -14,6 +14,7 @@ router.get('/foto', autenticarToken, UserController.pegarFotoPerfil)
 router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 
 router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)
+router.post('/perfil/foto/nova', autenticarToken, upload.single("foto"), UserController.atualizarFotoPerfil)
 
 
 
