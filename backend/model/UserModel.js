@@ -3,6 +3,7 @@ import log from '../utils/logger.js'
 import getConnection from "./connectionOracle.js";
 import bcrypt from "bcrypt";
 import OracleDB from "oracledb";
+import HttpError from '../utils/HttpError.js';
 
 class UserModel {
     async salvarUsuario(dados){
@@ -513,6 +514,89 @@ class UserModel {
             } catch (error) {
                 log('ERROR', 'UserModel', 'salvarNovaFoto', 'ERRO AO ENCERRAR A CONEXÃO', { error });
             }
+            }
+        }
+    }
+
+    async findPhoneByUserId(id){
+        log('INFO', 'UserModel', 'findPhoneByUserId', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+            `
+                SELECT p.PES_PHONE
+                FROM PESSOA p
+                JOIN USUARIO u ON p.PES_ID = u.PES_ID
+                WHERE u.USU_ID = :id
+            `,
+            [id]
+            );
+
+            if (result.rows.length === 0)
+                throw new HttpError(404, "Publicação não encontrada.")            
+
+            log('INFO', 'UserModel', 'findPhoneByUserId', 'FIM');
+
+            return result.rows[0][0];
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'findPhoneByUserId', 'Erro ao buscar telefone', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'findPhoneByUserId', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'findPhoneByUserId', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'findPhoneByUserId', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                console.log(error);
+                throw error;
+            }
+            }
+        }
+    }
+
+    async findNameById(id) {
+        log('INFO', 'UserModel', 'findNameById', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+                `
+                    SELECT p.PES_NOME
+                    FROM PESSOA p
+                    JOIN USUARIO u ON p.PES_ID = u.PES_ID
+                    WHERE u.USU_ID = :id
+                `, [id]
+            );
+
+            if (result.rows.length === 0)
+                throw new HttpError(404, "Usuário não encontrado.")
+
+            log('INFO', 'UserModel', 'findNameById', 'FIM');
+
+            return result.rows[0][0];
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'findNameById', 'Erro ao buscar nome', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'UserModel', 'findNameById', 'ENCERRANDO CONEXÃO COM BANCO');
+                    await connection.close();
+                    log('INFO', 'UserModel', 'findNameById', 'CONEXÃO ENCERRADA');
+                } catch (error) {
+                    log('ERROR', 'UserModel', 'findNameById', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                    console.log(error);
+                    throw error;
+                }
             }
         }
     }

@@ -392,6 +392,48 @@ class PostModel {
         }
 
     }
+
+    async findUserIdByPostId(id){
+        log('INFO', 'PostModel', 'findUserIdByPostId', 'INICIO');        
+        let connection;
+        try {
+
+            connection = await getConnection();
+
+            const { rows } = await connection.execute(
+                `
+                    SELECT USU_ID
+                    FROM   POST
+                    WHERE  POS_ID = :id
+                `,[id],{
+
+                }
+            )
+
+            log('INFO', 'PostModel', 'findUserIdByPostId', 'FIM');
+
+            return rows[0][0]
+
+        } catch (error) {
+
+            log('ERRO', 'PostModel', 'findUserIdByPostId', 'ERRO ao buscar id do usuário');
+            console.log(error);
+            throw error;
+            
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'PostModel', 'findUserIdByPostId', 'ENCERRANDO CONEXÃO');
+                    await connection.close();
+                    log('INFO', 'PostModel', 'findUserIdByPostId', 'CONEXÃO ENCERRADA');
+                } catch (error) {
+                    log('ERRO', 'PostModel', 'findUserIdByPostId', 'ERRO AO ENCERRAR CONEXÃO');
+                    console.log(error);
+                    throw error;
+                }
+            }
+        }
+    }
 }
 
 export default new PostModel();

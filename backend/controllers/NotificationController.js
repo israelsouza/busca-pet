@@ -31,6 +31,23 @@ class NotificationController{
             });
         }
     }
+
+    async criarEnviarMensagem(req, res){
+        log('INFO', 'NotificationController', 'criarEnviarMensagem', 'INICIO')
+        try {
+            const { idPost } = req.body;
+            await NotificationService.criarEnviarMensagem(req.user.id, idPost, req.user.email);
+
+            log('INFO', 'NotificationController', 'criarEnviarMensagem', 'FIM')
+            return res.status(201).json({ message: "Mensagem enviada com sucesso." });
+        } catch (error) {
+            log('ERRO', 'NotificationController', 'criarEnviarMensagem', 'ERRO AO ENVIAR MENSAGEM', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao enviar mensagem."
+            });
+        }
+    }
 }
 
 export default new NotificationController();

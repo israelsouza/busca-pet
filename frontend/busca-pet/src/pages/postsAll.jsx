@@ -109,7 +109,7 @@ function PostsAll() {
     };
     const result = await enviarDados(
       user,
-      `api/posts/quem-publicou`,
+      `api/notificacao/criar/mensagem`,
       "POST",
       token
     );

@@ -75,6 +75,44 @@ class NotificationModel{
             }
         }
     }
+
+    async salvarNotificacao(dados){
+        log('INFO', 'UserModel', 'salvarNotificacao', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            await connection.execute(
+                `
+                    INSERT INTO NOTIFICACOES (NOT_REMETENTE_ID, NOT_DESTINATARIO_ID, NOT_CONTEUDO)
+                    VALUES (:remetente, :destinatario, :conteudo)
+                `,
+                {
+                    remetente: dados.rementente,
+                    destinatario: dados.destinatario,
+                    conteudo: dados.conteudo
+                },
+                { autoCommit: true }
+            );
+
+            log('INFO', 'UserModel', 'salvarNotificacao', 'FIM bem sucedido');
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'salvarNotificacao', 'Erro ao salvar a notificação', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'salvarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'salvarNotificacao', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'salvarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
 }
 
 export default new NotificationModel();
