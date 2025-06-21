@@ -53,6 +53,34 @@ class PostService {
         log('INFO', 'PostService', 'capturarPublicacoesPorCategoria', 'INICIO');
         return await PostModel.listarPosts(categoria);
     }
+
+    async buscarPostsPorTexto(termo){
+        log('INFO', 'PostService', 'buscarPostsPorTexto', 'INICIO');
+        ValidationUtils.validarCampoObrigatorio(termo, 'termo-buscado')
+        const posts = await PostModel.buscarPostsPorTexto(termo);
+        log('INFO', 'PostService', 'buscarPostsPorTexto', 'FIM');
+        return posts;
+    }
+
+    async buscarPostsPorProximidade(lt, lg, raio){
+        log('INFO', 'PostService', 'buscarPostsPorProximidade', 'INICIO');
+        const posts = await PostModel.buscarPostsPorProximidade(lt, lg, raio);
+
+        const postsFormatados = posts.map( (row) => ({
+            ...row,
+            PET_FOTO: row.PET_FOTO
+            ? `data:image/jpeg;base64,${row.PET_FOTO.toString("base64")}`
+            : null,
+            PET_DATA: row.PET_DATA
+            ? ValidationUtils.formatarDataParaDDMMYYYY(
+                new Date(row.PET_DATA).toISOString().split("T")[0]
+            )
+            : null,
+        }))
+
+        log('INFO', 'PostService', 'buscarPostsPorProximidade', 'FIM');
+        return postsFormatados;
+    }
 }
 
 export default new PostService();

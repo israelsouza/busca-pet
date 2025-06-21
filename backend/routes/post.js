@@ -13,6 +13,10 @@ const router = express.Router();
 router.get("/meus", PostController.pegarMinhasPublicacoes);
 router.get("/:categoria", PostController.pegarPostsPorCategoria);
 
+router.get('/buscar/termo', PostController.pegarPostsPorTextoPesquisado)
+router.get('/buscar/termo/area', PostController.pegarPostsProximidade)
+
+
 router.post("/quem-publicou", getQuemPublicou);
 router.post("/denuncia", AdminController.registrarUmaDenuncia);
 router.post("/registrar-pet", upload.single("imagem"), PostController.cadastrarUmPet);

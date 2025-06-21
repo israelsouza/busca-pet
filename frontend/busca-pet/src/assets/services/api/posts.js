@@ -6,13 +6,13 @@ import apiFetch from "../httpClient.js";
  * @returns {Promisse<Array>} Uma promessa que resolve para um array de publicações.
  */
 export async function getPublicacoesPorTexto(query) {
-    return apiFetch(`/publicacoes/busca?q=${encodeURIComponent(query)}`, {
+    return apiFetch(`/posts/buscar/termo?q=${encodeURIComponent(query)}`, {
         method: 'GET'
     })
 }
 
 export async function getPetsPorArea(lat, lng) {
-    return apiFetch(`/publicacoes/area?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`, {
+    return apiFetch(`/posts/buscar/termo/area?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`, {
         method: 'GET'
     })
 }

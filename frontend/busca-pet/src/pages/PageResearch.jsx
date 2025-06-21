@@ -66,8 +66,8 @@ function PageResearch() {
     const delayDebounceFn = setTimeout(async () => {
       try {
         const data = await getPublicacoesPorTexto(searchText);
-        console.log(data.result);
-        setSuggestions(data.result.slice(0, 3)); // Limita a 3 sugestões
+        console.log(data.posts);
+        setSuggestions(data.posts.slice(0, 3));
       } catch (err) {
         console.error("Erro ao buscar sugestões:", err);
         setErrorSuggestions("Erro ao carregar sugestões.");

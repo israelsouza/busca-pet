@@ -44,6 +44,44 @@ class PostController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async pegarPostsPorTextoPesquisado(req, res){
+    log('INFO', 'PostController', 'pegarPostsPorTextoPesquisado', 'INICIO');
+    try {
+      const termoBuscado = req.query.q;
+      const posts = await PostService.buscarPostsPorTexto(termoBuscado);
+      log('INFO', 'PostController', 'pegarPostsPorTextoPesquisado', 'FIM');
+      return res.status(200).json({ message: "Posts encontrados com sucesso", posts });
+    } catch (error) {
+      log('ERRO', 'PostController', 'pegarPostsPorTextoPesquisado', 'Erro ao buscar posts por texto');
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  async pegarPostsProximidade(req, res) {
+    log('INFO', 'PostController', 'pegarPostsProximidade', 'INICIO');
+    try {
+      
+      const lat = parseFloat(req.query.lat);
+      const lng = parseFloat(req.query.lng);
+      const raioKm = parseFloat(req.query.raio || 4);
+
+      const consulta = await PostService.buscarPostsPorProximidade(lat, lng, raioKm);
+      log('INFO', 'PostController', 'pegarPostsProximidade', 'FIM');
+      return res.status(200).json({ 
+        messagem: "Posts encontrados com sucesso", consulta, radius: raioKm
+      });
+    } catch (error) {
+      log('ERRO', 'PostController', 'pegarPostsProximidade', 'Erro ao buscar posts por proximidade');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({ error: "Erro interno do servidor" });
+    }
+  }
+
 }
 
 export default new PostController();
