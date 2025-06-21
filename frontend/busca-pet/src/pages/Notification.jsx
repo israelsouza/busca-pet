@@ -37,7 +37,7 @@ function Notification() {
         },
       };
 
-      fetch(`http://localhost:3000/api/usuario/notificacao`, headerRequest)
+      fetch(`http://localhost:3000/api/notificacao/mensagem`, headerRequest)
         .then((response) => response.json())
         .then((data) => {
           console.log("Notificações: ", data);
@@ -63,7 +63,7 @@ function Notification() {
       },
     };
 
-    fetch(`http://localhost:3000/api/usuario/notificacao/${id}`, headerRequest)
+    fetch(`http://localhost:3000/api/notificacao/mensagem/${id}`, headerRequest)
       .then((response) => response.json())
       .then((data) => {
         console.log("Notificações deletadas: ", data);

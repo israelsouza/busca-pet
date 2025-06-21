@@ -18,8 +18,6 @@ router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)
 router.post('/perfil/foto/nova', autenticarToken, upload.single("foto"), UserController.atualizarFotoPerfil)
 
-router.get('/notificacao', autenticarToken, UserController.pegarNotificacoes)
-router.delete('/notificacao/:id', autenticarToken, UserController.excluirUmaNotificacao)
 
 
 export default router;
