@@ -1,34 +1,35 @@
-import AdmModel from '../model/AdmModel.js'
+import log from '../utils/logger.js'
+import {  
+  listarDenuncias,
+  pegarPublicacao,
+  manterPublicacao,
+  deletarPublicacaoPorDenuncia,
+  deletarDadosDaPublicacao,
+  realizarAtualizacaoUsuario,
+  realizarBanimentoEnviarEmail} from '../model/AdmModel.js'
 
-async function getUsuariosEDenuncias(req, res) {
-  try {
-    const usuarios = await AdmModel.listarUsuariosEDenuncias();
-    return res.status(200).json({usuarios});
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao buscar usuários", error: error.message });
-  }
-}
+import AdmService from '../service/AdmService.js'
 
-async function getDenuncias(req, res) {
+export async function getDenuncias(req, res) {
   try {
-    const denuncias = await AdmModel.listarDenuncias();
+    const denuncias = await listarDenuncias();
     return res.status(200).json({denuncias});
   } catch (error) {
     return res.status(500).json({ message: "Erro ao buscar as denuncias", error: error.message });
   }
 }
 
-async function getPublicacaoDenunciada(req, res) {
+export async function getPublicacaoDenunciada(req, res) {
   const id = req.params.id
   try {
-    const publicacao = await AdmModel.pegarPublicacao(id); 
+    const publicacao = await pegarPublicacao(id); 
     return res.status(200).json({publicacao});
   } catch (error) {
     return res.status(500).json({ message: "Erro ao buscar aa publicacao ", error: error.message });
   }
 }
 
-async function atualizarStatus(req, res) {
+export async function atualizarStatus(req, res) {
   const { idPost, status, idDenuncia } = req.params
   
   console.log("idPost -> ",idPost)
@@ -42,11 +43,11 @@ async function atualizarStatus(req, res) {
   try {
 
     if (status == "MANTER") {    
-      const atualizaDenuncia = await AdmModel.manterPublicacao(idDenuncia)
+      const atualizaDenuncia = await manterPublicacao(idDenuncia)
       return res.status(200).json({ message: "Denúncia marcada como mantida com sucesso!" });
     } else if (status === "DELETAR") {
       console.log("entrei em DELETAR");
-      const atualizaDenunciaEPublicacao = await AdmModel.deletarPublicacaoPorDenuncia(idDenuncia, idPost)
+      const atualizaDenunciaEPublicacao = await deletarPublicacaoPorDenuncia(idDenuncia, idPost)
       return res.status(200).json({ message: `Denúncia atendida e post excluido com sucesso! -->  ${atualizaDenunciaEPublicacao} `});
     } else {
       console.error("ERRO: status inválido")
@@ -57,14 +58,14 @@ async function atualizarStatus(req, res) {
   }
 }
 
-async function deletarUmaPublicacao(req, res) {
+export async function deletarUmaPublicacao(req, res) {
   const {idPost} = req.params;
 
   if(!idPost)
       return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
 
   try {    
-    const result = await AdmModel.deletarDadosDaPublicacao(idPost);
+    const result = await deletarDadosDaPublicacao(idPost);
     console.log(result)
     return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
     
@@ -74,14 +75,14 @@ async function deletarUmaPublicacao(req, res) {
   
 }
 
-async function atualizarUnicoUsuario(req, res) {
+export async function atualizarUnicoUsuario(req, res) {
   console.log("ENTREI NO BACKEND -> atualizarUnicoUsuario")
   const userId = req.params.id;
   const { nome, email, senha } = req.body;
 
   try {
         
-    const operacao = AdmModel.realizarAtualizacaoUsuario(userId, nome, email, senha)
+    const operacao = realizarAtualizacaoUsuario(userId, nome, email, senha)
 
     return res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
 
@@ -92,11 +93,11 @@ async function atualizarUnicoUsuario(req, res) {
     
 }
 
-async function banirUsuario(req, res) {
+export async function banirUsuario(req, res) {
   const {email } = req.params;
   
   try {
-    const resultado = await AdmModel.realizarBanimentoEnviarEmail(email);
+    const resultado = await realizarBanimentoEnviarEmail(email);
     console.log(resultado)
     if (resultado.success) {
       return res.status(200).json({ message: 'Usuário banido e notificação enviada com sucesso!' });
@@ -110,12 +111,21 @@ async function banirUsuario(req, res) {
   
 }
 
-export default {
-  getUsuariosEDenuncias,
-  getDenuncias,
-  getPublicacaoDenunciada,
-  atualizarStatus,
-  deletarUmaPublicacao,
-  atualizarUnicoUsuario,
-  banirUsuario
-};
+class AdmController {
+  async pegarUsuariosEDenuncias(req, res){
+    log('INFO', 'AdmController', 'pegarUsuariosEDenuncias', 'INICIO')
+    try {
+      const usuarios = await AdmService.listarUsuariosEDenuncias()
+      log('INFO', 'AdmController', 'pegarUsuariosEDenuncias', 'FIM')
+      return res.status(200).json({usuarios});
+    } catch (error) {
+      log('ERRO', 'AdmController', 'pegarUsuariosEDenuncias', 'ERRO ao buscar usuarios e denuncias')
+      console.log(error);      
+      return res.status(500).json({ 
+        message: "Erro ao buscar usuários", error: error.message
+      });
+    }
+  }
+}
+
+export default new AdmController();

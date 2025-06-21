@@ -36,7 +36,7 @@ function AdmUsuarios() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await fetchAPI("api/adm/usuarios");
+      const res = await fetchAPI("api/adm/usuarios-e-denuncias");
       if (!res.ok) throw new Error("Erro ao buscar usuários");
       const data = await res.json();
       // console.log(data)

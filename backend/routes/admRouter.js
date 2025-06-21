@@ -1,17 +1,25 @@
 import express from "express";
-import AdminController from "../controllers/admController.js";
+import AdmController, {
+  getDenuncias,
+  getPublicacaoDenunciada,
+  atualizarStatus,
+  deletarUmaPublicacao,
+  atualizarUnicoUsuario,
+  banirUsuario} from "../controllers/admController.js";
 
 const router = express.Router();
 
-router.get("/usuarios", AdminController.getUsuariosEDenuncias);
-router.get("/denuncias", AdminController.getDenuncias);
-router.get("/denuncias/post/:id", AdminController.getPublicacaoDenunciada);
+router.get("/usuarios-e-denuncias", AdmController.pegarUsuariosEDenuncias);
 
-router.put("/denuncias/:idDenuncia/:idPost/:status", AdminController.atualizarStatus);
-router.put("/usuario/:email", AdminController.banirUsuario);
 
-router.patch("/usuario/:id", AdminController.atualizarUnicoUsuario);
+router.get("/denuncias", getDenuncias);
+router.get("/denuncias/post/:id", getPublicacaoDenunciada);
 
-router.delete("/post/:idPost", AdminController.deletarUmaPublicacao);
+router.put("/denuncias/:idDenuncia/:idPost/:status", atualizarStatus);
+router.put("/usuario/:email", banirUsuario);
+
+router.patch("/usuario/:id", atualizarUnicoUsuario);
+
+router.delete("/post/:idPost", deletarUmaPublicacao);
 
 export default router;

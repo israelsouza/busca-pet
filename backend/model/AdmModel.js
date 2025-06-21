@@ -4,8 +4,9 @@ import OracleDB from "oracledb";
 import formatarDataParaDDMMYYYY from '../utils/formatarData.js'
 import transporter from "../configs/mailConfig.js";
 import { myEmail } from "../configs/myEmail.js";
+import DBHelper from '../utils/dbHelper.js';
 
-async function listarUsuariosEDenuncias() {
+export async function listarUsuariosEDenuncias() {
   let connection;
   try {
     connection = await getConnection();
@@ -41,7 +42,7 @@ async function listarUsuariosEDenuncias() {
   }
 }
 
-async function listarDenuncias() {
+export async function listarDenuncias() {
   let connection
   try {
     connection = await getConnection()
@@ -90,7 +91,7 @@ const result = await connection.execute(sql, [], { outFormat: OracleDB.OUT_FORMA
   }
 }
 
-async function pegarPublicacao(idPost) {
+export async function pegarPublicacao(idPost) {
   let connection;
   console.log("entrei pegarPublicacao(idPost) MODEL ->", idPost)
   try {
@@ -161,7 +162,7 @@ async function pegarPublicacao(idPost) {
   }
 }
 
-async function manterPublicacao(idDenuncia) {
+export async function manterPublicacao(idDenuncia) {
   let connection;
   try {
     connection = await getConnection();
@@ -202,7 +203,7 @@ async function manterPublicacao(idDenuncia) {
   
 }
 
-async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
+export async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
   let connection;
   try {
     connection = await getConnection();
@@ -269,7 +270,7 @@ async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
   }
 }
 
-async function deletarDadosDaPublicacao(id) {
+export async function deletarDadosDaPublicacao(id) {
   let connection;
   try {
     console.log("Iniciando conexão com o banco...");
@@ -341,7 +342,7 @@ async function deletarDadosDaPublicacao(id) {
   }
 }
 
-async function existeUsuario(email, userId) {
+export async function existeUsuario(email, userId) {
   console.log("ENTREI Na MODAL -> existeUsuario")
   let connection;
   try {
@@ -363,7 +364,7 @@ async function existeUsuario(email, userId) {
 
 // Função para atualizar dados do usuário dinamicamente
 // Recebe: userId, objeto com campos a atualizar (ex: { USU_EMAIL: 'novo@email.com', USU_NOME: 'Novo Nome' })
-async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
+export async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
   console.log("Iniciando atualização de usuário:", userId);
   let connection;
   try {
@@ -479,7 +480,7 @@ async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
   }
 }
 
-async function realizarBanimentoEnviarEmail(email) {
+export async function realizarBanimentoEnviarEmail(email) {
   let connection;
   try {
     connection = await getConnection()
@@ -531,15 +532,36 @@ async function realizarBanimentoEnviarEmail(email) {
 }
 
 
+class AdmModel {
+  
+  async listarUsuariosEDenuncias(){
+    return DBHelper.withConnection({ module: "AdmModel", methodName: "listarUsuariosEDenuncias" }, async (connection) => {
+      const result = await connection.execute(
+          `
+        SELECT
+            U.USU_ID AS id,
+            P.PES_NOME AS PES_NOME,
+            U.USU_STATUS AS USU_STATUS,
+            U.USU_EMAIL AS USU_EMAIL,
+            U.USU_REPORTS_COUNT AS denuncias_recebidas_count
+        FROM
+            USUARIO U
+        INNER JOIN
+            PESSOA P ON U.PES_ID = P.PES_ID 
+        ORDER BY
+            P.PES_NOME
+              `,
+        [],
+        {
+          outFormat: OracleDB.OUT_FORMAT_OBJECT,
+        }
+      )
 
-export default {
-  listarUsuariosEDenuncias,
-  listarDenuncias,
-  pegarPublicacao,
-  manterPublicacao,
-  deletarPublicacaoPorDenuncia,
-  deletarDadosDaPublicacao,
-  existeUsuario,
-  realizarAtualizacaoUsuario,
-  realizarBanimentoEnviarEmail
-};
+      return result.rows
+    })
+  }
+  
+}
+
+
+export default new AdmModel();
