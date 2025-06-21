@@ -113,6 +113,48 @@ class NotificationModel{
             }
         }
     }
+
+    async salvarUmaDenuncia(idUsuario, idPost, descricao, tipo, data){
+        log('INFO', 'UserModel', 'salvarUmaDenuncia', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            await connection.execute(
+            `
+                INSERT INTO DENUNCIAS (DEN_TIPO, DEN_DESCRICAO, DEN_DATA, USU_ID, POS_ID)
+                VALUES (:tipo, :descricao, :data, :userId, :idPost)
+            `,
+            {
+                tipo,
+                descricao,
+                data,
+                userId: idUsuario,
+                idPost,
+            },
+            { autoCommit: true }
+            );
+
+            log('INFO', 'UserModel', 'salvarUmaDenuncia', 'FIM bem sucedido');
+
+            return { success: true, message: "Denúncia registrada com sucesso!" };
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'salvarUmaDenuncia', 'Erro ao salvar a denúncia', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'salvarUmaDenuncia', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'salvarUmaDenuncia', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'salvarUmaDenuncia', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
 }
 
 export default new NotificationModel();

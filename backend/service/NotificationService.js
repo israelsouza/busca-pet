@@ -1,7 +1,7 @@
 import log from '../utils/logger.js'
 import HttpError from '../utils/HttpError.js';
 import ValidationUtils from '../utils/ValidationUtils.js';
-import { sendMessageToUser } from "../utils/websocket.js";
+import { sendMessageToUser, notifyAdmins } from "../utils/websocket.js";
 import NotificationModel from '../model/NotificationModel.js'
 import PostModel from '../model/PostModel.js';
 import UserModel from '../model/UserModel.js'; 
@@ -76,6 +76,42 @@ class NotificationService{
 
         } catch (error) {
             log('ERROR', 'NotificationService', 'criarEnviarMensagem', "ERRO ao criar e enviar mensagem");
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async criarDenuncia(idUsuario, {tipo, descricao, idPost}){
+        log('INFO', 'NotificationService', 'criarDenuncia', 'INICIO');
+
+        if (!ValidationUtils.validarID(idUsuario)) throw new HttpError(400, "ID do usuário inválido");
+        if (!ValidationUtils.validarID(idPost)) throw new HttpError(400, "ID do post inválido");
+
+        if (tipo.length > 100) throw new HttpError(400, "Quantidade caracteres excedido");
+        if (descricao.length > 200) throw new HttpError(400, "Quantidade caracteres excedido");
+
+        if (!descricao || descricao.trim() === '') {
+            throw new HttpError(400, "A descrição da denúncia é obrigatória");
+        }
+
+        try {
+            const dataAtualObj = new Date();
+            const dataAtual = `${String(dataAtualObj.getDate()).padStart( 2, "0" )}/${String(dataAtualObj.getMonth() + 1).padStart(  2, "0" )}/${dataAtualObj.getFullYear()}`;
+
+            const result = await NotificationModel.salvarUmaDenuncia(idUsuario, idPost, descricao, tipo, dataAtual)
+
+            if (result.success) {
+                notifyAdmins({ 
+                    type: 'novaDenuncia', // Tipo de notificação
+                    message: `Nova denúncia de ${tipo} no Post ID: ${idPost}. Descrição: ${descricao}.`,
+                    denunciaData: { tipo, descricao, idPost, idUsuario }
+                });
+            }
+
+            log('INFO', 'NotificationService', 'criarDenuncia', 'FIM com sucesso');
+            return { message: 'Denúncia enviada com sucesso para a administração.' };
+        } catch (error) {
+            log('ERROR', 'NotificationService', 'criarDenuncia', "ERRO ao criar denúncia");
             console.log(error);
             throw error;
         }

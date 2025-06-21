@@ -4,6 +4,7 @@ import NotificationController from '../controllers/NotificationController.js'
 const router = express.Router();
 
 router.post('/criar/mensagem', NotificationController.criarEnviarMensagem)
+router.post('/criar/denuncia', NotificationController.criarUmaDenuncia)
 router.get("/mensagem", NotificationController.pegarNotificacoes);
 router.delete('/mensagem/:id', NotificationController.excluirUmaNotificacao)
 

@@ -48,6 +48,22 @@ class NotificationController{
             });
         }
     }
+
+    async criarUmaDenuncia(req, res){
+        log('INFO', 'NotificationController', 'criarUmaDenuncia', 'INICIO')
+        try {
+            await NotificationService.criarDenuncia(req.user.id, req.body);
+
+            log('INFO', 'NotificationController', 'criarUmaDenuncia', 'FIM')
+            return res.status(201).json({ message: "Denúncia criada com sucesso." });
+        } catch (error) {
+            log('ERRO', 'NotificationController', 'criarUmaDenuncia', 'ERRO AO CRIAR DENUNCIA', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao criar denúncia."
+            });
+        }
+    }
 }
 
 export default new NotificationController();
