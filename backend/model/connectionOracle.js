@@ -14,7 +14,9 @@ import dbConfig from '../configs/dbConfig.js'
 async function getConnection() {
     try {
         const connection = await OracleDB.getConnection(dbConfig);
+        console.log();
         console.log("Conexão estabelecida com Sucesso!");
+        console.log();
         return connection;
     } catch (error) {
         console.log("Erro ao estabelecer conexão.", error);
