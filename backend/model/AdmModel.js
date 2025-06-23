@@ -465,7 +465,9 @@ class AdmModel {
         INNER JOIN
             PESSOA P ON U.PES_ID = P.PES_ID 
         ORDER BY
-            P.PES_NOME
+            USU_STATUS ASC,                 
+            denuncias_recebidas_count DESC, 
+            PES_NOME ASC  
               `,
         [],
         {
