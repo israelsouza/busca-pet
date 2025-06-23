@@ -2,7 +2,7 @@ import log from '../utils/logger.js'
 import {  
   deletarDadosDaPublicacao,
   realizarAtualizacaoUsuario,
-  realizarBanimentoEnviarEmail} from '../model/AdmModel.js'
+} from '../model/AdmModel.js'
 
 import AdmService from '../service/AdmService.js'
 import HttpError from '../utils/HttpError.js';
@@ -41,24 +41,6 @@ export async function atualizarUnicoUsuario(req, res) {
     res.status(500).json({ message: 'Erro interno do servidor.', error: error.message });
   }
     
-}
-
-export async function banirUsuario(req, res) {
-  const {email } = req.params;
-  
-  try {
-    const resultado = await realizarBanimentoEnviarEmail(email);
-    console.log(resultado)
-    if (resultado.success) {
-      return res.status(200).json({ message: 'Usuário banido e notificação enviada com sucesso!' });
-    } else {
-      return res.status(400).json({ message: resultado.message || 'Não foi possível banir o usuário.' });
-    }
-  } catch (error) {
-    console.error("Erro ao banir usuário:", error);
-    return res.status(500).json({ message: 'Erro interno do servidor.', error: error.message });
-  }
-  
 }
 
 class AdmController {
@@ -134,7 +116,24 @@ class AdmController {
     }
   }
 
-
+  async banirUsuario(req, res){
+    log('INFO', 'AdmController', 'banirUsuario', 'INICIO');
+    try {      
+      const result = await AdmService.banirUsuario(req.body);      
+      log('INFO', 'AdmController', 'banirUsuario', 'FIM');
+      return res.status(200).json({ message: "Usuário banido com sucesso!", data: result });
+    } catch (error) {
+      log('ERRO', 'AdmController', 'banirUsuario', 'ERRO ao banir usuário');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({
+        message: "Erro ao banir o usuário",
+        error: error.message
+      });
+    }
+  }
 }
 
 export default new AdmController();

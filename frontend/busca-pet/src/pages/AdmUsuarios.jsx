@@ -228,26 +228,34 @@ function AdmUsuarios() {
                               <LuUserRoundMinus
                                 className={Style.icon_user}
                                 onClick={async () => {
-                                  // const resultadoBanir = window.confirm(`Tem certeza que deseja banir o ${usuario.PES_NOME} ?`)
+                                  const resultadoBanir = window.confirm(`Tem certeza que deseja banir o ${usuario.PES_NOME} ?`)
 
-                                  // if(!resultadoBanir) return;
+                                  if(!resultadoBanir) return;
+                                  
+                                  const user = {
+                                    id: usuario.ID,
+                                    email: usuario.USU_EMAIL
+                                  }
 
-                                  const banir = await banirUsuario(
-                                    usuario.USU_EMAIL
-                                  );
+                                  await banirUsuario();
 
-                                  async function banirUsuario(email) {
+                                  async function banirUsuario() {
+                                    
                                     try {
                                       const req = await fetchAPI(
-                                        `api/adm/usuario/${email}`,
+                                        `api/adm/usuario/banir`,
                                         "PUT",
-                                        null,
-                                        false,
+                                        user,
+                                        true,
                                         true
                                       );
 
                                       console.log(await req.json());
-                                    } catch (error) {}
+                                      fetchUsers()
+                                    } catch (error) {
+                                      console.error(error);
+                                      alert(error)
+                                    }
                                   }
                                 }}
                               />{" "}

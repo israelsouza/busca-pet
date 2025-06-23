@@ -40,6 +40,10 @@ class ValidationUtils {
             case "data":
                 if (valor.length > 10) throw new HttpError(400, "A quantidade de caracteres do campo data excedeu o limite.");
                 break;
+            
+            case "email":
+                if (valor.length > 70) throw new Error("Tamanho máximo excedido!");
+                break;
         
             default:
                 throw new Error("Campo inconclusivo, tente novamente");
@@ -102,6 +106,13 @@ class ValidationUtils {
             throw new HttpError(400, `O tamanho da imagem não pode exceder ${VALOR_MAXIMO_MB}MB.`);
         }
         log('INFO', 'ValidationUtils', 'validarTamanhoMaximoImagem', 'FIM');
+    }
+
+    validarFormatoEmail(email){
+        log('INFO', 'UserService', 'validarFormatoEmail', 'INICIO')
+        const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        log('INFO', 'UserService', 'validarFormatoEmail', 'FIM')
+        return emailRegex.test(email);
     }
 }
 

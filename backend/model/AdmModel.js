@@ -1,8 +1,6 @@
 import bcrypt from 'bcrypt'
 import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
-import transporter from "../configs/mailConfig.js";
-import { myEmail } from "../configs/myEmail.js";
 import DBHelper from '../utils/dbHelper.js';
 
 export async function deletarDadosDaPublicacao(id) {
@@ -77,24 +75,6 @@ export async function deletarDadosDaPublicacao(id) {
   }
 }
 
-export async function existeUsuario(email, userId) {
-  console.log("ENTREI Na MODAL -> existeUsuario")
-  let connection;
-  try {
-    connection = await getConnection();
-    const result = await connection.execute(
-      `SELECT COUNT(*) AS COUNT FROM USUARIO WHERE USU_EMAIL = :email AND USU_ID = :userId`,
-      { email, userId },
-      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
-    );
-    return result.rows[0].COUNT > 0;
-    } catch (error) {
-    console.error("Erro ao verificar existência de usuário:", error);
-    throw new Error("Erro interno ao verificar usuário.");
-    } finally {
-    if (connection) await connection.close();
-    }
-}
 
 
 // Função para atualizar dados do usuário dinamicamente
@@ -214,58 +194,6 @@ export async function realizarAtualizacaoUsuario(userId, nome, email, senha) {
     if (connection) await connection.close();
   }
 }
-
-export async function realizarBanimentoEnviarEmail(email) {
-  let connection;
-  try {
-    connection = await getConnection()
-
-    const mailOptions = {
-    from: myEmail,
-    to: email,
-    subject: "Banimento do site BuscaPet",
-    html: `
-            <p>Prezado(a) usuário(a),</p>
-            <p>Informamos que sua conta foi banida do site BuscaPet devido ao descumprimento de nossas políticas de uso.</p>
-            <p>O acesso à sua conta foi bloqueado e você não poderá mais utilizar nossos serviços.</p>
-            <p>Atenciosamente,<br>Equipe BuscaPet</p>
-          `,
-  };
-
-  await transporter.sendMail(mailOptions);
-  console.log(`Email de banimento enviado para ${email}.`);
-  const sql = `UPDATE USUARIO SET USU_STATUS = 'B' WHERE USU_EMAIL = :email`;
-  const updateResult = await connection.execute(sql, [email], { autoCommit: false });
-
-  if (updateResult.rowsAffected === 0) {
-      const error = new Error('Usuário não encontrado ou já estava banido. Status do banco não foi alterado.');
-      error.status = 400;
-      throw error;
-  }
-
-  console.log("EMAIL E BANIMENTO SUCESSO");
-  await connection.commit(); // Confirma as mudanças no banco de dados
-
-  return { success: true, message: 'Usuário banido e e-mail enviado com sucesso.' };
-
-  } catch (error) {
-    
-    if (connection) {
-        try {
-            await connection.rollback();
-        } catch (rbErr) {
-            console.error("Erro no rollback da transação:", rbErr);
-        }
-
-        console.error("Falha no processo de banimento do usuário:", error);
-        throw new Error("Erro interno ao banir usuário e enviar e-mail.");         
-    }
-
-  } finally {
-    if (connection) await connection.close();
-  }
-}
-
 
 class AdmModel {
   
@@ -413,6 +341,16 @@ class AdmModel {
       await connection.execute( ` DELETE FROM POST WHERE POS_ID = :id `, [post] )
 
       return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
+    })
+  }
+
+  async banirUsuario(id){
+    return DBHelper.withTransaction({module: 'AdmModel', methodName: 'banirUsuario'}, async (connection) => {
+      await connection.execute(
+        ` UPDATE USUARIO SET USU_STATUS = 'B' WHERE USU_ID = :id `, [id]
+      )
+
+      return { success: true, message: 'Usuário banido e e-mail enviado com sucesso.' }
     })
   }
   
