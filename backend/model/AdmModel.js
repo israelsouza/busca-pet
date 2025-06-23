@@ -5,115 +5,6 @@ import transporter from "../configs/mailConfig.js";
 import { myEmail } from "../configs/myEmail.js";
 import DBHelper from '../utils/dbHelper.js';
 
-
-export async function manterPublicacao(idDenuncia) {
-  let connection;
-  try {
-    connection = await getConnection();
-
-    console.log("entrei model, id denuncia -->", idDenuncia);
-    
-
-    const up = await connection.execute(
-      `UPDATE DENUNCIAS SET DEN_STATUS = 'MANTIDO' WHERE DEN_ID = :idDenuncia`,
-      { idDenuncia },
-      { autoCommit: false }
-    );
-
-    const result = await connection.execute(
-      `DELETE FROM DENUNCIAS WHERE DEN_ID = :idDenuncia`,
-      { idDenuncia },
-      { autoCommit: false }
-    );
-
-    await connection.commit();
-
-    if (result.rowsAffected && result.rowsAffected > 0 && up.rowsAffected && up.rowsAffected > 0) {
-
-      console.log("model denuncia mantida com sucesso")
-      
-      return { success: true, message: "Denúncia mantida e registro deletado com sucesso!" };
-    } else {
-      console.log("model denuncia mantida com FRACASSSSOOOOO_______")
-      return { success: false, message: "Denúncia não encontrada ou já está mantida." };
-    }
-
-  } catch (error) {
-    console.error("Erro ao manter denúncia:", error);
-    throw new Error("Erro interno ao manter denúncia.");
-  } finally {
-    if (connection) await connection.close();
-  }
-  
-}
-
-export async function deletarPublicacaoPorDenuncia(idDenuncia, idPost) {
-  let connection;
-  try {
-    connection = await getConnection();
-
-    console.log("atualizando o status para deletado");
-    
-    const op1 = await connection.execute(
-      `UPDATE DENUNCIAS SET DEN_STATUS = 'DELETADO' WHERE DEN_ID = :idDenuncia`,
-      { idDenuncia },
-      {  }
-    );
-
-    console.log(op1);
-    console.log("Atualizado. Status agora é deletado");
-
-
-    console.log("Iniciando a exclusão do registro DENNCIA");
-    
-    const op2 = await connection.execute(
-      `DELETE FROM DENUNCIAS WHERE DEN_ID = :idDenuncia `,
-      { idDenuncia },
-      {  }
-    );
-
-    console.log(op2);
-    console.log("DENUNCIA Excluida com sucesso. Ou seja, não há 'dependencia' apontando para o post");
-    console.log("Indo INCREMENTAR");
-    
-    const sql = `
-    UPDATE USUARIO
-    SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
-    WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :postIdParam)
-    `;
-    const bindParams = { postIdParam: idPost }; 
-    
-    const result = await connection.execute(sql, bindParams);
-    
-    if (result.rowsAffected === 0) {
-      console.warn(`Aviso: Contador de denúncias não incrementado. Publicação ID ${idPost} não encontrada ou não associada a um usuário existente.`);
-      return false;
-    }  
-    
-    console.log("Incremento com SUCESSO", result );
-
-    console.log("Iniciando a exclusão da publicação");
-    
-    const op3 = await connection.execute(
-      `DELETE FROM POST WHERE POS_ID = :idPost`,
-      { idPost },
-      {  }
-    );
-
-    console.log(op3);
-    console.log("Exclusão do POST realizada com sucesso!!!!!")  
-    await connection.commit();
-
-    return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
-  } catch (error) {
-    if (connection) await connection.rollback();
-    console.error("Erro ao deletar publicação por denúncia:", error);
-    throw new Error("Erro interno ao deletar publicação e atualizar denúncia.");
-  } finally {
-    if (connection) await connection.close();
-  }
-}
-
 export async function deletarDadosDaPublicacao(id) {
   let connection;
   try {
@@ -473,6 +364,55 @@ class AdmModel {
       )
 
       return rows;
+    })
+  }
+
+  async manterPost(idDenuncia){
+    return DBHelper.withTransaction({ module: 'AdmModel', methodName: 'manterPost'}, async (connection) => {
+      await connection.execute(
+        `UPDATE DENUNCIAS SET DEN_STATUS = 'MANTIDO' WHERE DEN_ID = :idDenuncia`, [idDenuncia]
+      )
+
+      console.log("status da denuncia alterado para mantido");
+
+      await connection.execute(
+        `DELETE FROM DENUNCIAS WHERE DEN_ID = :idDenuncia`, [idDenuncia]
+      )
+
+      console.log("denuncia deletada com sucesso");
+
+      return { success: true, message: "Denúncia mantida e registro deletado com sucesso!" };
+      
+    })
+  }
+
+  async deletarPost(post, denuncia) {
+    return DBHelper.withTransaction({ module: 'AdmModel', methodName: 'deletarPost'}, async (connection) => {
+      await connection.execute(
+        `UPDATE DENUNCIAS SET DEN_STATUS = 'DELETADO' WHERE DEN_ID = :denuncia`, [denuncia]
+      );
+
+      await connection.execute(
+        `DELETE FROM DENUNCIAS WHERE DEN_ID = :denuncia`, [denuncia]
+      );
+
+      const result = await connection.execute(
+        `
+          UPDATE USUARIO
+          SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
+          WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :post)
+        `, [post]
+      );
+
+      if (result.rowsAffected === 0) {
+        throw new Error(`Aviso: Contador de denúncias não incrementado. Publicação ID ${post} não encontrada ou não associada a um usuário existente.`);
+      }
+
+      console.log(" Denuncia atualizada. Contador incrementado com sucesso");
+      
+      await connection.execute( ` DELETE FROM POST WHERE POS_ID = :id `, [post] )
+
+      return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
     })
   }
   

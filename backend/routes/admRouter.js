@@ -1,6 +1,5 @@
 import express from "express";
 import AdmController, {
-  atualizarStatus,
   deletarUmaPublicacao,
   atualizarUnicoUsuario,
   banirUsuario} from "../controllers/admController.js";
@@ -11,9 +10,9 @@ router.get("/usuarios-e-denuncias", AdmController.pegarUsuariosEDenuncias);
 router.get("/denuncias", AdmController.pegarDenuncias);
 router.get("/denuncias/post/:id", AdmController.pegarPostDenunciado);
 
+router.put("/denuncias/:idDenuncia/:idPost/:status", AdmController.atualizarStatusDenuncia);
 
 
-router.put("/denuncias/:idDenuncia/:idPost/:status", atualizarStatus);
 router.put("/usuario/:email", banirUsuario);
 
 router.patch("/usuario/:id", atualizarUnicoUsuario);

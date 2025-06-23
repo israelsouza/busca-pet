@@ -61,8 +61,6 @@ function AdmDenuncias() {
       const data = await res.json()  
       console.log(data);
       alert(data.message)
-      
-
       handleBackToList()
     } catch (error) {
       console.error("Erro ao tentar alterar o status da publicação: ", error);
@@ -75,6 +73,7 @@ function AdmDenuncias() {
     setPostError(null);
     setIsLoadingPost(false);
     setEtapa('all');
+    fetchDenuncias()
   }, []);
 
   return (

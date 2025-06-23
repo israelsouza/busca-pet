@@ -1,7 +1,5 @@
 import log from '../utils/logger.js'
 import {  
-  manterPublicacao,
-  deletarPublicacaoPorDenuncia,
   deletarDadosDaPublicacao,
   realizarAtualizacaoUsuario,
   realizarBanimentoEnviarEmail} from '../model/AdmModel.js'
@@ -9,35 +7,6 @@ import {
 import AdmService from '../service/AdmService.js'
 import HttpError from '../utils/HttpError.js';
 
-
-export async function atualizarStatus(req, res) {
-  const { idPost, status, idDenuncia } = req.params
-  
-  console.log("idPost -> ",idPost)
-  console.log("status -> ",status)
-  console.log("idDenuncia -> ",idDenuncia)
-
-  if (!status || !idDenuncia || !idPost) {
-      return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
-  }
-  
-  try {
-
-    if (status == "MANTER") {    
-      const atualizaDenuncia = await manterPublicacao(idDenuncia)
-      return res.status(200).json({ message: "Denúncia marcada como mantida com sucesso!" });
-    } else if (status === "DELETAR") {
-      console.log("entrei em DELETAR");
-      const atualizaDenunciaEPublicacao = await deletarPublicacaoPorDenuncia(idDenuncia, idPost)
-      return res.status(200).json({ message: `Denúncia atendida e post excluido com sucesso! -->  ${atualizaDenunciaEPublicacao} `});
-    } else {
-      console.error("ERRO: status inválido")
-    }
-
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao atualizar o status da denuncia:  ", error: error.message });
-  }
-}
 
 export async function deletarUmaPublicacao(req, res) {
   const {idPost} = req.params;
@@ -143,6 +112,28 @@ class AdmController {
       });
     }
   }
+
+  async atualizarStatusDenuncia(req, res){
+    log('INFO', 'AdmController', 'atualizarStatusDenuncia', 'INICIO');
+    try {
+      const result = await AdmService.atualizarStatusDenuncia(req.params);
+      
+      log('INFO', 'AdmController', 'atualizarStatusDenuncia', 'FIM');
+      return res.status(200).json({ message: "Status da denúncia atualizado com sucesso!", data: result });
+
+    } catch (error) {
+      log('ERRO', 'AdmController', 'atualizarStatusDenuncia', 'ERRO ao atualizar status da denúncia');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({
+        message: "Erro ao atualizar o status da denúncia",
+        error: error.message
+      });
+    }
+  }
+
 
 }
 

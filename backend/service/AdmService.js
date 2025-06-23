@@ -39,7 +39,7 @@ class AdmService{
             const postTratado = await ValidationUtils.tratarImagensEData(post)         
             log('INFO', 'AdmService', 'pegarPostDenunciado', 'POST TRATADO COM SUCESSO')
             log('INFO', 'AdmService', 'pegarPostDenunciado', 'FIM')
-            
+
             return postTratado[0];
         } catch (error) {
             log('ERRO', 'AdmService', 'pegarPostDenunciado', 'ERRO ao listar a publicação denunciada')
@@ -47,6 +47,42 @@ class AdmService{
             throw error;
         }
         
+    }
+
+    async atualizarStatusDenuncia({ idPost, status, idDenuncia }){
+        log('INFO', 'AdmService', 'atualizarStatusDenuncia', 'INICIO')
+        if (!status || !idDenuncia || !idPost) {
+            throw new HttpError(400, 'Ação inválida ou não especificada.');
+        }
+
+        console.log("post ", idPost);
+        console.log("idDenuncia ", idDenuncia);
+        
+        status == "MANTER" ? await this.manterPost(idDenuncia) : await this.deletarPost(idPost, idDenuncia);
+    }
+
+    async manterPost(id){
+        try {
+            log('INFO', 'AdmService', 'manterPost', 'INICIO')
+            await AdmModel.manterPost(id);
+            log('INFO', 'AdmService', 'manterPost', 'FIM')
+        } catch (error) {
+            log('ERRO', 'AdmService', 'manterPost', 'ERRO ao manter o post denunciado')
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async deletarPost(idPost, idDenuncia){
+        try {
+            log('INFO', 'AdmService', 'deletarPost', 'INICIO')
+            await AdmModel.deletarPost(idPost, idDenuncia);
+            log('INFO', 'AdmService', 'deletarPost', 'FIM')
+        } catch (error) {
+            log('ERRO', 'AdmService', 'deletarPost', 'ERRO ao excluir o post denunciado')
+            console.log(error);
+            throw error;
+        }
     }
 }
 
