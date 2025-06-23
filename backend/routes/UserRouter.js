@@ -13,6 +13,7 @@ router.post("/validar-token", UserController.verificarToken)
 router.post("/registrar-nova-senha", UserController.submeterNovaSenha)
 
 router.get('/foto', autenticarToken, UserController.pegarFotoPerfil)
+router.get('/foto-com-nome', autenticarToken, UserController.pegarFotoPerfilComNome)
 router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
 
 router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)

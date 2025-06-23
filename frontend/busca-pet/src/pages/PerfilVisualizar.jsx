@@ -44,22 +44,19 @@ function VisualizePerfil({ userId }) {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/user/photo/${token}`,
+          `http://localhost:3000/api/usuario/foto-com-nome`,
           headerRequest
         );
         const data = await response.json();
         console.log("Dados recebidos:", data);
 
+        setUserInfo(data.foto);
         
-        setUserInfo(data);
-
-        if (data && typeof data.USU_FOTO === 'string' && data.USU_FOTO.length > 0) {
-        const photoBase64String = `data:image/jpeg;base64,${data.USU_FOTO}`;
-        setUserPhotoSrc(photoBase64String);
-      } else {
-        // Se não houver foto ou não for uma string válida, usa o ícone
-        setUserPhotoSrc(Icone);
-      }
+        if (data.foto.USU_FOTO !== null ) {
+          setUserPhotoSrc(data.foto.USU_FOTO);
+        } else {
+          setUserPhotoSrc(Icone);
+        }
        
       } catch (error) {
         console.error("PerfVisualizar: ", error);
@@ -77,19 +74,13 @@ function VisualizePerfil({ userId }) {
           <article className={Style.cabecalho}>
             <div className={Style.fotoPerfil}>
 
-              {userPhotoSrc ? ( // Se userPhotoSrc tem um valor (Base64 ou URL do Icone)
+              {userPhotoSrc && // Se userPhotoSrc tem um valor (Base64 ou URL do Icone)
         <img
           src={userPhotoSrc}
           alt="Foto do usuário"
           style={{ width: '100px', height: '100px', borderRadius: '50%' }} // Exemplo de estilo
         />
-      ) : (
-        <img
-          src={Icone}
-          alt="Ícone de foto de usuário (carregando ou padrão)"
-          style={{ width: '100px', height: '100px', borderRadius: '50%' }} // Exemplo de estilo
-        />
-      )}
+       }
                 
             </div>
 

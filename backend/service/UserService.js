@@ -287,6 +287,19 @@ class UserService {
         }
     }
 
+    async obterFotoPerfilUsuarioComNome(id){
+        log('INFO', 'UserService', 'obterFotoPerfilUsuario', 'INICIO')
+        if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
+
+        try {
+            return await UserModel.buscarfotoUsuarioComNome(id);
+        } catch (error) {
+            log('ERROR', 'UserService', 'obterFotoPerfilUsuario', "ERRO ao obter a foto");
+            console.log(error)            
+            throw error;
+        }
+    }
+
     async obterDadosUsuario(id){
         log('INFO', 'UserService', 'obterDadosUsuario', 'INICIO')
         if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
