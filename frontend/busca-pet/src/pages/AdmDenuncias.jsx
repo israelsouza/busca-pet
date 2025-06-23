@@ -45,11 +45,7 @@ function AdmDenuncias() {
       if (!res.ok) throw new Error("Erro ao buscar a publicação");
       const data = await res.json();
       setCurrentPost(data.publicacao)
-
-      if (data && typeof data.PET_FOTO === 'string' && data.PET_FOTO.length > 0) {
-        const photoBase64String = `data:image/jpeg;base64,${data.PET_FOTO}`;
-        setCurrPetFoto(photoBase64String);
-      } 
+      setCurrPetFoto(data.PET_FOTO)
 
     } catch (error) {
       console.error("Erro ao carregar a publicação:", error);

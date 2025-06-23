@@ -1,6 +1,5 @@
 import log from '../utils/logger.js'
 import {  
-  pegarPublicacao,
   manterPublicacao,
   deletarPublicacaoPorDenuncia,
   deletarDadosDaPublicacao,
@@ -8,17 +7,8 @@ import {
   realizarBanimentoEnviarEmail} from '../model/AdmModel.js'
 
 import AdmService from '../service/AdmService.js'
+import HttpError from '../utils/HttpError.js';
 
-
-export async function getPublicacaoDenunciada(req, res) {
-  const id = req.params.id
-  try {
-    const publicacao = await pegarPublicacao(id); 
-    return res.status(200).json({publicacao});
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao buscar aa publicacao ", error: error.message });
-  }
-}
 
 export async function atualizarStatus(req, res) {
   const { idPost, status, idDenuncia } = req.params
@@ -133,6 +123,27 @@ class AdmController {
       });
     }
   }
+
+  async pegarPostDenunciado(req, res){
+    log('INFO', 'AdmController', 'pegarPostDenunciado', 'INICIO');
+    try {
+      const publicacao = await AdmService.pegarPostDenunciado(req.params.id)
+      log('INFO', 'AdmController', 'pegarPostDenunciado', 'FIM');
+      return res.status(200).json({ publicacao });
+    } catch (error) {
+      log('ERRO', 'AdmController', 'pegarPostDenunciado', 'ERRO ao buscar post denunciado');
+      console.log(error);
+      if ( error instanceof HttpError  ) {        
+        log('ERRO', 'AdmController', 'pegarPostDenunciado', 'IF HTTP-ERROR');
+        return res.status(error.status).json({error: error.message})
+      }
+      return res.status(500).json({
+        message: "Erro ao buscar o post denunciado",
+        error: error.message
+      });
+    }
+  }
+
 }
 
 export default new AdmController();

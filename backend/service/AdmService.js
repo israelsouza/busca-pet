@@ -1,5 +1,6 @@
 import log from '../utils/logger.js'
 import AdmModel from '../model/AdmModel.js'
+import ValidationUtils from '../utils/ValidationUtils.js'
 
 class AdmService{
     async listarUsuariosEDenuncias(){
@@ -26,6 +27,26 @@ class AdmService{
             console.log(error);
             throw error;
         }
+    }
+
+    async pegarPostDenunciado(id){
+        log('INFO', 'AdmService', 'pegarPostDenunciado', 'INICIO')
+        if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID da publicação inválido");
+        try {
+            const post = await AdmModel.listaPostDenunciado(id)
+            if (post === null) throw new HttpError(400, "Publicação não encontrada");
+
+            const postTratado = await ValidationUtils.tratarImagensEData(post)         
+            log('INFO', 'AdmService', 'pegarPostDenunciado', 'POST TRATADO COM SUCESSO')
+            log('INFO', 'AdmService', 'pegarPostDenunciado', 'FIM')
+            
+            return postTratado[0];
+        } catch (error) {
+            log('ERRO', 'AdmService', 'pegarPostDenunciado', 'ERRO ao listar a publicação denunciada')
+            console.log(error);
+            throw error;
+        }
+        
     }
 }
 
