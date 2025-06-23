@@ -1,13 +1,11 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import HeaderForm from "../components/HeaderForm";
+import HeaderForm from "../../components/HeaderForm.jsx";
 import {
   validarTamanhoMinimo,
   validarCampoEmail,
-} from "../assets/utils/regex.js";
-
-import styles from "./styles/login.module.css";
+} from "../../assets/utils/regex.js";
+import styles from "../styles/login.module.css";
 
 function login() {
   const navigate = useNavigate();
@@ -53,13 +51,16 @@ function login() {
 
     async function validarDadosDeLogin(dados) {
       try {
-        const response = await fetch("http://localhost:3000/api/usuario/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dados),
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/usuario/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dados),
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -67,14 +68,12 @@ function login() {
         }
 
         const resultado = await response.json();
-        
+
         return resultado.token;
       } catch (error) {
         throw error;
       }
     }
-
-    
 
     validarDadosDeLogin(data)
       .then((resultado) => {
@@ -84,11 +83,10 @@ function login() {
         localStorage.setItem("authToken", resultado.token);
 
         if (resultado.role === "ADM") {
-          setTimeout(() => navigate("/adm"), 1000);  
+          setTimeout(() => navigate("/adm"), 1000);
         } else {
           setTimeout(() => navigate("/posts/all"), 1000);
         }
-
       })
       .catch((error) => {
         setErroEmail("");

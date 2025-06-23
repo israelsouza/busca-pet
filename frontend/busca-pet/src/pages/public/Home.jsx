@@ -1,18 +1,15 @@
 import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import Logo_Cachorro from "../assets/imgs/Logo_Cachorro.png";
-import ButtonHome from "../components/ButtonHome";
-import home from "../assets/imgs/home.png";
-import Ellipse_home from "../assets/imgs/Ellipse_home.png";
-import AvaliacaoHome from "../components/AvaliacaoHome.jsx";
-import ComoFunciona from "../components/instrucoesHome.jsx";
-import abraco_dogHome from "../assets/imgs/abraco_dogHome.png";
-import pessoa01 from "../assets/imgs/pessoa01.jpg";
-import pessoa02 from "../assets/imgs/pessoa02.jpeg";
-import pessoa03 from "../assets/imgs/pessoa03.jpg";
-
-import style from "./styles/home.module.css";
+import Logo_Cachorro from "../../assets/imgs/Logo_Cachorro.png";
+import ButtonHome from "../../components/ButtonHome.jsx";
+import home from "../../assets/imgs/home.png";
+import AvaliacaoHome from "../../components/AvaliacaoHome.jsx";
+import ComoFunciona from "../../components/instrucoesHome.jsx";
+import abraco_dogHome from "../../assets/imgs/abraco_dogHome.png";
+import pessoa01 from "../../assets/imgs/pessoa01.jpg";
+import pessoa02 from "../../assets/imgs/pessoa02.jpeg";
+import pessoa03 from "../../assets/imgs/pessoa03.jpg";
+import style from "../styles/home.module.css";
 
 function Home() {
   const navigate = useNavigate();

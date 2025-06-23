@@ -1,17 +1,15 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import {
   validarCampoEmail,
   validarTamanhoMinimo,
-} from "../assets/utils/regex.js";
-import HeaderForm from "../components/HeaderForm";
-import InputTxt from "../components/InputTxt";
-import ButtonForm from "../components/ButtonForm";
-import enviarDados from "../assets/utils/enviarDados";
-import useAuth from "../assets/utils/globalUser";
-
-import style from "./styles/recuperacao_senha.module.css";
+} from "../../assets/utils/regex.js";
+import HeaderForm from "../../components/HeaderForm.jsx";
+import InputTxt from "../../components/InputTxt.jsx";
+import ButtonForm from "../../components/ButtonForm.jsx";
+import enviarDados from "../../assets/utils/enviarDados.js";
+import useAuth from "../../assets/utils/globalUser.js";
+import style from "../styles/recuperacao_senha.module.css";
 
 const RecuperacaoSenha = () => {
   const navigate = useNavigate();
@@ -100,7 +98,10 @@ const RecuperacaoSenha = () => {
     }
 
     const password = { password: passRef.current.value, email: userEmail };
-    const result = await enviarDados(password, "api/usuario/registrar-nova-senha");
+    const result = await enviarDados(
+      password,
+      "api/usuario/registrar-nova-senha"
+    );
 
     if (result.success) {
       setEtapa("concluido");

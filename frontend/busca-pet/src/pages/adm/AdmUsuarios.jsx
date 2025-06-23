@@ -1,14 +1,15 @@
-import HeaderForm from "../components/HeaderForm";
-import Style from "../pages/styles/admUsuarios.module.css";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import fetchAPI from "../assets/utils/fetchAPI.js";
 import { IoMdRefresh } from "react-icons/io";
 import { LuUserRoundPen, LuUserRoundMinus } from "react-icons/lu";
+
+import Style from "../styles/admUsuarios.module.css";
+import HeaderForm from "../../components/HeaderForm.jsx";
+import fetchAPI from "../../assets/utils/fetchAPI.js";
 import {
   validarCampoEmail,
   validarCampoApenasLetras,
-} from "../assets/utils/regex.js";
+} from "../../assets/utils/regex.js";
 
 function AdmUsuarios() {
   const navigate = useNavigate();
@@ -228,19 +229,20 @@ function AdmUsuarios() {
                               <LuUserRoundMinus
                                 className={Style.icon_user}
                                 onClick={async () => {
-                                  const resultadoBanir = window.confirm(`Tem certeza que deseja banir o ${usuario.PES_NOME} ?`)
+                                  const resultadoBanir = window.confirm(
+                                    `Tem certeza que deseja banir o ${usuario.PES_NOME} ?`
+                                  );
 
-                                  if(!resultadoBanir) return;
-                                  
+                                  if (!resultadoBanir) return;
+
                                   const user = {
                                     id: usuario.ID,
-                                    email: usuario.USU_EMAIL
-                                  }
+                                    email: usuario.USU_EMAIL,
+                                  };
 
                                   await banirUsuario();
 
                                   async function banirUsuario() {
-                                    
                                     try {
                                       const req = await fetchAPI(
                                         `api/adm/usuario/banir`,
@@ -251,10 +253,10 @@ function AdmUsuarios() {
                                       );
 
                                       console.log(await req.json());
-                                      fetchUsers()
+                                      fetchUsers();
                                     } catch (error) {
                                       console.error(error);
-                                      alert(error)
+                                      alert(error);
                                     }
                                   }
                                 }}

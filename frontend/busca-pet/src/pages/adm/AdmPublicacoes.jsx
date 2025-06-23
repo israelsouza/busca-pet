@@ -1,12 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import { IoMdRefresh } from "react-icons/io";
 
-import HeaderForm from "../components/HeaderForm";
-import Buttonposts_ADM from "../components/button_posts_ADM";
-
-import fetchAPI from "../assets/utils/fetchAPI.js";
-
-import style from "./styles/ADMpostsAll.module.css";
+import style from "../styles/ADMpostsAll.module.css";
+import HeaderForm from "../../components/HeaderForm.jsx";
+import Buttonposts_ADM from "../../components/button_posts_ADM.jsx";
+import fetchAPI from "../../assets/utils/fetchAPI.js";
 
 function AdmPublicacoes() {
     const [postData, setPostData] = useState(null)

@@ -1,24 +1,24 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import HeaderForm from "../components/HeaderForm";
-import InputTxt from "../components/InputTxt";
-import Option from "../components/Option";
-import ButtonForm from "../components/ButtonForm";
+import HeaderForm from "../../components/HeaderForm.jsx";
+import InputTxt from "../../components/InputTxt.jsx";
+import Option from "../../components/Option.jsx";
+import ButtonForm from "../../components/ButtonForm.jsx";
 import {
   verificarTamanhoFixo,
   verificarTamanhoMaximo,
-} from "../assets/utils/formValidacoes";
+} from "../../assets/utils/formValidacoes.js";
 import {
   validarCampoEmail,
   validarTamanhoMinimo,
   validarCampoVazio,
   validarCampoApenasLetras,
   validarCampoApenasNumeros,
-} from "../assets/utils/regex.js";
-import enviarDados from "../assets/utils/enviarDados";
+} from "../../assets/utils/regex.js";
+import enviarDados from "../../assets/utils/enviarDados.js";
 
-import style from "./styles/cadastroUsuario.module.css";
+import style from "../styles/cadastroUsuario.module.css";
 
 function Cadastro() {
   const navigate = useNavigate();
@@ -256,8 +256,8 @@ function Cadastro() {
     };
 
     try {
-        const dadosAoBack = await enviarDados(dados, "api/usuario/cadastro");
-        setMensagem(dadosAoBack.message);
+      const dadosAoBack = await enviarDados(dados, "api/usuario/cadastro");
+      setMensagem(dadosAoBack.message);
       if (dadosAoBack.message) {
         setMensagem(dadosAoBack.message);
 
@@ -269,7 +269,7 @@ function Cadastro() {
       }
     } catch (error) {
       if (error.message) {
-        alert("ERRO")
+        alert("ERRO");
         setMensagem(error.message);
       } else {
         setMensagem("Erro ao realizar o cadastro. Tente novamente.");
