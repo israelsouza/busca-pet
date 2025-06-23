@@ -1,79 +1,6 @@
-import bcrypt from 'bcrypt'
-import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 import DBHelper from '../utils/dbHelper.js';
-
-export async function deletarDadosDaPublicacao(id) {
-  let connection;
-  try {
-    console.log("Iniciando conexão com o banco...");
-    connection = await getConnection();
-    console.log("Conexão estabelecida.");
-
-    // Buscar o PET_ID relacionado ao POST
-    console.log("Buscando PET_ID relacionado ao POST...");
-    const result = await connection.execute(
-      `SELECT PET_ID FROM POST WHERE POS_ID = :id`,
-      { id },
-      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
-    );
-    console.log("Busca de PET_ID finalizada.");
-
-    if (!result.rows.length) {
-      console.log("Publicação não encontrada.");
-      return { success: false, message: "Publicação não encontrada." };
-    }
-
-    const petId = result.rows[0].PET_ID;
-
-        const sql = `
-        UPDATE USUARIO
-        SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
-        WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :id)
-    `;
-
-    const resultado = await connection.execute(sql, [id]);
-
-    console.log(`Contador de denúncias incrementado para o usuário. Linhas afetadas: ${resultado.rowsAffected}`);
-
-    if (resultado.rowsAffected === 0) {
-        const error = new Error('Falha ao deletar a publicação. Pode não existir ou já foi deletada.');
-        error.status = 404;
-        throw error;
-    }
-
-    // Excluir o POST primeiro
-    console.log("Excluindo POST...");
-    await connection.execute(
-      `DELETE FROM POST WHERE POS_ID = :id`,
-      { id }
-    );
-    console.log("POST excluído.");
-
-    // Excluir o PET depois
-    console.log("Excluindo PET...");
-    await connection.execute(
-      `DELETE FROM PET WHERE PET_ID = :petId`,
-      { petId }
-    );
-    console.log("PET excluído.");
-
-    console.log("POST e PET deletados com sucesso");
-
-
-
-    
-    await connection.commit();
-
-    return { success: true, message: "Dados da publicação excluídos com sucesso!" };
-  } catch (error) {
-    if (connection) await connection.rollback();
-    console.error("Erro ao deletar dados da publicação:", error);
-    throw new Error("Erro interno ao deletar dados da publicação.");
-  } finally {
-    if (connection) await connection.close();
-  }
-}
+import log from '../utils/logger.js';
 
 class AdmModel {
   
@@ -194,8 +121,8 @@ class AdmModel {
     })
   }
 
-  async deletarPost(post, denuncia) {
-    return DBHelper.withTransaction({ module: 'AdmModel', methodName: 'deletarPost'}, async (connection) => {
+  async deletarPostPorDenuncia(post, denuncia) {
+    return DBHelper.withTransaction({ module: 'AdmModel', methodName: 'deletarPostPorDenuncia'}, async (connection) => {
       await connection.execute(
         `UPDATE DENUNCIAS SET DEN_STATUS = 'DELETADO' WHERE DEN_ID = :denuncia`, [denuncia]
       );
@@ -290,6 +217,58 @@ class AdmModel {
       return 1;
 
     })
+  }
+
+  async deletarDadosPostIndividual(id){
+    log('INFO', 'AdmModel', 'deletarDadosPostIndividual', 'INICIO');
+    return DBHelper.withTransaction({ module: 'AdmModel', methodName: "deletarDadosPostIndividual"}, async (connection) => {
+        const result = await connection.execute(
+          `SELECT PET_ID FROM POST WHERE POS_ID = :id`,
+          { id },
+          { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+        );
+        console.log("Busca de PET_ID finalizada.");
+
+        if (result.rows.length === 0) 
+          throw new Error("Publicação não encontrada");
+          
+        const petId = result.rows[0].PET_ID;
+
+        console.log("Verificando e excluindo denúncias associadas...");
+        await connection.execute(
+          `DELETE FROM DENUNCIAS WHERE POS_ID = :id`,
+          { id }
+        );
+        
+        console.log("Denúncias associadas (se existirem) foram excluídas.");
+
+        const sql = `
+            UPDATE USUARIO
+            SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
+            WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :id)
+        `;
+
+        const resultado = await connection.execute(sql, [id]);
+
+        if (resultado.rowsAffected === 0) 
+            throw  new Error('Falha ao deletar a publicação. Pode não existir ou já foi deletada.');
+
+        console.log("Excluindo POST...");
+        await connection.execute(
+          `DELETE FROM POST WHERE POS_ID = :id`,
+          { id }
+        );
+        console.log("POST excluído.");
+
+        console.log("Excluindo PET...");
+        await connection.execute(
+          `DELETE FROM PET WHERE PET_ID = :petId`,
+          { petId }
+        );
+        console.log("PET excluído.");
+
+        console.log("POST e PET deletados com sucesso");
+    })  
   }
 }
 

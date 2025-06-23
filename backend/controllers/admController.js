@@ -1,30 +1,27 @@
 import log from '../utils/logger.js'
-import {  
-  deletarDadosDaPublicacao,
-} from '../model/AdmModel.js'
-
 import AdmService from '../service/AdmService.js'
 import HttpError from '../utils/HttpError.js';
 
-
-export async function deletarUmaPublicacao(req, res) {
-  const {idPost} = req.params;
-
-  if(!idPost)
-      return res.status(400).json({ message: 'Ação inválida ou não especificada.' });
-
-  try {    
-    const result = await deletarDadosDaPublicacao(idPost);
-    console.log(result)
-    return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
-    
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao deletar a publicação:  ", error: error.message });
-  }
-  
-}
-
 class AdmController {
+  async deletarPublicacao(req, res){
+    log('INFO', 'AdmController', 'deletarPublicacao', 'INICIO');
+    try {
+      await AdmService.deletarDadosPost(req.params)
+      return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
+    } catch (error) {
+      log('ERRO', 'AdmController', 'deletarPublicacao', 'ERRO ao deletar publicação');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({
+        message: "Erro ao deletar a publicação",
+        error: error.message
+      });
+      
+    }
+  }
+
   async atualizarDadoUsuario(req, res){
     log('INFO', 'AdmController', 'atualizarDadoUsuario', 'INICIO');
     try {

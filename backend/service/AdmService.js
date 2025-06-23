@@ -5,6 +5,7 @@ import UserService from '../service/UserService.js'
 import ValidationUtils from '../utils/ValidationUtils.js'
 import { templateEmailBanir } from "../configs/myEmail.js";
 import transporter from "../configs/mailConfig.js";
+import HttpError from '../utils/HttpError.js';
 
 class AdmService{
     async listarUsuariosEDenuncias(){
@@ -80,7 +81,7 @@ class AdmService{
     async deletarPost(idPost, idDenuncia){
         try {
             log('INFO', 'AdmService', 'deletarPost', 'INICIO')
-            await AdmModel.deletarPost(idPost, idDenuncia);
+            await AdmModel.deletarPostPorDenuncia(idPost, idDenuncia);
             log('INFO', 'AdmService', 'deletarPost', 'FIM')
         } catch (error) {
             log('ERRO', 'AdmService', 'deletarPost', 'ERRO ao excluir o post denunciado')
@@ -112,13 +113,6 @@ class AdmService{
         }
     }
 
-    /**
-     * @param {object} dadosUsuario - Os dados do usuário a serem atualizados.
-     * @param {string} [dadosUsuario.nome] - O novo nome do usuário. Validações interessantes incluem verificar se não é uma string vazia e se possui um comprimento mínimo/máximo.
-     * @param {string} [dadosUsuario.email] - O novo email do usuário. É importante validar o formato do email e, principalmente, verificar se o novo email já não está cadastrado por outro usuário para evitar duplicidade.
-     * @param {string} [dadosUsuario.senha] - A nova senha do usuário. A validação deve focar na força da senha (comprimento mínimo, caracteres especiais, números, etc.). A senha nunca deve ser salva como texto plano, e sim como um hash.
-     * @throws {Error} Lança um erro se o usuário com o ID fornecido não for encontrado ou se os dados fornecidos forem inválidos.
-     */
     async atualizarDadoUsuario({id}, {nome, email, senha}){
         log('INFO', 'AdmService', 'atualizarDadoUsuario', 'INICIO')
         try {
@@ -158,6 +152,17 @@ class AdmService{
             log('ERRO', 'AdmService', 'atualizarDadoUsuario', 'ERRO ao atualizar os dados do usuário')
             console.log(error);
             throw error;
+            
+        }
+    }
+
+    async deletarDadosPost({id}){
+        log('INFO', 'AdmService', 'deletarDadosPost', 'INICIO');
+        if (!ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do POST inválido");
+
+        try {
+            await AdmModel.deletarDadosPostIndividual(id)
+        } catch (error) {
             
         }
     }

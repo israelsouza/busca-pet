@@ -13,7 +13,7 @@ function AdmPublicacoes() {
 
     const fetchPublicacoes = useCallback ( async () => {
         try {
-            const result = await fetchAPI("api/posts/all");
+            const result = await fetchAPI("api/posts/todos");
             const data = await result.json();
             console.log(data);
             setPostData(data.posts)            

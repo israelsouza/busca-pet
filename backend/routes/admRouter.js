@@ -1,7 +1,5 @@
 import express from "express";
-import AdmController, {
-  deletarUmaPublicacao,
-  } from "../controllers/admController.js";
+import AdmController from "../controllers/admController.js";
 
 const router = express.Router();
 
@@ -14,6 +12,6 @@ router.put("/usuario/banir", AdmController.banirUsuario);
 
 router.patch("/usuario/:id", AdmController.atualizarDadoUsuario);
 
-router.delete("/post/:idPost", deletarUmaPublicacao);
+router.delete("/post/:id", AdmController.deletarPublicacao);
 
 export default router;
