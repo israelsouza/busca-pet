@@ -3,7 +3,7 @@ import HttpError from '../utils/HttpError.js';
 import ValidationUtils from '../utils/ValidationUtils.js';
 import { sendMessageToUser, notifyAdmins } from "../utils/websocket.js";
 import NotificationModel from '../model/NotificationModel.js'
-import PostModel from '../model/PostModel.js';
+import PostModel from '../model/postModel.js';
 import UserModel from '../model/UserModel.js'; 
 
 class NotificationService{

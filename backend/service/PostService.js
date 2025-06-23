@@ -1,5 +1,5 @@
 import ValidationUtils from '../utils/ValidationUtils.js'
-import PostModel from '../model/PostModel.js'
+import PostModel from '../model/postModel.js'
 import log from '../utils/logger.js'
 import HttpError from '../utils/HttpError.js';
 
