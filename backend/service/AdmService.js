@@ -14,6 +14,19 @@ class AdmService{
             throw error;
         }
     }
+
+    async listarDenuncias(){
+        log('INFO', 'AdmService', 'listarDenuncias', 'INICIO')
+        try {
+            const denuncias = await AdmModel.listarDenuncias()
+            log('INFO', 'AdmService', 'listarDenuncias', 'FIM')
+            return denuncias;
+        } catch (error) {
+            log('ERRO', 'AdmService', 'listarDenuncias', 'ERRO ao listar as denuncias')
+            console.log(error);
+            throw error;
+        }
+    }
 }
 
 export default new AdmService();

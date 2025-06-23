@@ -1,6 +1,5 @@
 import express from "express";
 import AdmController, {
-  getDenuncias,
   getPublicacaoDenunciada,
   atualizarStatus,
   deletarUmaPublicacao,
@@ -10,9 +9,9 @@ import AdmController, {
 const router = express.Router();
 
 router.get("/usuarios-e-denuncias", AdmController.pegarUsuariosEDenuncias);
+router.get("/denuncias", AdmController.pegarDenuncias);
 
 
-router.get("/denuncias", getDenuncias);
 router.get("/denuncias/post/:id", getPublicacaoDenunciada);
 
 router.put("/denuncias/:idDenuncia/:idPost/:status", atualizarStatus);

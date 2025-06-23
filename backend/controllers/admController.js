@@ -1,6 +1,5 @@
 import log from '../utils/logger.js'
 import {  
-  listarDenuncias,
   pegarPublicacao,
   manterPublicacao,
   deletarPublicacaoPorDenuncia,
@@ -10,14 +9,6 @@ import {
 
 import AdmService from '../service/AdmService.js'
 
-export async function getDenuncias(req, res) {
-  try {
-    const denuncias = await listarDenuncias();
-    return res.status(200).json({denuncias});
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao buscar as denuncias", error: error.message });
-  }
-}
 
 export async function getPublicacaoDenunciada(req, res) {
   const id = req.params.id
@@ -123,6 +114,22 @@ class AdmController {
       console.log(error);      
       return res.status(500).json({ 
         message: "Erro ao buscar usuários", error: error.message
+      });
+    }
+  }
+
+  async pegarDenuncias(req, res){
+    log('INFO', 'AdmController', 'pegarDenuncias', 'INICIO');
+    try {
+      const denuncias = await AdmService.listarDenuncias();
+      log('INFO', 'AdmController', 'pegarDenuncias', 'FIM');
+      return res.status(200).json({ denuncias });
+    } catch (error) {
+      log('ERRO', 'AdmController', 'pegarDenuncias', 'ERRO ao buscar denuncias');
+      console.log(error);
+      return res.status(500).json({
+      message: "Erro ao buscar as denuncias",
+      error: error.message
       });
     }
   }

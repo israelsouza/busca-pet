@@ -6,90 +6,6 @@ import transporter from "../configs/mailConfig.js";
 import { myEmail } from "../configs/myEmail.js";
 import DBHelper from '../utils/dbHelper.js';
 
-export async function listarUsuariosEDenuncias() {
-  let connection;
-  try {
-    connection = await getConnection();
-    const result = await connection.execute(
-      `
-      SELECT
-          U.USU_ID AS id,
-          P.PES_NOME AS PES_NOME,
-          U.USU_STATUS AS USU_STATUS,
-          U.USU_EMAIL AS USU_EMAIL,
-          U.USU_REPORTS_COUNT AS denuncias_recebidas_count
-      FROM
-          USUARIO U
-      INNER JOIN
-          PESSOA P ON U.PES_ID = P.PES_ID 
-      ORDER BY
-          P.PES_NOME
-            `,
-      [],
-      {
-        outFormat: OracleDB.OUT_FORMAT_OBJECT,
-      }
-    );
-
-    return result.rows;
-  } catch (error) {
-    console.error("Erro no modelo ao buscar usuários com denúncias:", error);
-    throw error;
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
-}
-
-export async function listarDenuncias() {
-  let connection
-  try {
-    connection = await getConnection()
-    
-    const sql = `
-      SELECT
-          d.DEN_ID AS DEN_ID,
-          d.DEN_TIPO AS DEN_TIPO,         
-          d.DEN_DESCRICAO AS DEN_DESCRICAO, 
-          d.POS_ID AS POS_ID,            
-          p_denunciado.PES_NOME AS NOME_DENUNCIADO,
-          p_denunciante.PES_NOME AS NOME_DENUNCIANTE,
-
-          d.DEN_DATA AS DEN_DATA,
-          d.USU_ID AS ID_DENUNCIANTE_USUARIO,
-          p.USU_ID AS ID_USUARIO_DENUNCIADO
-      FROM
-          DENUNCIAS d
-      JOIN
-          POST p ON d.POS_ID = p.POS_ID
-      JOIN
-          USUARIO u_denunciado ON p.USU_ID = u_denunciado.USU_ID
-      JOIN
-          PESSOA p_denunciado ON u_denunciado.PES_ID = p_denunciado.PES_ID
-      JOIN
-          USUARIO u_denunciante ON d.USU_ID = u_denunciante.USU_ID 
-      JOIN
-          PESSOA p_denunciante ON u_denunciante.PES_ID = p_denunciante.PES_ID
-      WHERE
-          d.DEN_STATUS = 'aberto'
-      ORDER BY
-          d.DEN_ID DESC
-        `;
-
-const result = await connection.execute(sql, [], { outFormat: OracleDB.OUT_FORMAT_OBJECT });
-
-    return result.rows;
-    
-  } catch (error) {
-    console.error("Erro no modelo ao buscar as denúncias:", error);
-    throw error;
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
-}
 
 export async function pegarPublicacao(idPost) {
   let connection;
@@ -558,6 +474,42 @@ class AdmModel {
       )
 
       return result.rows
+    })
+  }
+
+  async listarDenuncias(){
+    return DBHelper.withConnection({ module: "AdmModel", methodName: "listarDenuncias" }, async (connection) => {
+      const denuncias = await connection.execute(`
+        SELECT
+            d.DEN_ID AS DEN_ID,
+            d.DEN_TIPO AS DEN_TIPO,         
+            d.DEN_DESCRICAO AS DEN_DESCRICAO, 
+            d.POS_ID AS POS_ID,            
+            p_denunciado.PES_NOME AS NOME_DENUNCIADO,
+            p_denunciante.PES_NOME AS NOME_DENUNCIANTE,
+
+            d.DEN_DATA AS DEN_DATA,
+            d.USU_ID AS ID_DENUNCIANTE_USUARIO,
+            p.USU_ID AS ID_USUARIO_DENUNCIADO
+        FROM
+            DENUNCIAS d
+        JOIN
+            POST p ON d.POS_ID = p.POS_ID
+        JOIN
+            USUARIO u_denunciado ON p.USU_ID = u_denunciado.USU_ID
+        JOIN
+            PESSOA p_denunciado ON u_denunciado.PES_ID = p_denunciado.PES_ID
+        JOIN
+            USUARIO u_denunciante ON d.USU_ID = u_denunciante.USU_ID 
+        JOIN
+            PESSOA p_denunciante ON u_denunciante.PES_ID = p_denunciante.PES_ID
+        WHERE
+            d.DEN_STATUS = 'aberto'
+        ORDER BY
+            d.DEN_ID DESC  
+      `,[],{  outFormat: OracleDB.OUT_FORMAT_OBJECT  })
+
+      return denuncias.rows;
     })
   }
   

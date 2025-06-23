@@ -19,7 +19,6 @@ class UserController {
         log('INFO', 'UserController', 'logarUsuario', 'INICIO')
         try {            
             const token = await UserService.validarLogin(req.body);
-            console.log("TOKEN NA CONTROLLER ", token);
             log('INFO', 'UserController', 'cadastrarUsuario', 'FIM bem sucedido')
             return res.status(200).json({message: "Usuario cadastrado com sucesso", token })
         } catch (error) {
