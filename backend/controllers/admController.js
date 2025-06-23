@@ -1,7 +1,6 @@
 import log from '../utils/logger.js'
 import {  
   deletarDadosDaPublicacao,
-  realizarAtualizacaoUsuario,
 } from '../model/AdmModel.js'
 
 import AdmService from '../service/AdmService.js'
@@ -25,25 +24,29 @@ export async function deletarUmaPublicacao(req, res) {
   
 }
 
-export async function atualizarUnicoUsuario(req, res) {
-  console.log("ENTREI NO BACKEND -> atualizarUnicoUsuario")
-  const userId = req.params.id;
-  const { nome, email, senha } = req.body;
-
-  try {
-        
-    const operacao = realizarAtualizacaoUsuario(userId, nome, email, senha)
-
-    return res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
-
-  } catch (error) {
-    console.error("Erro ao atualizar usuário:", error);
-    res.status(500).json({ message: 'Erro interno do servidor.', error: error.message });
-  }
-    
-}
-
 class AdmController {
+  async atualizarDadoUsuario(req, res){
+    log('INFO', 'AdmController', 'atualizarDadoUsuario', 'INICIO');
+    try {
+      await AdmService.atualizarDadoUsuario(req.params, req.body);
+
+      log('INFO', 'AdmController', 'atualizarDadoUsuario', 'FIM');
+      return res.status(200).json({ 
+        message: "Usuário atualizado com sucesso!"
+      });
+    } catch (error) {
+      log('ERRO', 'AdmController', 'atualizarDadoUsuario', 'ERRO ao atualizar dados do usuário');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({
+        message: "Erro ao atualizar os dados do usuário",
+        error: error.message
+      });
+    }
+  }
+
   async pegarUsuariosEDenuncias(req, res){
     log('INFO', 'AdmController', 'pegarUsuariosEDenuncias', 'INICIO')
     try {
