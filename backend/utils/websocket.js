@@ -1,69 +1,74 @@
 import { WebSocketServer } from "ws";
 import authenticateWebSocket from './authenticateWebSocket.js'
+import log from "./logger.js";
 
-const clients = new Map();
-let wss;
-
-const setupWebSocket = (server) => {
-  wss = new WebSocketServer({server});
-
-  wss.on("connection", async (ws, request) => {
-    const userId = await authenticateWebSocket(request);
-    if (userId) {
-      console.log(`Cliente conectado com ID: ${userId}`);
-      clients.set(userId, ws);
-
-      ws.on("message", (message) => {
-        console.log(
-          `Mensagem recebida do usuário ${userId}: ${message.toString()}`
-        );
-      });
-
-      ws.on("close", () => {
-        console.log(`Cliente desconectado com ID: ${userId}`);
-        clients.delete(userId);
-      });
-
-      ws.on("error", (error) => {
-        console.error(`Erro no WebSocket do usuário ${userId}:`, error);
-        clients.delete(userId);
-      });
-
-      ws.send("Conexão WebSocket estabelecida!");
-    } else {
-      console.log("Conexão WebSocket sem ID de usuário.");
-      ws.close();
-    }
-  });
-
-  console.log("Servidor WebSocket configurado.");
-};
-
-const registerClient = (userId, ws) => {
-  clients.set(userId, ws);
-  console.log(`Cliente registrado com ID: ${userId}`);
-};
-
-const sendMessageToUser = (userId, message) => {
-  console.log("MESSAGE DENTRO DA FUNçÂO ---> ",message);
-  
-  const client = clients.get(userId);
-  if (client && client.readyState === WebSocket.OPEN) {
-    client.send(JSON.stringify(message));
-    return true;
+class SocketService {
+  constructor(){
+    this.wss = null;
+    this.clients = new Map();
   }
-  return false;
-};
 
-const notifyAdmins = (mensagem) => {
-  for (const [userId, ws] of clients.entries()) {
-    if (ws.readyState === WebSocket.OPEN) {
-      // Aqui você pode adicionar lógica para verificar se o userId é admin (consultar no banco, cache, etc)
-      console.log("WS: ", mensagem);
-      
-      ws.send(JSON.stringify({ tipo: "nova_denuncia", conteudo: mensagem }));
+  inicializandoWebSocket(server){
+    this.wss = new WebSocketServer({server});
+
+    this.wss.on("connection", this._onConnection.bind(this));
+
+    log('WS', 'WebSocket', 'inicializandoWebSocket', `Servidor WebSocket configurado.`);
+  }
+
+  async _onConnection(ws, request) {
+      const userPayload = await authenticateWebSocket(request);
+      if (userPayload && userPayload.id) {
+        log('WS', 'WebSocket', 'inicializandoWebSocket', `Cliente com ID: ${userPayload.id} ONLINE`)
+        this.clients.set(userPayload.id, {
+          ws: ws,
+          role: userPayload.role
+        });
+
+        ws.on("message", (message) => {
+          log('WS', 'WebSocket', 'inicializandoWebSocket', `Mensagem recebida do usuário ${userPayload.id}: ${message.toString()}`);
+        });
+
+        ws.on("close", () => {
+          log('WS', 'WebSocket', 'inicializandoWebSocket', `Cliente com ID: ${userPayload.id} OFFLINE`)
+          this.clients.delete(userPayload.id);
+        });
+
+        ws.on("error", (error) => {
+          log('WS', 'WebSocket', 'inicializandoWebSocket', `Erro no WebSocket do usuário ${userPayload.id}: ${error.message}`);
+          this.clients.delete(userPayload.id);
+        });
+
+        ws.send("Conexão WebSocket estabelecida!");
+        log('WS', 'WebSocket', 'inicializandoWebSocket', `Conexão WebSocket estabelecida.`);
+      } else {
+        log('WS', 'WebSocket', 'inicializandoWebSocket', `Conexão WebSocket falhou: ID de usuário inválido.`);
+        ws.send("Conexão WebSocket falhou: ID de usuário inválido.");
+        ws.close();
+      }
+  }
+
+  notifyAdmins(mensagem){
+    const mensagemString = JSON.stringify({ tipo: "nova_denuncia", conteudo: mensagem });
+    for (const clientData of this.clients.values()) {
+      if (clientData.role === 'admin' && clientData.ws.readyState === WebSocket.OPEN) {
+        log('WS', 'WebSocketManager', 'notifyAdmins', `Notificando ADM - Mensagem: ${mensagemString}`);
+        clientData.ws.send(mensagemString);
+      }
     }
   }
+
+  sendMessageToUser (userId, message)  {
+    log('WS', 'WebSocket', 'sendMessageToUser', `Notificar o usuário referente a um pet --  ${message}`);
+    
+    const clientData = this.clients.get(userId);
+    if (clientData && clientData.ws.readyState === WebSocket.OPEN) {
+      clientData.ws.send(JSON.stringify(message));
+      return true;
+    }
+    return false;
+  }
+
 }
 
-export { setupWebSocket, registerClient, sendMessageToUser, notifyAdmins};
+export default new SocketService();

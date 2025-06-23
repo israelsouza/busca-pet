@@ -10,9 +10,7 @@ export async function getUserIdByEmail(email) {
       `SELECT USU_ID FROM USUARIO WHERE USU_EMAIL = :email`,
       { email }
     );
-    console.log("MODEL-GET-ID ", result.rows[0][0]);
     
-    // Retorna o ID do usuário, se encontrado
     return result.rows.length > 0 ? result.rows[0][0] : null;
   } catch (error) {
     console.error("Erro ao buscar usuarioId pelo email:", error);

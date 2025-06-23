@@ -1,5 +1,4 @@
-import {getUserIdByEmail} from "../model/getUserId.js";
-import extrairEmailDoToken from "./extrairEmailDoToken.js";
+import extrairIdDoToken from "./extrairEmailDoToken.js";
 
 const authenticateWebSocket = async (request) => {
   try {
@@ -11,10 +10,7 @@ const authenticateWebSocket = async (request) => {
       return null;
     }
 
-    const email = await extrairEmailDoToken(token);
-    const id = await getUserIdByEmail(email);
-
-    return id;
+    return await extrairIdDoToken(token);
   } catch (e) {
     console.error(e);
     return null;

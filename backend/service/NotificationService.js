@@ -1,7 +1,7 @@
 import log from '../utils/logger.js'
 import HttpError from '../utils/HttpError.js';
 import ValidationUtils from '../utils/ValidationUtils.js';
-import { sendMessageToUser, notifyAdmins } from "../utils/websocket.js";
+import SocketService from "../utils/websocket.js";
 import NotificationModel from '../model/NotificationModel.js'
 import PostModel from '../model/postModel.js';
 import UserModel from '../model/UserModel.js'; 
@@ -62,7 +62,7 @@ class NotificationService{
 
             await NotificationModel.salvarNotificacao(dadosNotificacao);
 
-            const notificacaoEnviada = sendMessageToUser(idDestinatario, msgNotificacao);
+            const notificacaoEnviada = SocketService.sendMessageToUser(idDestinatario, msgNotificacao);
 
             log('INFO', 'NotificationService', 'criarEnviarMensagem', 'FIM com sucesso');
 
@@ -101,8 +101,8 @@ class NotificationService{
             const result = await NotificationModel.salvarUmaDenuncia(idUsuario, idPost, descricao, tipo, dataAtual)
 
             if (result.success) {
-                notifyAdmins({ 
-                    type: 'novaDenuncia', // Tipo de notificação
+                SocketService.notifyAdmins({ 
+                    type: 'nova_denuncia',
                     message: `Nova denúncia de ${tipo} no Post ID: ${idPost}. Descrição: ${descricao}.`,
                     denunciaData: { tipo, descricao, idPost, idUsuario }
                 });

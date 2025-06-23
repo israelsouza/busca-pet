@@ -1,15 +1,17 @@
 import jwt from 'jsonwebtoken'
 
-async function extrairEmailDoToken(token) {
+async function extrairIdDoToken(token) {
   try {
-    const decoded = jwt.decode(token); // Decodifica o token
-    console.log("Aquuuiiii: ", decoded.email);
-    
-    return decoded.email; // Retorna o e-mail do payload
+    const decoded = {
+      id: jwt.decode(token).id,
+      role: jwt.decode(token).role
+    }
+
+    return decoded
   } catch (error) {
     console.error("Erro ao decodificar o token: ", error);
     return null;
   }
 }
 
-export default extrairEmailDoToken;
+export default extrairIdDoToken;

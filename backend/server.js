@@ -1,9 +1,9 @@
 import app from "./app.js";
 import http from "http";
-import { setupWebSocket } from "./utils/websocket.js";
+import SocketService from "./utils/websocket.js";
 
 const server = http.createServer(app);
-setupWebSocket(server);
+SocketService.inicializandoWebSocket(server);
 
 const PORT = 3000;
 server.listen(PORT, () => {
