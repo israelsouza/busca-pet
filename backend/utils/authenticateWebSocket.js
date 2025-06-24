@@ -1,4 +1,4 @@
-import extrairIdDoToken from "./extrairEmailDoToken.js";
+import TokenService from "../service/TokenService.js";
 
 const authenticateWebSocket = async (request) => {
   try {
@@ -10,7 +10,9 @@ const authenticateWebSocket = async (request) => {
       return null;
     }
 
-    return await extrairIdDoToken(token);
+    const decoded = await TokenService.extrairIdDoToken(token);
+
+    return decoded;
   } catch (e) {
     console.error(e);
     return null;

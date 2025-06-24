@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    jwt.verify(token, SECRET_KEY); // verificar o token
+    jwt.verify(token, SECRET_KEY);
     return res.status(200).json({ message: "Token válido" });
   } catch (error) {
     if (error.name === "TokenExpiredError") {

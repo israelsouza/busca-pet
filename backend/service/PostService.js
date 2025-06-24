@@ -7,7 +7,6 @@ class PostService {
     async cadastrarPet(data, img, {id}){
         log('INFO', 'PostService', 'cadastrarPet', 'INICIO');
         await this.validacaoDadosPet(data);
-        // verificar se img ultrapassa os 10MB
         await this.salvarPet(data, img, id)
         log('INFO', 'PostService', 'cadastrarPet', 'FIM');
     }
@@ -19,7 +18,6 @@ class PostService {
             log('INFO', 'PostService', 'validacaoPet', 'Apenas valida nome e RGA');
             ValidationUtils.validarCampoObrigatorio(data.nome, 'nome do pet')
             ValidationUtils.validarTamanho(data.nome, 'nome-pet')
-            // validação RGA
         }
         
         ValidationUtils.validarCampoObrigatorio(data.tipoPet, 'tipo-pet')

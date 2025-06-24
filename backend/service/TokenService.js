@@ -4,7 +4,7 @@ import crypto from "crypto";
 import TokenModel from '../model/TokenModel.js'
 import UserModel from '../model/UserModel.js'
 import { SECRET_KEY } from "../configs/authConfig.js";
-import { myEmail } from "../configs/myEmail.js";
+import {templateEmailRecuperarSenha} from "../configs/myEmail.js";
 import transporter from "../configs/mailConfig.js";
 
 class TokenService {
@@ -51,21 +51,9 @@ class TokenService {
 
     async enviarEmailUsuario(email, token){
         log('INFO', 'TOKENSERVICE', 'enviarEmailUsuario', 'INICIO')
-        const emailTeamplate = {
-            from: myEmail,
-            to: email,
-            subject: "Código de Validação para Redefinição de Senha",
-            html: `
-            <p>Prezado(a) usuário(a),</p>
-            <p>Você solicitou a redefinição da sua senha.</p>
-            <p>Seu código de validação é: <strong>${token}</strong></p>
-            <p>Este código expirará em 1 hora.</p>
-            <p>Por favor, insira este código no site para prosseguir com a redefinição.</p>
-            <p>Se você não solicitou esta redefinição, pode ignorar este email.</p>
-            `,
-        }
         
         try {
+            const emailTeamplate = templateEmailRecuperarSenha(email, token);
             await transporter.sendMail(emailTeamplate);
             log('INFO', 'TOKENSERVICE', 'enviarEmailUsuario', 'EMAIL ENVIADO')
             log('INFO', 'TOKENSERVICE', 'enviarEmailUsuario', 'FIM')
@@ -101,6 +89,20 @@ class TokenService {
             
         }
         
+    }
+
+    async extrairIdDoToken(token) {
+        try {
+            const decoded = {
+                id: jwt.decode(token).id,
+                role: jwt.decode(token).role
+            }
+
+            return decoded
+        } catch (error) {
+            console.error("Erro ao decodificar o token: ", error);
+            return null;
+        }
     }
 
 }

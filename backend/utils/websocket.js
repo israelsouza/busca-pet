@@ -51,7 +51,7 @@ class SocketService {
   notifyAdmins(mensagem){
     const mensagemString = JSON.stringify({ tipo: "nova_denuncia", conteudo: mensagem });
     for (const clientData of this.clients.values()) {
-      if (clientData.role === 'admin' && clientData.ws.readyState === WebSocket.OPEN) {
+      if (clientData.role === 'ADM' && clientData.ws.readyState === WebSocket.OPEN) {
         log('WS', 'WebSocketManager', 'notifyAdmins', `Notificando ADM - Mensagem: ${mensagemString}`);
         clientData.ws.send(mensagemString);
       }

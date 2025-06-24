@@ -405,7 +405,8 @@ class UserModel {
              ENDERECO.END_RUA,
              ENDERECO.END_BAIRRO,
              CIDADE.CID_DESCRICAO,
-             ESTADO.EST_SIGLA
+             ESTADO.EST_SIGLA,
+             USUARIO.USU_STATUS
             FROM
              PESSOA,
              USUARIO,

@@ -3,7 +3,6 @@ import log from './logger.js'
 
 class DBHelper {
     /**     
-     *  TO READ DATA |
      * Executa uma operação de banco de dados garantindo que a conexão seja
      * aberta e fechada corretamente, e que os logs sejam registrados.
      * @param {object} logInfo - Informações de contexto para o log. Ex: { module: 'AdmModel', methodName: 'listar' }
@@ -38,7 +37,6 @@ class DBHelper {
     }
 
     /**     
-     *  TO MODIFY DATA |
      * Executa uma série de operações de banco de dados como uma transação,
      * garantindo commit em caso de sucesso ou rollback em caso de erro.
      * @param {object} logInfo - Informações de contexto para o log. Ex: { module: 'AdmModel', methodName: 'deletar' }
