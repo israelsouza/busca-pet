@@ -18,7 +18,7 @@ function AdmDenuncias() {
 
   const fetchDenuncias = useCallback(async () => {
     try {
-      const res = await fetchAPI("api/adm/denuncias");
+      const res = await fetchAPI("api/notificacao/denuncias");
       if (!res.ok) throw new Error("Erro ao buscar usuários");
       const data = await res.json();
       console.log(data);
@@ -38,7 +38,7 @@ function AdmDenuncias() {
     setCurrentPost(null);
     console.log("ID recebido em fetchPublicacao antes de chamar fetchAPI:", id);
     try {
-      const res = await fetchAPI(`api/adm/denuncias/post/${id}`);
+      const res = await fetchAPI(`api/notificacao/denuncias/post/${id}`);
       if (!res.ok) throw new Error("Erro ao buscar a publicação");
       const data = await res.json();
       setCurrentPost(data.publicacao);
@@ -54,7 +54,7 @@ function AdmDenuncias() {
   async function manterPublicacao(idPost, status, idDenuncia) {
     try {
       const res = await fetchAPI(
-        `api/adm/denuncias/${idDenuncia}/${idPost}/${status}`,
+        `api/notificacao/denuncias/${idDenuncia}/${idPost}/${status}`,
         "PUT",
         null,
         true,

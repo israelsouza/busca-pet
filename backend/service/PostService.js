@@ -81,6 +81,17 @@ class PostService {
         log('INFO', 'PostService', 'buscarPostsPorProximidade', 'FIM');
         return postsFormatados;
     }
+
+    async deletarDadosPost({id}){
+        log('INFO', 'PostService', 'deletarDadosPost', 'INICIO');
+        if (!ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do POST inválido");
+
+        try {
+            await PostModel.deletarDadosPostIndividual(id)
+        } catch (error) {
+            
+        }
+    }
 }
 
 export default new PostService();

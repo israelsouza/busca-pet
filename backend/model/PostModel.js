@@ -2,6 +2,7 @@ import getConnection from "./connectionOracle.js";
 import OracleDB from "oracledb";
 import log from '../utils/logger.js'
 import fs from "fs";
+import DBHelper from '../utils/dbHelper.js';
 import ValidationUtils from '../utils/ValidationUtils.js'
 
 class PostModel {
@@ -434,6 +435,58 @@ class PostModel {
             }
         }
     }
+
+    async deletarDadosPostIndividual(id){
+      log('INFO', 'PostModel', 'deletarDadosPostIndividual', 'INICIO');
+      return DBHelper.withTransaction({ module: 'PostModel', methodName: "deletarDadosPostIndividual"}, async (connection) => {
+        const result = await connection.execute(
+          `SELECT PET_ID FROM POST WHERE POS_ID = :id`,
+          { id },
+          { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+        );
+        console.log("Busca de PET_ID finalizada.");
+
+        if (result.rows.length === 0) 
+          throw new Error("Publicação não encontrada");
+          
+        const petId = result.rows[0].PET_ID;
+
+        console.log("Verificando e excluindo denúncias associadas...");
+        await connection.execute(
+          `DELETE FROM DENUNCIAS WHERE POS_ID = :id`,
+          { id }
+        );
+        
+        console.log("Denúncias associadas (se existirem) foram excluídas.");
+
+        const sql = `
+            UPDATE USUARIO
+            SET USU_REPORTS_COUNT = NVL(USU_REPORTS_COUNT, 0) + 1
+            WHERE USU_ID = (SELECT USU_ID FROM POST WHERE POS_ID = :id)
+        `;
+
+        const resultado = await connection.execute(sql, [id]);
+
+        if (resultado.rowsAffected === 0) 
+            throw  new Error('Falha ao deletar a publicação. Pode não existir ou já foi deletada.');
+
+        console.log("Excluindo POST...");
+        await connection.execute(
+          `DELETE FROM POST WHERE POS_ID = :id`,
+          { id }
+        );
+        console.log("POST excluído.");
+
+        console.log("Excluindo PET...");
+        await connection.execute(
+          `DELETE FROM PET WHERE PET_ID = :petId`,
+          { petId }
+        );
+        console.log("PET excluído.");
+
+        console.log("POST e PET deletados com sucesso");
+    })  
+  }
 }
 
 export default new PostModel();

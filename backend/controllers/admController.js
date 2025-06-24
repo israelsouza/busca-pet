@@ -3,24 +3,7 @@ import AdmService from '../service/AdmService.js'
 import HttpError from '../utils/HttpError.js';
 
 class AdmController {
-  async deletarPublicacao(req, res){
-    log('INFO', 'AdmController', 'deletarPublicacao', 'INICIO');
-    try {
-      await AdmService.deletarDadosPost(req.params)
-      return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
-    } catch (error) {
-      log('ERRO', 'AdmController', 'deletarPublicacao', 'ERRO ao deletar publicação');
-      console.log(error);
-      if (error instanceof HttpError) {
-        return res.status(error.status).json({ error: error.message });
-      }
-      return res.status(500).json({
-        message: "Erro ao deletar a publicação",
-        error: error.message
-      });
-      
-    }
-  }
+
 
   async atualizarDadoUsuario(req, res){
     log('INFO', 'AdmController', 'atualizarDadoUsuario', 'INICIO');

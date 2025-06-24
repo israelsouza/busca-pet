@@ -93,16 +93,7 @@ class AdmService{
         }
     }
 
-    async deletarDadosPost({id}){
-        log('INFO', 'AdmService', 'deletarDadosPost', 'INICIO');
-        if (!ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do POST inválido");
-
-        try {
-            await AdmModel.deletarDadosPostIndividual(id)
-        } catch (error) {
-            
-        }
-    }
+    
 }
 
 export default new AdmService();

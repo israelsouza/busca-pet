@@ -32,7 +32,7 @@ function AdmPublicacoes() {
         }
 
         try {
-        const res = await fetchAPI(`api/adm/post/${idPost}`, 'DELETE')    
+        const res = await fetchAPI(`api/posts/post/${idPost}`, 'DELETE')    
         const data = await res.json()  
         console.log(data);
         alert(data.message)

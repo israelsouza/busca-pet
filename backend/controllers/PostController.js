@@ -82,6 +82,25 @@ class PostController {
     }
   }
 
+  async deletarPublicacao(req, res){
+    log('INFO', 'PostController', 'deletarPublicacao', 'INICIO');
+    try {
+      await PostService.deletarDadosPost(req.params)
+      return res.status(200).json({ message: `PUBLICAÇÃO excluido com sucesso! `});
+    } catch (error) {
+      log('ERRO', 'PostController', 'deletarPublicacao', 'ERRO ao deletar publicação');
+      console.log(error);
+      if (error instanceof HttpError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      return res.status(500).json({
+        message: "Erro ao deletar a publicação",
+        error: error.message
+      });
+      
+    }
+  }
+
 }
 
 export default new PostController();
