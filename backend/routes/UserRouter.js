@@ -16,13 +16,12 @@ router.post("/registrar-nova-senha", UserController.submeterNovaSenha)
 router.get('/foto', autenticarToken, UserController.pegarFotoPerfil)
 router.get('/foto-com-nome', autenticarToken, UserController.pegarFotoPerfilComNome)
 router.get('/perfil', autenticarToken, UserController.pegarDadosUsuario)
+router.get("/usuarios-e-denuncias",autenticarToken, authorizeAdminRole, UserController.pegarUsuariosEDenuncias);
 
 router.post('/perfil/:campo', autenticarToken, UserController.atualizarCampo)
 router.post('/perfil/foto/nova', autenticarToken, upload.single("foto"), UserController.atualizarFotoPerfil)
 
-// user
-// router.get("/usuarios-e-denuncias", authorizeAdminRole, AdmController.pegarUsuariosEDenuncias);
-// router.patch("/usuario/:id", authorizeAdminRole, AdmController.atualizarDadoUsuario);
-// router.put("/usuario/banir", authorizeAdminRole, AdmController.banirUsuario);
+router.patch("/usuario/:id", autenticarToken, authorizeAdminRole, UserController.atualizarDadoUsuario);
+router.put("/usuario/banir", autenticarToken, authorizeAdminRole, UserController.banirUsuario);
 
 export default router;

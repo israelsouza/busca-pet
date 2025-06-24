@@ -4,6 +4,7 @@ import getConnection from "./connectionOracle.js";
 import bcrypt from "bcrypt";
 import OracleDB from "oracledb";
 import HttpError from '../utils/HttpError.js';
+import DBHelper from '../utils/dbHelper.js';
 
 class UserModel {
     async salvarUsuario(dados){
@@ -173,9 +174,7 @@ class UserModel {
                 throw new Error("O e-mail não está cadastrado.");
             }
 
-            const [USU_ID, senhaHash, role] = query.rows[0];
-            console.log("ID: ", USU_ID, " ROLE: ", role, " SENHA ", senhaHash);
-            
+            const [USU_ID, senhaHash, role] = query.rows[0];            
 
             const senhaValida = await bcrypt.compare(dados.password, senhaHash);
 
@@ -446,6 +445,45 @@ class UserModel {
                 }
             }
         }
+    }
+
+    async listarUsuariosEDenuncias(){
+        return DBHelper.withConnection({ module: "AdmModel", methodName: "listarUsuariosEDenuncias" }, async (connection) => {
+        const result = await connection.execute(
+            `
+            SELECT
+                U.USU_ID AS id,
+                P.PES_NOME AS PES_NOME,
+                U.USU_STATUS AS USU_STATUS,
+                U.USU_EMAIL AS USU_EMAIL,
+                U.USU_REPORTS_COUNT AS denuncias_recebidas_count
+            FROM
+                USUARIO U
+            INNER JOIN
+                PESSOA P ON U.PES_ID = P.PES_ID 
+            ORDER BY
+                USU_STATUS ASC,                 
+                denuncias_recebidas_count DESC, 
+                PES_NOME ASC  
+                `,
+            [],
+            {
+            outFormat: OracleDB.OUT_FORMAT_OBJECT,
+            }
+        )
+
+        return result.rows
+        })
+    }
+
+    async banirUsuario(id){
+        return DBHelper.withTransaction({module: 'AdmModel', methodName: 'banirUsuario'}, async (connection) => {
+            await connection.execute(
+                ` UPDATE USUARIO SET USU_STATUS = 'B' WHERE USU_ID = :id `, [id]
+            )
+
+            return { success: true, message: 'Usuário banido e e-mail enviado com sucesso.' }
+        })
     }
 
     async atualizarCampoUsuario(id, campo, valor){

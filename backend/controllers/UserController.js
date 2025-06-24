@@ -1,6 +1,7 @@
 import log from '../utils/logger.js'
 import UserService from '../service/UserService.js'
 import TokenService from '../service/TokenService.js'
+import HttpError from '../utils/HttpError.js';
 
 class UserController {
     async cadastrarUsuario(req, res) {
@@ -95,6 +96,62 @@ class UserController {
             log('ERRO', 'UserController', 'pegarFotoPerfil', 'ERRO AO BUSCAR FOTO')
             console.log(error);            
             return res.status(400).json({ message: "Erro ao tentar pegar sua foto, atualize a página" });            
+        }
+    }
+
+    async pegarUsuariosEDenuncias(req, res){
+        log('INFO', 'AdmController', 'pegarUsuariosEDenuncias', 'INICIO')
+        try {
+            const usuarios = await UserService.listarUsuariosEDenuncias()
+            log('INFO', 'AdmController', 'pegarUsuariosEDenuncias', 'FIM')
+            return res.status(200).json({usuarios});
+        } catch (error) {
+            log('ERRO', 'AdmController', 'pegarUsuariosEDenuncias', 'ERRO ao buscar usuarios e denuncias')
+            console.log(error);      
+            return res.status(500).json({ 
+                message: "Erro ao buscar usuários", error: error.message
+            });
+        }
+    }
+
+    async atualizarDadoUsuario(req, res){
+        log('INFO', 'AdmController', 'atualizarDadoUsuario', 'INICIO');
+        try {
+            await UserService.atualizarDadoUsuario(req.params, req.body);
+
+            log('INFO', 'AdmController', 'atualizarDadoUsuario', 'FIM');
+            return res.status(200).json({ 
+                message: "Usuário atualizado com sucesso!"
+            });
+        } catch (error) {
+            log('ERRO', 'AdmController', 'atualizarDadoUsuario', 'ERRO ao atualizar dados do usuário');
+            console.log(error);
+            if (error instanceof HttpError) {
+                return res.status(error.status).json({ error: error.message });
+            }
+            return res.status(500).json({
+                message: "Erro ao atualizar os dados do usuário",
+                error: error.message
+            });
+        }
+    }
+
+    async banirUsuario(req, res){
+        log('INFO', 'AdmController', 'banirUsuario', 'INICIO');
+        try {      
+            const result = await UserService.banirUsuario(req.body);      
+            log('INFO', 'AdmController', 'banirUsuario', 'FIM');
+            return res.status(200).json({ message: "Usuário banido com sucesso!", data: result });
+        } catch (error) {
+            log('ERRO', 'AdmController', 'banirUsuario', 'ERRO ao banir usuário');
+            console.log(error);
+            if (error instanceof HttpError) {
+                return res.status(error.status).json({ error: error.message });
+            }
+            return res.status(500).json({
+                message: "Erro ao banir o usuário",
+                error: error.message
+            });
         }
     }
 

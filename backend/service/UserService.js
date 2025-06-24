@@ -4,6 +4,8 @@ import UserModel from '../model/UserModel.js'
 import TokenService from '../service/TokenService.js'
 import HttpError from '../utils/HttpError.js';
 import ValidationUtils from '../utils/ValidationUtils.js';
+import { templateEmailBanir } from "../configs/myEmail.js";
+import transporter from "../configs/mailConfig.js";
 
 class UserService {
     static MENSAGEM_NAO_CONTEM_NUMERO = 'inválido, só pode conter letras e espaços';
@@ -83,15 +85,12 @@ class UserService {
     async realizarLogin(dados){
         log('INFO', 'UserService', 'realizarLogin', 'INICIO')
         try { 
-            const result = await UserModel.logarUsuario(dados) 
-            console.log("log result ", result);
+            const result = await UserModel.logarUsuario(dados)
             
             log('INFO', 'UserService', 'realizarLogin', 'COM SUCESSO SUCESSO')
             log('INFO', 'UserService', 'realizarLogin', 'GERANDO TOKEN')
 
             const token = TokenService.gerarTokenJWT(result);
-            
-            console.log(token);
             
             log('INFO', 'UserService', 'realizarLogin', 'FIM')
             return {token, id: result.userId, role: result.role, email: result.email};
@@ -296,6 +295,85 @@ class UserService {
         } catch (error) {
             log('ERROR', 'UserService', 'obterFotoPerfilUsuario', "ERRO ao obter a foto");
             console.log(error)            
+            throw error;
+        }
+    }
+
+    async listarUsuariosEDenuncias(){
+        log('INFO', 'AdmService', 'listarUsuariosEDenuncias', 'INICIO')
+        try {
+            const usuarios = await UserModel.listarUsuariosEDenuncias()
+            log('INFO', 'AdmService', 'listarUsuariosEDenuncias', 'FIM')
+            return usuarios;
+        } catch (error) {
+            log('ERRO', 'AdmService', 'listarUsuariosEDenuncias', 'ERRO ao listar os usuarios')
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async atualizarDadoUsuario({id}, {nome, email, senha}){
+        log('INFO', 'AdmService', 'atualizarDadoUsuario', 'INICIO')
+        try {
+            if (!nome && !email && !senha)
+                throw new HttpError(400, "Preencha ao menos um campo")
+
+            if (!ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
+            if (!(await UserModel.findNameById(id)) ) throw new HttpError(400, "Usuário não existe");
+
+            const valores = {}
+
+            if (nome) {
+                if (!this.validarTamanho(nome, 'nome') ) throw new HttpError(400, "Tamanho do nome ultrapassa o limite");
+                if (!this.validarTextoSemNumero(nome) ) throw new HttpError(400, "Nome não pode conter números");
+                valores.nome = nome;
+            }
+
+            if (email) {
+                if (!this.validarTamanho(email, 'email') ) throw new HttpError(400, "Tamanho do email ultrapassa o limite");
+                if (!this.validarFormatoEmail(email) ) throw new HttpError(400, "Formato do email inválido");
+                valores.email = email;
+            }
+
+            let novaSenha;
+            if (senha) {
+                if (!this.validarTamanho(senha, 'senha') ) throw new HttpError(400, "Tamanho da senha ultrapassa o limite");
+                novaSenha = await this.criptografarSenha(senha)
+                valores.senha = novaSenha;
+            }
+
+            await UserModel.atualizarUsuario(id, valores);
+
+            log('INFO', 'AdmService', 'atualizarDadoUsuario', 'FIM, usuário atualizado com sucesso')
+
+        } catch (error) {
+
+            log('ERRO', 'AdmService', 'atualizarDadoUsuario', 'ERRO ao atualizar os dados do usuário')
+            console.log(error);
+            throw error;
+            
+        }
+    }
+
+    async banirUsuario({id, email}){
+        log('INFO', 'AdmService', 'banirUsuario', 'INICIO')
+        try {
+
+            if (!ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
+            if (!ValidationUtils.validarTamanho(email, 'email') ) throw new HttpError(400, "Tamanho do email inválido");
+            if (!ValidationUtils.validarFormatoEmail(email) ) throw new HttpError(400, "Formato do email inválido");
+
+            await UserModel.banirUsuario(id);
+            const nome = await UserModel.findNameById(id);
+            
+            await transporter.sendMail(
+                templateEmailBanir(email, nome)
+            );
+            
+            log('INFO', 'AdmService', 'banirUsuario', 'FIM')
+        } catch (error) {
+            log('ERRO', 'AdmService', 'banirUsuario', 'ERRO ao banir o usuário')
+            console.log(error);
             throw error;
         }
     }

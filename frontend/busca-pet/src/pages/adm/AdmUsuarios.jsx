@@ -37,7 +37,7 @@ function AdmUsuarios() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await fetchAPI("api/adm/usuarios-e-denuncias");
+      const res = await fetchAPI("api/usuario/usuarios-e-denuncias");
       if (!res.ok) throw new Error("Erro ao buscar usuários");
       const data = await res.json();
       // console.log(data)
@@ -178,7 +178,7 @@ function AdmUsuarios() {
         throw new Error("ID do usuário para atualização não encontrado.");
       }
 
-      const res = await fetchAPI(`api/adm/usuario/${id}`, "PATCH", data, true);
+      const res = await fetchAPI(`api/usuario/usuario/${id}`, "PATCH", data, true);
       console.log(id);
 
       console.log(res);
@@ -245,7 +245,7 @@ function AdmUsuarios() {
                                   async function banirUsuario() {
                                     try {
                                       const req = await fetchAPI(
-                                        `api/adm/usuario/banir`,
+                                        `api/usuario/usuario/banir`,
                                         "PUT",
                                         user,
                                         true,
