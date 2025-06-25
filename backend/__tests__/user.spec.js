@@ -193,4 +193,38 @@ describe(`ROTAS PRIVADAS`, () => {
 
     })
 
+    describe(`GET ${API_USUARIO}/perfil`, () => {
+        test('deve retornar um objeto com os dados do usuário', async () => {
+            const response = await request(app).get(`${API_USUARIO}/perfil`).set(
+                'Authorization', `Bearer ${token}`
+            );
+
+            expect(response.status).toBe(200)
+            expect(response.body).toMatchObject({
+                message: "Dados cadastrais obtidos com sucesso!",
+                userData: {
+                    PES_NOME: expect.any(String),
+                    PES_PHONE: expect.any(String),
+                    USU_EMAIL: expect.any(String),
+                    END_RUA: expect.any(String),
+                    END_BAIRRO: expect.any(String),
+                    CID_DESCRICAO: expect.any(String),
+                    EST_SIGLA: expect.any(String),
+                    USU_STATUS: 'A'
+                },
+            })
+        })
+
+        test('deve FALHAR ao tentar obter os dados do usuário', async () => {
+            const response = await request(app).get(`${API_USUARIO}/perfil`)
+
+            expect(response.status).toBe(401)
+            expect(response.body).toEqual({ message: 'Token não fornecido' });
+        })
+
+
+    })
+
+    
+
 })
