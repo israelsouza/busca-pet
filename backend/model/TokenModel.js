@@ -137,6 +137,46 @@ class TokenModel {
             }
         }
     }
+
+    async pegarTokenRecuperarSenha(email) {
+        log('INFO', 'TokenModel', 'pegarTokenRecuperarSenha', 'INICIO')
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+                `
+                    SELECT REC_TOKEN, REC_DTLIMITE, USU_ID
+                    FROM RECUPERAR_SENHA
+                    WHERE USU_ID = (SELECT USU_ID FROM USUARIO WHERE USU_EMAIL = :email)
+                `, [email]
+            );
+
+            if (result.rows.length === 0) return null;
+
+            const tokenData = result.rows[0];
+            log('INFO', 'TokenModel', 'pegarTokenRecuperarSenha', 'FIM')
+
+            return {REC_TOKEN: tokenData[0]}
+            
+
+        } catch (error) {
+            log('ERRO', 'TokenModel', 'pegarTokenRecuperarSenha', 'ERRO AO PEGAR O TOKEN')
+            console.log(error);
+            return false;
+        } finally {
+            if (connection) {
+                try {
+                    log('INFO', 'TokenModel', 'pegarTokenRecuperarSenha', 'ENCERRANDO CONEXÃO COM BANCO')
+                    await connection.close();
+                    log('INFO', 'TokenModel', 'pegarTokenRecuperarSenha', 'CONEXÃO ENCERRADA')
+                } catch (error) {
+                    log('ERROR', 'TokenModel', 'pegarTokenRecuperarSenha', 'ERRO AO ENCERRAR A CONEXÃO')
+                    console.log(error);                    
+                }
+            }
+        }
+    }
 }
 
 export default new TokenModel();

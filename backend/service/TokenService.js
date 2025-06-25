@@ -105,6 +105,15 @@ class TokenService {
         }
     }
 
+    async recuperarTokenRecuperarSenha(email){
+        log('INFO', 'TokenService', 'recuperarTokenRecuperarSenha', 'INICIO')
+        try {
+            return await TokenModel.pegarTokenRecuperarSenha(email);
+        } catch (error) {
+            log('ERRO', 'TokenService', 'recuperarTokenRecuperarSenha', 'ERRO AO RECUPERAR TOKEN')
+            console.log(error);
+        }
+    }
 }
 
 export default new TokenService();

@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../app.js';
+import TokenService from '../service/TokenService.js';
 
 const API_USUARIO = '/api/usuario'
 
@@ -90,5 +91,32 @@ describe( `POST ${API_USUARIO}/solicitar-nova-senha`, () => {
         expect(response.status).toBe(500)
         expect(response.body).toEqual({ error: "Ocorreu um erro interno. Por favor, tente novamente mais tarde." })
     })
+})
+
+describe( `POST ${API_USUARIO}/validar-token`, () => {
+    test("should aprove the token create before", async ()=>{
+        const email = "israellimas@hotmail.com";
+        const token = await TokenService.recuperarTokenRecuperarSenha(email)
+        const response = await request(app).post(`${API_USUARIO}/validar-token`).send({
+            email, token: token.REC_TOKEN
+        })
+        expect(response.status).toBe(200)
+        expect(response.body).toMatchObject({ 
+            mensagem: "Token válido.", 
+            usu_id: expect.any(Number), 
+            success: true 
+        })
+    })
+
+    test("should aprove the token create before", async ()=>{
+        const email = "israellimas@hotmail.com";
+        const token = await TokenService.recuperarTokenRecuperarSenha(email)
+        const response = await request(app).post(`${API_USUARIO}/validar-token`).send({
+            token: token.REC_TOKEN
+        })
+        expect(response.status).toBe(500)
+        expect(response.body).toMatchObject({ erro: "Erro interno ao validar o token." })
+    })
+
 })
 
