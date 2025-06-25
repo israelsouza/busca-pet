@@ -120,3 +120,23 @@ describe( `POST ${API_USUARIO}/validar-token`, () => {
 
 })
 
+describe( `POST ${API_USUARIO}/registrar-nova-senha`, () => {
+    test("should update the password with success", async ()=>{
+        const email = "israellimas@hotmail.com";
+        const response = await request(app).post(`${API_USUARIO}/registrar-nova-senha`).send({
+            email,
+            password: "123456789"
+        })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({ message: "Sucesso, senha atualizada. Realize o login.", success: true })
+    })
+
+    test("should throw an error when try to update the password", async ()=>{
+        const email = "israellimas@hotmail.com";
+        const response = await request(app).post(`${API_USUARIO}/registrar-nova-senha`).send({
+            email,
+        })
+        expect(response.status).toBe(400)
+        expect(response.body).toEqual({message: "Erro ao tentar atualizar a senha. Tente novamente"})
+    })
+})
