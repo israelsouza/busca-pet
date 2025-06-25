@@ -1,8 +1,8 @@
 import request from 'supertest';
 import app from '../app.js';
 
-describe( "User endpoint", () => {
-    test('should create an user', async () => { 
+describe( "POST /api/usuario/cadastro", () => {
+    test('deve cadastrar usuário com sucesso', async () => { 
         const unique = Date.now();
         const response = await request(app)
             .post('/api/usuario/cadastro')
@@ -21,7 +21,7 @@ describe( "User endpoint", () => {
         expect(response.body).toEqual({message: "Usuario cadastrado com sucesso" })
      })
 
-     test('should throw error on try create user', async () => {
+     test('deve falhar ao cadastrar usuário com dados inválidos', async () => {
         const unique = Date.now();
         const error = {};
         const response = await request(app)
@@ -42,3 +42,34 @@ describe( "User endpoint", () => {
      })
 
 } )
+
+describe( "POST /api/usuario/login", () => {
+    test('should login an user', async () => {
+        const emailTesting = "raquel@teste.com";
+        const response = await request(app).post('/api/usuario/login').send({
+            email: emailTesting,
+            password: '123123'
+        })
+        expect(response.status).toBe(200)
+        expect(response.body).toMatchObject({
+            message: "Usuario cadastrado com sucesso",
+            token: {
+                email: emailTesting,
+                id: expect.any(Number),
+                role: null,
+                token: expect.any(String)
+            }
+        })
+    })
+
+    test('should throw a error when try to login an user', async () => {
+        const emailTesting = "raquel@teste.com";
+        const response = await request(app).post('/api/usuario/login').send({
+            email: emailTesting,
+            password: '12'
+        })
+        expect(response.status).toBe(500)
+        expect(response.body).toEqual({message: "Erro interno do servidor", error: {}})
+    })
+})
+
