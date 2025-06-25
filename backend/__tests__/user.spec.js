@@ -173,4 +173,24 @@ describe(`ROTAS PRIVADAS`, () => {
         })
     })
 
+    describe(`GET ${API_USUARIO}/foto-com-nome`, () => {
+
+        test('Deve retornar objeto com foto e nome do usuario', async () => {
+            const response = await request(app).get(`${API_USUARIO}/foto-com-nome`).set(
+                'Authorization', `Bearer ${token}`
+            )
+
+            expect(response.status).toBe(200)
+            expect(response.body).toHaveProperty('foto');
+        })
+
+        test('Deve FALHAR ao tentar recuperar a foto e nome do usuario', async () => {
+            const response = await request(app).get(`${API_USUARIO}/foto-com-nome`)
+
+            expect(response.status).toBe(401)
+            expect(response.body).toEqual({ message: 'Token não fornecido' });
+        })
+
+    })
+
 })
