@@ -342,7 +342,7 @@ class UserService {
                 valores.senha = novaSenha;
             }
 
-            await UserModel.atualizarUsuario(id, valores);
+            await UserModel.atualizarCampoUsuario(id, {PES_NOME: valores.nome, USU_EMAIL: valores.email, USU_SENHA: valores.senha});
 
             log('INFO', 'AdmService', 'atualizarDadoUsuario', 'FIM, usuário atualizado com sucesso')
 

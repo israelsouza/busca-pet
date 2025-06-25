@@ -487,14 +487,19 @@ class UserModel {
         })
     }
 
-    async atualizarCampoUsuario(id, campo, valor){
+    async atualizarCampoUsuario(id, {PES_NOME = null, USU_EMAIL = null, USU_SENHA = null } ){
         log('INFO', 'UserModel', 'atualizarCampoUsuario', 'INICIO');
         let connection;
         try {
-            connection = await getConnection();
+
+            if (!PES_NOME && !USU_EMAIL && !USU_SENHA) {
+                throw new Error("Nenhum dado a ser atualizado.");
+            }
 
             let query = '';
             let bindParams = {};
+
+            connection = await getConnection();
 
             const idsResult = await connection.execute(
             `SELECT u.PES_ID, p.END_ID
@@ -508,53 +513,31 @@ class UserModel {
             if (idsResult.rows.length === 0)
                 throw new Error("Usuário não encontrado.");
 
-            const { PES_ID, END_ID } = idsResult.rows[0];
+            const { PES_ID } = idsResult.rows[0];
 
-            switch (campo) {
-            case 'PES_NOME':
+            if (PES_NOME) {
                 query = `UPDATE PESSOA SET PES_NOME = :valor WHERE PES_ID = :targetId`;
-                bindParams = { valor, targetId: PES_ID };
-                break;
-            case 'PES_PHONE':
-                query = `UPDATE PESSOA SET PES_PHONE = :valor WHERE PES_ID = :targetId`;
-                bindParams = { valor, targetId: PES_ID };
-                break;
-            case 'USU_EMAIL':
-                query = `UPDATE USUARIO SET USU_EMAIL = :valor WHERE USU_ID = :targetId`;
-                bindParams = { valor, targetId: id };
-                break;
-            case 'END_RUA':
-                query = `UPDATE ENDERECO SET END_RUA = :valor WHERE END_ID = :targetId`;
-                bindParams = { valor, targetId: END_ID };
-                break;
-            case 'END_BAIRRO':
-                query = `UPDATE ENDERECO SET END_BAIRRO = :valor WHERE END_ID = :targetId`;
-                bindParams = { valor, targetId: END_ID };
-                break;
-            case 'CID_DESCRICAO':
-                query = `UPDATE CIDADE SET CID_DESCRICAO = :valor WHERE CID_ID = (SELECT CID_ID FROM ENDERECO WHERE END_ID = :targetId)`;
-                bindParams = { valor, targetId: END_ID };
-                break;
-            case 'EST_SIGLA':
-                query = `
-                    UPDATE ESTADO
-                    SET EST_SIGLA = :valor
-                    WHERE EST_ID = (
-                        SELECT c.EST_ID
-                        FROM CIDADE c
-                        WHERE c.CID_ID = (SELECT e.CID_ID FROM ENDERECO e WHERE e.END_ID = :targetId)
-                    )
-                `;
-                bindParams = { valor, targetId: END_ID };
-                break;
-            default:
-                throw new Error(`Campo '${campo}' não é atualizável ou não existe.`);
+                bindParams = { valor: PES_NOME, targetId: PES_ID };
+                await connection.execute(query, bindParams, { autoCommit: false })
             }
 
-            const result = await connection.execute(query, bindParams, { autoCommit: true });
+            if (USU_EMAIL) {
+                query = `UPDATE USUARIO SET USU_EMAIL = :valor WHERE USU_ID = :targetId`;
+                bindParams = { valor: USU_EMAIL, targetId: id }
+                await connection.execute(query, bindParams, { autoCommit: false })
+            }
+
+
+            if (USU_SENHA) {
+                query = `UPDATE USUARIO SET USU_SENHA = :valor WHERE USU_ID = :targetId`;
+                bindParams = { valor: USU_SENHA, targetId: id };
+                await connection.execute(query, bindParams, { autoCommit: false })
+            }
+
+            await connection.commit()
 
             log('INFO', 'UserModel', 'atualizarCampoUsuario', 'FIM');
-            return result.rowsAffected > 0;
+            return true;
 
         } catch (error) {
             log('ERROR', 'UserModel', 'atualizarCampoUsuario', 'ERRO AO ATUALIZAR CAMPO DO USUARIO', { error });
