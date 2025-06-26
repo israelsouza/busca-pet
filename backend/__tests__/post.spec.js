@@ -65,7 +65,7 @@ describe(`GET ${API_POST}/:categoria`,()=>{
     });
 })
 
-describe(`GET ${API_POST}/termo`, ()=>{
+describe(`GET ${API_POST}/buscar/termo`, ()=>{
     test('Deve posts com a palavra-chave inserida', async () => {
         const termoBuscado = 'Av. Águia de Haia'
 
@@ -78,6 +78,44 @@ describe(`GET ${API_POST}/termo`, ()=>{
         expect(response.body).toMatchObject({
             message: "Posts encontrados com sucesso",
             posts: expect.any(Array)
+        });
+    })
+
+    test('Deve retornar ERRO ao buscar posts sem o token', async () => {
+        const termoBuscado = 'Av. Águia de Haia'
+
+        const response = await request(app)
+                .get(`${API_POST}/buscar/termo`)
+                .query({ q: termoBuscado });
+        
+        expect(response.statusCode).toBe(401);
+        expect(response.body).toMatchObject({
+            message: "Token não fornecido"
+        });
+    })    
+})
+
+describe(`GET ${API_POST}/buscar/termo/area`, ()=>{
+    test('Deve retornar posts e raio de proximidade', async () => {
+
+        const valLat = parseFloat(-23.514356);
+        const valLng = parseFloat(-46.476766);
+        const valRaio = parseFloat(4);
+
+        const response = await request(app)
+                .get(`${API_POST}/buscar/termo/area`)
+                .set('Authorization', `Bearer ${token}`)
+                .query({
+                    lat: valLat,
+                    lng: valLng,
+                    raio: valRaio
+                });
+        
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject({
+            messagem: "Posts encontrados com sucesso",
+            consulta: expect.any(Array),
+            radius: valRaio
         });
     })
 
