@@ -38,7 +38,7 @@ class PostModel {
         return posts;
     }
 
-    async criarPublicacao(dadosPet, img){
+    async criarPublicacao(dadosPet, img, idUser) {
         log('INFO', 'PostModel', 'criarPublicacao', 'INICIO');
         let connection;
         try {
@@ -46,6 +46,10 @@ class PostModel {
             
             log('INFO', 'PostModel', 'criarPublicacao', 'LER A IMG');
             console.log(img);
+
+            console.log("Dados do Pet: ", dadosPet);
+            
+            
             
             const imgBinaria = await this.lerImagem(img);
 
@@ -86,9 +90,9 @@ class PostModel {
                 VALUES (:tipo, SYSDATE, :idPet, :idUsuario)
                 RETURNING POS_ID INTO :id`,
                 {
-                    tipo: "Perdido",
+                    tipo: dadosPet.categoria,
                     idPet: petId,
-                    idUsuario: dadosPet.idUser,
+                    idUsuario: idUser,
                     id: { dir: OracleDB.BIND_OUT },
                 }
             );
@@ -154,7 +158,10 @@ class PostModel {
                     `;
             } 
 
-            if (categoria === "individual") {
+            if (categoria === "meus") {
+                console.log("ENTREI NO IF DE CATEGORIA --> ", categoria);
+                console.log("id: ", id);
+                
                 sql = `
                     SELECT
                     post.POS_ID AS "POS_ID",
@@ -177,6 +184,8 @@ class PostModel {
                 }
                 
                 if (categoria === "Perdido" || categoria === "Encontrado") {
+                    console.log("ENTREI NO IF DE CATEGORIA --> ", categoria);
+                    
                     sql = `
                     SELECT
                     post.POS_TIPO AS "POS_TIPO",
@@ -195,8 +204,11 @@ class PostModel {
                         post.POS_TIPO = :tipo
                 `
                 
-                binds = {tipo: categoria}
+                binds = [categoria.toLowerCase()]
             }
+
+
+            
             
             const options = {
                 fetchInfo: {
@@ -217,6 +229,9 @@ class PostModel {
             const dadosTratados = await ValidationUtils.tratarImagensEData(rows);
             
             log('INFO', 'PostModel', 'listarPosts', 'FIM');
+
+            console.log("Dados tratados: ", dadosTratados);
+            
             
             return dadosTratados;
             

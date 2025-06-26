@@ -35,7 +35,7 @@ class PostController {
   async pegarPostsPorCategoria(req, res){  
     try {
       log('INFO', 'PostController', 'pegarPostsPorCategoria', 'INICIO');
-      const posts = await PostService.capturarPublicacoesPorCategoria(req.params.categoria);
+      const posts = await PostService.capturarPublicacoesPorCategoria(req.params.categoria, req.user.id);
       log('INFO', 'PostController', 'pegarPostsPorCategoria', 'FIM');
       return res.status(200).json({ message: "Posts capturados com sucesso", posts });
     } catch (error) {

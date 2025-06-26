@@ -47,9 +47,11 @@ class PostService {
         return await PostModel.listarPosts('individual', id);
     }
 
-    async capturarPublicacoesPorCategoria(categoria){
+    async capturarPublicacoesPorCategoria(categoria, id=null){
+        console.log(`Capturando publicações da categoria: '${categoria}'`);
+        
         log('INFO', 'PostService', 'capturarPublicacoesPorCategoria', 'INICIO');
-        return await PostModel.listarPosts(categoria);
+        return await PostModel.listarPosts(categoria, id);
     }
 
     async buscarPostsPorTexto(termo){
