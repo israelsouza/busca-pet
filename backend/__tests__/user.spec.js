@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../app.js';
 import TokenService from '../service/TokenService.js';
 import { gerarAuthToken } from './utils/auth.js';
+import { gerarAdminAuthToken } from './utils/adminAuth.js';
 
 const API_USUARIO = '/api/usuario'
 
@@ -51,7 +52,7 @@ describe(`ROTA PÚBLICA USUARIO`, () => {
 
     describe( `POST ${API_USUARIO}/login`, () => {
         test('should login an user', async () => {
-            const emailTesting = "raquel@teste.com";
+            const emailTesting = "raquelzinha1750908994465@gmail.com.br";
             const response = await request(app).post(`${API_USUARIO}/login`).send({
                 email: emailTesting,
                 password: '123123'
