@@ -128,3 +128,52 @@ describe(`GET ${API_NOTIFIC}/denuncias`, () => {
         })
     })
 })
+
+describe(`GET ${API_NOTIFIC}/denuncias/post/:id`, () => {
+    test('deve buscar a denuncia pelo ID', async () => {        
+        const response = await request(app)
+            .get(`${API_NOTIFIC}/denuncias/post/${ID_POST}`)
+            .set('Authorization', `Bearer ${admToken}`)
+            .send({id: ID_POST})
+
+        expect(response.status).toEqual(200)
+        expect(response.body).toMatchObject({
+            publicacao: expect.any(Object)
+        })
+    })
+
+    test('deve falhar ao acessar com token comum', async () => {        
+        const response = await request(app)
+            .get(`${API_NOTIFIC}/denuncias/post/${ID_POST}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({id: ID_POST})
+
+        expect(response.status).toEqual(403)
+        expect(response.body).toEqual({
+            message: 'Acesso negado. Você não tem permissão de administrador.'
+        })
+    })
+
+    test('deve falhar ao tentar acessar sem o token', async () => {
+        const response = await request(app)
+            .get(`${API_NOTIFIC}/denuncias/post/${ID_POST}`)
+            .send({id: ID_POST})
+
+        expect(response.status).toEqual(401)
+        expect(response.body).toEqual({
+           message: 'Token não fornecido'
+        })
+    })
+
+    test('deve falhar devido id não enviado', async () => {
+        const response = await request(app)
+            .get(`${API_NOTIFIC}/denuncias/post/null`)
+            .set('Authorization', `Bearer ${admToken}`)
+            .send()
+
+        expect(response.status).toEqual(400)
+        expect(response.body).toEqual({
+           error: "ID da publicação inválido"
+        })
+    })
+})
