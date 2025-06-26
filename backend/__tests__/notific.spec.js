@@ -35,3 +35,24 @@ describe(` POST ${API_NOTIFIC}/criar/mensagem`, () => {
         })
     })
 })
+
+describe(`POST ${API_NOTIFIC}/criar/denuncia`, () => {
+    test('Deve criar uma denuncia com sucesso', async () => {
+        const TIPO = 'Agressao Verbal';
+        const DESCRICAO = 'Violencia contra os animais'
+        const POST_ID = 300;
+        const response = await request(app)
+            .post(`${API_NOTIFIC}/criar/denuncia`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                tipo: TIPO,
+                descricao: DESCRICAO, 
+                idPost: POST_ID
+            })
+
+        expect(response.status).toEqual(201)
+        expect(response.body).toMatchObject({
+            message: "Denúncia criada com sucesso."
+        })
+    })
+})
