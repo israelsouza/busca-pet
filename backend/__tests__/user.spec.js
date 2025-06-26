@@ -255,4 +255,61 @@ describe(`ROTAS PRIVADAS`, () => {
         });
     });
 
+    describe(`POST ${API_USUARIO}/perfil/:campo`, () => {
+
+        const unique = Date.now();
+
+        const camposParaAtualizar = [
+            ['PES_NOME', 'Raquel Teste Dinamico'],
+            ['PES_PHONE',`11950${unique.toString().slice(-6)}`],
+            // ['USU_EMAIL', `raquelzinha${unique}@gmail.com.br`],
+            ['END_RUA',`Rua Paraibense`],
+            ['END_BAIRRO',`Jardim Santa Luzia`],
+            ['CID_DESCRICAO','Santana do Sul'],
+            ['EST_SIGLA', 'SP']
+        ]
+
+        test.each(camposParaAtualizar)(
+            'deve atualizar o campo %s com sucesso',
+            async (campo, novoValor) => {
+                const response = await request(app)
+                .post(`${API_USUARIO}/perfil/${campo}`)
+                .set('Authorization', `Bearer ${token}`)
+                .send({ valor: novoValor });
+                
+                expect(response.status).toBe(200);
+                expect(response.body).toEqual({ message: `Campo ${campo} atualizado com sucesso!` });
+            }
+        )
+
+        test('deve falhar ao tentar atualizar um campo inválido', async () => {
+            const response = await request(app)
+                .post(`${API_USUARIO}/perfil/CAMPO_QUE_NAO_EXISTE`)
+                .set('Authorization', `Bearer ${token}`)
+                .send({ valor: 'qualquer valor' });
+
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual({  message: "Erro ao tentar atualizar o campo." });
+        });
+        
+        test('deve falhar ao tentar atualizar o campo do perfil', async () => {
+            const response = await request(app)
+                .post(`${API_USUARIO}/perfil/PES_NOME`)
+                .set('Authorization', `Bearer ${token}`)
+                .send({ nome: 'Raquel' });
+
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual({  message: "Erro ao tentar atualizar o campo." });
+        });
+            
+        test('deve retornar 401 se não houver token', async () => {
+            const response = await request(app)
+                .post(`${API_USUARIO}/perfil/PES_NOME`)
+                .send({ nome: 'Novo Nome' });
+
+            expect(response.status).toBe(401);
+            expect(response.body).toEqual({ message: 'Token não fornecido' });
+        });
+    });
+
 })

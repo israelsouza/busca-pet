@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../app.js';
 
 export const gerarAuthToken = async () => {
-    const email = 'raquel@teste.com';
+    const email = 'raquelzinha1750908994465@gmail.com.br';
     const password = '123123';
 
     const response = await request(app)
