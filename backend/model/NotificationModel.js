@@ -4,10 +4,8 @@ import OracleDB from "oracledb";
 import DBHelper from '../utils/dbHelper.js';
 
 class NotificationModel{
-    static MODULE = "NotificationModel";
-
     async listarNotificacoes(id){
-        log('INFO', this.MODULE, 'listarNotificacoes', 'INICIO');
+        log('INFO', "NotificationModel", 'listarNotificacoes', 'INICIO');
         let connection;
         try {
 
@@ -25,28 +23,28 @@ class NotificationModel{
                 `,[id]
             );
             
-            log('INFO', this.MODULE, 'listarNotificacoes', 'FIM bem sucedido');
+            log('INFO', "NotificationModel", 'listarNotificacoes', 'FIM bem sucedido');
             return rows;
             
         } catch (error) {
-            log('ERROR', this.MODULE, 'listarNotificacoes', 'Erro ao listar as notificações', { error });
+            log('ERROR', "NotificationModel", 'listarNotificacoes', 'Erro ao listar as notificações', { error });
             console.log(error);
             throw error;
         } finally {
             if (connection) {
             try {
-                log('INFO', this.MODULE, 'listarNotificacoes', 'ENCERRANDO CONEXÃO COM BANCO');
+                log('INFO', "NotificationModel", 'listarNotificacoes', 'ENCERRANDO CONEXÃO COM BANCO');
                 await connection.close();
-                log('INFO', this.MODULE, 'listarNotificacoes', 'CONEXÃO ENCERRADA');
+                log('INFO', "NotificationModel", 'listarNotificacoes', 'CONEXÃO ENCERRADA');
             } catch (error) {
-                log('ERROR', this.MODULE, 'listarNotificacoes', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                log('ERROR', "NotificationModel", 'listarNotificacoes', 'ERRO AO ENCERRAR A CONEXÃO', { error });
             }
             }
         }
     }
 
     async deletarNotificacao(idNot, idUser){
-        log('INFO', this.MODULE, 'deletarNotificacao', 'INICIO');
+        log('INFO', "NotificationModel", 'deletarNotificacao', 'INICIO');
         let connection;
         try {
             connection = await getConnection();
@@ -60,28 +58,28 @@ class NotificationModel{
             { autoCommit: true }
             );
 
-            log('INFO', this.MODULE, 'deletarNotificacao', 'FIM bem sucedido');
+            log('INFO', "NotificationModel", 'deletarNotificacao', 'FIM bem sucedido');
             return result.rowsAffected > 0;
 
         } catch (error) {
-            log('ERROR', this.MODULE, 'deletarNotificacao', 'Erro ao deletar a notificação', { error });
+            log('ERROR', "NotificationModel", 'deletarNotificacao', 'Erro ao deletar a notificação', { error });
             console.log(error);
             throw error;
         } finally {
             if (connection) {
             try {
-                log('INFO', this.MODULE, 'deletarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
+                log('INFO', "NotificationModel", 'deletarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
                 await connection.close();
-                log('INFO', this.MODULE, 'deletarNotificacao', 'CONEXÃO ENCERRADA');
+                log('INFO', "NotificationModel", 'deletarNotificacao', 'CONEXÃO ENCERRADA');
             } catch (error) {
-                log('ERROR', this.MODULE, 'deletarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                log('ERROR', "NotificationModel", 'deletarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
             }
             }
         }
     }
 
     async salvarNotificacao(dados){
-        log('INFO', this.MODULE, 'salvarNotificacao', 'INICIO');
+        log('INFO', "NotificationModel", 'salvarNotificacao', 'INICIO');
         let connection;
         try {
             connection = await getConnection();
@@ -99,27 +97,27 @@ class NotificationModel{
                 { autoCommit: true }
             );
 
-            log('INFO', this.MODULE, 'salvarNotificacao', 'FIM bem sucedido');
+            log('INFO', "NotificationModel", 'salvarNotificacao', 'FIM bem sucedido');
 
         } catch (error) {
-            log('ERROR', this.MODULE, 'salvarNotificacao', 'Erro ao salvar a notificação', { error });
+            log('ERROR', "NotificationModel", 'salvarNotificacao', 'Erro ao salvar a notificação', { error });
             console.log(error);
             throw error;
         } finally {
             if (connection) {
             try {
-                log('INFO', this.MODULE, 'salvarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
+                log('INFO', "NotificationModel", 'salvarNotificacao', 'ENCERRANDO CONEXÃO COM BANCO');
                 await connection.close();
-                log('INFO', this.MODULE, 'salvarNotificacao', 'CONEXÃO ENCERRADA');
+                log('INFO', "NotificationModel", 'salvarNotificacao', 'CONEXÃO ENCERRADA');
             } catch (error) {
-                log('ERROR', this.MODULE, 'salvarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                log('ERROR', "NotificationModel", 'salvarNotificacao', 'ERRO AO ENCERRAR A CONEXÃO', { error });
             }
             }
         }
     }
 
     async salvarUmaDenuncia(idUsuario, idPost, descricao, tipo, data){
-        log('INFO', this.MODULE, 'salvarUmaDenuncia', 'INICIO');
+        log('INFO', "NotificationModel", 'salvarUmaDenuncia', 'INICIO');
         let connection;
         try {
             connection = await getConnection();
@@ -139,29 +137,29 @@ class NotificationModel{
             { autoCommit: true }
             );
 
-            log('INFO', this.MODULE, 'salvarUmaDenuncia', 'FIM bem sucedido');
+            log('INFO', "NotificationModel", 'salvarUmaDenuncia', 'FIM bem sucedido');
 
             return { success: true, message: "Denúncia registrada com sucesso!" };
 
         } catch (error) {
-            log('ERROR', this.MODULE, 'salvarUmaDenuncia', 'Erro ao salvar a denúncia', { error });
+            log('ERROR', "NotificationModel", 'salvarUmaDenuncia', 'Erro ao salvar a denúncia', { error });
             console.log(error);
             throw error;
         } finally {
             if (connection) {
             try {
-                log('INFO', this.MODULE, 'salvarUmaDenuncia', 'ENCERRANDO CONEXÃO COM BANCO');
+                log('INFO', "NotificationModel", 'salvarUmaDenuncia', 'ENCERRANDO CONEXÃO COM BANCO');
                 await connection.close();
-                log('INFO', this.MODULE, 'salvarUmaDenuncia', 'CONEXÃO ENCERRADA');
+                log('INFO', "NotificationModel", 'salvarUmaDenuncia', 'CONEXÃO ENCERRADA');
             } catch (error) {
-                log('ERROR', this.MODULE, 'salvarUmaDenuncia', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+                log('ERROR', "NotificationModel", 'salvarUmaDenuncia', 'ERRO AO ENCERRAR A CONEXÃO', { error });
             }
             }
         }
     }
 
     async listarDenuncias(){
-        return DBHelper.withConnection({ module: this.MODULE, methodName: "listarDenuncias" }, async (connection) => {
+        return DBHelper.withConnection({ module: "NotificationModel", methodName: "listarDenuncias" }, async (connection) => {
         const denuncias = await connection.execute(`
             SELECT
                 d.DEN_ID AS DEN_ID,
@@ -197,7 +195,7 @@ class NotificationModel{
     }
 
     async listaPostDenunciado(id){
-        return DBHelper.withConnection({ module: this.MODULE, methodName: 'listaPostDenunciado'}, async (connection) => {
+        return DBHelper.withConnection({ module: "NotificationModel", methodName: 'listaPostDenunciado'}, async (connection) => {
         const { rows } = await connection.execute(`
                 SELECT
                     post.POS_ID AS "POS_ID",
@@ -230,7 +228,7 @@ class NotificationModel{
     }
 
   async manterPost(idDenuncia){
-    return DBHelper.withTransaction({ module: this.MODULE, methodName: 'manterPost'}, async (connection) => {
+    return DBHelper.withTransaction({ module: "NotificationModel", methodName: 'manterPost'}, async (connection) => {
       await connection.execute(
         `UPDATE DENUNCIAS SET DEN_STATUS = 'MANTIDO' WHERE DEN_ID = :idDenuncia`, [idDenuncia]
       )
@@ -249,7 +247,7 @@ class NotificationModel{
   }
 
   async deletarPostPorDenuncia(post, denuncia) {
-    return DBHelper.withTransaction({ module: this.MODULE, methodName: 'deletarPostPorDenuncia'}, async (connection) => {
+    return DBHelper.withTransaction({ module: "NotificationModel", methodName: 'deletarPostPorDenuncia'}, async (connection) => {
       await connection.execute(
         `UPDATE DENUNCIAS SET DEN_STATUS = 'DELETADO' WHERE DEN_ID = :denuncia`, [denuncia]
       );
@@ -275,17 +273,17 @@ class NotificationModel{
         throw new Error(`Aviso: Contador de denúncias não incrementado. Publicação ID ${post} não encontrada ou não associada a um usuário existente.`);
       }
 
-      log('INFO', this.MODULE, 'deletarPostPorDenuncia', 'Excluindo publicação e PET associados...');
+      log('INFO', "NotificationModel", 'deletarPostPorDenuncia', 'Excluindo publicação e PET associados...');
 
       await connection.execute( `DELETE FROM POST WHERE POS_ID = :id`, [post] )
 
-      log('INFO', this.MODULE, 'deletarPostPorDenuncia', 'Publicação deletada com sucesso');
+      log('INFO', "NotificationModel", 'deletarPostPorDenuncia', 'Publicação deletada com sucesso');
 
        await connection.execute(
             `DELETE FROM PET WHERE PET_ID = (SELECT PET_ID FROM POST WHERE POS_ID = :post)`, [post]
         );
 
-        log('INFO', this.MODULE, 'deletarPostPorDenuncia', 'PET deletado com sucesso');
+        log('INFO', "NotificationModel", 'deletarPostPorDenuncia', 'PET deletado com sucesso');
 
       return { success: true, message: "Denúncia e publicação deletadas com sucesso!" };
     })
