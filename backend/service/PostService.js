@@ -44,7 +44,7 @@ class PostService {
     }
 
     async capturarPublicacoes(id){
-        return await PostModel.listarPosts('individual', id);
+        return await PostModel.listarPosts('meus', id);
     }
 
     async capturarPublicacoesPorCategoria(categoria, id=null){

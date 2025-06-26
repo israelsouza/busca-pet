@@ -47,8 +47,8 @@ function PostsUser() {
 
       const response = await fetch(`http://localhost:3000/api/posts/meus`, headerRequest)
       const data = await response.json();
-      console.log(data.posts)
-      setUserPosts(data.posts);
+      console.log(data.meusPosts)
+      setUserPosts(data.meusPosts);
     }
 
     fetchUserPosts();
