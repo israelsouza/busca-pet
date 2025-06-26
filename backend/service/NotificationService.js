@@ -7,37 +7,56 @@ import PostModel from '../model/postModel.js';
 import UserModel from '../model/UserModel.js'; 
 
 class NotificationService{
-    static MODULE = 'NotificationService';
+
     async obterNotificacoes(id){
-        log('INFO', this.MODULE, 'obterNotificacoes', 'INICIO')
+        log('INFO', "NotificationService", 'obterNotificacoes', 'INICIO')
         if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID do usuário inválido");
         try {
             return await NotificationModel.listarNotificacoes(id)
         } catch (error) {
-            log('ERROR', this.MODULE, 'obterNotificacoes', "ERRO ao obter as notificações do usuário");
+            log('ERROR', "NotificationService", 'obterNotificacoes', "ERRO ao obter as notificações do usuário");
             console.log(error)            
             throw error;
         }
     }
 
     async deletarUmaNotificacao(idNot, idUser){
-        log('INFO', this.MODULE, 'deletarUmaNotificacao', 'INICIO');
+        log('INFO', "NotificationService", 'deletarUmaNotificacao', 'INICIO');
 
         if ( !ValidationUtils.validarID(idNot) ) throw new HttpError(400, "ID da notificação inválido");
         if ( !ValidationUtils.validarID(idUser) ) throw new HttpError(400, "ID do usuário inválido");
 
         try {
             await NotificationModel.deletarNotificacao(idNot, idUser);
-            log('INFO', this.MODULE, 'deletarUmaNotificacao', 'FIM com sucesso');
+            log('INFO', "NotificationService", 'deletarUmaNotificacao', 'FIM com sucesso');
         } catch (error) {
-            log('ERROR', this.MODULE, 'deletarUmaNotificacao', "ERRO ao deletar a notificação");
+            log('ERROR', "NotificationService", 'deletarUmaNotificacao', "ERRO ao deletar a notificação");
             console.log(error);
             throw error;
         }
     }
 
+    async deletarTodasNotificacoes(idUser){
+        console.log(idUser, " ID no modulo NotificationService");
+        
+        log('INFO', "NotificationService", 'deletarTodasNotificacoes', 'INICIO');
+
+        if ( !ValidationUtils.validarID(idUser) ) throw new HttpError(400, "ID do usuário inválido");
+
+        try {
+            await NotificationModel.deletarTodasNotificacoes(idUser);
+            log('INFO', "NotificationService", 'deletarTodasNotificacoes', 'FIM com sucesso');
+        } catch (error) {
+            log('ERROR', "NotificationService", 'deletarTodasNotificacoes', "ERRO ao deletar a notificação");
+            console.log(error);
+            throw error;
+        }
+    }
+
+
+
     async criarEnviarMensagem(idRemetente, idPost, emailRemetente){
-        log('INFO', this.MODULE, 'criarEnviarMensagem', 'INICIO');
+        log('INFO', "NotificationService", 'criarEnviarMensagem', 'INICIO');
 
         if ( !ValidationUtils.validarID(idRemetente) ) throw new HttpError(400, "ID do remetente inválido");
         if ( !ValidationUtils.validarID(idPost) ) throw new HttpError(400, "ID do post inválido");
@@ -46,6 +65,9 @@ class NotificationService{
             const idDestinatario = await PostModel.findUserIdByPostId(idPost)
             const nomeRemetente = await UserModel.findNameById(idRemetente)
             const phoneRemetente = await UserModel.findPhoneByUserId(idRemetente)
+
+            console.log("ID do destinatário: ", idDestinatario, " ID do remetente: ", idRemetente, " ID do post: ", idPost);
+            
 
             const msgNotificacao = {
                 post: idPost,
@@ -65,7 +87,7 @@ class NotificationService{
 
             const notificacaoEnviada = SocketService.sendMessageToUser(idDestinatario, msgNotificacao);
 
-            log('INFO', this.MODULE, 'criarEnviarMensagem', 'FIM com sucesso');
+            log('INFO', "NotificationService", 'criarEnviarMensagem', 'FIM com sucesso');
 
             if (notificacaoEnviada) {
                 console.log(`Notificação enviada para o usuário ${idDestinatario} (ONLINE)`);
@@ -76,14 +98,14 @@ class NotificationService{
             }
 
         } catch (error) {
-            log('ERROR', this.MODULE, 'criarEnviarMensagem', "ERRO ao criar e enviar mensagem");
+            log('ERROR', "NotificationService", 'criarEnviarMensagem', "ERRO ao criar e enviar mensagem");
             console.log(error);
             throw error;
         }
     }
 
     async criarDenuncia(idUsuario, {tipo, descricao, idPost}){
-        log('INFO', this.MODULE, 'criarDenuncia', 'INICIO');
+        log('INFO', "NotificationService", 'criarDenuncia', 'INICIO');
 
         if (!ValidationUtils.validarID(idUsuario)) throw new HttpError(400, "ID do usuário inválido");
         if (!ValidationUtils.validarID(idPost)) throw new HttpError(400, "ID do post inválido");
@@ -109,42 +131,42 @@ class NotificationService{
                 });
             }
 
-            log('INFO', this.MODULE, 'criarDenuncia', 'FIM com sucesso');
+            log('INFO', "NotificationService", 'criarDenuncia', 'FIM com sucesso');
             return { message: 'Denúncia enviada com sucesso para a administração.' };
         } catch (error) {
-            log('ERROR', this.MODULE, 'criarDenuncia', "ERRO ao criar denúncia");
+            log('ERROR', "NotificationService", 'criarDenuncia', "ERRO ao criar denúncia");
             console.log(error);
             throw error;
         }
     }
 
     async listarDenuncias(){
-        log('INFO', this.MODULE, 'listarDenuncias', 'INICIO')
+        log('INFO', "NotificationService", 'listarDenuncias', 'INICIO')
         try {
             const denuncias = await NotificationModel.listarDenuncias()
-            log('INFO', this.MODULE, 'listarDenuncias', 'FIM')
+            log('INFO', "NotificationService", 'listarDenuncias', 'FIM')
             return denuncias;
         } catch (error) {
-            log('ERRO', this.MODULE, 'listarDenuncias', 'ERRO ao listar as denuncias')
+            log('ERRO', "NotificationService", 'listarDenuncias', 'ERRO ao listar as denuncias')
             console.log(error);
             throw error;
         }
     }
 
     async pegarPostDenunciado(id){
-        log('INFO', this.MODULE, 'pegarPostDenunciado', 'INICIO')
+        log('INFO', "NotificationService", 'pegarPostDenunciado', 'INICIO')
         if ( !ValidationUtils.validarID(id) ) throw new HttpError(400, "ID da publicação inválido");
         try {
             const post = await NotificationModel.listaPostDenunciado(id)
             if (post === null) throw new HttpError(400, "Publicação não encontrada");
 
             const postTratado = await ValidationUtils.tratarImagensEData(post)         
-            log('INFO', this.MODULE, 'pegarPostDenunciado', 'POST TRATADO COM SUCESSO')
-            log('INFO', this.MODULE, 'pegarPostDenunciado', 'FIM')
+            log('INFO', "NotificationService", 'pegarPostDenunciado', 'POST TRATADO COM SUCESSO')
+            log('INFO', "NotificationService", 'pegarPostDenunciado', 'FIM')
 
             return postTratado[0];
         } catch (error) {
-            log('ERRO', this.MODULE, 'pegarPostDenunciado', 'ERRO ao listar a publicação denunciada')
+            log('ERRO', "NotificationService", 'pegarPostDenunciado', 'ERRO ao listar a publicação denunciada')
             console.log(error);
             throw error;
         }
@@ -152,7 +174,7 @@ class NotificationService{
     }
 
     async atualizarStatusDenuncia({ idPost, status, idDenuncia }){
-        log('INFO', this.MODULE, 'atualizarStatusDenuncia', 'INICIO')
+        log('INFO', "NotificationService", 'atualizarStatusDenuncia', 'INICIO')
         if (!status || !idDenuncia || !idPost) {
             throw new HttpError(400, 'Ação inválida ou não especificada.');
         }
@@ -165,11 +187,11 @@ class NotificationService{
 
     async manterPost(id){
         try {
-            log('INFO', this.MODULE, 'manterPost', 'INICIO')
+            log('INFO', "NotificationService", 'manterPost', 'INICIO')
             await NotificationModel.manterPost(id);
-            log('INFO', this.MODULE, 'manterPost', 'FIM')
+            log('INFO', "NotificationService", 'manterPost', 'FIM')
         } catch (error) {
-            log('ERRO', this.MODULE, 'manterPost', 'ERRO ao manter o post denunciado')
+            log('ERRO', "NotificationService", 'manterPost', 'ERRO ao manter o post denunciado')
             console.log(error);
             throw error;
         }
@@ -177,11 +199,11 @@ class NotificationService{
 
     async deletarPost(idPost, idDenuncia){
         try {
-            log('INFO', this.MODULE, 'deletarPost', 'INICIO')
+            log('INFO', "NotificationService", 'deletarPost', 'INICIO')
             await NotificationModel.deletarPostPorDenuncia(idPost, idDenuncia);
-            log('INFO', this.MODULE, 'deletarPost', 'FIM')
+            log('INFO', "NotificationService", 'deletarPost', 'FIM')
         } catch (error) {
-            log('ERRO', this.MODULE, 'deletarPost', 'ERRO ao excluir o post denunciado')
+            log('ERRO', "NotificationService", 'deletarPost', 'ERRO ao excluir o post denunciado')
             console.log(error);
             throw error;
         }
