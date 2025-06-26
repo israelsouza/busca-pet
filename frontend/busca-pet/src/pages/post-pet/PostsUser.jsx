@@ -47,8 +47,8 @@ function PostsUser() {
 
       const response = await fetch(`http://localhost:3000/api/posts/meus`, headerRequest)
       const data = await response.json();
-      console.log(data)
-      setUserPosts(data.meusPosts);
+      console.log(data.posts)
+      setUserPosts(data.posts);
     }
 
     fetchUserPosts();
@@ -77,7 +77,7 @@ function PostsUser() {
                             usuario={post.PES_NOME}
                             imagemUsuario={post.USU_FOTO}
                             imagemPet={post.PET_FOTO}
-                            nomePet={post.PET_NOME}
+                            nomePet={ post.PET_NOME === 'undefined' ? "" : post.PET_NOME }
                             caracteristicas={post.PET_DESCRICAO}
                             dataSumico={post.POS_DATA}
                             regiao={() => {

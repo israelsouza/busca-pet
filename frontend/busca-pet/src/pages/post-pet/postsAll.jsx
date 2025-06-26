@@ -10,7 +10,6 @@ import validateToken from "../../assets/utils/validateToken.js";
 import enviarDados from "../../assets/utils/enviarDados.js"; // Importe a sua função enviarDados
 import MapGoogleComponent from "../../components/MapGoogleComponent.jsx";
 
-
 import style from "../styles/postsAll.module.css";
 
 function PostsAll() {
@@ -149,7 +148,7 @@ function PostsAll() {
                   usuario={post.PES_NOME}
                   imagemUsuario={post.USU_FOTO}
                   imagemPet={post.PET_FOTO}
-                  nomePet={post.PET_NOME}
+                  nomePet={ post.PET_NOME === 'undefined' ? "" : post.PET_NOME }
                   caracteristicas={post.PET_DESCRICAO}
                   dataSumico={post.POS_DATA}                  
                   infoPost={ post } 

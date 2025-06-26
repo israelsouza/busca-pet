@@ -265,7 +265,7 @@ function Cadastro() {
           setTimeout(() => navigate("/form/login"), 1200);
         }
       } else {
-        setMensagem("Erro inesperado. Tente novamente.");
+        setMensagem(dadosAoBack.error);
       }
     } catch (error) {
       if (error.message) {
