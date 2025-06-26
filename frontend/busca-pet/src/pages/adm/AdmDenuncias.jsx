@@ -137,7 +137,7 @@ function AdmDenuncias() {
               usuario={currentPost.PES_NOME}
               imagemUsuario={currentPost.USU_FOTO}
               imagemPet={currentPost.PET_FOTO}
-              nomePet={currentPost.PET_NOME}
+              nomePet={ currentPost.PET_NOME === 'undefined' ? "" : currentPost.PET_NOME }
               caracteristicas={currentPost.PET_DESCRICAO}
               dataSumico={currentPost.POS_DATA}
               manter={() => {

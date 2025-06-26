@@ -1,5 +1,6 @@
 import Style from "../styles/tela_adm.module.css";
 import ButtonAdm from "../../components/ButtonAdm";
+import React, { useEffect } from "react";
 import HeaderForm from "../../components/HeaderForm";
 import icon_publicacoes from "../../assets/imgs/icon_publicacoes.png";
 import icon_denuncias from "../../assets/imgs/icon_denuncia.png";

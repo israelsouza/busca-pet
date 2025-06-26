@@ -74,7 +74,7 @@ function AdmPublicacoes() {
                                 usuario={post.PES_NOME}
                                 imagemUsuario={post.USU_FOTO}
                                 imagemPet={post.PET_FOTO}
-                                nomePet={post.PET_NOME}
+                                nomePet={ post.PET_NOME === 'undefined' ? "" : post.PET_NOME }
                                 caracteristicas={post.PET_DESCRICAO}
                                 dataSumico={post.POS_DATA}                                  
                                 deletar={() => {
