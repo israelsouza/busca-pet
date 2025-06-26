@@ -24,7 +24,7 @@ class UserModel {
 
             if (resultadoEmail.rows[0][0] > 0){
                 log('ERROR','UserModel','salvarUsuario','EMAIL JA CADASTRADO')
-                throw new Error("O e-mail já esta cadastrado");
+                throw new HttpError(400, "O e-mail já esta cadastrado");
             }
 
             const resultadoTelefone = await connection.execute(
@@ -38,7 +38,7 @@ class UserModel {
 
             if (resultadoTelefone.rows[0][0] > 0){
                 log('ERROR','UserModel','salvarUsuario','TELEFONE JA CADASTRADO')
-                throw new Error("O telefone já esta cadastrado");
+                throw new HttpError(400, "O telefone já esta cadastrado");
             }
 
             log('INFO', 'UserModel', 'salvarUsuario', 'Email e Telefones não usados anteriormente')
@@ -55,7 +55,7 @@ class UserModel {
             log('INFO', 'UserModel', 'salvarUsuario', 'EIS O ESTADO')
 
             if (resultadoEstado.rows.length === 0)
-                throw new Error(`Estado com a sigla ${dados.estado} não encontrado.`);
+                throw new HttpError(400, `Estado com a sigla ${dados.estado} não encontrado.`);
 
             const idEstado = resultadoEstado.rows[0][0];
 
@@ -171,7 +171,7 @@ class UserModel {
 
             if (query.rows.length === 0) {
                 log('ERROR', 'UserModel', 'logarUsuario', 'EMAIL NÃO CADASTRADO')
-                throw new Error("O e-mail não está cadastrado.");
+                throw new HttpError(400, "O e-mail não está cadastrado.");
             }
 
             const [USU_ID, senhaHash, role] = query.rows[0];            
@@ -180,7 +180,7 @@ class UserModel {
 
             if (!senhaValida) {
                 log('ERROR', 'UserModel', 'logarUsuario', 'SENHA INCORRETA')
-                throw new Error("Senha incorreta");
+                throw new HttpError(400, "Senha incorreta");
             }
 
             log('INFO', 'UserModel', 'logarUsuario', 'SENHA CORRETA, FIM MODEL')
@@ -493,7 +493,7 @@ class UserModel {
         try {
 
             if (!PES_NOME && !USU_EMAIL && !USU_SENHA) {
-                throw new Error("Nenhum dado a ser atualizado.");
+                throw new HttpError(400, "Nenhum dado a ser atualizado.");
             }
 
             let query = '';
@@ -511,7 +511,7 @@ class UserModel {
             );
 
             if (idsResult.rows.length === 0)
-                throw new Error("Usuário não encontrado.");
+                throw new HttpError(400, "Usuário não encontrado.");
 
             const { PES_ID } = idsResult.rows[0];
 
@@ -579,7 +579,7 @@ class UserModel {
             );
 
             if (idsResult.rows.length === 0)
-                throw new Error("Usuário não encontrado.");
+                throw new HttpError(400, "Usuário não encontrado.");
 
             const { PES_ID, END_ID } = idsResult.rows[0];
 
@@ -621,7 +621,7 @@ class UserModel {
                 bindParams = { valor, targetId: END_ID };
                 break;
             default:
-                throw new Error(`Campo '${campo}' não é atualizável ou não existe.`);
+                throw new HttpError(400, `Campo '${campo}' não é atualizável ou não existe.`);
             }
 
             const result = await connection.execute(query, bindParams, { autoCommit: true });

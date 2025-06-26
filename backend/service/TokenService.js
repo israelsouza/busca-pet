@@ -6,6 +6,7 @@ import UserModel from '../model/UserModel.js'
 import { SECRET_KEY } from "../configs/authConfig.js";
 import {templateEmailRecuperarSenha} from "../configs/myEmail.js";
 import transporter from "../configs/mailConfig.js";
+import HttpError from '../utils/HttpError.js';
 
 class TokenService {
     gerarTokenJWT({userId, role, email}){
@@ -68,9 +69,9 @@ class TokenService {
     async validarToken({token, email}){
         log('INFO', 'TokenService', 'validarToken', 'INICIO')
         
-        if (!email) throw new Error("E-mail inválido");
-        if (!token) throw new Error("Insira o token enviado pelo e-mail");
-        if (token.length > 255) throw new Error("Token inválido");
+        if (!email) throw new HttpError(400, "E-mail inválido");
+        if (!token) throw new HttpError(400, "Insira o token enviado pelo e-mail");
+        if (token.length > 255) throw new HttpError(400, "Token inválido");
         
         try {            
             const id = await UserModel.pegarIdUsuarioPeloEmail(email);

@@ -35,17 +35,17 @@ class UserService {
         if( !this.validarTamanho(cidade, 'cidade') ) throw error ;
         if( !this.validarTamanho(estado, 'estado') ) throw error ;        
 
-        if ( !this.validarTextoSemNumero(nome) ) throw new Error(`Nome ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);        
-        if ( !this.validarTextoSemNumero(rua) ) throw new Error(`Rua ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
-        if ( !this.validarTextoSemNumero(cidade) ) throw new Error(`Cidade ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
-        if ( !this.validarTextoSemNumero(estado) ) throw new Error(`Estado ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
+        if ( !this.validarTextoSemNumero(nome) ) throw new HttpError(400, `Nome ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);        
+        if ( !this.validarTextoSemNumero(rua) ) throw new HttpError(400, `Rua ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
+        if ( !this.validarTextoSemNumero(cidade) ) throw new HttpError(400, `Cidade ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
+        if ( !this.validarTextoSemNumero(estado) ) throw new HttpError(400, `Estado ${this.MENSAGEM_NAO_CONTEM_NUMERO}`);
 
-        if ( !this.validarApenasNumeros(telefone) ) throw new Error(`Telefone ${this.MENSAGEM_SO_CONTEM_NUMERO}`);
-        if ( !this.validarApenasNumeros(cep) ) throw new Error(`CEP ${this.MENSAGEM_SO_CONTEM_NUMERO}`);
+        if ( !this.validarApenasNumeros(telefone) ) throw new HttpError(400, `Telefone ${this.MENSAGEM_SO_CONTEM_NUMERO}`);
+        if ( !this.validarApenasNumeros(cep) ) throw new HttpError(400, `CEP ${this.MENSAGEM_SO_CONTEM_NUMERO}`);
         
-        if( !this.validarFormatoEmail(email) ) throw new Error("Formato do e-mail inválido");
+        if( !this.validarFormatoEmail(email) ) throw new HttpError(400, "Formato do e-mail inválido");
         
-        if( !this.validarSiglaEstado(estado) ) throw new Error("Siglas do estado inválidas");
+        if( !this.validarSiglaEstado(estado) ) throw new HttpError(400, "Siglas do estado inválidas");
 
         try {        
             senha = await this.criptografarSenha(senha);
@@ -69,7 +69,7 @@ class UserService {
         if( !this.validarTamanho(email, 'email') ) throw error ;
         if( !this.validarTamanho(password, 'senha') ) throw error ;
 
-        if( !this.validarFormatoEmail(email) ) throw new Error("Formato do e-mail inválido");
+        if( !this.validarFormatoEmail(email) ) throw new HttpError(400, "Formato do e-mail inválido");
 
         try {
             const userInfo = await this.realizarLogin({email, password});
@@ -111,7 +111,7 @@ class UserService {
             return hash;
         } catch (error) {
             log('ERROR', 'UserService', 'criptografarSenha', error.message);
-            throw new Error('Erro ao criptografar a senha');
+            throw new HttpError(400, 'Erro ao criptografar a senha');
         }
     }
 
@@ -134,7 +134,7 @@ class UserService {
             const id = await UserModel.pegarIdUsuarioPeloEmail(email);
             if (!id) {
                 log('ERRO', 'UserService', 'gerarTokenSenha', 'USUARIO NÃO ENCONTRADO NO BANCO DE DADOS')
-                throw new Error("Usuário não encontrado no banco de dados");
+                throw new HttpError(400, "Usuário não encontrado no banco de dados");
             }
     
             log('INFO', 'UserService', 'gerarTokenSenha', 'ID CAPTURADO')
@@ -178,43 +178,43 @@ class UserService {
         log('INFO', 'UserService', 'validarTamanho', 'INICIO')
         switch (campo) {
             case "nome":
-                if (valor.length > 70) throw new Error("Tamanho máximo excedido!");
+                if (valor.length > 70) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
             case "email":
-                if (valor.length > 70) throw new Error("Tamanho máximo excedido!");
+                if (valor.length > 70) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
 
             case "senha":
-                if (valor.length < 6) throw new Error("Tamanho menor que o mínimo exigido!");
-                if (valor.length > 30) throw new Error("Tamanho máximo excedido!");
+                if (valor.length < 6) throw new HttpError(400, "Tamanho menor que o mínimo exigido!");
+                if (valor.length > 30) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
             
             case "telefone":
-                if (valor.length !== 11) throw new Error("Tamanho diferente do padrão!");
+                if (valor.length !== 11) throw new HttpError(400, "Tamanho diferente do padrão!");
                 break;
 
             case "rua":
-                if (valor.length > 120) throw new Error("Tamanho máximo excedido!");
+                if (valor.length > 120) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
 
             case "bairro":
-                if (valor.length > 120) throw new Error("Tamanho máximo excedido!");
+                if (valor.length > 120) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
 
             case "cep":
-                if (valor.length !== 8) throw new Error("Tamanho diferente do padrão!");
+                if (valor.length !== 8) throw new HttpError(400, "Tamanho diferente do padrão!");
                 break;
 
             case "cidade":
-                if (valor.length > 35) throw new Error("Tamanho máximo excedido!");
+                if (valor.length > 35) throw new HttpError(400, "Tamanho máximo excedido!");
                 break;
 
             case "estado":
-                if (valor.length !== 2) throw new Error("Tamanho diferente do padrão!");
+                if (valor.length !== 2) throw new HttpError(400, "Tamanho diferente do padrão!");
                 break;
         
             default:
-                throw new Error("Campo inconclusivo, tente novamente");
+                throw new HttpError(400, "Campo inconclusivo, tente novamente");
                 break;                
         }
 
@@ -232,14 +232,14 @@ class UserService {
     validarSiglaEstado(estado){
         log('INFO', 'UserService', 'validarSiglaEstado', 'INICIO')
         const estadosValidos = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
-        if (!estadosValidos.includes(estado)) throw new Error("Estado inválido.");
+        if (!estadosValidos.includes(estado)) throw new HttpError(400, "Estado inválido.");
         log('INFO', 'UserService', 'validarSiglaEstado', 'FIM')
         return true;
     }
 
     validarCamposObrigatorios(valor, campo){
         log('INFO', 'UserService', 'validarCamposObrigatorios', 'INICIO')
-        if( !valor ) throw new Error(`O campo ${campo} é obrigatório`);
+        if( !valor ) throw new HttpError(400, `O campo ${campo} é obrigatório`);
         if (campo !== "senha") valor = valor.trim();
         log('INFO', 'UserService', 'validarCamposObrigatorios', 'FIM')
         return valor;
@@ -247,13 +247,13 @@ class UserService {
 
     async atualizarSenha({password, email}){
         log('INFO', 'UserService', 'atualizarSenha', 'INICIO')
-        if ( !this.validarCamposObrigatorios(password) ) throw new Error("O campo senha é obrigatório");
-        if ( !this.validarCamposObrigatorios(email) ) throw new Error("O e-mail não foi preenchido");
+        if ( !this.validarCamposObrigatorios(password) ) throw new HttpError(400, "O campo senha é obrigatório");
+        if ( !this.validarCamposObrigatorios(email) ) throw new HttpError(400, "O e-mail não foi preenchido");
         
         if( !this.validarTamanho(email, 'email') ) throw error ;
         if( !this.validarTamanho(password, 'senha') ) throw error ;
         
-        if( !this.validarFormatoEmail(email) ) throw new Error("Formato do e-mail inválido");
+        if( !this.validarFormatoEmail(email) ) throw new HttpError(400, "Formato do e-mail inválido");
         
         log('INFO', 'UserService', 'atualizarSenha', 'VALIDAÇÕES FEITAS')
         try {
@@ -423,12 +423,12 @@ class UserService {
             case 'PES_NOME':
                 this.validarCamposObrigatorios(valor, 'nome');
                 this.validarTamanho(valor, 'nome');
-                if (!this.validarTextoSemNumero(valor)) throw new Error(`Nome ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                if (!this.validarTextoSemNumero(valor)) throw new HttpError(400, `Nome ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
                 break;
             case 'PES_PHONE':
                 this.validarCamposObrigatorios(valor, 'telefone');
                 this.validarTamanho(valor, 'telefone');
-                if (!this.validarApenasNumeros(valor)) throw new Error(`Telefone ${UserService.MENSAGEM_SO_CONTEM_NUMERO}`);
+                if (!this.validarApenasNumeros(valor)) throw new HttpError(400, `Telefone ${UserService.MENSAGEM_SO_CONTEM_NUMERO}`);
                 break;
             case 'USU_EMAIL':
                 this.validarCamposObrigatorios(valor, 'email');
@@ -438,7 +438,7 @@ class UserService {
             case 'END_RUA':
                 this.validarCamposObrigatorios(valor, 'rua');
                 this.validarTamanho(valor, 'rua');
-                if (!this.validarTextoSemNumero(valor)) throw new Error(`Rua ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                if (!this.validarTextoSemNumero(valor)) throw new HttpError(400, `Rua ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
                 break;
             case 'END_BAIRRO':
                 this.validarCamposObrigatorios(valor, 'bairro');
@@ -447,12 +447,12 @@ class UserService {
             case 'CID_DESCRICAO':
                 this.validarCamposObrigatorios(valor, 'cidade');
                 this.validarTamanho(valor, 'cidade');
-                if (!this.validarTextoSemNumero(valor)) throw new Error(`Cidade ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                if (!this.validarTextoSemNumero(valor)) throw new HttpError(400, `Cidade ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
                 break;
             case 'EST_SIGLA':
                 this.validarCamposObrigatorios(valor, 'estado');
                 this.validarTamanho(valor, 'estado');
-                if (!this.validarTextoSemNumero(valor)) throw new Error(`Estado ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
+                if (!this.validarTextoSemNumero(valor)) throw new HttpError(400, `Estado ${UserService.MENSAGEM_NAO_CONTEM_NUMERO}`);
                 this.validarSiglaEstado(valor);
                 break;
             default:

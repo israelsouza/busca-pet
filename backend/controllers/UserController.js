@@ -12,6 +12,10 @@ class UserController {
             return res.status(200).json({message: "Usuario cadastrado com sucesso" })            
         } catch (error) {
             log('ERROR','UserController','cadastrarUsuario','Falha ao cadastrar usuario', error)
+            console.log(error);
+            if (error instanceof HttpError) {
+                return res.status(error.status).json({ error: error.message });
+            }            
             return res.status(500).json({message: "Erro interno do servidor", error})            
         }        
     }
@@ -21,10 +25,13 @@ class UserController {
         try {            
             const token = await UserService.validarLogin(req.body);
             log('INFO', 'UserController', 'cadastrarUsuario', 'FIM bem sucedido')
-            return res.status(200).json({message: "Usuario cadastrado com sucesso", token })
+            return res.status(200).json({message: "Usuario cadastrado com sucesso", token, ok: true })
         } catch (error) {
             log('ERROR', 'UserController', 'logarUsuario', 'Falha ao logar usuario', error)
             console.log(error);
+             if (error instanceof HttpError) {
+                return res.status(error.status).json({ error: error.message });
+            }   
             return res.status(500).json({message: "Erro interno do servidor", error})
         }
     }
@@ -78,7 +85,7 @@ class UserController {
         try {
             const foto = await UserService.obterFotoPerfilUsuario(req.user.id);
             log('INFO', 'UserController', 'pegarFotoPerfil', 'FIM')
-            return res.status(200).json({foto})
+            return res.status(200).json({foto: foto, ok: true})
         } catch (error) {
             log('ERRO', 'UserController', 'pegarFotoPerfil', 'ERRO AO BUSCAR FOTO')
             console.log(error);            
@@ -196,7 +203,8 @@ class UserController {
             await UserService.atualizarFotoPerfilUsuario(req.user.id, req.file.buffer);
             log('INFO', 'UserController', 'atualizarFotoPerfil', 'FIM')
             return res.status(200).json({ 
-                message: "Foto de perfil atualizada com sucesso!"
+                message: "Foto de perfil atualizada com sucesso!",
+                ok: true
             });
         } catch (error) {
             log('ERRO', 'UserController', 'atualizarFotoPerfil', 'ERRO AO ATUALIZAR FOTO', error)
