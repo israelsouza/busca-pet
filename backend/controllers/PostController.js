@@ -41,6 +41,10 @@ class PostController {
     } catch (error) {
       log('ERRO', 'PostController', 'pegarPostsPorCategoria', 'Erro ao capturar por categoria');
       console.log(error);
+      if ( error instanceof HttpError  ) {        
+        log('ERRO', 'PostController', 'pegarPostsPorCategoria', 'IF HTTP-ERROR');
+        return res.status(error.status).json({error: error.message})
+      }
       return res.status(500).json({ error: error.message });
     }
   }

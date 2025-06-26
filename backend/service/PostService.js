@@ -49,6 +49,10 @@ class PostService {
 
     async capturarPublicacoesPorCategoria(categoria, id=null){
         console.log(`Capturando publicações da categoria: '${categoria}'`);
+
+        if (categoria !== 'Perdido' && categoria !== 'Encontrado' && categoria !== 'todos') {
+            throw new HttpError(400, "Categoria inserida inválida, tente novamente")
+        }
         
         log('INFO', 'PostService', 'capturarPublicacoesPorCategoria', 'INICIO');
         return await PostModel.listarPosts(categoria, id);

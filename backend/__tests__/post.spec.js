@@ -33,3 +33,34 @@ describe(`GET ${API_POST}/meus`, () => {
         });
     });
 })
+
+describe(`GET ${API_POST}/:categoria`,()=>{
+
+    const categorias =  ['Perdido', 'Encontrado', 'todos']
+
+    test.each(categorias)(
+        'Deve carregar os posts com a categoria %s com sucesso',
+        async (categoria) => {
+            const response = await request(app)
+                .get(`${API_POST}/${categoria}`)
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({
+                message: 'Posts capturados com sucesso',
+                posts: expect.any(Array)
+            });
+        }
+    )
+
+    test('Deve retornar 404 se a categoria não existir', async () => {
+        const response = await request(app)
+            .get(`${API_POST}/categoria-inexistente`)
+            .set('Authorization', `Bearer ${token}`);
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toMatchObject({
+            error: "Categoria inserida inválida, tente novamente"
+        });
+    });
+})
