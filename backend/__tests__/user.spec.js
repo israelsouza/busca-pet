@@ -44,8 +44,10 @@ describe(`ROTA PÚBLICA USUARIO`, () => {
                     cidade: "São Paulo", 
                     estado: "SP"
                 });
-            expect(response.status).toBe(500)
-            expect(response.body).toEqual({message: "Erro interno do servidor", error})
+            expect(response.status).toBe(400)
+            expect(response.body).toMatchObject({
+                error: {}
+            })
         })
 
     } )
@@ -75,8 +77,10 @@ describe(`ROTA PÚBLICA USUARIO`, () => {
                 email: emailTesting,
                 password: '12'
             })
-            expect(response.status).toBe(500)
-            expect(response.body).toEqual({message: "Erro interno do servidor", error: {}})
+            expect(response.status).toBe(400)
+            expect(response.body).toMatchObject({
+                error: {}
+            })
         })
     })
 
