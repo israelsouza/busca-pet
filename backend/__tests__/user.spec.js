@@ -225,6 +225,34 @@ describe(`ROTAS PRIVADAS`, () => {
 
     })
 
-    
+    describe(`GET ${API_USUARIO}/usuarios-e-denuncias`, () => {
+        test('deve retornar lista de usuários com o contador de denúncias com sucesso (ADMIN)', async () => {
+            const adminToken = await gerarAdminAuthToken();
+            const response = await request(app)
+                .get(`${API_USUARIO}/usuarios-e-denuncias`)
+                .set('Authorization', `Bearer ${adminToken}`);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
+
+        });
+
+        test('deve retornar 403 se o usuário não for admin', async () => {
+            const response = await request(app)
+                .get(`${API_USUARIO}/usuarios-e-denuncias`)
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(403);
+            expect(response.body).toEqual({ message: 'Acesso negado. Você não tem permissão de administrador.' });
+        });
+
+        test('deve retornar 401 se não houver token', async () => {
+            const response = await request(app)
+                .get(`${API_USUARIO}/usuarios-e-denuncias`);
+
+            expect(response.status).toBe(401);
+            expect(response.body).toEqual({ message: 'Token não fornecido' });
+        });
+    });
 
 })
