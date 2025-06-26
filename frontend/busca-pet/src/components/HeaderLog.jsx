@@ -51,10 +51,15 @@ function HeaderLog({ onSelectCategory }) {
     fetchUserInfo();
   }, []);
 
+  const handleRefresh = useCallback((e) => {
+    e.preventDefault();
+    window.location.href = e.currentTarget.href;
+  }, []);
+
   return (
     <div>
       <header className={style.header_logado}>
-        <Link to={"/posts/all"} onClick={() => onSelectCategory("all")}>
+        <Link to={"/posts/all?category=todos"} onClick={handleRefresh} >
           <img
             className={style.logodog}
             src={Logo_Cachorro}
@@ -71,7 +76,7 @@ function HeaderLog({ onSelectCategory }) {
             Todos
           </Link>
           <Link
-            to={"/posts/all?category=encontrados"}
+            to={"/posts/all?category=encontrado"}
             onClick={() => onSelectCategory("Encontrado")}
             className={style.links_header}
           >

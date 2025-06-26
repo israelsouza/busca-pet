@@ -62,12 +62,15 @@ function login() {
           }
         );
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Erro ao realizar login.");
+        const resultado = await response.json();
+        
+        if (!resultado.ok) {
+          setErroLogin();
+          throw new Error(resultado.error);
         }
 
-        const resultado = await response.json();
+        console.log(resultado);
+        
 
         return resultado.token;
       } catch (error) {
