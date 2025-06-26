@@ -34,6 +34,21 @@ class NotificationController{
         }
     }
 
+    async deletarTodasNotificacoes(req, res){
+        log('INFO', 'NotificationController', 'deletarTodasNotificacoes', 'INICIO')
+        try {
+            await NotificationService.deletarTodasNotificacoes(req.user.id);
+            log('INFO', 'NotificationController', 'deletarTodasNotificacoes', 'FIM')
+            return res.status(200).json({ message: "Todas notificações deletada com sucesso." });
+        } catch (error) {
+            log('ERRO', 'NotificationController', 'deletarTodasNotificacoes', 'ERRO AO DELETAR NOTIFICACAO', error)
+            console.log(error);
+            return res.status(400).json({ 
+                message: "Erro ao deletar notificação."
+            });
+        }
+    }
+
     async criarEnviarMensagem(req, res){
         log('INFO', 'NotificationController', 'criarEnviarMensagem', 'INICIO')
         try {

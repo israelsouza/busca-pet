@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/criar/mensagem", NotificationController.criarEnviarMensagem);
 router.get("/mensagem", NotificationController.pegarNotificacoes);
 router.delete("/mensagem/:id", NotificationController.excluirUmaNotificacao);
+router.delete("/todas-mensagem", NotificationController.deletarTodasNotificacoes);
 router.post("/criar/denuncia", NotificationController.criarUmaDenuncia);
 
 router.get("/denuncias", authorizeAdminRole, NotificationController.pegarDenuncias);

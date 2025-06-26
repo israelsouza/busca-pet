@@ -78,6 +78,45 @@ class NotificationModel{
         }
     }
 
+    async deletarTodasNotificacoes(idUser){
+        log('INFO', "NotificationModel", 'deletarTodasNotificacoes', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            const result = await connection.execute(
+            `
+                DELETE FROM NOTIFICACOES
+                WHERE NOT_DESTINATARIO_ID = :idUser
+            `,
+            { idUser },
+            );
+
+            await connection.commit();
+            console.log(result);
+            
+            console.log(result.rowsAffected > 0);
+            
+            log('INFO', "NotificationModel", 'deletarTodasNotificacoes', 'FIM bem sucedido');
+            return result.rowsAffected > 0;
+
+        } catch (error) {
+            log('ERROR', "NotificationModel", 'deletarTodasNotificacoes', 'Erro ao deletar a notificação', { error });
+            console.log(error);
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', "NotificationModel", 'deletarTodasNotificacoes', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', "NotificationModel", 'deletarTodasNotificacoes', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', "NotificationModel", 'deletarTodasNotificacoes', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
+
     async salvarNotificacao(dados){
         log('INFO', "NotificationModel", 'salvarNotificacao', 'INICIO');
         let connection;

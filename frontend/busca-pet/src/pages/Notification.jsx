@@ -76,6 +76,26 @@ function Notification() {
       });
   }
 
+  function deletarTodasNotificacoes() {
+    const token = localStorage.getItem("authToken");
+    const headerRequest = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    fetch(`http://localhost:3000/api/notificacao/todas-mensagem`, headerRequest)
+      .then((response) => response.json())
+      .then((data) => {
+        alert("Todas as notificações foram deletadas com sucesso!");
+      })
+      .catch((error) => {
+        console.error("Erro ao deletar notificações:", error);
+      });
+  }
+
   return (
     <div className={styles.pnotification}>
       <HeaderLog />
@@ -95,10 +115,13 @@ function Notification() {
           />
         ))}
 
-        {/* <button className={styles.pnotification__button}>
-          <span>Excluir notificações</span>
-          <FiTrash className={styles.pnotification__icon} />
-        </button> */}
+        {notification.length !== 0 && (
+          <button className={styles.pnotification__button} onClick={deletarTodasNotificacoes} >
+            <span>Excluir</span>
+            <FiTrash className={styles.pnotification__icon} />
+          </button>
+        )}
+
       </div>
     </div>
   );
