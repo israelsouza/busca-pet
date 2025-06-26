@@ -342,7 +342,7 @@ class UserService {
                 valores.senha = novaSenha;
             }
 
-            await UserModel.atualizarCampoUsuario(id, {PES_NOME: valores.nome, USU_EMAIL: valores.email, USU_SENHA: valores.senha});
+            await UserModel.admAtualizandoCampoUsuario(id, {PES_NOME: valores.nome, USU_EMAIL: valores.email, USU_SENHA: valores.senha});
 
             log('INFO', 'AdmService', 'atualizarDadoUsuario', 'FIM, usuário atualizado com sucesso')
 
@@ -406,7 +406,7 @@ class UserService {
 
             log('INFO', 'UserService', 'atualizarCampoUsuario', `VALIDAÇÕES PARA O CAMPO '${campo}' FEITAS`);
 
-            await UserModel.atualizarCampoUsuario(id, campo, valor);
+            await UserModel.atualizarCampoUnico(id, campo, valor);
 
             log('INFO', 'UserService', 'atualizarCampoUsuario', 'FIM com sucesso');
             return { message: `Campo '${campo}' atualizado com sucesso.` };

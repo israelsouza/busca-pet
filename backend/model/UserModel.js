@@ -487,7 +487,7 @@ class UserModel {
         })
     }
 
-    async atualizarCampoUsuario(id, {PES_NOME = null, USU_EMAIL = null, USU_SENHA = null } ){
+    async admAtualizandoCampoUsuario(id, {PES_NOME = null, USU_EMAIL = null, USU_SENHA = null } ){
         log('INFO', 'UserModel', 'atualizarCampoUsuario', 'INICIO');
         let connection;
         try {
@@ -560,6 +560,96 @@ class UserModel {
         }
     }
 
+    async atualizarCampoUnico(id, campo, valor){
+        log('INFO', 'UserModel', 'atualizarCampoUnico', 'INICIO');
+        let connection;
+        try {
+            connection = await getConnection();
+
+            let query = '';
+            let bindParams = {};
+
+            const idsResult = await connection.execute(
+            `SELECT u.PES_ID, p.END_ID
+             FROM USUARIO u
+             JOIN PESSOA p ON u.PES_ID = p.PES_ID
+             WHERE u.USU_ID = :id`,
+            { id },
+            { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+            );
+
+            if (idsResult.rows.length === 0)
+                throw new Error("Usuário não encontrado.");
+
+            const { PES_ID, END_ID } = idsResult.rows[0];
+
+            switch (campo) {
+            case 'PES_NOME':
+                query = `UPDATE PESSOA SET PES_NOME = :valor WHERE PES_ID = :targetId`;
+                bindParams = { valor, targetId: PES_ID };
+                break;
+            case 'PES_PHONE':
+                query = `UPDATE PESSOA SET PES_PHONE = :valor WHERE PES_ID = :targetId`;
+                bindParams = { valor, targetId: PES_ID };
+                break;
+            case 'USU_EMAIL':
+                query = `UPDATE USUARIO SET USU_EMAIL = :valor WHERE USU_ID = :targetId`;
+                bindParams = { valor, targetId: id };
+                break;
+            case 'END_RUA':
+                query = `UPDATE ENDERECO SET END_RUA = :valor WHERE END_ID = :targetId`;
+                bindParams = { valor, targetId: END_ID };
+                break;
+            case 'END_BAIRRO':
+                query = `UPDATE ENDERECO SET END_BAIRRO = :valor WHERE END_ID = :targetId`;
+                bindParams = { valor, targetId: END_ID };
+                break;
+            case 'CID_DESCRICAO':
+                query = `UPDATE CIDADE SET CID_DESCRICAO = :valor WHERE CID_ID = (SELECT CID_ID FROM ENDERECO WHERE END_ID = :targetId)`;
+                bindParams = { valor, targetId: END_ID };
+                break;
+            case 'EST_SIGLA':
+                query = `
+                    UPDATE ESTADO
+                    SET EST_SIGLA = :valor
+                    WHERE EST_ID = (
+                        SELECT c.EST_ID
+                        FROM CIDADE c
+                        WHERE c.CID_ID = (SELECT e.CID_ID FROM ENDERECO e WHERE e.END_ID = :targetId)
+                    )
+                `;
+                bindParams = { valor, targetId: END_ID };
+                break;
+            default:
+                throw new Error(`Campo '${campo}' não é atualizável ou não existe.`);
+            }
+
+            const result = await connection.execute(query, bindParams, { autoCommit: true });
+
+            log('INFO', 'UserModel', 'atualizarCampoUnico', 'FIM');
+            return result.rowsAffected > 0;
+
+        } catch (error) {
+            log('ERROR', 'UserModel', 'atualizarCampoUnico', 'ERRO AO ATUALIZAR CAMPO DO USUARIO', { error });
+            console.log(error);
+
+            if (connection)
+                await connection.rollback();
+
+            throw error;
+        } finally {
+            if (connection) {
+            try {
+                log('INFO', 'UserModel', 'atualizarCampoUnico', 'ENCERRANDO CONEXÃO COM BANCO');
+                await connection.close();
+                log('INFO', 'UserModel', 'atualizarCampoUnico', 'CONEXÃO ENCERRADA');
+            } catch (error) {
+                log('ERROR', 'UserModel', 'atualizarCampoUnico', 'ERRO AO ENCERRAR A CONEXÃO', { error });
+            }
+            }
+        }
+    }
+    
     async salvarNovaFoto(id, binario){;
         log('INFO', 'UserModel', 'salvarNovaFoto', 'INICIO');
         let connection;
