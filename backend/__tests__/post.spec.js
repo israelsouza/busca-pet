@@ -64,3 +64,33 @@ describe(`GET ${API_POST}/:categoria`,()=>{
         });
     });
 })
+
+describe(`GET ${API_POST}/termo`, ()=>{
+    test('Deve posts com a palavra-chave inserida', async () => {
+        const termoBuscado = 'Av. Águia de Haia'
+
+        const response = await request(app)
+                .get(`${API_POST}/buscar/termo`)
+                .set('Authorization', `Bearer ${token}`)
+                .query({ q: termoBuscado });
+        
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject({
+            message: "Posts encontrados com sucesso",
+            posts: expect.any(Array)
+        });
+    })
+
+    test('Deve retornar ERRO ao buscar posts sem o token', async () => {
+        const termoBuscado = 'Av. Águia de Haia'
+
+        const response = await request(app)
+                .get(`${API_POST}/buscar/termo`)
+                .query({ q: termoBuscado });
+        
+        expect(response.statusCode).toBe(401);
+        expect(response.body).toMatchObject({
+            message: "Token não fornecido"
+        });
+    })    
+})
