@@ -90,7 +90,7 @@ class NotificationModel{
                     VALUES (:remetente, :destinatario, :conteudo)
                 `,
                 {
-                    remetente: dados.rementente,
+                    remetente: dados.remetente,
                     destinatario: dados.destinatario,
                     conteudo: dados.conteudo
                 },
