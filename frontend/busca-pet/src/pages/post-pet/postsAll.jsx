@@ -3,15 +3,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
-import Buttonposts from "../components/button_posts";
-import HeaderLog from "../components/HeaderLog";
-import useWebSocket from "../assets/utils/useWebSocket.js";
-import validateToken from "../assets/utils/validateToken.js";
-import enviarDados from "../assets/utils/enviarDados.js"; // Importe a sua função enviarDados
-import MapGoogleComponent from "../components/MapGoogleComponent";
+import Buttonposts from "../../components/button_posts.jsx";
+import HeaderLog from "../../components/HeaderLog.jsx";
+import useWebSocket from "../../assets/utils/useWebSocket.js";
+import validateToken from "../../assets/utils/validateToken.js";
+import enviarDados from "../../assets/utils/enviarDados.js"; // Importe a sua função enviarDados
+import MapGoogleComponent from "../../components/MapGoogleComponent.jsx";
 
 
-import style from "./styles/postsAll.module.css";
+import style from "../styles/postsAll.module.css";
 
 function PostsAll() {
   const navigate = useNavigate();

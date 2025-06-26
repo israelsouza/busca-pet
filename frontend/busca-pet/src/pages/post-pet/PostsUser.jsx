@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import MapGoogleComponent from "../components/MapGoogleComponent";
+import MapGoogleComponent from "../../components/MapGoogleComponent";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import Buttonposts from "../components/button_posts";
-import HeaderLog from "../components/HeaderLog";
-import validateToken from "../assets/utils/validateToken";
+import Buttonposts from "../../components/button_posts";
+import HeaderLog from "../../components/HeaderLog";
+import validateToken from "../../assets/utils/validateToken";
 
 
-import style from "./styles/postsAll.module.css";
+import style from "../styles/postsAll.module.css";
 
 function PostsUser() {
   const navigate = useNavigate()

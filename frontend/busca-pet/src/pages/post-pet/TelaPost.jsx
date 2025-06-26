@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-import validateToken from "../assets/utils/validateToken.js";
-import HeaderLog from "./../components/HeaderLog";
+import validateToken from "../../assets/utils/validateToken.js";
+import HeaderLog from "../../components/HeaderLog.jsx";
 
-import styles from "./styles/tela_post.module.css";
+import styles from "../styles/tela_post.module.css";
 
 const TelaPost = () => {
   const navigate = useNavigate();

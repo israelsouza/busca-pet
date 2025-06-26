@@ -1,20 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import validateToken from "../assets/utils/validateToken.js";
+import validateToken from "../../assets/utils/validateToken.js";
 import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo,
-} from "../assets/utils/formValidacoes";
-import { validarDataLimite } from "../assets/utils/regex.js";
-import criarFormData from "../assets/utils/criarFormData.js";
-import HeaderLog from "./../components/HeaderLog";
-import enviarDados from "../assets/utils/enviarDados";
-import MapGoogleComponent from "../components/MapGoogleComponent";
-import API_KEY from "../config/maps-api.js";
-import obterEnderecoSelecionado from "../assets/utils/obterEnderecoSelecionado.js";
+} from "../../assets/utils/formValidacoes.js";
+import { validarDataLimite } from "../../assets/utils/regex.js";
+import criarFormData from "../../assets/utils/criarFormData.js";
+import HeaderLog from "../../components/HeaderLog.jsx";
+import enviarDados from "../../assets/utils/enviarDados.js";
+import MapGoogleComponent from "../../components/MapGoogleComponent.jsx";
+import API_KEY from "../../config/maps-api.js";
+import obterEnderecoSelecionado from "../../assets/utils/obterEnderecoSelecionado.js";
 
-import styles from "./styles/PetPerdido.module.css";
+import styles from "../styles/PetPerdido.module.css";
 
 function PetPerdido() {
   const navigate = useNavigate();

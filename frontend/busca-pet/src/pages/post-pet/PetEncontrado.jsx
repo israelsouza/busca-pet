@@ -4,18 +4,18 @@ import { useRef, useState, useEffect } from "react";
 import {
   verificarCampoVazioPet,
   verificarTamanhoMaximo,
-} from "../assets/utils/formValidacoes.js";
-import { validarDataLimite } from "../assets/utils/regex.js";
-import EmailFromToken from "../assets/utils/getEmailFromToken.js";
-import HeaderLog from "../components/HeaderLog.jsx";
-import enviarDados from "../assets/utils/enviarDados.js";
-import criarFormData from "../assets/utils/criarFormData.js";
-import validateToken from "../assets/utils/validateToken.js";
-import MapGoogleComponent from "../components/MapGoogleComponent";
-import API_KEY from "../config/maps-api.js";
-import obterEnderecoSelecionado from "../assets/utils/obterEnderecoSelecionado.js";
+} from "../../assets/utils/formValidacoes.js";
+import { validarDataLimite } from "../../assets/utils/regex.js";
+import EmailFromToken from "../../assets/utils/getEmailFromToken.js";
+import HeaderLog from "../../components/HeaderLog.jsx";
+import enviarDados from "../../assets/utils/enviarDados.js";
+import criarFormData from "../../assets/utils/criarFormData.js";
+import validateToken from "../../assets/utils/validateToken.js";
+import MapGoogleComponent from "../../components/MapGoogleComponent.jsx";
+import API_KEY from "../../config/maps-api.js";
+import obterEnderecoSelecionado from "../../assets/utils/obterEnderecoSelecionado.js";
 
-import styles from "./styles/PetPerdido.module.css";
+import styles from "../styles/PetPerdido.module.css";
 
 function PetEncontrado() {
   const navigate = useNavigate();
