@@ -11,8 +11,23 @@ import {
   validarCampoApenasLetras,
 } from "../../assets/utils/regex.js";
 
+import validateAdmin from "../../assets/utils/validateAdmin.js";
+
 function AdmUsuarios() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const res = validateAdmin();
+      if (!res) {
+        alert("Usuário não é admin, redirecionando para login.");
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
+      }
+    };
+    checkAuthentication();
+  }, [navigate]);
+  
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senha01Ref = useRef(null);

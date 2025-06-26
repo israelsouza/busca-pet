@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { IoMdRefresh, IoIosArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 import styles from "../styles/Notification.module.css";
 import BoxDenuncia from "../../components/BoxDenuncia.jsx";
 import HeaderForm from "../../components/HeaderForm.jsx";
 import fetchAPI from "../../assets/utils/fetchAPI.js";
 import Buttonposts_ADM from "../../components/button_posts_ADM.jsx";
+import validateAdmin from "../../assets/utils/validateAdmin.js";
 
 function AdmDenuncias() {
+  const navigate = useNavigate();
   const [denuncias, setDenuncias] = useState([]);
   const [currentPost, setCurrentPost] = useState(null);
   const [currentDenuncia, setCurrentDenuncia] = useState(null);
@@ -15,6 +18,18 @@ function AdmDenuncias() {
   const [isLoadingPost, setIsLoadingPost] = useState(false);
   const [postError, setPostError] = useState(null);
   const [currPetFoto, setCurrPetFoto] = useState(null);
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const res = validateAdmin();
+      if (!res) {
+        alert("Usuário não é admin, redirecionando para login.");
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
+      }
+    };
+    checkAuthentication();
+  }, [navigate]);
 
   const fetchDenuncias = useCallback(async () => {
     try {

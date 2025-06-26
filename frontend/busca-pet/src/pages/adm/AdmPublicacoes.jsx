@@ -1,12 +1,28 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import { IoMdRefresh } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 import style from "../styles/ADMpostsAll.module.css";
 import HeaderForm from "../../components/HeaderForm.jsx";
 import Buttonposts_ADM from "../../components/button_posts_ADM.jsx";
 import fetchAPI from "../../assets/utils/fetchAPI.js";
-
+import validateAdmin from "../../assets/utils/validateAdmin.js";
 function AdmPublicacoes() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const res = validateAdmin();
+      if (!res) {
+        alert("Usuário não é admin, redirecionando para login.");
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
+      }
+    };
+    checkAuthentication();
+  }, [navigate]);
+
     const [postData, setPostData] = useState(null)
 
     const fetchPublicacoes = useCallback ( async () => {

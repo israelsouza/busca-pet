@@ -4,8 +4,24 @@ import HeaderForm from "../../components/HeaderForm";
 import icon_publicacoes from "../../assets/imgs/icon_publicacoes.png";
 import icon_denuncias from "../../assets/imgs/icon_denuncia.png";
 import icone from "../../assets/imgs/icone.png";
-
+import { useNavigate } from "react-router-dom";
+import validateAdmin from "../../assets/utils/validateAdmin.js";
 function TelaAdm() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const res = validateAdmin();
+      if (!res) {
+        alert("Usuário não é admin, redirecionando para login.");
+        localStorage.removeItem("authToken");
+        navigate("/form/login");
+      }
+    };
+    checkAuthentication();
+  }, [navigate]);
+
   return (
     <div className={Style.ContainerMain}>
       <div className={Style.ContainerHead}>
