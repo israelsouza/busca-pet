@@ -8,14 +8,13 @@ import icone from "../../assets/imgs/icone.png";
 import { useNavigate } from "react-router-dom";
 import validateAdmin from "../../assets/utils/validateAdmin.js";
 function TelaAdm() {
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuthentication = async () => {
       const res = validateAdmin();
       if (!res) {
-        alert("Usuário não é admin, redirecionando para login.");
+        alert("Usuário não é admin ou está banido, redirecionando para login");
         localStorage.removeItem("authToken");
         navigate("/form/login");
       }

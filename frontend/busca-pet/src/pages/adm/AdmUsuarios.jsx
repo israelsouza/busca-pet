@@ -20,14 +20,14 @@ function AdmUsuarios() {
     const checkAuthentication = async () => {
       const res = validateAdmin();
       if (!res) {
-        alert("Usuário não é admin, redirecionando para login.");
+        alert("Usuário não é admin ou está banido, redirecionando para login");
         localStorage.removeItem("authToken");
         navigate("/form/login");
       }
     };
     checkAuthentication();
   }, [navigate]);
-  
+
   const nomeRef = useRef(null);
   const emailRef = useRef(null);
   const senha01Ref = useRef(null);
@@ -193,7 +193,12 @@ function AdmUsuarios() {
         throw new Error("ID do usuário para atualização não encontrado.");
       }
 
-      const res = await fetchAPI(`api/usuario/usuario/${id}`, "PATCH", data, true);
+      const res = await fetchAPI(
+        `api/usuario/usuario/${id}`,
+        "PATCH",
+        data,
+        true
+      );
       console.log(id);
 
       console.log(res);
@@ -239,41 +244,44 @@ function AdmUsuarios() {
                         <td>{usuario.DENUNCIAS_RECEBIDAS_COUNT}</td>
                         <td>
                           <div className={Style.btn_container}>
-                            <button className={Style.Button_ban} onClick={async () => {
-                                  const resultadoBanir = window.confirm(
-                                    `Tem certeza que deseja banir o ${usuario.PES_NOME} ?`
-                                  );
+                            <button
+                              className={Style.Button_ban}
+                              onClick={async () => {
+                                const resultadoBanir = window.confirm(
+                                  `Tem certeza que deseja banir o ${usuario.PES_NOME} ?`
+                                );
 
-                                  if (!resultadoBanir) return;
+                                if (!resultadoBanir) return;
 
-                                  const user = {
-                                    id: usuario.ID,
-                                    email: usuario.USU_EMAIL,
-                                  };
+                                const user = {
+                                  id: usuario.ID,
+                                  email: usuario.USU_EMAIL,
+                                };
 
-                                  await banirUsuario();
+                                await banirUsuario();
 
-                                  async function banirUsuario() {
-                                    try {
-                                      const req = await fetchAPI(
-                                        `api/usuario/usuario/banir`,
-                                        "PUT",
-                                        user,
-                                        true,
-                                        true
-                                      );
+                                async function banirUsuario() {
+                                  try {
+                                    const req = await fetchAPI(
+                                      `api/usuario/usuario/banir`,
+                                      "PUT",
+                                      user,
+                                      true,
+                                      true
+                                    );
 
-                                      console.log(await req.json());
-                                      fetchUsers();
-                                    } catch (error) {
-                                      console.error(error);
-                                      alert(error);
-                                    }
+                                    console.log(await req.json());
+                                    fetchUsers();
+                                  } catch (error) {
+                                    console.error(error);
+                                    alert(error);
                                   }
-                                }}>
+                                }
+                              }}
+                            >
                               {" "}
                               <LuUserRoundMinus
-                                className={Style.icon_user}                                
+                                className={Style.icon_user}
                               />{" "}
                               Banir
                             </button>
