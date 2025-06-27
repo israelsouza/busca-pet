@@ -22,7 +22,7 @@ function validateAdmin() {
 
   if (!payload) { return false; }
 
-  return payload.role === 'ADM';
+  return payload.role === 'ADM' && payload.status === 'A';
 }
 
 export default validateAdmin;

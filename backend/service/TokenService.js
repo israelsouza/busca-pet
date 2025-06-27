@@ -9,13 +9,14 @@ import transporter from "../configs/mailConfig.js";
 import HttpError from '../utils/HttpError.js';
 
 class TokenService {
-    gerarTokenJWT({userId, role, email}){
+    gerarTokenJWT({userId, role, email, status}){
         log('INFO', 'TOKENSERVICE', 'gerarTokenJWT', 'INICIO')
         const token = jwt.sign(
             {
                 id: userId,
                 email: email,
-                role: role
+                role: role,
+                status: status
             },
             SECRET_KEY,
             {

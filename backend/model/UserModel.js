@@ -174,7 +174,7 @@ class UserModel {
                 throw new HttpError(400, "O e-mail não está cadastrado.");
             }
 
-            const [USU_ID, senhaHash, role] = query.rows[0];            
+            const [USU_ID, senhaHash, role, status] = query.rows[0];            
 
             const senhaValida = await bcrypt.compare(dados.password, senhaHash);
 
@@ -189,7 +189,8 @@ class UserModel {
                 userId: USU_ID,
                 message: "Usuário autenticado com sucesso.",
                 role: role,
-                email: dados.email
+                email: dados.email,
+                status: status
             };
 
         } catch (error) {
