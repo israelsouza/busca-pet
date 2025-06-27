@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiTrash } from "react-icons/fi";
 
@@ -26,8 +26,7 @@ function Notification() {
     checkAuthentication();
   }, [navigate]);
 
-  useEffect(() => {
-    function getNotifications() {
+  const getNotifications = useCallback(async () => {
       const token = localStorage.getItem("authToken");
       const headerRequest = {
         method: "GET",
@@ -38,19 +37,20 @@ function Notification() {
       };
 
       fetch(`http://localhost:3000/api/notificacao/mensagem`, headerRequest)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Notificações: ", data);
-          let notification = data.notificacoes;
-          setNotification(notification);
-        })
-        .catch((error) => {
-          console.error("Erro ao buscar notificações:", error);
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Notificações: ", data);
+            let notification = data.notificacoes;
+            setNotification(notification);
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar notificações:", error);
         });
-    }
+  }, [])
 
+  useEffect(() => {
     getNotifications();
-  }, []);
+  }, [notification]);
 
   function deleteNotification(id) {
     console.log("ID da notificação a ser deletada:", id);
