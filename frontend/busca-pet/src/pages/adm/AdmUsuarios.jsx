@@ -239,11 +239,7 @@ function AdmUsuarios() {
                         <td>{usuario.DENUNCIAS_RECEBIDAS_COUNT}</td>
                         <td>
                           <div className={Style.btn_container}>
-                            <button className={Style.Button_ban}>
-                              {" "}
-                              <LuUserRoundMinus
-                                className={Style.icon_user}
-                                onClick={async () => {
+                            <button className={Style.Button_ban} onClick={async () => {
                                   const resultadoBanir = window.confirm(
                                     `Tem certeza que deseja banir o ${usuario.PES_NOME} ?`
                                   );
@@ -274,7 +270,10 @@ function AdmUsuarios() {
                                       alert(error);
                                     }
                                   }
-                                }}
+                                }}>
+                              {" "}
+                              <LuUserRoundMinus
+                                className={Style.icon_user}                                
                               />{" "}
                               Banir
                             </button>
