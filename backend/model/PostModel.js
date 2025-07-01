@@ -228,10 +228,7 @@ class PostModel {
             
             const dadosTratados = await ValidationUtils.tratarImagensEData(rows);
             
-            log('INFO', 'PostModel', 'listarPosts', 'FIM');
-
-            console.log("Dados tratados: ", dadosTratados);
-            
+            log('INFO', 'PostModel', 'listarPosts', 'FIM - Dados tratados');
             
             return dadosTratados;
             

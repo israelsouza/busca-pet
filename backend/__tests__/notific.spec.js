@@ -17,7 +17,7 @@ describe(` POST ${API_NOTIFIC}/criar/mensagem`, () => {
         const response = await request(app)
             .post(`${API_NOTIFIC}/criar/mensagem`)
             .set('Authorization', `Bearer ${token}`)
-            .send({idPost: 300})
+            .send({idPost: 301})
         
         expect(response.status).toEqual(201)
         expect(response.body).toMatchObject({
@@ -41,7 +41,7 @@ describe(`POST ${API_NOTIFIC}/criar/denuncia`, () => {
     test('Deve criar uma denuncia com sucesso', async () => {
         const TIPO = 'Agressao Verbal';
         const DESCRICAO = 'Violencia contra os animais'
-        const POST_ID = 300;
+        const POST_ID = 306;
         const response = await request(app)
             .post(`${API_NOTIFIC}/criar/denuncia`)
             .set('Authorization', `Bearer ${token}`)
@@ -96,7 +96,7 @@ describe(`POST ${API_NOTIFIC}/criar/denuncia`, () => {
 describe(`Rotas com autorização de ADM`, () => {
 
     let admToken;
-    const ID_POST = 300;
+    const ID_POST = 306;
 
     beforeAll(async () => {
         admToken = await gerarAdminAuthToken();
