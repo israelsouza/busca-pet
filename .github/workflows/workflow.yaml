@@ -1,0 +1,24 @@
+name: Continuos Integration
+
+on: pull_request
+
+jobs:
+  continuos-integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: set uo and using NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.
+        - name: Install, run, build and test
+        run: |
+          cd ./backend
+          npm install
+          npm run build
+          npm test
+          cd ../frontend
+          cd ./busca-pet
+          npm install
+          npm run build
