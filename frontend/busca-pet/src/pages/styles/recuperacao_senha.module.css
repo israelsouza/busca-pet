@@ -30,18 +30,17 @@
   width: 50%;
 }
 
-.rec-senha__etapa{
+.rec-senha__etapa {
   text-align: center;
 }
 
-
-#mensagemErroRecuperarSenha{
+#mensagemErroRecuperarSenha {
   color: red;
   text-align: center;
   font-size: 26px;
 }
 
-#mensagemSucessoRecuperarSenha{
+#mensagemSucessoRecuperarSenha {
   color: green;
   text-align: center;
   font-size: 26px;

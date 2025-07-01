@@ -1,0 +1,73 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 30%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+}
+
+.modal h2 {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: none;
+}
+
+.selecao{
+  width: 100%;
+}
+
+textarea {
+  padding: 10px;
+  height: 150px;
+  border-radius: 8px;
+  border: 1px solid #cccccc92;
+  font-size: 1rem;
+  resize: none;
+}
+
+textarea:focus{
+  outline: 1px solid #ccc;
+}
+
+.botoes {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.botoes button {
+  background-color: var(--botao);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: normal;
+  box-shadow: 6px 2px 8px rgba(10, 10, 10, 0.568);
+  cursor: pointer;
+  transition: transform 0.5s;
+}
+
+.botoes button:hover {
+  transform: scale(1.05);
+}

@@ -1,13 +1,14 @@
 import OracleDB from "oracledb";
-import dbConfig from "../config/dbConfig.js";
-
-OracleDB.fetchAsBuffer = [OracleDB.BLOB];
+import dbConfig from "../configs/dbConfig.js";
 
 async function getConnection() {
   try {
-    return await OracleDB.getConnection(dbConfig);
+    const connection = await OracleDB.getConnection(dbConfig);
+
+    console.log(" ---------------- Conexão estabelecida com Sucesso! ---------------- ");
+    return connection;
   } catch (error) {
-    console.error("Erro ao conectar ao banco de dados: ", error);
+    console.log(" ---------------- Erro ao estabelecer conexão. ---------------- ", error);
     throw error;
   }
 }

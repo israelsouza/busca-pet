@@ -1,168 +1,170 @@
-.pet_perdido{
-    min-height: 100svh;
-    background-image: url('./../../assets/imgs/caolupa.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.pet_perdido {
+  min-height: 100svh;
+  background-image: url("./../../assets/imgs/caolupa.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.pet_perdido__body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.pet_perdido__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pet_perdido__box {
-    margin-top: 100px;
-    background-color: rgba(239, 163, 85, 0.5);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 90%;
-    margin-bottom: 100px;
+  margin-top: 30px;
+  background-color: rgba(239, 163, 85, 0.5);
+  padding: 20px 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  margin-bottom: 20px;
 }
 
 .pet_perdido__box_mapa {
-    margin-top: 100px;
-    background-color: rgba(239, 163, 85, 0.5);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-
-    margin-bottom: 100px;
+  margin-top: 30px;
+  background-color: rgba(239, 163, 85, 0.5);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .pet_perdido__input {
-    background-color: var(--inputs);
-    color: var(--label);
-    border: none;
-    outline: none;
-    width: 100%;
-    gap: 50%;
-    border-radius: 5px;
-    padding: 7px 0 7px 5px;
-    margin-top: 3px;
+  background-color: var(--inputs);
+  color: var(--label);
+  border: none;
+  outline: none;
+  width: 100%;
+  gap: 50%;
+  border-radius: 5px;
+  padding: 7px 0 7px 5px;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+
+.pet_perdido__box label {
+  width: 100%;
+  text-align: left;
+  margin: 0 0 10px 0;
+  color: white;
+  font-size: small;
 }
 
 .pet_perdido__textarea {
-    resize: none;
-    height: 75px;
-}
-
-label {
-    color: var(--inputs);
+  resize: none;
+  height: 75px;
 }
 
 .pet_perdido__input50 {
-    display: flex;
-    text-align: left;
-    gap: 5px;
-    padding: 5px 0;
+  display: flex;
+  text-align: left;
+  gap: 5px;
+  padding: 5px 0;
 }
 
 .pet_perdido__input100 {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 5px 0;
 }
 
 .pet_perdido__imagem_texto {
-    color: var(--inputs);
-    display: flex;
-    text-align: left;
-    gap: 5px;
-    padding: 5px 0;
+  color: white;
+  display: flex;
+  text-align: left;
+  gap: 5px;
+  padding: 5px 0;
 }
 
 .pet_perdido__imagem {
-    background-color: var(--inputs);
-    color: var(--label);
-    border: none;
-    outline: none;
-    width: 100%;
-    border-radius: 5px;
-    padding: 7px;
-    cursor: pointer;
-    display: inline-block;
+  background-color: var(--inputs);
+  color: var(--label);
+  border: none;
+  outline: none;
+  width: 100%;
+  border-radius: 5px;
+  padding: 7px 0;
+  cursor: pointer;
+  margin-top: 25px;
 }
 
-.pet_perdido__imagem label { 
-    display: inline-block;
-    width: 100%;
-    color: var(--label);
-    text-align: center;
+.pet_perdido__imagem label {
+  display: inline-block;
+  width: 100%;
+  color: var(--label);
+  text-align: center;
 }
 
 .pet_perdido__imagem input {
-    display: none;
+  display: none;
 }
 
 .botao {
-    text-align: center;
-    padding: 15px 100px;
-    margin: 15px auto;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    color: rgb(0, 0, 0);
-    background-color: rgb(239, 163, 85);
+  text-align: center;
+  padding: 15px 100px;
+  margin: 15px auto;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  color: rgb(0, 0, 0);
+  background-color: rgb(239, 163, 85);
 }
 
 .botao_mapa {
-    text-align: center;
-    padding: 15px 350px;
-    margin: 15px auto;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    color: rgb(0, 0, 0);
-    background-color: rgb(239, 163, 85);
+  text-align: center;
+  padding: 15px 350px;
+  margin: 15px auto;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  color: rgb(0, 0, 0);
+  background-color: rgb(239, 163, 85);
 }
 
 .botao_center {
-    text-align: center;
+  text-align: center;
 }
 
 .botao:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+  transform: scale(1.05);
+  opacity: 0.9;
 }
 
 .retornoBackend {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .retornoBackend.sucesso {
-    color: #155724;
-    font-size: 24px;
-    
+  color: #155724;
+  font-size: 24px;
 }
 
 .retornoBackend.erro {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 20px;
-    }
-    
-    .botao {
-        padding: 12px;
-        font-size: 16px;
-    }
+  .container {
+    padding: 20px;
+  }
+
+  .botao {
+    padding: 12px;
+    font-size: 16px;
+  }
 }
 
 .error {
-    color: red
+  color: red;
 }

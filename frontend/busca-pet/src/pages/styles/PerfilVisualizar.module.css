@@ -1,44 +1,52 @@
-*{
-    margin: 0px;
-    padding: 0px;
+.container {
+  display: flex;
 }
 
-.container{
-    display: flex;
-  }
-
-.FotoDivisao{
-    width: 50vw;
-    height: 100vh;
-    background-image: url(../../assets/imgs/fundo_pato.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+.container {
+  display: flex;
 }
 
-.cabecalho{
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    min-width: 10px;
-    width: 50vw;
-    justify-content: space-evenly;
-    justify-self: right;
-    align-items: center;
+.fotoPerfil {
+  border-radius: 50%;
+  max-width: 200px;
 }
 
-.namecontainer{
-    justify-items: center;
+.FotoDivisao {
+  width: 50vw;
+  background-image: url(../../assets/imgs/fundo_pato.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
-h1{
-    font-family: "Inter",  sans-serif;
-    font-weight: normal;
-    font-size: 2em;
+.cabecalho {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  min-width: 10px;
+  width: 50vw;
+  justify-content: space-evenly;
+  justify-self: right;
+  align-items: center;
 }
 
-.h2{
-    font-family: "Inter",  sans-serif;
-    font-weight: normal;
-    font-size: 1.2em;
+.fotoPerfil img {
+  max-width: 150px;
+  border-radius: 50%;
+}
+
+.namecontainer {
+  justify-items: center;
+}
+
+h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  font-size: 2em;
+}
+
+.h2 {
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  font-size: 1.2em;
 }

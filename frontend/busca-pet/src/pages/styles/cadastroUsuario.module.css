@@ -52,8 +52,6 @@
   width: 50%;
 }
 
-
-
 .cad__select {
   width: 525px;
   padding: 10px;
@@ -75,14 +73,13 @@
   color: var(--label);
 }
 
-
-.select__box{
+.select__box {
   margin: 20px auto;
   max-width: 525px;
 }
 
 @media (max-width: 1200px) {
-  .cad__error{
+  .cad__error {
     margin-left: 50px;
   }
 }

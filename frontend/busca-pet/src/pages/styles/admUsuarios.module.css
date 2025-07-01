@@ -1,0 +1,126 @@
+.ContainerBody {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.H1 {
+  font-family: "Inter", sans-serif;
+  font-size: 2em;
+  font-weight: 400;
+  color: #0d0d0d;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.table {
+  margin: 0 auto;
+  width: 90%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th,
+td {
+  padding: 30px;
+  border: 2px solid #a19f9f;
+  text-align: center;
+  width: 220px;
+  border-radius: 8px;
+}
+
+.btn_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.banir {
+  background-color: var(--inputs);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+}
+
+.editar {
+  background-color: var(--inputs);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+}
+
+.icon_user{
+  font-size: 35px;
+  padding-right: 8px;
+}
+
+.Button_ban:hover{
+  background-color: red;
+}
+
+.ContainerFooter {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-right: 20px;
+}
+
+.Atualiza {
+  background-color: var(--inputs);
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+  color: #0d0d0d;
+  position: fixed;
+  right: 3%;
+  bottom: 3%;
+  border-radius: 50%;
+}
+
+.icon_refresh{
+  font-size: 45px;
+}
+
+
+.unicoUser__container{
+  border: 1px solid black;
+  padding: 20px;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.unicoUser__row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unicoUser__row input{
+  background-color: var(--botao);
+  width: 350px;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+}
+
+.unicoUser__btnContainer{
+  display: flex;
+  gap: 50px;
+}
+
+.unicoUser__btnContainer button{
+  padding: 10px 20px;
+}

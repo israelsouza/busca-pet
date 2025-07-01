@@ -1,1 +1,0 @@
-import getConnection from "../model/connectionOracle.js";

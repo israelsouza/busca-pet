@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "../config/authConfig.js";
+import { SECRET_KEY } from "../configs/authConfig.js";
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    jwt.verify(token, SECRET_KEY); // verificar o token
+    jwt.verify(token, SECRET_KEY);
     return res.status(200).json({ message: "Token válido" });
   } catch (error) {
     if (error.name === "TokenExpiredError") {

@@ -9,7 +9,13 @@ export async function geocodeAddress(address) {
     }
 
     const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ address: address }, (results, status) => {
+    geocoder.geocode({ 
+      address: address,
+      componentRestrictions: {
+        country: 'BR', // Restringe a pesquisa ao Brasil
+      },
+      language: 'pt-BR'
+     }, (results, status) => {
       if (status === 'OK' && results[0]) {
         const location = results[0].geometry.location;
         resolve({

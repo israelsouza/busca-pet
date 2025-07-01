@@ -9,6 +9,11 @@
   margin-top: 30px;
 }
 
+.denuncia__container{
+  max-width: 1400px;
+  margin: 30px auto;
+}
+
 .pnotification__button {
   position: fixed;
   right: 5%;
@@ -17,4 +22,28 @@
 
 .pnotification__icon {
   margin: 0 5px;
+}
+
+.btn_container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  position: fixed;
+  bottom:  2%;
+  right: 0; 
+}
+
+.btn_trash, .btn_refresh{
+  padding: 10px;
+  font-size: 35px;
+}
+
+.btn_refresh{
+  border-radius: 50%;
+}
+
+.btn_trash:hover{
+  background-color: red;
 }

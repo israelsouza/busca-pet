@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiTrash } from "react-icons/fi";
 
@@ -26,8 +26,7 @@ function Notification() {
     checkAuthentication();
   }, [navigate]);
 
-  useEffect(() => {
-    function getNotifications() {
+  const getNotifications = useCallback(async () => {
       const token = localStorage.getItem("authToken");
       const headerRequest = {
         method: "GET",
@@ -37,20 +36,21 @@ function Notification() {
         },
       };
 
-      fetch(`http://localhost:3000/user/notification/${token}`, headerRequest)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Notificações: ", data);
-          let notification = data.result;
-          setNotification(notification);
-        })
-        .catch((error) => {
-          console.error("Erro ao buscar notificações:", error);
+      fetch(`http://localhost:3000/api/notificacao/mensagem`, headerRequest)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Notificações: ", data);
+            let notification = data.notificacoes;
+            setNotification(notification);
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar notificações:", error);
         });
-    }
-
-    getNotifications();
   }, [])
+
+  useEffect(() => {
+    getNotifications();
+  }, [notification]);
 
   function deleteNotification(id) {
     console.log("ID da notificação a ser deletada:", id);
@@ -63,7 +63,7 @@ function Notification() {
       },
     };
 
-    fetch(`http://localhost:3000/user/notification/${id}`, headerRequest)
+    fetch(`http://localhost:3000/api/notificacao/mensagem/${id}`, headerRequest)
       .then((response) => response.json())
       .then((data) => {
         console.log("Notificações deletadas: ", data);
@@ -76,32 +76,52 @@ function Notification() {
       });
   }
 
+  function deletarTodasNotificacoes() {
+    const token = localStorage.getItem("authToken");
+    const headerRequest = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    fetch(`http://localhost:3000/api/notificacao/todas-mensagem`, headerRequest)
+      .then((response) => response.json())
+      .then((data) => {
+        alert("Todas as notificações foram deletadas com sucesso!");
+      })
+      .catch((error) => {
+        console.error("Erro ao deletar notificações:", error);
+      });
+  }
 
   return (
     <div className={styles.pnotification}>
       <HeaderLog />
       <div className={styles.pnotification__container}>
         <h1>Notificações</h1>
-        
-        {
-          notification.map((notificacao, key) => (
-            <BoxNotificacao
-              key={key}
-              nome={notificacao[0]}
-              telefone={notificacao[3].telefone}
-              email={notificacao[3].email}
-              id={notificacao[4]}
-              onClick={() => {
-                deleteNotification(notificacao[4]);
-              }}
-            />
-          ))
-        }
 
-        <button className={styles.pnotification__button}>
-          <span>Excluir notificações</span>
-          <FiTrash className={styles.pnotification__icon} />
-        </button>
+        {notification.map((notificacao, key) => (
+          <BoxNotificacao
+            key={key}
+            nome={notificacao[0]}
+            telefone={notificacao[3].telefone}
+            email={notificacao[3].email}
+            id={notificacao[4]}
+            onClick={() => {
+              deleteNotification(notificacao[4]);
+            }}
+          />
+        ))}
+
+        {notification.length !== 0 && (
+          <button className={styles.pnotification__button} onClick={deletarTodasNotificacoes} >
+            <span>Excluir</span>
+            <FiTrash className={styles.pnotification__icon} />
+          </button>
+        )}
+
       </div>
     </div>
   );
