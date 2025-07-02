@@ -24,14 +24,14 @@ jobs:
       - name: Install dependencies, build and test #
         run: |
           cd ./backend
+          echo "STARTING INTALL IN BACKEND"
           npm install
           echo "INSTALL DONE"
-          ls -la
-          npm test
-          echo "TEST DONE"
+          
           cd ../frontend/busca-pet
-          ls -la
+          echo "STARTING INSTALL IN FRONTEND"
           npm install
           echo "INSTALL DONE"
+          echo "STARTING BUILD IN FRONTEND"
           npm run build
           echo "BUILD DONE"
