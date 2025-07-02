@@ -27,4 +27,11 @@ jobs:
           npm install
           echo "INSTALL DONE"
           ls -la
+          npm test
+          echo "TEST DONE"
+          cd ../frontend/busca-pet
+          ls -la
+          npm install
+          echo "INSTALL DONE"
           npm run build
+          echo "BUILD DONE"
