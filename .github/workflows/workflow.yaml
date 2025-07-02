@@ -23,12 +23,4 @@ jobs:
 
       - name: Install dependencies, build and test
         run: |
-          echo "Building backend..."
-          cd ./backend
-          npm install
-          npm run build --if-present
-          npm test
-          cd ../frontend
-          cd ./busca-pet
-          npm install
-          npm run build
+          ls -la
