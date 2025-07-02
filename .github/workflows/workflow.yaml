@@ -24,4 +24,7 @@ jobs:
       - name: Install dependencies, build and test #
         run: |
           cd ./backend
+          npm install
+          echo "INSTALL DONE"
           ls -la
+          npm run build
