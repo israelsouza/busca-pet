@@ -148,7 +148,7 @@ class UserService {
 
             log('ERRO', 'UserService', 'gerarTokenSenha', 'ERRO AO TENTAR GERAR O TOKEN')
             console.log(error);
-            return false;           
+            throw error;           
             
         }
     }
