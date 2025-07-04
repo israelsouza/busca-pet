@@ -1,0 +1,60 @@
+services:
+  # Serviço do Banco de Dados Oracle
+  database:
+    image: container-registry.oracle.com/database/free:latest
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+    environment:
+      # Defina uma senha para as contas de admin (SYS, SYSTEM, PDBADMIN)
+      - ORACLE_PWD=${ORACLE_PWD}
+    volumes:
+      # Volume para persistir os dados do banco
+      - oracle-data:/opt/oracle/oradata
+      # Monta os scripts de inicialização para criar o schema na primeira vez
+      - ./database/init:/opt/oracle/scripts/startup
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "bash",
+          "-c",
+          "echo 'exit' | sqlplus -L sys/${ORACLE_PWD}@//localhost:1521/FREEPDB1 as sysdba | grep 'Connected to:'",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Serviço do Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: busca-pet-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./.env
+    volumes:
+      # Monta o código-fonte para live-reload durante o desenvolvimento
+      - ./backend:/usr/src/app
+      # Evita que o node_modules local sobrescreva o do contêiner
+      - /usr/src/app/node_modules
+    depends_on:
+      database:
+        condition: service_healthy # Espera o healthcheck do banco passar
+
+  # Serviço do Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: busca-pet-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+# Define os volumes nomeados
+volumes:
+  oracle-data:
