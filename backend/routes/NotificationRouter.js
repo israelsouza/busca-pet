@@ -1,7 +1,7 @@
 import express from "express";
 import NotificationController from "../controllers/NotificationController.js";
 import authorizeAdminRole from "../middleware/authRole.js";
-import autenticarToken from "./middleware/authMiddleware.js";
+import autenticarToken from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

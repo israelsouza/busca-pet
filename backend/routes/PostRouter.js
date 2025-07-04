@@ -2,7 +2,7 @@ import express from "express";
 import upload from "../middleware/multerConfig.js";
 import PostController from "../controllers/PostController.js";
 import authorizeAdminRole from '../middleware/authRole.js'
-import autenticarToken from "./middleware/authMiddleware.js";
+import autenticarToken from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
