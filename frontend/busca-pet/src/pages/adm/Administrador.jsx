@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import HeaderForm from "../../components/HeaderForm";
 import icon_publicacoes from "../../assets/imgs/icon_publicacoes.png";
 import icon_denuncias from "../../assets/imgs/icon_denuncia.png";
-import icone from "../../assets/imgs/icone.png";
+import icone from "../../assets/imgs/icon_conta.png";
 import { useNavigate } from "react-router-dom";
 import validateAdmin from "../../assets/utils/validateAdmin.js";
 function TelaAdm() {
