@@ -2,6 +2,18 @@ import request from 'supertest';
 import app from '../app.js';
 import { gerarAuthToken } from './utils/auth.js';
 import { gerarAdminAuthToken } from './utils/adminAuth.js';
+import oracledb from 'oracledb';
+
+
+afterAll(async () => {
+  try {
+    await oracledb.getPool().close(10);
+  } catch (err) {
+    if (err.code !== 'NJS-047') {
+      throw err; 
+    }
+  }
+});
 
 const API_NOTIFIC = '/api/notificacao';
 
