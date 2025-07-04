@@ -28,7 +28,7 @@ jobs:
           npm install
           echo "INSTALL DONE"
           echo "STARTING TEST IN BACKEND"
-          npm test
+          npm test -- --forceExit
           echo "TEST DONE"
           cd ../frontend/busca-pet
           echo "STARTING INSTALL IN FRONTEND"
