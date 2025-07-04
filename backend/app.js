@@ -1,8 +1,6 @@
 import express from "express";
 import cors from "cors";
 
-import autenticarToken from "./middleware/authMiddleware.js";
-
 import ValidateToken from "./routes/ValidateToken.js";
 import UserRouter from './routes/UserRouter.js';
 import PostRouter from './routes/PostRouter.js'
@@ -15,7 +13,7 @@ app.use(express.json());
 app.use("/validate-token", ValidateToken);
 
 app.use("/api/usuario", UserRouter)
-app.use("/api/posts", autenticarToken, PostRouter);
-app.use("/api/notificacao", autenticarToken, NotificationRouter);
+app.use("/api/posts", PostRouter);
+app.use("/api/notificacao", NotificationRouter);
 
 export default app;
