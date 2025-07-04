@@ -3,18 +3,10 @@ import app from '../app.js';
 import TokenService from '../service/TokenService.js';
 import { gerarAuthToken } from './utils/auth.js';
 import { gerarAdminAuthToken } from './utils/adminAuth.js';
-import oracledb from 'oracledb';
+import { setupDatabase, teardownDatabase } from './utils/dbManager.js';
 
-
-afterAll(async () => {
-  try {
-    await oracledb.getPool().close(10);
-  } catch (err) {
-    if (err.code !== 'NJS-047') {
-      throw err; 
-    }
-  }
-});
+beforeAll(setupDatabase);
+afterAll(teardownDatabase);
 
 const API_USUARIO = '/api/usuario'
 
@@ -280,10 +272,10 @@ describe(`ROTAS PRIVADAS`, () => {
             ['PES_NOME', 'Raquel Teste Dinamico'],
             ['PES_PHONE',`11950${unique.toString().slice(-6)}`],
             // ['USU_EMAIL', `raquelzinha${unique}@gmail.com.br`],
-            ['END_RUA',`Rua Paraibense`],
-            ['END_BAIRRO',`Jardim Santa Luzia`],
-            ['CID_DESCRICAO','Santana do Sul'],
-            ['EST_SIGLA', 'SP']
+            ['END_RUA', 'Rua Paraibense'],
+            ['END_BAIRRO', 'Jardim Santa Luzia'],
+            ['CID_DESCRICAO','Santana do Sul'], 
+            ['EST_SIGLA', 'SP'] 
         ]
 
         test.each(camposParaAtualizar)(
@@ -313,7 +305,7 @@ describe(`ROTAS PRIVADAS`, () => {
             const response = await request(app)
                 .post(`${API_USUARIO}/perfil/PES_NOME`)
                 .set('Authorization', `Bearer ${token}`)
-                .send({ nome: 'Raquel' });
+                .send({ valor_errado: 'Raquel' }); // Enviando uma chave que o backend não espera
 
             expect(response.status).toBe(400);
             expect(response.body).toEqual({  message: "Erro ao tentar atualizar o campo." });
@@ -322,7 +314,7 @@ describe(`ROTAS PRIVADAS`, () => {
         test('deve retornar 401 se não houver token', async () => {
             const response = await request(app)
                 .post(`${API_USUARIO}/perfil/PES_NOME`)
-                .send({ nome: 'Novo Nome' });
+                .send({ valor: 'Novo Nome' });
 
             expect(response.status).toBe(401);
             expect(response.body).toEqual({ message: 'Token não fornecido' });

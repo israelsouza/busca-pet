@@ -1,18 +1,10 @@
 import request from 'supertest';
 import app from '../app.js';
 import { gerarAuthToken } from './utils/auth.js';
-import oracledb from 'oracledb';
+import { setupDatabase, teardownDatabase } from './utils/dbManager.js';
 
-
-afterAll(async () => {
-  try {
-    await oracledb.getPool().close(10);
-  } catch (err) {
-    if (err.code !== 'NJS-047') {
-      throw err; 
-    }
-  }
-});
+beforeAll(setupDatabase);
+afterAll(teardownDatabase);
 
 const API_POST = '/api/posts';
 
