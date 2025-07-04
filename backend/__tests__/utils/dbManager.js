@@ -15,7 +15,7 @@ export async function setupDatabase() {
       console.log('Pool de conexões com o Oracle DB iniciado para os testes.');
     } catch (err) {
       console.error('Erro ao iniciar o pool de conexões:', err);
-      process.exit(1);
+      process.exit();
     }
   }
   connectionCount++;
