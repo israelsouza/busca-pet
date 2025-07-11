@@ -85,7 +85,7 @@ Com tudo configurado, inicie o servidor em modo de desenvolvimento:
 npm run dev
 ```
 
-O backend estará disponível em `http://localhost:3001` (ou na porta que você definiu no `.env`).
+O backend estará disponível em `http://localhost:3000` (para mudar, redefina no arquivo `server.js`).
 
 ---
 

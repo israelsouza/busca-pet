@@ -9,10 +9,6 @@ O Busca Pet é um sistema em React.JS para publicação de posts de pets que for
 
 O **Busca Pet** é uma plataforma colaborativa para conectar pessoas que perderam seus animais de estimação com pessoas que encontraram os animais na rua.
 
-## Imagens
-
-<!-- Espaço reservado para imagens do projeto. Insira aqui screenshots ou GIFs demonstrando o funcionamento da aplicação. -->
-
 ## Funcionalidades
 
 - Cadastro de animais perdidos e encontrados
